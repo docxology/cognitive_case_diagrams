@@ -1,0 +1,41 @@
+\frametitle{Passivization as Algebraic Type Permutation}
+\protect\phantomsection\label{passivization-as-algebraic-type-permutation}
+One of the most revealing case-theoretic operations is
+\textbf{passivization}, which transforms an active transitive clause
+into a passive construction by promoting the patient to subject position
+and (optionally) demoting the agent to an oblique role. In our
+categorical framework, passivization is not an ad hoc syntactic
+transformation but a precise \emph{type permutation}---a swap of the
+noun types feeding into the verb's pregroup derivation.
+
+In a pregroup grammar, the active transitive ``Alice chases Bob'' has
+the type reduction:
+
+\[n_{\text{NOM}} \cdot (n^r \cdot s \cdot n^l) \cdot n_{\text{ACC}} \to s \]
+\{\#eq:eq-3-3\}
+
+Passivization permutes the noun arguments, yielding ``Bob is chased by
+Alice'' with the swapped type assignment:
+
+\[n_{\text{ACC}} \cdot (n^r \cdot s \cdot n^l) \cdot n_{\text{NOM}} \to s \]
+\{\#eq:eq-3-4\}
+
+Crucially, DisCoPy's \texttt{Swap} primitive makes this permutation
+explicit and algebraically precise: the swap operation
+\(\sigma_{n,n}: n \otimes n \to n \otimes n\) permutes the two noun
+wires without violating the monoidal structure. The resulting diagram
+differs from the active version precisely in the crossing of the noun
+wires---making the voice alternation \emph{visible} as a topological
+feature of the string diagram.
+
+This diagrammatic transparency exemplifies Shimojima's
+{[}-@shimojima1996reasoning{]} free-ride inference: by inspecting the
+diagram, one can immediately see that passivization preserves the verb's
+inherent argument structure while rearranging the surface
+realization---a fact that requires multiple inference steps to establish
+in a linear notation.
+
+The structural difference between voice alternations is a topological
+change in wire connectivity: passivization removes one Cup contraction,
+lowering the syntactic complexity score of
+{[}@eq:eq-4-4{]}.{]}(output/figures/discopy\_passive.png)\{\#fig:discopy-passive\}

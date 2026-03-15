@@ -1,0 +1,129 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\begin{frame}{Abstract}
+\protect\phantomsection\label{abstract}
+This review synthetically bridges case theory, categorial grammar,
+enriched category theory, and active inference into a single algebraic
+framework centered on the \emph{cognitive case diagram}. By formalizing
+case systems as categories (objects mapping to case roles and morphisms
+to grammatical relations) and alignment typologies as functors, we
+render sentence structure as compact-closed string diagrams computable
+via the DisCoCat framework. These diagrams are not merely descriptive
+notation; drawing upon the cognitive science of diagrammatic reasoning
+and the embodied constraint of sketching thought onto a two-dimensional
+plane, they are executable proofs of grammaticality. We review the
+historical foundations from Pāṇini's \emph{kāraka} theory to Fillmore's
+deep semantic cases and Mel'čuk's relational networks, tracing how
+morphosyntactic inflection evolved into the structural skeletons of
+generative models where comprehension reduces to free-energy
+minimization. We demonstrate that this topological approach constitutes
+the formal algebra underlying the distributional meaning representations
+of modern large language models, bridging logical and connectionist
+semantic traditions. The framework is inherently quantitative: graded
+proto-roles are computed as \([0,1]\)-enriched hom-values, yielding
+categorical magnitude as a computable complexity invariant over syntax.
+Topos-theoretic Morita equivalence provides algorithmic pathways for
+cross-linguistic grammatical induction, while Distributional Active
+Inference extends to modeling semantic distributions via push-forward
+measures. This synthesis generates falsifiable electrophysiological
+predictions---mapping P600/N400 amplitudes to enriched morphism
+weights---and extends foundational operations into quantum semantic
+communication, composable multi-agent protocols, and cognitive security
+against adversarial type-injection. Implemented within the CEREBRUM
+architecture, the cognitive case diagram collapses the boundaries
+between linguistic structure, mathematical logic, and embodied machine
+cognition into a unified, computationally tractable topology. Instead,
+it organizes these contributions as nested pillars within a single,
+integrated generative model of situation semantics.
+\end{frame}
+
+\end{document}

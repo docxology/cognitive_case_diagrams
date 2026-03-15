@@ -1,0 +1,61 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: _combined_manuscript.aux
+The style file: plainnat.bst
+Illegal, another \bibdata command---line 685 of file _combined_manuscript.aux
+ : \bibdata
+ :         {references}
+I'm skipping whatever remains of this command
+Database file #1: references.bib
+Warning--I didn't find a database entry for "eq:eq-2-1"
+Warning--I didn't find a database entry for "eq:eq-2-3"
+Warning--I didn't find a database entry for "eq:eq-2-4"
+Warning--I didn't find a database entry for "eq:eq-4-4"
+Warning--I didn't find a database entry for "eq:eq-4-3"
+Warning--I didn't find a database entry for "eq:eq-5-4"
+Warning--I didn't find a database entry for "eq:eq-6-1"
+Warning--I didn't find a database entry for "eq:eq-8-1"
+Warning--can't use both volume and number fields in bonchi2022rewriting
+Warning--empty publisher in lambek2004fine
+You've used 82 entries,
+            2773 wiz_defined-function locations,
+            1113 strings with 25120 characters,
+and the built_in function-call counts, 36261 in all, are:
+= -- 3324
+> -- 2004
+< -- 68
++ -- 694
+- -- 611
+* -- 2664
+:= -- 5701
+add.period$ -- 355
+call.type$ -- 82
+change.case$ -- 437
+chr.to.int$ -- 81
+cite$ -- 166
+duplicate$ -- 1667
+empty$ -- 2983
+format.name$ -- 725
+if$ -- 7636
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 62
+newline$ -- 520
+num.names$ -- 336
+pop$ -- 900
+preamble$ -- 1
+purify$ -- 363
+quote$ -- 0
+skip$ -- 1295
+stack$ -- 0
+substring$ -- 954
+swap$ -- 171
+text.length$ -- 11
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 882
+warning$ -- 2
+while$ -- 320
+width$ -- 0
+write$ -- 1243
+(There was 1 error message)

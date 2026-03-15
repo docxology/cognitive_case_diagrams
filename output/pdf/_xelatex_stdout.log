@@ -1,0 +1,519 @@
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex)
+ \write18 enabled.
+entering extended mode
+(./_combined_manuscript.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+(/usr/local/texlive/2026/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(/usr/local/texlive/2026/texmf-dist/tex/latex/base/size10.clo))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/graphics-def/xetex.def)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/local/texlive/2026/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/unicode-math/unicode-math.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-xetex.def))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/unicode-math/unicode-math-xetex.s
+ty (/usr/local/texlive/2026/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+ (/usr/local/texlive/2026/texmf-dist/tex/latex/fontspec/fontspec.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/base/fix-cm.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/base/ts1enc.def))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/unicode-math/unicode-math-table.t
+ex))) (/usr/local/texlive/2026/texmf-dist/tex/latex/upquote/upquote.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/base/textcomp.sty))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/microtype-xetex.def)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/parskip/parskip.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/local/texlive/2026/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tools/array.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/tools/calc.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/footnotehyper/footnotehyper.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/natbib/natbib.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bookmark.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/local/texlive/2026/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/local/texlive/2026/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/local/texlive/2026/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty)) (/usr/local/texlive/2026/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/local/texlive/2026/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/url/url.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/local/texlive/2026/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/hyperref/hxetex.def
+(/usr/local/texlive/2026/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+
+(/usr/local/texlive/2026/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+))) (/usr/local/texlive/2026/texmf-dist/tex/latex/bookmark/bkm-dvipdfm.def))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/xurl/xurl.sty)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/local/texlive/2026/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/mathtools/mathtools.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/mathtools/mhsetup.sty)
+
+Package mathtools Warning: For best results, please load mathtools *before* 
+(mathtools)                unicode-math on input line 127.
+
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/stmaryrd/stmaryrd.sty)
+(./_combined_manuscript.aux)
+
+Package unicode-math Warning: Using \overbracket and \underbracket from
+(unicode-math)                `mathtools' package.
+(unicode-math)                 
+(unicode-math)                 Use \Uoverbracket and \Uunderbracket for
+(unicode-math)                original `unicode-math' definition.
+
+
+Package unicode-math Warning: I'm going to overwrite the following commands
+(unicode-math)                from the `mathtools' package: 
+(unicode-math)                 
+(unicode-math)                     \dblcolon, \coloneqq, \Coloneqq, \eqqcolon.
+(unicode-math)                
+(unicode-math)                 
+(unicode-math)                 Note that since I won't overwrite the other
+(unicode-math)                colon-like commands, using them will lead to
+(unicode-math)                inconsistencies.
+
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-LatinModernRoman.cfg
+)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+(/usr/local/texlive/2026/texmf-dist/tex/latex/stmaryrd/Ustmry.fd)
+(./_combined_manuscript.toc [1] [2] [3]) [4] [5] [6] [7]
+
+LaTeX Warning: Reference `sec:compact-closure-discourse' on page 8 undefined on
+ input line 414.
+
+[8] [9] [10]
+
+Package natbib Warning: Citation `eq:eq-2-1' on page 11 undefined on input line
+ 732.
+
+
+Package natbib Warning: Citation `eq:eq-2-1' on page 11 undefined on input line
+ 732.
+
+[11] [12] [13]
+
+Package natbib Warning: Citation `eq:eq-2-3' on page 14 undefined on input line
+ 809.
+
+
+Package natbib Warning: Citation `eq:eq-2-4' on page 14 undefined on input line
+ 809.
+
+
+Package natbib Warning: Citation `eq:eq-2-3' on page 14 undefined on input line
+ 809.
+
+
+Package natbib Warning: Citation `eq:eq-2-4' on page 14 undefined on input line
+ 809.
+
+
+Package natbib Warning: Citation `eq:eq-2-1' on page 14 undefined on input line
+ 824.
+
+
+Package natbib Warning: Citation `eq:eq-2-1' on page 14 undefined on input line
+ 824.
+
+[14] [15]
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.876 \(
+        \alpha: F \Rightarrow G\) and \(\beta: G \Rightarrow H\) is defined
+[16] [17] [18]
+Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
+Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
+Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
+Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
+[19]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1170 C
+        ut elimination & Proof normalization & \(\beta)-reduction \\
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1171 C
+        ommutativity of cuts & Confluence of rewriting & Church--Rosser
+
+! LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1185 \item
+            
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1186   \textbf
+                {Case assignment is type inference}: determining the case of a
+
+! LaTeX Error: Command \end{enumerate} invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1190 \end{enumerate}
+                      
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1190 \end{enumerate}
+                      
+[20]
+
+Package natbib Warning: Citation `eq:eq-4-4' on page 21 undefined on input line
+ 1252.
+
+[21] [22] [23]
+
+Package natbib Warning: Citation `eq:eq-4-4' on page 24 undefined on input line
+ 1531.
+
+
+LaTeX Warning: Reference `sec:compact-closure-discourse' on page 24 undefined o
+n input line 1531.
+
+
+Package natbib Warning: Citation `eq:eq-4-4' on page 24 undefined on input line
+ 1531.
+
+
+LaTeX Warning: Reference `sec:compact-closure-discourse' on page 24 undefined o
+n input line 1531.
+
+[24] [25]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1567 
+       
+
+Underfull \hbox (badness 2111) in paragraph at lines 1557--1567
+[]\TU/lmr/m/n/10 In string-diagrammatic terms, a cup composed with a cap on adj
+acent wires “straightens out” into an identity
+
+Underfull \hbox (badness 2020) in paragraph at lines 1557--1567
+\TU/lmr/m/n/10 wire—a zigzag that cancels into a straight line. This axiom is n
+ot merely a formal curiosity: it is the \TU/lmr/m/it/10 en-
+
+Underfull \hbox (badness 2368) in paragraph at lines 1557--1567
+\TU/lmr/m/it/10 gine \TU/lmr/m/n/10 that makes pregroup type reductions work. E
+very grammatical contraction (noun canceling with verb ar-
+
+Underfull \hbox (badness 2856) in paragraph at lines 1557--1567
+\TU/lmr/m/n/10 gument) is an instance of the cup map $[]$, and every expansion 
+(introducing an adjoint pair) is an instance
+
+Underfull \hbox (badness 10000) in paragraph at lines 1557--1567
+\TU/lmr/m/n/10 of the cap map $[][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][] [] [][][][][][][] [] [] []
+
+Package natbib Warning: Citation `eq:eq-4-3' on page 26 undefined on input line
+ 1589.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1589 leave derivations invariant.}
+                                    \label{fig:discopy-snake}
+
+Package natbib Warning: Citation `eq:eq-4-3' on page 26 undefined on input line
+ 1589.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1589 leave derivations invariant.}
+                                    \label{fig:discopy-snake}
+
+Underfull \hbox (badness 3138) in paragraph at lines 1589--1589
+[]\TU/lmr/m/n/10 Figure 11: []The compact closure axiom ([\TU/lmr/bx/n/10 ?\TU/
+lmr/m/n/10 ]) rendered by DisCoPy as the snake equation: the left panel
+
+Underfull \hbox (badness 2573) in paragraph at lines 1589--1589
+\TU/lmr/m/n/10 shows the zigzag diagram $[][][] [] [][][] [] [][][] [] [][][]$ 
+where a Cup contraction $[]$ composed with a Cap expansion
+
+Underfull \hbox (badness 4582) in paragraph at lines 1595--1598
+\TU/lmr/m/n/10 The algebraic properties of pregroup diagrams support quantitati
+ve analysis of derivational complexity. Our
+
+! LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1612 \item
+            
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1613   \textbf
+                {Normal form}: A diagram is in \emph{normal form} if no further
+
+
+Overfull \hbox (125.6101pt too wide) in paragraph at lines 1607--1613
+\TU/lmr/m/n/10 ($[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] [] [][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] [][][][][][][][][][
+][][][][][][][] [][][][][][][][][][][][][][][][][][][][][][]
+
+Underfull \hbox (badness 10000) in paragraph at lines 1607--1613
+
+[26]
+
+Package natbib Warning: Citation `eq:eq-4-4' on page 27 undefined on input line
+ 1657.
+
+
+Package natbib Warning: Citation `eq:eq-4-4' on page 27 undefined on input line
+ 1657.
+
+[27] [28] [29]
+Missing character: There is no ∣ (U+2223) in font [lmroman10-regular]:mapping=t
+ex-text;!
+[30]
+
+Package natbib Warning: Citation `eq:eq-5-4' on page 31 undefined on input line
+ 2006.
+
+
+Package natbib Warning: Citation `eq:eq-5-4' on page 31 undefined on input line
+ 2006.
+
+[31] [32] [33]
+! Missing { inserted.
+<to be read again> 
+                   \__um_group_begin: 
+l.2214 \(\mathcal{E}_\mathbb
+                            {T}\)---a canonical topos whose models correspond
+! Missing } inserted.
+<inserted text> 
+                }
+l.2214 \(\mathcal{E}_\mathbb{T}\)
+                                 ---a canonical topos whose models correspond
+! Missing { inserted.
+<to be read again> 
+                   \__um_group_begin: 
+l.2215 ...tric functors from \(\mathcal{E}_\mathbb
+                                                  {T}\) to
+! Missing } inserted.
+<inserted text> 
+                }
+l.2215 ...functors from \(\mathcal{E}_\mathbb{T}\)
+                                                   to
+
+Package natbib Warning: Citation `eq:eq-2-3' on page 34 undefined on input line
+ 2308.
+
+
+Package natbib Warning: Citation `eq:eq-2-4' on page 34 undefined on input line
+ 2308.
+
+
+Package natbib Warning: Citation `eq:eq-6-1' on page 34 undefined on input line
+ 2308.
+
+
+Package natbib Warning: Citation `eq:eq-2-3' on page 34 undefined on input line
+ 2308.
+
+
+Package natbib Warning: Citation `eq:eq-2-4' on page 34 undefined on input line
+ 2308.
+
+
+Package natbib Warning: Citation `eq:eq-6-1' on page 34 undefined on input line
+ 2308.
+
+[34] [35]
+! Missing { inserted.
+<to be read again> 
+                   \__um_group_begin: 
+l.2380   \(\mathcal{E}_\mathbb
+                              {T}\) from the saturated theory---the canonical
+! Missing } inserted.
+<inserted text> 
+                }
+l.2380   \(\mathcal{E}_\mathbb{T}\)
+                                    from the saturated theory---the canonical
+[36] [37] [38] [39] [40]
+
+Package natbib Warning: Citation `eq:eq-8-1' on page 41 undefined on input line
+ 2951.
+
+Missing character: There is no ≥ (U+2265) in font [lmroman10-bold]:mapping=tex-
+text;!
+[41]
+
+Package natbib Warning: Citation `eq:eq-8-1' on page 42 undefined on input line
+ 3020.
+
+Missing character: There is no ∣ (U+2223) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no ρ (U+03C1) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no ρ (U+03C1) in font [lmroman10-regular]:mapping=t
+ex-text;!
+[42] [43] [44] [45] [46] [47] [48] [49] [50] [51] [52]
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4002 ...nates from a different case role than \(
+                                                  f\) (ACC instead of NOM).
+! Missing $ inserted.
+<inserted text> 
+                $
+l.4024 problem.}
+                \label{fig:security-violations}
+! Missing $ inserted.
+<inserted text> 
+                $
+l.4024 problem.}
+                \label{fig:security-violations}
+
+Underfull \hbox (badness 10000) in paragraph at lines 4024--4024
+[]\TU/lmr/m/n/10 Figure 19: []Case-theoretic analysis of prompt injection as a 
+categorical type violation. In the legiti-
+
+Underfull \hbox (badness 5726) in paragraph at lines 4024--4024
+\TU/lmr/m/n/10 mate interaction diagram (top), the flow of authority strictly p
+roceeds from User (NOM) to Model (INS)
+
+Underfull \hbox (badness 10000) in paragraph at lines 4024--4024
+\TU/lmr/m/n/10 to Tool (ACC). Prompt injection (bottom) is visualized as the in
+sertion of a cross-category morphism
+
+Overfull \hbox (268.01299pt too wide) in paragraph at lines 4024--4024
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][] [][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][] [][][][][][][][][][][][][][][][][][][][][]
+ []
+
+Overfull \hbox (4.82037pt too wide) in paragraph at lines 4024--4024
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][] [] [][][][][][][][][][][][][][][][][] [] [] [] [][]
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] []
+[53] [54] [55] [56] [57] [58] [59] [60] [61] [62] [63] [64] [65] [66] [67]
+[68] [69]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.5004 \(\beta)-reduction &
+                            --- & Computational reduction step in
+! Missing $ inserted.
+<inserted text> 
+                $
+l.5005 ...rresponds to cut elimination in proofs &
+                                                   §3 \\
+
+Overfull \hbox (94.42482pt too wide) in paragraph at lines 5004--5005
+[][][][][][][][][] [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][]$  
+! Missing $ inserted.
+<inserted text> 
+                $
+l.5007 ...ences converge to the same normal form &
+                                                   §3 \\
+
+Overfull \hbox (125.29805pt too wide) in paragraph at lines 5006--5007
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][]$  
+! Missing $ inserted.
+<inserted text> 
+                $
+l.5011 ...mas; corresponds to \(\beta)-reduction &
+                                                   §3 \\
+[70] [71]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.5149 \(\alpha, \beta) &
+                          Natural transformations \\
+! Missing $ inserted.
+<inserted text> 
+                $
+l.5174 \(\gamma) &
+                   Discount factor in distributional RL return computation \\
+! Missing $ inserted.
+<inserted text> 
+                $
+l.5179 \(\eta) &
+                 Compact closure unit (cap); also learning rate in some
+ [72] (./_combined_manuscript.bbl [73] [74] [75] [76])
+
+Package natbib Warning: There were undefined citations.
+
+[77] (./_combined_manuscript.aux)
+
+LaTeX Warning: There were undefined references.
+
+ )
+(see the transcript file for additional information)
+Output written on _combined_manuscript.pdf (77 pages).
+Transcript written on _combined_manuscript.log.

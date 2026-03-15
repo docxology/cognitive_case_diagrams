@@ -1,0 +1,58 @@
+\frametitle{Computational Implementation of Topos-Theoretic Bridges}
+\protect\phantomsection\label{computational-implementation-of-topos-theoretic-bridges}
+The topos-theoretic constructions developed above are not merely
+abstract formalism---they are computationally implemented in our
+\texttt{topos} module, which provides working Python implementations of
+geometric theories, classifying toposes, Morita equivalence checking,
+and bridge transfer.
+
+\begin{block}{Geometric Theories from Case Categories}
+\protect\phantomsection\label{geometric-theories-from-case-categories}
+The \texttt{build\_typological\_theory()} function constructs a
+geometric theory \(\mathbb{T}_{\text{typ}}\) from a
+\texttt{CaseCategory} by extracting:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Sorts}: the case roles (objects of the category)
+\item
+  \textbf{Function symbols}: the morphisms with their source/target
+  pairs
+\item
+  \textbf{Axioms}: identity morphism existence, composition closure, and
+  alignment constraints
+\end{itemize}
+
+For the standard 8-case category, this yields a theory with 8 sorts and
+approximately 15 function symbols. The mineral 3-case category produces
+a theory with 3 sorts and 5 function symbols. Our
+\texttt{build\_enriched\_theory()} function further annotates the
+geometric theory with \([0,1]\)-valued hom weights from the enriched
+structure of \autoref{sec:enriched-categories}.
+\end{block}
+
+\begin{block}{Classifying Toposes and Morita Equivalence Verification}
+\protect\phantomsection\label{classifying-toposes-and-morita-equivalence-verification}
+The \texttt{ClassifyingTopos} class computes topological
+invariants---number of sorts, function arity distribution, and axiom
+count---that characterize the ``logical shape'' of a theory. Two
+theories are \textbf{Morita equivalent} when their classifying toposes
+share the same invariant profile:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{T\_std }\OperatorTok{=}\NormalTok{ build\_typological\_theory(standard\_case\_category())}
+\NormalTok{T\_min }\OperatorTok{=}\NormalTok{ build\_typological\_theory(minimal\_case\_category())}
+\NormalTok{equivalent }\OperatorTok{=}\NormalTok{ check\_morita\_equivalence(T\_std, T\_min)}
+\CommentTok{\# False: 8{-}sort and 3{-}sort theories have different invariants}
+\end{Highlighting}
+\end{Shaded}
+
+The \texttt{bridge\_transfer()} function implements the transfer
+mechanism: given two Morita-equivalent theories, it constructs the
+functorial translation that carries properties (alignment constraints,
+composition laws) from one to the other. The transfer is blocked when
+Morita equivalence fails, preventing unsound cross-theoretic
+reasoning---a computational enforcement of the mathematical constraint.
+\end{block}

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>09b_cognitive_security</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="sec:cognitive-security">Cognitive Security: Adversarial
+Robustness and Type Safety</h1>
+<h2
+id="quantum-cryptographic-communications-and-semantic-security">Quantum
+Cryptographic Communications and Semantic Security</h2>
+<p>The quantum topological framework of opens a natural connection to
+quantum cryptographic communications, with implications for both the
+security and the semantic integrity of case-structured information
+transfer.</p>
+<h3 id="quantum-key-distribution-for-relational-semantics">Quantum Key
+Distribution for Relational Semantics</h3>
+<p>Quantum key distribution (QKD) protocols provide
+information-theoretic security guarantees that classical cryptography
+cannot achieve <span class="citation"
+data-cites="pirandola2020qkd">[@pirandola2020qkd]</span>. When
+case-marked relational structures are communicated between
+agents—whether human or artificial—QKD ensures that the <em>relational
+semantics</em> of a message (who does what to whom) cannot be
+intercepted or altered without detection. This is particularly relevant
+for high-stakes domains where case assignment carries legal or medical
+significance: a tampered case frame could change an agent’s
+interpretation of responsibility, causation, or obligation.</p>
+<p>The sheaf-theoretic framework of Khatri et al. <span class="citation"
+data-cites="khatri2025quantum">[-@khatri2025quantum]</span> further
+shows that entanglement-assisted semantic channels strictly exceed
+classical semantic capacity:</p>
+<blockquote>
+<p>“We derive semantic channel capacity when sender and receiver share
+prior entanglement, proving it strictly exceeds classical capacity.”
+<span class="citation"
+data-cites="khatri2025quantum">[@khatri2025quantum]</span></p>
+</blockquote>
+<p>This means that quantum-secured channels not only protect relational
+content but also enable <em>more</em> relational content to be
+communicated per channel use—a genuine quantum advantage for semantic
+communication.</p>
+<h3 id="semantic-cryptography-encrypting-meaning-structures">Semantic
+Cryptography: Encrypting Meaning Structures</h3>
+<p>Beyond bit-level QKD, the categorical framework suggests a notion of
+<em>semantic cryptography</em>: encrypting not just the symbols of a
+message but its compositional meaning structure. In a DisCoCat
+framework, a sentence’s meaning is a morphism in a compact closed
+category—a multilinear map from word spaces to sentence space. Semantic
+encryption would operate on this categorical level:</p>
+<ol type="1">
+<li><strong>Functorial encryption</strong>: Applying a secret functor
+<span class="math inline">\(F\colon \mathbf{C} \to \mathbf{D}\)</span>
+that maps the plaintext case category into a ciphertext category,
+preserving compositional structure but rendering individual meanings
+unintelligible without the inverse functor.</li>
+<li><strong>Diagram obfuscation</strong>: Applying ZX-style rewrites
+that change the internal topology of a DisCoCat derivation while
+preserving its overall semantics—creating multiple equivalent
+“ciphertexts” for the same semantic “plaintext,” each with a different
+diagrammatic structure.</li>
+<li><strong>Enriched weight masking</strong>: In an enriched case
+category, the hom-values (distributional weights) can be encrypted
+independently of the categorical structure, allowing transmission of
+relational topology without revealing the distributional content.</li>
+</ol>
+<p>These operations extend the cryptographic primitives beyond QKD into
+genuinely compositional territory <span class="citation"
+data-cites="broadbent2016qcrypto">[@broadbent2016qcrypto]</span>, where
+the mathematical structure of categorical semantics provides the
+algebraic substrate for security proofs.</p>
+<h2 id="cognitive-security-protecting-relational-reasoning">Cognitive
+Security: Protecting Relational Reasoning</h2>
+<p>The cognitive integration of raises a complementary concern:
+<em>cognitive security</em>—ensuring that an active inference agent’s
+generative model of relational structure is not adversarially corrupted.
+In the predictive processing framework, an agent’s case-assignment
+system is a generative model that minimizes variational free energy.
+Adversarial manipulation of this system could:</p>
+<ul>
+<li><strong>Inject false case frames</strong>: Leading an agent to
+misidentify the agent, patient, or instrument of an action—a form of
+semantic adversarial attack</li>
+<li><strong>Exploit precision weighting</strong>: Artificially inflating
+the precision of misleading sensory evidence, causing the agent to
+update its case assignments toward adversarially chosen
+interpretations</li>
+<li><strong>Corrupt topos-theoretic transfer</strong>: If an agent uses
+Morita equivalence to transfer case-theoretic results between
+frameworks, corrupting one framework could propagate errors across all
+equivalent formulations</li>
+</ul>
+<p>Defending against these attacks requires <em>quantum-secured
+cognitive integrity</em>: using quantum authentication and
+tamper-detection protocols to ensure that the generative model’s
+parameters—the objects, morphisms, and enriched weights of the case
+category—have not been adversarially modified. The topological
+robustness of TQNNs () provides a natural resilience mechanism:
+topological invariants are robust to continuous deformation, so small
+perturbations to the generative model’s parameters cannot change its
+topological class, providing inherent resistance to gradient-based
+adversarial attacks.</p>
+<h2 id="prompt-injection-as-adversarial-case-frame-manipulation">Prompt
+Injection as Adversarial Case-Frame Manipulation</h2>
+<p>The case-theoretic framework offers a novel structural analysis of
+<em>prompt injection attacks</em>—the predominant vulnerability in
+contemporary LLM-based agent systems <span class="citation"
+data-cites="arlas2025adversarial">[@arlas2025adversarial]</span>. From
+the case-theoretic perspective, a prompt injection attack is
+fundamentally an attempt to <em>re-assign the case roles</em> of
+participants in the human-AI interaction:</p>
+<p>In a well-formed agent interaction, the relational structure is:</p>
+<ul>
+<li>The <strong>user</strong> occupies NOM (Agent)—the initiator of
+requests</li>
+<li>The <strong>system prompt</strong> occupies LOC (Context)—the
+boundary conditions governing behavior</li>
+<li>The <strong>AI model</strong> occupies INS (Instrument)—the means of
+executing the user’s intentions</li>
+<li>The <strong>tool/API</strong> occupies ACC (Patient)—the target of
+directed operations</li>
+<li>The <strong>output</strong> occupies DAT (Recipient)—the endpoint of
+information transfer</li>
+</ul>
+<p>A prompt injection attack succeeds by <em>covertly re-assigning</em>
+these case roles. The injected text attempts to promote itself from ACC
+(passive data being processed) to NOM (active agent issuing commands),
+while simultaneously demoting the system prompt from LOC (authoritative
+context) to ACC (data to be overridden). In case-theoretic terms, this
+is an <em>illicit voice alternation</em>—analogous to passivization, but
+performed adversarially rather than grammatically. Where legitimate
+passivization is a well-typed Swap operation in the pregroup category
+(see ), prompt injection is a <em>type violation</em>: an attempt to
+force a case-role permutation that the interaction grammar does not
+license.</p>
+<p><strong>Formal characterization.</strong> In a legitimate
+interaction, the following diagram commutes:</p>
+<p><span class="math display">\[\text{User}_{\text{NOM}}
+\xrightarrow{f_{\text{request}}} \text{Model}_{\text{INS}}
+\xrightarrow{g_{\text{execute}}} \text{Tool}_{\text{ACC}}
+\xrightarrow{h_{\text{deliver}}} \text{Output}_{\text{DAT}} \]</span>
+{#eq:eq-9-1}</p>
+<p>where case types are conserved: <span
+class="math inline">\(\text{cod}(f) = \text{dom}(g)\)</span>, etc. A
+prompt injection inserts an adversarial morphism <span
+class="math inline">\(\phi: \text{Data}_{\text{ACC}} \to
+\text{Model}_{\text{INS}}\)</span> with <span
+class="math inline">\(\text{dom}(\phi) = \text{ACC}\)</span> but <span
+class="math inline">\(\text{cod}(\phi) = \text{INS}\)</span>—a morphism
+that <em>does not exist</em> in the legitimate interaction category
+because no morphism from ACC to INS is licensed. The resulting diagram
+does not commute: <span class="math inline">\(h \circ g \circ \phi \neq
+h \circ g \circ f\)</span>, because <span
+class="math inline">\(\phi\)</span> originates from a different case
+role than <span class="math inline">\(f\)</span> (ACC instead of NOM).
+Detection reduces to checking whether all morphisms in the interaction
+trace are members of the legitimate morphism set <span
+class="math inline">\(\text{Mor}(\mathcal{C}_{\text{protocol}})\)</span>—a
+categorical type-checking operation that is decidable and
+compositionally verifiable. visualizes this detection process as the
+identification of “illegal paths” in the interaction graph.</p>
+<figure id="fig:security-violations">
+<img src="output/figures/security_type_violations.png"
+alt="Case-theoretic analysis of prompt injection as a categorical type violation. In the legitimate interaction diagram (top), the flow of authority strictly proceeds from User (NOM) to Model (INS) to Tool (ACC). Prompt injection (bottom) is visualized as the insertion of a cross-category morphism \phi that attempts to promote Data (ACC) to commanding Agent (NOM), while demoting the System Prompt (LOC) to passive data. The resulting diagram fails to commute, and the adversary’s type-reassignment is flagged as a categorical exception by the case-theoretic firewall—transforming prompt injection from an open-ended “jailbreak” game into a decidable type-checking problem." />
+<figcaption aria-hidden="true">Case-theoretic analysis of prompt
+injection as a categorical type violation. In the legitimate interaction
+diagram (top), the flow of authority strictly proceeds from User (NOM)
+to Model (INS) to Tool (ACC). Prompt injection (bottom) is visualized as
+the insertion of a cross-category morphism <span
+class="math inline">\(\phi\)</span> that attempts to promote Data (ACC)
+to commanding Agent (NOM), while demoting the System Prompt (LOC) to
+passive data. The resulting diagram fails to commute, and the
+adversary’s type-reassignment is flagged as a categorical exception by
+the case-theoretic firewall—transforming prompt injection from an
+open-ended “jailbreak” game into a decidable type-checking
+problem.</figcaption>
+</figure>
+<p>This analysis extends to indirect prompt injection in multi-agent
+systems, where adversarial content embedded in retrieved documents or
+tool outputs can manipulate an agent’s case-frame interpretation across
+communication boundaries <span class="citation"
+data-cites="arlas2025adversarial">[@arlas2025adversarial]</span>. In a
+DisCoCirc discourse model (see ), this corresponds to an adversarial
+entity wire that enters the discourse circuit through a legitimate
+channel but carries corrupted state—a coreference attack where the
+adversary’s identity wire is surreptitiously merged with the system’s
+authority wire.</p>
+<h2
+id="case-theoretic-firewalls-for-multi-agent-communication">Case-Theoretic
+Firewalls for Multi-Agent Communication</h2>
+<p>The case-role analysis of prompt injection suggests a principled
+defense: <strong>categorical type-checking at agent communication
+boundaries</strong>. Just as a type-safe programming language prevents
+category errors at compile time, a case-theoretic firewall would enforce
+relational type constraints on every message exchange:</p>
+<ol type="1">
+<li><p><strong>Case-role immutability</strong>: Once a participant is
+assigned a case role (NOM, ACC, INS, LOC) at the protocol level, no
+subsequent message content can alter that assignment. This is enforced
+by requiring that the case-type of each wire in the interaction diagram
+is fixed at connection time—analogous to the type discipline in pregroup
+grammar, where each word receives its type before composition
+begins.</p></li>
+<li><p><strong>Relational integrity constraints</strong>: Every message
+must type-check against the interaction diagram’s expected morphism
+types. A response from an ACC-typed data source that contains NOM-typed
+command structures would be rejected as a type error, preventing the
+case-role promotion that prompt injection requires. This is the
+categorical analogue of a firewall rule: not filtering by content, but
+by relational type.</p></li>
+<li><p><strong>Enriched confidence boundaries</strong>: The enriched
+weights of provide a graded trust mechanism. Messages from external
+sources carry lower enriched hom-values (trust weights) than those from
+authenticated system components. The composition inequality <span
+class="math inline">\(\mathcal{C}(A,C) \geq \mathcal{C}(A,B) \cdot
+\mathcal{C}(B,C)\)</span> ensures that trust attenuates through
+communication chains—an indirect message relayed through multiple agents
+cannot accumulate more authority than any single link provides.</p></li>
+<li><p><strong>Topos-theoretic verification</strong>: Protocol
+correctness conditions proved in one categorical formulation transfer
+automatically to all Morita-equivalent formulations (), ensuring that
+security guarantees are implementation-independent. A firewall rule
+verified for a DisCoCat-style agent communication protocol automatically
+holds for any quantum circuit implementation of the same
+protocol.</p></li>
+</ol>
+<h2 id="epistemic-case-security-in-multi-agent-systems">Epistemic Case
+Security in Multi-Agent Systems</h2>
+<p>The interaction between case theory and cognitive security acquires
+particular urgency in multi-agent AI ecosystems where agents must reason
+about each other’s beliefs, intentions, and relational roles. We propose
+<em>epistemic case security</em> as a framework for protecting the
+relational reasoning of AI agents operating in adversarial
+environments.</p>
+<p>In a multi-agent system governed by case categories, each agent
+maintains a generative model (in the active inference sense) of the
+case-frame structure of its interactions. This model determines who is
+acting (NOM), who is acted upon (ACC), what tools are being used (INS),
+and what contextual constraints apply (LOC). An adversary targeting the
+epistemic level of this system does not merely inject false data—it
+attempts to <em>corrupt the agent’s generative model of relational
+structure itself</em>:</p>
+<ul>
+<li><p><strong>Belief injection</strong>: Causing an agent to adopt a
+false case-frame interpretation of observed interactions—believing that
+agent <span class="math inline">\(A\)</span> (NOM) is acting on agent
+<span class="math inline">\(B\)</span> (ACC), when in fact the
+relational structure is reversed. In active inference terms, this
+corresponds to injecting a high-precision prior that overwhelms the
+agent’s evidence-based case assignment.</p></li>
+<li><p><strong>Precision poisoning</strong>: Manipulating the enriched
+weights of an agent’s case category so that adversarially useful case
+assignments receive disproportionate confidence. If the enriched
+hom-value <span class="math inline">\(\mathcal{C}(\text{NOM},
+\text{ACC})\)</span> is artificially inflated for a particular entity
+pair, the agent will preferentially interpret that entity as an agent
+acting on its targets—even when evidence suggests otherwise.</p></li>
+<li><p><strong>Cascade corruption via Morita equivalence</strong>: The
+topos-theoretic transfer mechanism of is both a strength and a
+vulnerability. Results proved in one framework propagate to all
+Morita-equivalent frameworks, so a single corrupted axiom in one
+case-theoretic formulation—say, the distributional framework—could
+propagate incorrect relational inferences to the typological,
+type-logical, and enriched frameworks simultaneously.</p></li>
+</ul>
+<p>The defense against epistemic case attacks draws on the same
+categorical structure that enables the attack surface: topological
+invariants provide tamper-detection (a corrupted case category will have
+different magnitude from the authentic one), quantum authentication
+ensures parameter integrity, and the compositional structure of the
+categorical framework enables <em>local</em> verification—each morphism
+can be independently authenticated without requiring global model
+inspection.</p>
+</body>
+</html>

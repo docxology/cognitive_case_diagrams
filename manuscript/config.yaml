@@ -1,0 +1,55 @@
+# Cognitive Case Diagrams Configuration
+# Category-theoretic approaches to linguistic case systems
+
+paper:
+  title: "A Cognitive Case for Diagrams: Category-Theoretic Approaches to Linguistic Case Systems in Total Cognitive Scenario Understanding"
+  subtitle: ""
+  version: "2.0"
+  date: ""
+
+authors:
+  - name: "Daniel Ari Friedman"
+    orcid: "0000-0001-6232-9096"
+    email: "daniel@activeinference.institute"
+    affiliation: "Active Inference Institute"
+    corresponding: true
+
+publication:
+  doi: ""
+  journal: ""
+  volume: ""
+  pages: ""
+  year: "2026"
+
+keywords:
+  - "category theory"
+  - "linguistic case systems"
+  - "DisCoCat"
+  - "DisCoCirc"
+  - "active inference"
+  - "CEREBRUM"
+  - "string diagrams"
+  - "enriched categories"
+  - "topos theory"
+  - "diagrammatic reasoning"
+  - "quantum NLP"
+  - "cognitive security"
+
+metadata:
+  license: "Apache-2.0"
+  language: "en"
+
+llm:
+  reviews:
+    enabled: true
+    types:
+      - executive_summary
+  translations:
+    enabled: true
+    languages:
+      - zh
+
+testing:
+  max_test_failures: 0
+  max_infra_test_failures: 0
+  max_project_test_failures: 0

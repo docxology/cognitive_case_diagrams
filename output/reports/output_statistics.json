@@ -1,0 +1,289 @@
+{
+  "directories": {
+    "pdf": {
+      "exists": true,
+      "file_count": 10,
+      "size_mb": "3.35",
+      "total_size_bytes": 3517895,
+      "largest_files": [
+        {
+          "name": "cognitive_case_diagrams_combined.pdf",
+          "size_mb": "2.64",
+          "path": "pdf/cognitive_case_diagrams_combined.pdf"
+        },
+        {
+          "name": "_combined_manuscript.tex",
+          "size_mb": "0.25",
+          "path": "pdf/_combined_manuscript.tex"
+        },
+        {
+          "name": "_combined_manuscript.md",
+          "size_mb": "0.20",
+          "path": "pdf/_combined_manuscript.md"
+        }
+      ],
+      "extensions": {
+        ".md": 1,
+        ".log": 2,
+        ".aux": 1,
+        ".blg": 1,
+        ".bib": 1,
+        ".tex": 1,
+        ".toc": 1,
+        ".bbl": 1,
+        ".pdf": 1
+      }
+    },
+    "web": {
+      "exists": true,
+      "file_count": 18,
+      "size_mb": "0.92",
+      "total_size_bytes": 969215,
+      "largest_files": [
+        {
+          "name": "index.html",
+          "size_mb": "0.35",
+          "path": "web/index.html"
+        },
+        {
+          "name": "_combined_manuscript.md",
+          "size_mb": "0.20",
+          "path": "web/_combined_manuscript.md"
+        },
+        {
+          "name": "11_notation.html",
+          "size_mb": "0.04",
+          "path": "web/11_notation.html"
+        }
+      ],
+      "extensions": {
+        ".html": 17,
+        ".md": 1
+      }
+    },
+    "slides": {
+      "exists": true,
+      "file_count": 108,
+      "size_mb": "2.36",
+      "total_size_bytes": 2478238,
+      "largest_files": [
+        {
+          "name": "08_quantum_active_inference_slides.pdf",
+          "size_mb": "0.24",
+          "path": "slides/08_quantum_active_inference_slides.pdf"
+        },
+        {
+          "name": "09b_cognitive_security_slides.pdf",
+          "size_mb": "0.23",
+          "path": "slides/09b_cognitive_security_slides.pdf"
+        },
+        {
+          "name": "03_categorial_grammar_slides.pdf",
+          "size_mb": "0.12",
+          "path": "slides/03_categorial_grammar_slides.pdf"
+        }
+      ],
+      "extensions": {
+        ".aux": 16,
+        ".pdf": 16,
+        ".toc": 12,
+        ".snm": 12,
+        ".log": 16,
+        ".tex": 16,
+        ".vrb": 8,
+        ".nav": 12
+      }
+    },
+    "figures": {
+      "exists": true,
+      "file_count": 23,
+      "size_mb": "2.44",
+      "total_size_bytes": 2559739,
+      "largest_files": [
+        {
+          "name": "case_category_standard.png",
+          "size_mb": "0.33",
+          "path": "figures/case_category_standard.png"
+        },
+        {
+          "name": "enriched_hom_matrix.png",
+          "size_mb": "0.32",
+          "path": "figures/enriched_hom_matrix.png"
+        },
+        {
+          "name": "functor_alignment.png",
+          "size_mb": "0.26",
+          "path": "figures/functor_alignment.png"
+        }
+      ],
+      "extensions": {
+        ".png": 22,
+        ".txt": 1
+      }
+    },
+    "data": {
+      "exists": true,
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
+    },
+    "reports": {
+      "exists": true,
+      "file_count": 4,
+      "size_mb": "0.01",
+      "total_size_bytes": 5688,
+      "largest_files": [
+        {
+          "name": "validation_report.json",
+          "size_mb": "0.00",
+          "path": "reports/validation_report.json"
+        },
+        {
+          "name": "test_results.json",
+          "size_mb": "0.00",
+          "path": "reports/test_results.json"
+        },
+        {
+          "name": "test_results.md",
+          "size_mb": "0.00",
+          "path": "reports/test_results.md"
+        }
+      ],
+      "extensions": {
+        ".md": 2,
+        ".json": 2
+      }
+    },
+    "simulations": {
+      "exists": true,
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
+    },
+    "llm": {
+      "exists": true,
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
+    },
+    "logs": {
+      "exists": true,
+      "file_count": 1,
+      "size_mb": "0.00",
+      "total_size_bytes": 2672,
+      "largest_files": [
+        {
+          "name": "pipeline.log",
+          "size_mb": "0.00",
+          "path": "logs/pipeline.log"
+        }
+      ],
+      "extensions": {
+        ".log": 1
+      }
+    }
+  },
+  "total_files": 164,
+  "total_size_mb": 9.091803550720215,
+  "largest_files": [
+    {
+      "name": "cognitive_case_diagrams_combined.pdf",
+      "size_mb": "2.64",
+      "category": "pdf",
+      "path": "pdf/cognitive_case_diagrams_combined.pdf"
+    },
+    {
+      "name": "index.html",
+      "size_mb": "0.35",
+      "category": "web",
+      "path": "web/index.html"
+    },
+    {
+      "name": "case_category_standard.png",
+      "size_mb": "0.33",
+      "category": "figures",
+      "path": "figures/case_category_standard.png"
+    },
+    {
+      "name": "enriched_hom_matrix.png",
+      "size_mb": "0.32",
+      "category": "figures",
+      "path": "figures/enriched_hom_matrix.png"
+    },
+    {
+      "name": "functor_alignment.png",
+      "size_mb": "0.26",
+      "category": "figures",
+      "path": "figures/functor_alignment.png"
+    },
+    {
+      "name": "_combined_manuscript.tex",
+      "size_mb": "0.25",
+      "category": "pdf",
+      "path": "pdf/_combined_manuscript.tex"
+    },
+    {
+      "name": "08_quantum_active_inference_slides.pdf",
+      "size_mb": "0.24",
+      "category": "slides",
+      "path": "slides/08_quantum_active_inference_slides.pdf"
+    },
+    {
+      "name": "09b_cognitive_security_slides.pdf",
+      "size_mb": "0.23",
+      "category": "slides",
+      "path": "slides/09b_cognitive_security_slides.pdf"
+    },
+    {
+      "name": "_combined_manuscript.md",
+      "size_mb": "0.20",
+      "category": "pdf",
+      "path": "pdf/_combined_manuscript.md"
+    },
+    {
+      "name": "_combined_manuscript.md",
+      "size_mb": "0.20",
+      "category": "web",
+      "path": "web/_combined_manuscript.md"
+    }
+  ],
+  "missing_expected_files": [],
+  "sizes_by_category": {
+    "pdf": 3.354926109313965,
+    "web": 0.9243154525756836,
+    "slides": 2.363431930541992,
+    "figures": 2.441157341003418,
+    "data": 0.0,
+    "reports": 0.00542449951171875,
+    "simulations": 0.0,
+    "llm": 0.0,
+    "logs": 0.0025482177734375
+  },
+  "file_counts_by_type": {
+    ".md": 4,
+    ".log": 19,
+    ".aux": 17,
+    ".blg": 1,
+    ".bib": 1,
+    ".tex": 17,
+    ".toc": 13,
+    ".bbl": 1,
+    ".pdf": 17,
+    ".html": 17,
+    ".snm": 12,
+    ".vrb": 8,
+    ".nav": 12,
+    ".png": 22,
+    ".txt": 1,
+    ".json": 2
+  },
+  "pdf_files": 10,
+  "figures": 23,
+  "data_files": 0
+}

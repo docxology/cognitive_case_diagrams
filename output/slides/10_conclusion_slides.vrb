@@ -1,0 +1,130 @@
+\frametitle{Future Research Directions}
+\protect\phantomsection\label{future-research-directions}
+\begin{block}{F1: Computational Experiments with DisCoCirc and lambeq}
+\protect\phantomsection\label{f1-computational-experiments-with-discocirc-and-lambeq}
+The DisCoCirc framework {[}@defelice2020discourse;
+@defelice2022discocirc{]} offers a natural platform for testing our
+case-theoretic predictions computationally. The release of
+\textbf{lambeq Gen II} {[}@lambeq2025genii{]} with full DisCoCirc
+support makes this direction immediately tractable: discourse-level case
+role tracking---including the dynamic role reversals of
+\autoref{fig:three-sentence-discourse}---can now be compiled into
+parameterized quantum circuits and trained end-to-end. Concrete
+experiments could include:
+
+\begin{itemize}
+\tightlist
+\item
+  Implementing case-marked DisCoCat models in \textbf{lambeq Gen II} and
+  evaluating them on semantic role labeling (SRL) tasks, leveraging the
+  discourse-level wiring to track case roles across sentence boundaries
+\item
+  Comparing the accuracy of alignment-specific meaning functors
+  (accusative vs.~ergative) on typologically diverse corpora
+\item
+  Measuring the categorical magnitude of empirically derived enriched
+  case categories and correlating it with typological complexity
+  measures
+\item
+  Using the \texttt{complexity\_metrics} module to quantify derivational
+  complexity across sentence types and correlating syntactic complexity
+  scores with human processing difficulty (reading times, surprisal)
+\end{itemize}
+\end{block}
+
+\begin{block}{F2: Topos-Theoretic Grammatical Induction from Corpora}
+\protect\phantomsection\label{f2-topos-theoretic-grammatical-induction-from-corpora}
+Caramello's {[}-@caramello2023syntactic{]} syntactic learning technique
+could be applied to induce case-theoretic axioms from annotated corpora.
+The program would:
+
+\begin{enumerate}
+\tightlist
+\item
+  Extract case-labeled dependency structures from a Universal
+  Dependencies treebank
+\item
+  Construct the classifying topos of the implicit case theory
+\item
+  Read off the alignment type, morphism structure, and enriched weights
+  from the topos-theoretic axioms
+\item
+  Compare the induced theory against typological descriptions
+\end{enumerate}
+\end{block}
+
+\begin{block}{F3: Quantum Case Categories on Near-Term Hardware}
+\protect\phantomsection\label{f3-quantum-case-categories-on-near-term-hardware}
+The QNLP connection (\autoref{sec:categorical-semantics}) opens the
+possibility of implementing case categories directly as quantum
+circuits. Case roles would correspond to quantum registers, grammatical
+relations to parameterized gates, and alignment functors to circuit
+transformations. This would provide a genuinely new computational
+paradigm for grammatical inference---exploiting quantum parallelism to
+explore the space of case assignments simultaneously.
+\end{block}
+
+\begin{block}{F4: Neural Predictive Processing and Electrophysiological
+Predictions}
+\protect\phantomsection\label{f4-neural-predictive-processing-and-electrophysiological-predictions}
+The predictive processing account of \autoref{sec:cognitive-integration}
+generates testable neuroscientific predictions:
+
+\begin{itemize}
+\tightlist
+\item
+  Case-marking violations should elicit prediction-error responses
+  (P600/N400) proportional to the enriched weight of the violated
+  morphism
+\item
+  Typologically unusual case patterns should require more precision
+  updating than expected patterns
+\item
+  Diagrammatic representations of case structure should be decodable
+  from neural activity during sentence comprehension
+\end{itemize}
+\end{block}
+
+\begin{block}{F5: Cross-Modal Case Structure in Embodied Cognition}
+\protect\phantomsection\label{f5-cross-modal-case-structure-in-embodied-cognition}
+The situation semantics connection (\autoref{sec:cognitive-integration})
+suggests extending case categories beyond language to multi-modal
+perception. Visual scene understanding also requires assigning
+relational roles---who is acting on what, where things are located, what
+instruments are being used. An active inference agent should maintain a
+unified case diagram that integrates linguistic, visual, and motor
+information, using the same categorical structure for all modalities.
+This would provide a formal account of how language grounds in
+perception and action---a key challenge for embodied AI.
+\end{block}
+
+\begin{block}{F6: Enriched Category Learning from Distributional Data}
+\protect\phantomsection\label{f6-enriched-category-learning-from-distributional-data}
+Bradley's {[}-@bradley2024ipam; -@bradley2025tea{]} program of treating
+language itself as an enriched category suggests a learning algorithm:
+estimate the enriched hom-values from corpus data and then extract the
+categorical structure that best explains the observed distributional
+patterns. Applied to case, this would yield \emph{empirically grounded}
+case categories whose objects (roles) and morphisms (relations) emerge
+from data rather than being stipulated a priori.
+\end{block}
+
+\begin{block}{F7: Distributional Active Inference for Linguistic Agents}
+\protect\phantomsection\label{f7-distributional-active-inference-for-linguistic-agents}
+The Distributional Active Inference (DAIF) framework of Akgül et al.
+{[}-@akgul2026distributional{]} opens a novel direction for linguistic
+case reasoning. DAIF integrates active inference into distributional
+reinforcement learning {[}@bellemare2017distributional{]}, modeling full
+return distributions rather than scalar expectations via push-forward
+measures on representation paths. Applied to language, this framework
+would enable agents to maintain \emph{distributions over case diagrams}
+rather than point estimates---assigning probability mass across role
+assignments and sharpening distributional beliefs through variational
+message passing as evidence accumulates. The terminological convergence
+between \emph{distributional semantics} (Firth's {[}-@firth1957papers{]}
+contextual theory of meaning) and \emph{distributional RL} (full return
+distributions) is not accidental: both replace scalar summaries with
+distributional representations, and the enriched-categorical framework
+of \autoref{sec:enriched-categories} provides the unifying mathematical
+abstraction.
+\end{block}

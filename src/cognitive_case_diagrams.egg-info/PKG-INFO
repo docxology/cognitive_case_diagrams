@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: cognitive_case_diagrams
+Version: 2.0.0
+Summary: Category-theoretic formalization of linguistic case systems with DisCoPy visualizations
+Author-email: Daniel Ari Friedman <danielarifriedman@gmail.com>
+Requires-Python: >=3.10
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: matplotlib>=3.7.0
+Requires-Dist: networkx>=3.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: discopy>=1.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"

@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -239,74 +239,88 @@
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:categorial-grammar">Categorial Grammar: Type Logic and
-String Diagrams</h1>
-<h2 id="from-phrase-structure-rules-to-algebraic-type-assignment">From
-Phrase Structure Rules to Algebraic Type Assignment</h2>
-<p>Traditional generative grammar assigns sentence structure through
-phrase-structure rules that recursively combine constituents into larger
-units. Categorial grammar inverts this perspective: rather than
-specifying construction rules, it assigns each lexical item a
-<em>type</em> that encodes its combinatory potential. A transitive verb
-like “chases” is not described as “a word that takes a subject NP and an
-object NP to form a VP” but rather as having the type <span
-class="math inline">\((n \backslash s) / n\)</span>—an entity that seeks
-a noun to its right (the object) and a noun to its left (the subject) in
-order to produce a sentence.</p>
-<h2 id="lambeks-residuated-syntactic-calculus">Lambek’s Residuated
-Syntactic Calculus</h2>
-<p>The algebraic foundations were laid by Lambek <span class="citation"
-data-cites="lambek1958mathematics">[-@lambek1958mathematics]</span>, who
-introduced a <em>residuated</em> structure on syntactic types: two
-binary operations, the left residual <span
-class="math inline">\(\backslash\)</span> and the right residual <span
-class="math inline">\(/\)</span> of the multiplicative connective <span
-class="math inline">\(\otimes\)</span> (concatenation). The key axiom is
-the residuation law:</p>
-<p><span class="math display">\[A \otimes B \leq C \quad \iff \quad A
-\leq C / B \quad \iff \quad B \leq A \backslash C \]</span>
-{#eq:eq-3-1}</p>
-<p>This law captures the fundamental duality of syntax: a verb of type
-<span class="math inline">\((n \backslash s) / n\)</span>
-<em>consumes</em> noun arguments to <em>produce</em> a sentence. The
-resulting <strong>Lambek calculus</strong> is a non-commutative
-intuitionistic linear logic—non-commutative because word order matters,
-and linear because each resource (word) is used exactly once.</p>
-<h3 id="pregroup-grammars-and-compact-closed-structure">Pregroup
-Grammars and Compact Closed Structure</h3>
+<h1 id="sec:categorial-grammar">From Phrase Structure to Type
+Algebra</h1>
+<h2 id="each-word-is-its-own-grammar-rule">Each Word Is Its Own Grammar
+Rule</h2>
+<p>Traditional generative grammar computes sentence structure using
+top-down phrase-structure rules that recursively combine constituents.
+Categorial grammar perfectly inverts this perspective: rather than
+specifying abstract construction rules, it assigns each lexical item a
+dedicated <em>type</em> that rigorously encodes its combinatory
+potential. For example, a transitive verb like “chases” is not loosely
+defined as “a word requiring a subject and object,” but specifically
+assigned the algebraic type <span class="math inline">\((n \backslash s)
+/ n\)</span>—an active function that categorically demands a noun to its
+right (the object) and a noun to its left (the subject) to yield a
+complete sentence.</p>
+<h2
+id="lambeks-residuation-law-consuming-and-producing-types-in-linear-order">Lambek’s
+Residuation Law: Consuming and Producing Types in Linear Order</h2>
+<p>Lambek <span class="citation"
+data-cites="lambek1958mathematics">[-@lambek1958mathematics]</span> laid
+the algebraic foundations by introducing a <em>residuated</em> structure
+on syntactic types. He defined two binary operations—the left residual
+<span class="math inline">\(\backslash\)</span> and the right residual
+<span class="math inline">\(/\)</span>—derived from the multiplicative
+connective <span class="math inline">\(\otimes\)</span> (concatenation).
+The fundamental axiom governing this system is the residuation law:</p>
+<p><span class="math display">\[\begin{equation}
+A \otimes B \leq C \quad \iff \quad A \leq C / B \quad \iff \quad B \leq
+A \backslash C
+\label{eq:eq-3-1}
+\end{equation}\]</span></p>
+<p>This law brilliantly captures the fundamental duality of syntax: a
+verb of type <span class="math inline">\((n \backslash s) / n\)</span>
+actively <em>consumes</em> available noun arguments to <em>produce</em>
+a well-formed sentence. The resulting <strong>Lambek calculus</strong>
+operates as a non-commutative intuitionistic linear
+logic—non-commutative because strict word order dictates meaning, and
+linear because the derivation logically consumes each lexical resource
+exactly once.</p>
+<h3
+id="pregroups-unlock-compact-closure-the-bridge-to-discocat-string-diagrams">Pregroups
+Unlock Compact Closure: The Bridge to DisCoCat String Diagrams</h3>
 <p>Lambek <span class="citation"
 data-cites="lambek2004fine">[-@lambek2004fine]</span> later simplified
 the framework to <strong>pregroup grammars</strong>, where each type
 <span class="math inline">\(a\)</span> has a left adjoint <span
 class="math inline">\(a^l\)</span> and a right adjoint <span
 class="math inline">\(a^r\)</span> satisfying:</p>
-<p><span class="math display">\[a^l \cdot a \leq 1 \leq a \cdot a^l
-\qquad a \cdot a^r \leq 1 \leq a^r \cdot a \]</span> {#eq:eq-3-2}</p>
-<p>This formal structuralism was revolutionized by Coecke, Sadrzadeh,
-and Clark’s introduction of the <strong>DisCoCat</strong>
-(Distributional Compositional Categorical) model in 2010 <span
-class="citation"
+<p><span class="math display">\[\begin{equation}
+a^l \cdot a \leq 1 \leq a \cdot a^l \qquad a \cdot a^r \leq 1 \leq a^r
+\cdot a
+\label{eq:eq-3-2}
+\end{equation}\]</span></p>
+<p>Coecke, Sadrzadeh, and Clark revolutionized this formal structuralism
+in 2010 with the <strong>DisCoCat</strong> (Distributional Compositional
+Categorical) model <span class="citation"
 data-cites="coecke2010mathematical">[-@coecke2010mathematical]</span>.
-DisCoCat unifies categorial grammar with distributional semantics by
-defining strong monoidal functors from pregroup grammars to vector
-spaces. As Duneau (2021) summarizes, “The distributional compositional
-approach to modelling meaning… allows the meaning of a sentence to be
-computed as a function of both the distributional meaning of the words
-involved, as well as its grammatical form” <span class="citation"
-data-cites="duneau2021parsing">[-@duneau2021parsing]</span>. By
-demonstrating that pregroups and finite-dimensional vector spaces are
-both rigid monoidal categories, DisCoCat enables sentence meanings to be
-computed linearly from constituent word meanings.</p>
-<p>Grammaticality reduces to checking whether a sequence of types
-reduces to the sentence type <span class="math inline">\(s\)</span> via
-these <em>contraction</em> (<span class="math inline">\(a^l \cdot a \to
+DisCoCat mathematically unifies categorial grammar with distributional
+semantics by defining strong monoidal functors mapping pregroup grammars
+directly into vector spaces. As Duneau emphasizes, this approach “allows
+the meaning of a sentence to be computed as a function of both the
+distributional meaning of the words involved, as well as its grammatical
+form” <span class="citation"
+data-cites="duneau2021parsing">[-@duneau2021parsing]</span>. By proving
+that pregroups and finite-dimensional vector spaces both behave as rigid
+monoidal categories, DisCoCat allows us to compute whole-sentence vector
+meanings linearly from constituent word vectors.</p>
+<p>In this system, grammaticality literally reduces to algebraic
+verification: checking whether a sequence of types maps to the sentence
+type <span class="math inline">\(s\)</span> via strict
+<em>contraction</em> (<span class="math inline">\(a^l \cdot a \to
 1\)</span>) and <em>expansion</em> (<span class="math inline">\(1 \to a
-\cdot a^l\)</span>) steps. This reformulation is crucial for the
-DisCoCat framework () because pregroups form <strong>compact closed
-categories</strong>, which have a well-developed diagrammatic
-calculus.</p>
-<h2 id="string-diagrams-for-syntactic-derivation">String Diagrams for
-Syntactic Derivation</h2>
+\cdot a^l\)</span>) operations. This specific reformulation unlocks the
+DisCoCat framework () because pregroups function as <strong>compact
+closed categories</strong>, natively supporting a powerful,
+computationally sound diagrammatic calculus. When a derivation is
+ill-typed, contractions fail to close: there is no valid reduction to
+<span class="math inline">\(s\)</span>. develops the security reading of
+that failure mode—typed interaction boundaries and prompt injection as
+illicit role reassignment.</p>
+<h2 id="cups-caps-and-joyalstreet-how-wires-prove-grammaticality">Cups,
+Caps, and Joyal–Street: How Wires Prove Grammaticality</h2>
 <p>The pivotal connection between categorial grammar and visualization
 comes from Joyal and Street <span class="citation"
 data-cites="joyalstreet1991geometry">[-@joyalstreet1991geometry]</span>,
@@ -324,44 +338,66 @@ product (concatenation)</li>
 <li><strong>Cups and caps</strong> represent the contraction/expansion
 of a pregroup</li>
 </ul>
-<p> shows a DisCoCat-style string diagram for the sentence “Alice chases
-Bob,” generated by our visualization pipeline. The noun wires connect to
-the verb’s input slots, and the sentence wire emerges from the verb’s
-output—the entire derivation from word types to sentence type is visible
-at a glance.</p>
+<p> surveys three syntactic structures side by side (progression from
+intransitive to passive); shows the same transitive sentence rendered by
+our native matplotlib pipeline—a direct computational output confirming
+word-box layout, wire routing, and cup-contraction geometry
+independently of DisCoPy.</p>
+<figure id="fig:native-discocat">
+<img src="output/figures/string_diagram_discocat.png"
+alt="Native matplotlib rendering cross-validates DisCoPy pregroup geometry. String diagram for “Alice chases Bob” generated via src.visualization.string_diagrams.render_discocat_sentence() without the DisCoPy library. Three Word boxes carry pregroup types: n (Alice, blue = NOM), n^r \otimes s \otimes n^l (chases, neutral), and n (Bob, red = ACC). Dashed arcs trace cup connections from noun wires to the verb’s adjoint slots, rendering \varepsilon: n^r \otimes n \to 1 and \varepsilon: n^l \otimes n \to 1 as paired ligatures. This confirms that our visualization pipeline correctly reconstructs pregroup string-diagram geometry using only case-role metadata from src.case_systems.case_category, cross-validating the DisCoPy canonical output in ." />
+<figcaption aria-hidden="true">Native matplotlib rendering
+cross-validates DisCoPy pregroup geometry. String diagram for “Alice
+chases Bob” generated via
+<code>src.visualization.string_diagrams.render_discocat_sentence()</code>
+without the DisCoPy library. Three Word boxes carry pregroup types:
+<span class="math inline">\(n\)</span> (Alice, <strong>blue</strong> =
+NOM), <span class="math inline">\(n^r \otimes s \otimes n^l\)</span>
+(chases, <strong>neutral</strong>), and <span
+class="math inline">\(n\)</span> (Bob, <strong>red</strong> = ACC).
+Dashed arcs trace cup connections from noun wires to the verb’s adjoint
+slots, rendering <span class="math inline">\(\varepsilon: n^r \otimes n
+\to 1\)</span> and <span class="math inline">\(\varepsilon: n^l \otimes
+n \to 1\)</span> as paired ligatures. This confirms that our
+visualization pipeline correctly reconstructs pregroup string-diagram
+geometry using only case-role metadata from
+<code>src.case_systems.case_category</code>, cross-validating the
+DisCoPy canonical output in .</figcaption>
+</figure>
 <figure id="fig:string-diagram">
 <img src="output/figures/discopy_sentence_progression.png"
-alt="A 1×3 visualization of DisCoPy pregroup grammar derivations showing increasing sentence complexity. Panel (a): intransitive “Bob runs” (NOM) with one cup. Panel (b): transitive “Alice chases Bob” (NOM+ACC) with two cups contracting noun types into the verb. Panel (c): passive “Bob is-chased” showing patient promotion to subject position via a reduced pregroup type." />
-<figcaption aria-hidden="true">A 1×3 visualization of DisCoPy pregroup
-grammar derivations showing increasing sentence complexity. Panel (a):
-intransitive “Bob runs” (NOM) with one cup. Panel (b): transitive “Alice
-chases Bob” (NOM+ACC) with two cups contracting noun types into the
-verb. Panel (c): passive “Bob is-chased” showing patient promotion to
-subject position via a reduced pregroup type.</figcaption>
+alt="Sentence complexity increases monotonically from intransitive to passive. A 1×3 DisCoPy pregroup grammar visualization: Panel (a) intransitive “Bob runs” (NOM, 1 cup); Panel (b) transitive “Alice chases Bob” (NOM+ACC, 2 cups); Panel (c) passive “Bob is-chased” (patient promoted to subject via reduced pregroup type). Cup count directly reflects verb valency per ." />
+<figcaption aria-hidden="true">Sentence complexity increases
+monotonically from intransitive to passive. A 1×3 DisCoPy pregroup
+grammar visualization: Panel (a) intransitive “Bob runs” (NOM, 1 cup);
+Panel (b) transitive “Alice chases Bob” (NOM+ACC, 2 cups); Panel (c)
+passive “Bob is-chased” (patient promoted to subject via reduced
+pregroup type). Cup count directly reflects verb valency per
+.</figcaption>
 </figure>
 <figure id="fig:multilingual-isomorphism">
 <img src="output/figures/discopy_multilingual.png"
-alt="Structural isomorphism of pregroup grammar derivations across 3 typologically diverse languages: English (SVO), Latin (inflected, free order), and Japanese (agglutinative, SOV). Each image renders the transitive meaning “SUBJ chases OBJ” as a DisCoPy string diagram with identical type-logical structure—n \otimes (n^r \otimes s \otimes n^l) \otimes n \to s—demonstrating that the meaning functor’s type reduction is invariant under surface word-order permutation. This confirms the central claim of categorial grammar: syntactic universals reside in the type algebra, not in linear word order." />
-<figcaption aria-hidden="true">Structural isomorphism of pregroup
-grammar derivations across 3 typologically diverse languages: English
-(SVO), Latin (inflected, free order), and Japanese (agglutinative, SOV).
-Each image renders the transitive meaning “SUBJ chases OBJ” as a DisCoPy
-string diagram with identical type-logical structure—<span
-class="math inline">\(n \otimes (n^r \otimes s \otimes n^l) \otimes n
-\to s\)</span>—demonstrating that the meaning functor’s type reduction
-is invariant under surface word-order permutation. This confirms the
-central claim of categorial grammar: syntactic universals reside in the
-type algebra, not in linear word order.</figcaption>
+alt="Type-logical structure is invariant under surface word-order permutation. Pregroup derivations for “SUBJ chases OBJ” across three typologically diverse languages: English (SVO), Latin (inflected, free order), and Japanese (agglutinative, SOV). Each renders an identical type reduction n \otimes (n^r \otimes s \otimes n^l) \otimes n \to s, confirming the central claim of categorial grammar: syntactic universals reside in the type algebra, not in linear word order." />
+<figcaption aria-hidden="true">Type-logical structure is invariant under
+surface word-order permutation. Pregroup derivations for “SUBJ chases
+OBJ” across three typologically diverse languages: English (SVO), Latin
+(inflected, free order), and Japanese (agglutinative, SOV). Each renders
+an identical type reduction <span class="math inline">\(n \otimes (n^r
+\otimes s \otimes n^l) \otimes n \to s\)</span>, confirming the central
+claim of categorial grammar: syntactic universals reside in the type
+algebra, not in linear word order.</figcaption>
 </figure>
-<p>The <em>soundness and completeness</em> of string-diagrammatic
-reasoning (Joyal–Street theorem) guarantees that any conclusion drawn
-from the diagram is algebraically valid.</p>
-<p>This visual transparency is precisely the “free ride” phenomenon
-identified by Shimojima <span class="citation"
-data-cites="shimojima1996reasoning">[-@shimojima1996reasoning]</span>:
-the diagram simultaneously represents the syntactic derivation, the
-argument structure, and the compositional flow of meaning, without
-requiring explicit inference steps to relate them.</p>
+<p>This result—the soundness and completeness of string-diagrammatic
+reasoning—formally guarantees that any topological conclusion drawn
+visually from the diagram is algebraically valid: the diagram is not a
+heuristic but a rigorous proof instrument.</p>
+<p>This profound visual transparency instantiates exactly the “free
+ride” phenomenon identified by Shimojima <span class="citation"
+data-cites="shimojima1996reasoning">[-@shimojima1996reasoning]</span>: a
+single diagram simultaneously exposes the syntactic derivation, the deep
+argument structure, and the compositional flow of semantic
+meaning—entirely eliminating the need for sequential, explicit inference
+steps.</p>
 <p><strong>Concrete derivation in DisCoPy.</strong> The type reduction
 for “Alice chases Bob” is computationally verified using the DisCoPy
 library’s <code>discopy.rigid</code> module:</p>
@@ -375,239 +411,67 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>cups  <span class="op">=</span> Cup(n, n.r) <span class="op">@</span> Id(s) <span class="op">@</span> Cup(n.l, n)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>diagram <span class="op">=</span> words <span class="op">&gt;&gt;</span> cups               <span class="co"># reduces to s</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> diagram.cod <span class="op">==</span> s               <span class="co"># type-checks: sentence type</span></span></code></pre></div>
-<p>The two <code>Cup</code> contractions cancel <span
+<p>The two <code>Cup</code> operations successfully contract <span
 class="math inline">\(n\)</span> with <span
-class="math inline">\(n^r\)</span> (subject–verb) and <span
-class="math inline">\(n^l\)</span> with <span
-class="math inline">\(n\)</span> (verb–object), reducing the five-wire
-tensor product to the single sentence wire <span
-class="math inline">\(s\)</span>. The assertion
-<code>diagram.cod == s</code> is a machine-checkable proof of
-grammaticality.</p>
+class="math inline">\(n^r\)</span> (resolving the subject–verb link) and
+<span class="math inline">\(n^l\)</span> with <span
+class="math inline">\(n\)</span> (resolving the verb–object link). This
+topological reduction collapses the five-wire tensor product into a
+single, valid sentence wire <span class="math inline">\(s\)</span>.
+Consequently, the assertion <code>diagram.cod == s</code> constitutes a
+direct, machine-processable proof of grammaticality.</p>
 <p><strong>From pregroup types to graded types.</strong> The standard
-pregroup derivation culminates in a binary grammaticality judgment:
-either the final codomain (<span
-class="math inline">\(\text{cod}\)</span>) of the tensor contraction
-exactly equals the sentence type <span class="math inline">\(s\)</span>
-(meaning the string is perfectly grammatical), or it does not (meaning
-it is ill-formed). This crisp true/false distinction can be
-<em>graded</em> by replacing the Boolean algebra <span
-class="math inline">\(\{0,1\}\)</span> underlying classical type
-matching with the unit interval <span
-class="math inline">\([0,1]\)</span>. This yields a graded type theory
-where type judgments carry continuous confidence weights. Asudeh and
-Giorgolo <span class="citation"
-data-cites="asudeh2020graded">[-@asudeh2020graded]</span> develop this
-approach via a monadic semantics that wraps base types in a
-computational effect encoding uncertainty. In our framework, this
-corresponds precisely to the <span
-class="math inline">\([0,1]\)</span>-enrichment of : the enriched weight
-on a morphism <span class="math inline">\(f: A \to B\)</span> is the
-confidence that the case assignment <span class="math inline">\(A \to
-B\)</span> is well-typed. Categorical magnitude () then aggregates these
-local confidence scores into a global complexity measure for the entire
-derivation. The progression from crisp pregroup types through graded
-types to fully enriched categories is mathematically a sequence of
-base-change functors: <span class="math inline">\(\mathbf{Bool}
-\hookrightarrow [0,1] \hookrightarrow \mathbf{R}_{\geq 0}\)</span>,
-where each level adds representational capacity for nuance at the cost
-of computational complexity.</p>
+pregroup derivation produces a rigid, binary grammaticality judgment:
+the final codomain of the fully contracted tensor product either matches
+the sentence type <span class="math inline">\(s\)</span> (grammatical)
+or fails (ill-formed). However, we can <em>grade</em> this binary
+verdict by replacing the underlying Boolean algebra <span
+class="math inline">\(\{0,1\}\)</span> with the continuous unit interval
+<span class="math inline">\([0,1]\)</span>. This substitution yields a
+graded type theory where type judgments carry continuous confidence
+weights rather than truth values. Asudeh and Giorgolo <span
+class="citation"
+data-cites="asudeh2020graded">[-@asudeh2020graded]</span> developed this
+approach using a monadic semantics that wraps base types inside a
+computational effect tracking epistemic uncertainty—an idea whose
+categorical content is precisely a change of enrichment base.</p>
+<p>Mapped into our framework, this operation corresponds exactly to the
+<span class="math inline">\([0,1]\)</span>-enrichment detailed in : the
+enriched scalar weight on any specific morphism <span
+class="math inline">\(f: A \to B\)</span> quantifies the systemic
+confidence that the categorical case assignment <span
+class="math inline">\(A \to B\)</span> remains well-typed. From there,
+categorical magnitude aggregates these sparse, local confidence scores
+into a robust global complexity measure evaluating the entire syntactic
+derivation. Ultimately, the systematic progression from rigid pregroup
+strings, through graded types, into fully enriched case categories
+operates mathematically as a strict cascade of base-change functors
+(<span class="math inline">\(\mathbf{Bool} \hookrightarrow [0,1]
+\hookrightarrow \mathbf{R}_{\geq 0}\)</span>)—where each successive
+level grants greater representational nuance while demanding higher
+computational complexity.</p>
 <figure id="fig:discopy-transitive">
 <img src="output/figures/discopy_transitive.png"
-alt="DisCoPy rendering of the pregroup derivation for “Alice chases Bob,” corresponding to the code block above. The three Word boxes carry types n (Alice), n^r \otimes s \otimes n^l (chases), and n (Bob). Two Cup contractions \varepsilon\colon n^r \otimes n \to 1 and \varepsilon\colon n^l \otimes n \to 1 cancel adjoint type pairs, reducing the five-wire tensor product to the single sentence wire s. By the Curry–Howard correspondence, this diagram is simultaneously a syntactic derivation, a proof of well-typedness, and (under the meaning functor of ) a specification of compositional semantic computation. Our novel extension, DisCoCirc entity wires, decorates these n-typed wires with functorial states S: \mathbf{Ent} \to \mathbf{Case}, tracking role assignments across discourse boundaries." />
-<figcaption aria-hidden="true">DisCoPy rendering of the pregroup
-derivation for “Alice chases Bob,” corresponding to the code block
-above. The three Word boxes carry types <span
+alt="Direct DisCoPy machine output confirms pregroup type reduction to sentence wire s. Three Word boxes carry types n (Alice), n^r \otimes s \otimes n^l (chases), and n (Bob). Two Cup contractions \varepsilon\colon n^r \otimes n \to 1 and \varepsilon\colon n^l \otimes n \to 1 cancel adjoint pairs, reducing the five-wire tensor product to the single sentence wire s. Unlike the schematic progression in , this is the direct computational output confirming diagram.cod == s. By the Curry–Howard correspondence, this diagram simultaneously constitutes a syntactic derivation, a proof of well-typedness, and (under the meaning functor of ) a compositional semantic computation. Our extension decorates n-typed wires with functorial states S: \mathbf{Ent} \to \mathbf{Case}, tracking role assignments across discourse boundaries via DisCoCirc entity wires." />
+<figcaption aria-hidden="true">Direct DisCoPy machine output confirms
+pregroup type reduction to sentence wire <span
+class="math inline">\(s\)</span>. Three Word boxes carry types <span
 class="math inline">\(n\)</span> (Alice), <span
 class="math inline">\(n^r \otimes s \otimes n^l\)</span> (chases), and
 <span class="math inline">\(n\)</span> (Bob). Two Cup contractions <span
 class="math inline">\(\varepsilon\colon n^r \otimes n \to 1\)</span> and
 <span class="math inline">\(\varepsilon\colon n^l \otimes n \to
-1\)</span> cancel adjoint type pairs, reducing the five-wire tensor
-product to the single sentence wire <span
-class="math inline">\(s\)</span>. By the Curry–Howard correspondence,
-this diagram is simultaneously a syntactic derivation, a proof of
-well-typedness, and (under the meaning functor of ) a specification of
-compositional semantic computation. Our novel extension,
-<strong>DisCoCirc entity wires</strong>, decorates these <span
-class="math inline">\(n\)</span>-typed wires with functorial states
-<span class="math inline">\(S: \mathbf{Ent} \to \mathbf{Case}\)</span>,
-tracking role assignments across discourse boundaries.</figcaption>
+1\)</span> cancel adjoint pairs, reducing the five-wire tensor product
+to the single sentence wire <span class="math inline">\(s\)</span>.
+Unlike the schematic progression in , this is the <em>direct
+computational output</em> confirming <code>diagram.cod == s</code>. By
+the Curry–Howard correspondence, this diagram simultaneously constitutes
+a syntactic derivation, a proof of well-typedness, and (under the
+meaning functor of ) a compositional semantic computation. Our extension
+decorates <span class="math inline">\(n\)</span>-typed wires with
+functorial states <span class="math inline">\(S: \mathbf{Ent} \to
+\mathbf{Case}\)</span>, tracking role assignments across discourse
+boundaries via <strong>DisCoCirc entity wires</strong>.</figcaption>
 </figure>
-<h2 id="case-marking-in-type-logical-categorial-grammar">Case Marking in
-Type-Logical Categorial Grammar</h2>
-<p>Case-marked noun phrases receive compound types that encode both
-their grammatical role and their combinatory potential. In a
-nominative–accusative language, we can assign:</p>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Expression</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">Gloss</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">“Alice” (subject)</td>
-<td style="text-align: left;"><span
-class="math inline">\(n_{\text{NOM}}\)</span></td>
-<td style="text-align: left;">Noun, nominative-marked</td>
-</tr>
-<tr>
-<td style="text-align: left;">“the ball” (object)</td>
-<td style="text-align: left;"><span
-class="math inline">\(n_{\text{ACC}}\)</span></td>
-<td style="text-align: left;">Noun, accusative-marked</td>
-</tr>
-<tr>
-<td style="text-align: left;">“kicks”</td>
-<td style="text-align: left;"><span
-class="math inline">\((n_{\text{NOM}} \backslash s) /
-n_{\text{ACC}}\)</span></td>
-<td style="text-align: left;">Seeks ACC right, NOM left</td>
-</tr>
-<tr>
-<td style="text-align: left;">“to Bob” (recipient)</td>
-<td style="text-align: left;"><span class="math inline">\((s \backslash
-s) / n_{\text{DAT}}\)</span></td>
-<td style="text-align: left;">Modifies sentence via DAT argument</td>
-</tr>
-</tbody>
-</table>
-<p>The subscripts refine the basic noun type <span
-class="math inline">\(n\)</span> with case features, ensuring that
-“kicks” selects a nominative subject and an accusative object. Mismatch
-in case features blocks the derivation, modeling ungrammaticality.</p>
-<p><strong>Alignment as Natural Transformation.</strong> A key
-contribution of this work is the realization that <strong>case alignment
-is a natural transformation</strong> <span class="math inline">\(\eta:
-\text{Id} \Rightarrow F \dashv G\)</span> between functors in the
-pregroup category. This formalizes the grammatical “agreement” between
-constituents as a consistency requirement on these natural
-transformations, ensuring that the alignment chosen for the subject is
-functorially compatible with the verb’s requirements. This categorical
-perspective elevates alignment from a surface property to a fundamental
-topological constraint on the string diagram.</p>
-<h2
-id="the-curryhoward-correspondence-and-proof-theoretic-semantics">The
-Curry–Howard Correspondence and Proof-Theoretic Semantics</h2>
-<p>A deep structural parallel underlies the Lambek calculus: derivations
-of syntactic types correspond to proofs in intuitionistic logic (via the
-Curry–Howard isomorphism), and therefore to programs in a typed lambda
-calculus. Specifically:</p>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Syntactic Domain</th>
-<th style="text-align: left;">Logical Domain</th>
-<th style="text-align: left;">Computational Domain</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Types <span class="math inline">\((A / B,
-A \backslash B)\)</span></td>
-<td style="text-align: left;">Propositions</td>
-<td style="text-align: left;">Types</td>
-</tr>
-<tr>
-<td style="text-align: left;">Derivations</td>
-<td style="text-align: left;">Proofs</td>
-<td style="text-align: left;">Programs (<span
-class="math inline">\(\lambda\)</span>)</td>
-</tr>
-<tr>
-<td style="text-align: left;">Cut elimination</td>
-<td style="text-align: left;">Proof normalization</td>
-<td style="text-align: left;"><span
-class="math inline">\(\beta\)</span>-reduction</td>
-</tr>
-<tr>
-<td style="text-align: left;">Commutativity of cuts</td>
-<td style="text-align: left;">Confluence of rewriting</td>
-<td style="text-align: left;">Church–Rosser property</td>
-</tr>
-</tbody>
-</table>
-<p>This correspondence has two important consequences for our
-framework:</p>
-<ol type="1">
-<li><p><strong>Semantic compositionality follows from syntactic
-well-formedness</strong>: a well-typed derivation automatically yields a
-well-formed meaning representation (the <span
-class="math inline">\(\lambda\)</span>-term extracted from the
-proof).</p></li>
-<li><p><strong>Case assignment is type inference</strong>: determining
-the case of a noun phrase in context is equivalent to inferring the type
-of a variable in a <span
-class="math inline">\(\lambda\)</span>-expression—a computational
-problem with well-understood algorithms.</p></li>
-</ol>
-<h2 id="monadic-semantics-for-sublexical-root-syntax">Monadic Semantics
-for Sublexical Root Syntax</h2>
-<p>Song <span class="citation"
-data-cites="song2022act song2022blog">[-@song2022act;
--@song2022blog]</span> extends the categorial framework with a
-<strong>monadic semantics</strong> for root syntax, modeling the
-sublexical decomposition of verb roots using monads in a syntactic
-category. This approach captures the intuition that a verb like “break”
-has internal compositional structure—a causative layer and a
-result-state layer—that interacts with case assignment. The monad
-encapsulates the complexity of root meaning within a single categorical
-construction, allowing the type-logical grammar to handle both lexical
-and syntactic composition uniformly.</p>
-<p>The monadic approach connects naturally to graded type theory: Asudeh
-and Giorgolo <span class="citation"
-data-cites="asudeh2020graded">[-@asudeh2020graded]</span> develop a
-monadic semantics for evidentiality that uses graded effects to track
-the epistemic status of propositions—a pattern that extends to case,
-where the “grade” of a morphism could encode the strength of a semantic
-role assignment.</p>
-<h2 id="passivization-as-algebraic-type-permutation">Passivization as
-Algebraic Type Permutation</h2>
-<p>One of the most revealing case-theoretic operations is
-<strong>passivization</strong>, which transforms an active transitive
-clause into a passive construction by promoting the patient to subject
-position and (optionally) demoting the agent to an oblique role. In our
-categorical framework, passivization is not an ad hoc syntactic
-transformation but a precise <em>type permutation</em>—a swap of the
-noun types feeding into the verb’s pregroup derivation.</p>
-<p>In a pregroup grammar, the active transitive “Alice chases Bob” has
-the type reduction:</p>
-<p><span class="math display">\[n_{\text{NOM}} \cdot (n^r \cdot s \cdot
-n^l) \cdot n_{\text{ACC}} \to s \]</span> {#eq:eq-3-3}</p>
-<p>Passivization permutes the noun arguments, yielding “Bob is chased by
-Alice” with the swapped type assignment:</p>
-<p><span class="math display">\[n_{\text{ACC}} \cdot (n^r \cdot s \cdot
-n^l) \cdot n_{\text{NOM}} \to s \]</span> {#eq:eq-3-4}</p>
-<p>Crucially, DisCoPy’s <code>Swap</code> primitive makes this
-permutation explicit and algebraically precise: the swap operation <span
-class="math inline">\(\sigma_{n,n}: n \otimes n \to n \otimes n\)</span>
-permutes the two noun wires without violating the monoidal structure.
-The resulting diagram differs from the active version precisely in the
-crossing of the noun wires—making the voice alternation <em>visible</em>
-as a topological feature of the string diagram.</p>
-<p>This diagrammatic transparency exemplifies Shimojima’s <span
-class="citation"
-data-cites="shimojima1996reasoning">[-@shimojima1996reasoning]</span>
-free-ride inference: by inspecting the diagram, one can immediately see
-that passivization preserves the verb’s inherent argument structure
-while rearranging the surface realization—a fact that requires multiple
-inference steps to establish in a linear notation.</p>
-<p>The structural difference between voice alternations is a topological
-change in wire connectivity: passivization removes one Cup contraction,
-lowering the syntactic complexity score of <span class="citation"
-data-cites="eq:eq-4-4">[@eq:eq-4-4]</span>.](output/figures/discopy_passive.png){#fig:discopy-passive}</p>
 </body>
 </html>

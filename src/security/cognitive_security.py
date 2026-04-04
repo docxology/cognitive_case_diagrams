@@ -87,7 +87,7 @@ class CaseFrameValidator:
         for m in self.category.morphisms:
             self._valid_morphism_pairs.add((m.source, m.target))
         # Identity morphisms are always valid
-        for role in self.category.roles:
+        for role in self.category.objects:
             self._valid_morphism_pairs.add((role, role))
 
     def validate_assignment(
@@ -107,7 +107,7 @@ class CaseFrameValidator:
 
         # Check that all assigned roles exist in the category
         for entity, role in assignments.items():
-            if role not in self.category.roles:
+            if role not in self.category.objects:
                 violations.append(TypeViolation(
                     source=role,
                     target=role,

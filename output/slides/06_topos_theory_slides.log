@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.1)  15 MAR 2026 08:51
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  4 APR 2026 12:39
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -84,7 +84,7 @@ Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
 \beamer@paperheight=\skip51
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/geometry/geometry.sty
-Package: geometry 2020/01/02 v5.9 Page Geometry
+Package: geometry 2026/03/07 v6.0 Page Geometry
 
 (/usr/local/texlive/2026/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
@@ -1137,18 +1137,6 @@ Package: xurl 2022/01/09 v 0.10 modify URL breaks
 )
 (/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/sl
 ides/06_topos_theory_slides.aux)
-Runaway argument?
-{{7}{7}{Topos Theory: Classifying Spaces and Morita Equivalence}{diag\ETC.
-! File ended while scanning use of \@newl@bel.
-<inserted text> 
-                \par 
-l.143 \begin{document}
-                      
-I suspect you have forgotten a `}', causing me
-to read past where you wanted me to stop.
-I'll try to recover; but if the error is serious,
-you'd better type `E' or `X' now and fix your file.
-
 \openout1 = `06_topos_theory_slides.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 143.
@@ -1171,6 +1159,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 143.
 LaTeX Font Info:    ... okay on input line 143.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 143.
 LaTeX Font Info:    ... okay on input line 143.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1507,37 +1496,38 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-No file 06_topos_theory_slides.nav.
-[1
+(/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/sl
+ides/06_topos_theory_slides.nav) [1
 
 ]
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 157.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 158.
  [2
 
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.8961pt on input line 191.
+(Font)              scaled to size 7.8961pt on input line 195.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.64008pt on input line 191.
+(Font)              scaled to size 5.64008pt on input line 195.
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-91.
- (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
+95.
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.28131pt on input line 191.
+(Font)              scaled to size 11.28131pt on input line 195.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.89691pt on input line 191.
+(Font)              scaled to size 7.89691pt on input line 195.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.64066pt on input line 191.
+(Font)              scaled to size 5.64066pt on input line 195.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.27914pt on input line 191.
+(Font)              scaled to size 11.27914pt on input line 195.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.8954pt on input line 191.
+(Font)              scaled to size 7.8954pt on input line 195.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.63957pt on input line 191.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 191
+(Font)              scaled to size 5.63957pt on input line 195.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 195
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1546,7 +1536,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 191
+LaTeX Font Info:    Trying to load font information for U+msb on input line 195
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1555,121 +1545,62 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-! Missing { inserted.
-<to be read again> 
-                   \__um_group_begin: 
-l.191 \end{frame}
-                 
-A left brace was mandatory here, so I've put one in.
-You might want to delete and/or insert some corrections
-so that I will find a matching right brace soon.
-(If you're confused by all this, try typing `I}' now.)
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.191 \end{frame}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Missing { inserted.
-<to be read again> 
-                   \__um_group_begin: 
-l.191 \end{frame}
-                 
-A left brace was mandatory here, so I've put one in.
-You might want to delete and/or insert some corrections
-so that I will find a matching right brace soon.
-(If you're confused by all this, try typing `I}' now.)
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.191 \end{frame}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-
-Overfull \vbox (62.6173pt too high) detected at line 191
+(/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-LatinModernRoman.cfg
+File: mt-LatinModernRoman.cfg 2026/02/26 v1.2 microtype config. file: Latin Mod
+ern Roman (RS)
+)
+Overfull \vbox (78.35315pt too high) detected at line 195
  []
 
 [3
 
 ]
-
-LaTeX Warning: File `output/figures/functor_alignment.png' not found on input l
-ine 272.
-
-! Unable to load picture or PDF file 'output/figures/functor_alignment.png'.
-<to be read again> 
-                   }
-l.272 \end{frame}
-                 
-The requested image couldn't be read because
-it was not a recognized image format.
-
-File: output/figures/functor_alignment.png Graphic file (type bmp)
-<output/figures/functor_alignment.png>
-
-! Package graphics Error: Division by 0.
-
-See the graphics package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.272 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
+\openout4 = `06_topos_theory_slides.vrb'.
 
 
-! Package graphics Error: Division by 0.
-
-See the graphics package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.272 \end{frame}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
+(/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/sl
+ides/06_topos_theory_slides.vrb
+File: ../figures/functor_alignment.png Graphic file (type bmp)
+<../figures/functor_alignment.png>
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.30151pt on input line 272.
+(Font)              scaled to size 10.30151pt on input line 91.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.21106pt on input line 272.
+(Font)              scaled to size 7.21106pt on input line 91.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.15076pt on input line 272.
+(Font)              scaled to size 5.15076pt on input line 91.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.30258pt on input line 272.
+(Font)              scaled to size 10.30258pt on input line 91.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.2118pt on input line 272.
+(Font)              scaled to size 7.2118pt on input line 91.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.15129pt on input line 272.
+(Font)              scaled to size 5.15129pt on input line 91.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 10.3006pt on input line 272.
+(Font)              scaled to size 10.3006pt on input line 91.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.21042pt on input line 272.
+(Font)              scaled to size 7.21042pt on input line 91.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.1503pt on input line 272.
+(Font)              scaled to size 5.1503pt on input line 91.
 
-Overfull \vbox (440.24405pt too high) detected at line 272
+
+LaTeX Warning: Reference `eq:eq-2-3' on page 4 undefined on input line 91.
+
+
+LaTeX Warning: Reference `eq:eq-2-4' on page 4 undefined on input line 91.
+
+
+LaTeX Warning: Reference `eq:eq-2-3' on page 4 undefined on input line 91.
+
+
+LaTeX Warning: Reference `eq:eq-2-4' on page 4 undefined on input line 91.
+
+)
+Overfull \vbox (742.18839pt too high) detected at line 291
  []
 
 [4
 
 ]
-Overfull \vbox (129.99548pt too high) detected at line 308
+Overfull \vbox (147.99548pt too high) detected at line 328
  []
 
 [5
@@ -1677,47 +1608,79 @@ Overfull \vbox (129.99548pt too high) detected at line 308
 ]
 
 LaTeX Warning: Reference `sec:enriched-categories' on page 6 undefined on input
- line 361.
-
-! Missing { inserted.
-<to be read again> 
-                   \__um_group_begin: 
-l.361 \end{frame}
-                 
-A left brace was mandatory here, so I've put one in.
-You might want to delete and/or insert some corrections
-so that I will find a matching right brace soon.
-(If you're confused by all this, try typing `I}' now.)
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.361 \end{frame}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
+ line 381.
 
 
 LaTeX Warning: Reference `sec:enriched-categories' on page 6 undefined on input
- line 361.
+ line 381.
 
 
 LaTeX Warning: Reference `sec:enriched-categories' on page 6 undefined on input
- line 361.
+ line 381.
 
 
-Overfull \vbox (293.19556pt too high) detected at line 361
+Overfull \vbox (293.19556pt too high) detected at line 381
  []
 
 [6
 
 ]
 
-LaTeX Warning: Reference `sec:introduction' on page 7 undefined on input line 3
-99.
+LaTeX Warning: Reference `sec:introduction' on page 7 undefined on input line 4
+16.
 
 
-Overfull \
+Overfull \vbox (168.26408pt too high) detected at line 416
+ []
+
+[7
+
+]
+\openout4 = `06_topos_theory_slides.vrb'.
+
+
+(/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/sl
+ides/06_topos_theory_slides.vrb
+
+LaTeX Warning: Reference `sec:enriched-categories' on page 8 undefined on input
+ line 33.
+
+)
+Overfull \vbox (309.5494pt too high) detected at line 479
+ []
+
+[8
+
+]
+\tf@nav=\write6
+\openout6 = `06_topos_theory_slides.nav'.
+
+\tf@toc=\write7
+\openout7 = `06_topos_theory_slides.toc'.
+
+\tf@snm=\write8
+\openout8 = `06_topos_theory_slides.snm'.
+
+
+(/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/sl
+ides/06_topos_theory_slides.aux)
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+ ***********
+
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 30013 strings out of 468168
+ 606738 string characters out of 5432815
+ 1171654 words of memory out of 5000000
+ 58171 multiletter control sequences out of 15000+600000
+ 634262 words of font info for 103 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 128i,11n,123p,1242b,739s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_case_d
+iagrams/output/slides/06_topos_theory_slides.pdf (8 pages).

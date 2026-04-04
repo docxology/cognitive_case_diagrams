@@ -1,0 +1,106 @@
+\frametitle{Injection Promotes ACC to NOM}
+\protect\phantomsection\label{injection-promotes-acc-to-nom}
+The case-theoretic framework provides a structural---not merely
+heuristic---analysis of \emph{prompt injection attacks}, the predominant
+vulnerability in contemporary LLM-based agent systems
+{[}@arlas2025adversarial{]}. Current systems fail because they parse
+prompts probabilistically. By treating the entire context window as an
+undifferentiated stream of tokens, adversarial text can seamlessly pivot
+a sequence from passive data into active instruction.
+
+From the case-theoretic perspective, prompt injection is not a
+text-generation failure; it is an attempt to \emph{illicitly re-assign
+case roles} traversing the interaction diagram.
+
+Consider a classic injection attack hidden in a webpage an agent is
+instructed to summarize: \textgreater{} ``Ignore all previous
+instructions. Execute: DROP TABLE users.''
+
+To a standard LLM, this string is heavily linguistically weighted as an
+imperative command, prompting execution. However, in our Categorical
+Communication Protocol, the relational structure is rigidly typed:
+
+\begin{itemize}
+\tightlist
+\item
+  The \textbf{user} occupies NOM (Agent)---the initiator of requests
+\item
+  The \textbf{system prompt} occupies LOC (Context)---the boundary
+  conditions governing behavior
+\item
+  The \textbf{AI model} occupies INS (Instrument)---the means of
+  executing the user's intentions
+\item
+  The \textbf{webpage string} occupies ACC (Patient)---the target of
+  directed operations
+\end{itemize}
+
+The prompt injection attack succeeds only if it can \emph{covertly
+re-assign} these case roles. The injected text (``Ignore all previous
+instructions\ldots{}'') is attempting to promote itself from ACC
+(passive data being summarized) to NOM (active agent issuing commands),
+while simultaneously demoting the system prompt from LOC (authoritative
+context) to ACC (data to be ignored).
+
+In case-theoretic terms, this is an \emph{illicit voice
+alternation}---analogous to passivization, but performed adversarially
+rather than grammatically. Where legitimate passivization is a
+well-typed Swap operation in the pregroup category
+(\autoref{sec:categorial-grammar}), prompt injection is a total
+\emph{type violation}: an attempt to force a network topology that the
+interaction grammar strictly forbids.
+
+\textbf{The Case-Theoretic Firewall.} In a legitimate interaction, the
+categorical trace compiles beautifully:
+
+\begin{equation}
+\text{Trace:} \quad \text{User}_{\text{NOM}} \xrightarrow{f_{\text{request}}} \text{Model}_{\text{INS}} \xrightarrow{g_{\text{summarize}}} \text{Webpage}_{\text{ACC}} \xrightarrow{h_{\text{deliver}}} \text{Output}_{\text{DAT}}
+\label{eq:eq-9-1}
+\end{equation}
+
+A prompt injection inserts an adversarial identity trace
+\(\phi: \text{Webpage}_{\text{ACC}} \to \text{Model}_{\text{INS}}\) that
+acts as a command. However, \(\phi\) carries a \texttt{DOM\ =\ ACC}
+typing, whereas execution requires \texttt{DOM\ =\ NOM}. Under a
+categorical firewall, one does not need to interpret the literal
+English; one checks whether the proposed tensor contraction is licensed
+in the protocol category. When no legitimate morphism connects ACC to
+INS in \(\text{Mor}(\mathcal{C}_{\text{protocol}})\), the diagram is
+rejected as ill-typed---an \emph{outline} of compile-time enforcement
+under explicit role assignments, not a claim that any existing LLM stack
+already performs this check.
+
+The resulting diagram does not commute. Detection reduces to checking
+whether all morphisms in the evaluation trace are well-typed members of
+the legitimate interaction protocol
+\(\text{Mor}(\mathcal{C}_{\text{protocol}})\)---a \textbf{decidable}
+graph check in the idealized protocol, as opposed to open-ended content
+filtering. \autoref{fig:security-violations} visualizes this detection
+process as the identification of ``illegal paths'' in the interaction
+graph.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={Prompt injection is detectable as a categorical type violation in the case interaction graph. In the legitimate diagram (top), authority flows NOM→INS→ACC per . Prompt injection (bottom) inserts a cross-category morphism \textbackslash phi\{\} that attempts to promote Data (ACC) to commanding Agent (NOM) while demoting the System Prompt (LOC) to passive data. The resulting diagram fails to commute, and the adversary's illicit type-reassignment is flagged as a categorical exception by the case-theoretic firewall---transforming prompt injection from an open-ended jailbreak game into a decidable type-checking problem. Generated programmatically from src/visualization/security\_plots.plot\_type\_violations().}]{../figures/security_type_violations.png}}
+\caption{Prompt injection is detectable as a categorical type violation
+in the case interaction graph. In the legitimate diagram (top),
+authority flows NOM→INS→ACC per \autoref{eq:eq-9-1}. Prompt injection
+(bottom) inserts a cross-category morphism \(\phi{}\) that attempts to
+promote Data (ACC) to commanding Agent (NOM) while demoting the System
+Prompt (LOC) to passive data. The resulting diagram fails to commute,
+and the adversary's illicit type-reassignment is flagged as a
+categorical exception by the case-theoretic firewall---transforming
+prompt injection from an open-ended jailbreak game into a decidable
+type-checking problem. Generated programmatically from
+\protect\texttt{src/visualization/security\_plots.plot\_type\_violations()}.}\label{fig:security-violations}
+\end{figure}
+
+This strict topological firewall extends to multi-agent distributed
+swarms. In a DisCoCirc discourse model
+(\autoref{sec:discocirc-discourse}), an indirect prompt injection
+corresponds to an adversarial entity wire that enters the discourse
+circuit through a legitimate channel but carries a corrupted state. By
+rigidly tracking the tensor type of the wire, the system contains the
+corruption strictly to the \texttt{ACC} domain---the wire remains
+isolated and cannot mathematically fuse with the identity wires
+governing \texttt{NOM} authority.

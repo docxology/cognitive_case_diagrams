@@ -1,0 +1,109 @@
+\frametitle{Appendix C: Automated Test Suite Inventory}
+\protect\phantomsection\label{sec:test-suite-inventory}
+This appendix lists the test categories behind the counts reported in
+\autoref{sec:diagrammatic-cognition}. Every test uses real mathematical
+computations---no mocks or fakes.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Categorical axiom tests}: Identity morphism existence,
+  composition associativity, weight invariants,
+  \texttt{is\_well\_formed()} full axiom check
+\item
+  \textbf{Enriched category tests}: Hom-value constraints, composition
+  inequality, categorical magnitude, magnitude deficit, full composition
+  check, role clustering
+\item
+  \textbf{Diagram type tests}: Pregroup diagrams validated for
+  \texttt{dom\ ==\ Ty()} and \texttt{cod\ ==\ s}, correct box counts,
+  diagram equality
+\item
+  \textbf{Metrics tests}: Normal form preservation, depth computation
+  with graceful fallback for pregroup diagrams
+\item
+  \textbf{Natural transformation tests} (20 tests): Component morphism
+  construction, \texttt{naturality\_holds} / \texttt{verify\_naturality}
+  on identity and incomplete maps, identity transformation generation,
+  vertical composition of transformations, completeness checking over
+  all domain objects
+\item
+  \textbf{Complexity metrics tests} (17 tests): DisCoPy box/cup/cap
+  counting on transitive/ditransitive diagrams, normal form computation
+  and snake equation verification, syntactic complexity scoring with
+  configurable weights, cross-diagram comparison utilities
+\item
+  \textbf{Topos theory tests} (18 tests): Geometric theory construction
+  from standard and minimal case categories, classifying topos invariant
+  computation, Morita equivalence verification (positive and negative
+  cases), bridge transfer between equivalent theories with
+  transfer-blocking for non-equivalent theories, enriched theory
+  construction
+\item
+  \textbf{Fluid-S tests} (22 tests): Volitional/non-volitional mapping,
+  probability splits, Bats language examples, kernel computation,
+  enriched weight scaling
+\item
+  \textbf{Active inference tests} (107 tests across 7 test files):
+  Belief construction and entropy, KL divergence (Gibbs' inequality,
+  asymmetry), variational free energy, Bayesian belief update with
+  zero-likelihood edge case, sequential multi-word belief update
+  (five-step generative loop with entropy convergence), prediction error
+  scaling including P600 ERP prediction with boundary weights, expected
+  free energy decomposition (epistemic vs pragmatic), magnitude-based
+  garden-path reanalysis cost with symmetry, N400 semantic violation
+  proxy (includes integration tests in
+  \texttt{test\_cognitive\_integration.py})
+\item
+  \textbf{Quantum case tests} (20 tests): Crisp POVM orthogonal
+  projectors, graded proto-role POVM, Fluid-S basis rotation, density
+  matrix creation, \autoref{eq:eq-8-1} (in
+  \autoref{sec:quantum-semantics}) P(c\textbar ρ) = Tr(E\_c ρ)
+  verification
+\item
+  \textbf{Cognitive security tests} (18 tests): Type-violation
+  detection, case frame validation, injection score computation,
+  magnitude-based topological robustness, composition inequality as
+  security boundary
+\item
+  \textbf{Ditransitive tests} (12 tests): Three-argument sentence
+  creation, NOM/ACC/DAT case assignment, DisCoPy diagram with 3 cups,
+  complexity comparison with transitive
+\item
+  \textbf{Visualization tests} (4 tests): Complexity comparison bar
+  chart rendering, normal form comparison chart, radar chart
+  generation---all producing valid PNG output files
+\item
+  \textbf{DAIF subpackage tests} (161 tests across 7 test files with
+  100\% pass rate):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{test\_daif\_core.py} (24 tests): Distributional Bellman
+    operator, push-forward return, C51 categorical projection
+  \item
+    \texttt{test\_daif\_quantile.py} (21 tests): QR-DQN quantile Huber
+    loss, IQN risk distortion (neutral/optimistic/pessimistic/CVaR),
+    Wasserstein distances \(W_1\)/\(W_2\)
+  \item
+    \texttt{test\_daif\_inference.py} (25 tests):
+    \texttt{distributional\_case\_assignment()} posterior convergence,
+    variational message passing, Bethe free energy, expected information
+    gain
+  \item
+    \texttt{test\_daif\_prediction.py} (27 tests): DPE
+    precision-weighting, N400/P600 amplitude from return distributions,
+    full \texttt{ERPProfile} waveform generation and peak latency
+  \item
+    \texttt{test\_daif\_policy.py} (19 tests): \texttt{G\_policy()} EFE
+    + risk term, Boltzmann policy temperature scaling, distributional
+    epistemic value
+  \item
+    \texttt{test\_daif\_metrics.py} (24 tests): Convergence diagnostics
+    (monotonicity, reduction percentage), distributional KL divergence,
+    quantile calibration error, return entropy
+  \end{itemize}
+\end{itemize}
+
+\newpage

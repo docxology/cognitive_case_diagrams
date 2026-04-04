@@ -1,8 +1,8 @@
-"""Diagrams subpackage — §3, §4, §4b of the manuscript.
+"""Diagrams subpackage — §3–§4c of the manuscript.
 
 String-diagrammatic representations for compositional semantics:
-    - string_diagram: DisCoCat/DisCoCirc Sentence and Discourse representations
-    - complexity_metrics: Diagram complexity analysis (box/cup/cap counting)
+    - string_diagram: DisCoCat ``Sentence`` and DisCoCirc-style ``Discourse``
+    - complexity_metrics: Diagram complexity analysis (box/cup/cap counting; §4b)
     - ditransitive: Three-argument verb diagrams
 """
 

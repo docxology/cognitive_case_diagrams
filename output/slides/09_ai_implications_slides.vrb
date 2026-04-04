@@ -1,0 +1,56 @@
+\frametitle{NOM Is the Requester, INS Is the Tool, DAT Is}
+\protect\phantomsection\label{nom-is-the-requester-ins-is-the-tool-dat-is}
+The eight-case framework of CEREBRUM {[}@friedman2024cerebrum{]} maps
+rigidly onto the operational constraints of multi-agent execution. In a
+Categorical Communication Protocol, interactions are legally licensed
+only if their computational wiring diagrams satisfy a strict grammatical
+type-signature:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Case Role
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Agent System Analogue
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Protocol Function Type
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\textbf{NOM (Agent)} & Active Requester & Initiator of action policies
+(\(X_{\text{NOM}}\)) \\
+\textbf{INS (Instrument)} & Tool / API Module & Means of transforming
+state (\(X_{\text{INS}}\)) \\
+\textbf{ACC (Patient)} & Passive Data Target & Resource being modified
+(\(X_{\text{ACC}}\)) \\
+\textbf{DAT (Recipient)} & Designated Receiver & Endpoint for
+information flow (\(X_{\text{DAT}}\)) \\
+\textbf{LOC (Context)} & System Prompt & Immutably binds boundary
+behavior (\(X_{\text{LOC}}\)) \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+
+This turns prompt engineering into rigorous compilation. Instead of
+parsing a prompt to heuristically guess caller intent, a categorical
+agent processes interactions strictly as algebraic reductions. An MCP
+tool invocation {[}@anthropic2024mcp{]} (\texttt{NOM} using \texttt{INS}
+to modify \texttt{ACC} and yield abstract \texttt{DAT}) becomes a
+formalized tensor contraction:
+
+\begin{equation}
+\text{Interaction Trace:} \quad \left( \text{Agent}_{\text{NOM}} \otimes \text{Tool}_{\text{INS}} \otimes \text{Data}_{\text{ACC}} \right) \xrightarrow{\text{execute}} \text{Response}_{\text{DAT}}
+\label{eq:ai-interaction-trace}
+\end{equation}
+
+If an untyped internal subsystem (e.g., an adversarial user-uploaded
+document) attempts to independently forge a command, the operation
+simply fails to compile. The document lacks a valid tensor wire bridging
+from its marginalized \(\text{ACC}\) domain back into the execution flow
+governing \(\text{INS}\). The grammar ensures every interaction is
+structurally typed, guaranteeing safety properties akin to
+\textbf{memory safety, but for agentic volition}.

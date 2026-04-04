@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>03b_case_type_logic</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="sec:case-type-logic">Case Subscripts, Passivization, and the
+Curry–Howard Proof</h1>
+<p>Case-marked noun phrases actively receive compound types that
+rigorously encode both their immediate grammatical role and their larger
+combinatory potential. For example, in a nominative–accusative language,
+the type assignment proceeds as follows:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Expression</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Gloss</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">“Alice” (subject)</td>
+<td style="text-align: left;"><span
+class="math inline">\(n_{\text{NOM}}\)</span></td>
+<td style="text-align: left;">Noun, nominative-marked</td>
+</tr>
+<tr>
+<td style="text-align: left;">“the ball” (object)</td>
+<td style="text-align: left;"><span
+class="math inline">\(n_{\text{ACC}}\)</span></td>
+<td style="text-align: left;">Noun, accusative-marked</td>
+</tr>
+<tr>
+<td style="text-align: left;">“kicks”</td>
+<td style="text-align: left;"><span
+class="math inline">\((n_{\text{NOM}} \backslash s) /
+n_{\text{ACC}}\)</span></td>
+<td style="text-align: left;">Seeks ACC right, NOM left</td>
+</tr>
+<tr>
+<td style="text-align: left;">“to Bob” (recipient)</td>
+<td style="text-align: left;"><span class="math inline">\((s \backslash
+s) / n_{\text{DAT}}\)</span></td>
+<td style="text-align: left;">Modifies sentence via DAT argument</td>
+</tr>
+</tbody>
+</table>
+<p>The specific subscripts structurally refine the base noun type <span
+class="math inline">\(n\)</span> with mandatory continuous case
+features, mathematically guaranteeing that the transitive verb “kicks”
+exclusively selects a nominative-marked subject and an accusative-marked
+object. Any feature mismatch automatically blocks the algebraic
+derivation, accurately modeling native ungrammaticality.</p>
+<p><strong>Alignment and natural transformations.</strong>
+Cross-linguistic alignment is modeled functorially in : alignment types
+are structure-preserving functors from a universal role category to a
+language-specific case category, compared via natural transformations
+when one asks how two alignments cohere on the same underlying argument
+structure. At the level of case-marked pregroup types (this section),
+that functorial picture <strong>suggests</strong> treating agreement
+checks as naturality-style coherence constraints: the morphosyntactic
+alignment chosen for arguments must remain compatible with the verb’s
+combinatorial requirements so that reductions still factor through the
+intended case-typed slots. We do not claim a full adjunction between
+identity and alignment functors in the pregroup category here; the
+precise categorical status of alignment is anchored in , while the typed
+reductions below supply the concrete syntax.</p>
+<h2
+id="syntactic-derivation-as-proof-case-assignment-as-type-inference">Syntactic
+Derivation as Proof, Case Assignment as Type Inference</h2>
+<p>A deep structural parallel underlies the Lambek calculus: derivations
+of syntactic types correspond to proofs in intuitionistic logic (via the
+Curry–Howard isomorphism), and therefore to programs in a typed lambda
+calculus. Specifically:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Syntactic Domain</th>
+<th style="text-align: left;">Logical Domain</th>
+<th style="text-align: left;">Computational Domain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Types <span class="math inline">\((A / B,
+A \backslash B)\)</span></td>
+<td style="text-align: left;">Propositions</td>
+<td style="text-align: left;">Types</td>
+</tr>
+<tr>
+<td style="text-align: left;">Derivations</td>
+<td style="text-align: left;">Proofs</td>
+<td style="text-align: left;">Programs (<span
+class="math inline">\(\lambda\text{-terms}\)</span>)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cut elimination</td>
+<td style="text-align: left;">Proof normalization</td>
+<td style="text-align: left;"><span
+class="math inline">\(\beta\text{-reduction}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Commutativity of cuts</td>
+<td style="text-align: left;">Confluence of rewriting</td>
+<td style="text-align: left;">Church–Rosser property</td>
+</tr>
+</tbody>
+</table>
+<p>This foundational correspondence dictates two critical consequences
+for our cognitive framework:</p>
+<ol type="1">
+<li><strong>Semantic compositionality strictly follows syntactic
+well-formedness</strong>: A successfully typed derivation automatically
+guarantees a well-formed geometric meaning representation (specifically,
+the exact <span class="math inline">\(\lambda\text{-term}\)</span>
+isolated and extracted directly from the formal proof).</li>
+<li><strong>Case assignment reduces to type inference</strong>:
+Dynamically determining the correct case for a noun phrase in context is
+computationally equivalent to inferring the type of an unknown variable
+in a <span
+class="math inline">\(\lambda\text{-expression}\)</span>—thereby
+grounding case assignment in the well-understood algorithmic landscape
+of type inference (Hindley-Milner and its extensions).</li>
+</ol>
+<h2 id="songs-monadic-roots">Song’s Monadic Roots</h2>
+<p>Song <span class="citation"
+data-cites="song2022act song2022blog">[-@song2022act;
+-@song2022blog]</span> significantly extends this categorial framework
+by deploying a novel <strong>monadic semantics</strong> for root syntax.
+He successfully models the sublexical decomposition of complex verb
+roots by embedding specialized monads directly into the base syntactic
+category. This computational approach captures the deep intuition that a
+seemingly simple verb like “break” harbors layered internal
+structure—specifically, an active causative layer tightly coupled to a
+passive result-state layer—which dynamically dictates subsequent case
+assignment. The formal monad elegantly encapsulates this tangled lexical
+complexity within one streamlined categorical construction, empowering
+the type-logical grammar to process lexical features and syntactic
+composition simultaneously and uniformly.</p>
+<p>This monadic architecture seamlessly interfaces with modern graded
+type theory. For instance, Asudeh and Giorgolo <span class="citation"
+data-cites="asudeh2020graded">[-@asudeh2020graded]</span> previously
+developed a monadic semantics tracking evidentiality, deploying graded
+computational effects to quantify the shifting epistemic real-world
+status of various propositions. Our framework extends this exact pattern
+into the domain of morphological case, where the continuous “grade”
+attached to any specific morphism formally encodes the statistical
+strength and validity of that local semantic role assignment.</p>
+<h2
+id="passivization-is-a-swap-voice-alternation-as-topological-wire-crossing">Passivization
+Is a Swap: Voice Alternation as Topological Wire Crossing</h2>
+<p>Within categorical linguistics, <strong>passivization</strong>
+emerges as a uniquely revealing topological operation. Traditionally
+described as a syntactic rule that promotes the patient to subject
+position while (optionally) demoting the agent to an oblique role,
+passivization in our framework ceases to be an ad-hoc transformation;
+instead, it executes a mathematically precise <em>type
+permutation</em>—a Swap morphism <span
+class="math inline">\(\sigma_{A,B}: A \otimes B \to B \otimes A\)</span>
+that geometrically crosses the noun wires feeding into the verb’s
+pregroup derivation.</p>
+<p>In a pregroup grammar, the active transitive “Alice chases Bob” has
+the type reduction:</p>
+<p><span class="math display">\[\begin{equation}
+n_{\text{NOM}} \cdot (n^r \cdot s \cdot n^l) \cdot n_{\text{ACC}} \to s
+\label{eq:eq-3-3}
+\end{equation}\]</span></p>
+<p>Passivization permutes the noun arguments, yielding “Bob is chased by
+Alice” with the swapped type assignment:</p>
+<p><span class="math display">\[\begin{equation}
+n_{\text{ACC}} \cdot (n^r \cdot s \cdot n^l) \cdot n_{\text{NOM}} \to s
+\label{eq:eq-3-4}
+\end{equation}\]</span></p>
+<p>Crucially, the DisCoPy library’s rigid <code>Swap</code> primitive
+renders this verbal permutation explicit and computationally precise:
+the specific swap operation <span class="math inline">\(\sigma_{n,n}: n
+\otimes n \to n \otimes n\)</span> successfully permutes the two active
+noun wires without violating the category’s overarching monoidal
+structure. The generated passive diagram diverges from its active
+counterpart solely through this physical crossing of the noun wires.
+This transforms abstract syntactic voice alternation into a highly
+visible, instantly readable topological feature embedded directly within
+the string diagram.</p>
+<p>This diagrammatic transparency exemplifies Shimojima’s <span
+class="citation"
+data-cites="shimojima1996reasoning">[-@shimojima1996reasoning]</span>
+free-ride inference capability. By simply inspecting the visual
+topology, a cognitive agent immediately verifies that passivization
+strictly preserves the verb’s deep, inherent argument structure while
+merely rearranging its superficial surface realization—a structural fact
+that typically requires chaining multiple sequential inference steps to
+algebraically establish within standard linear notation.</p>
+<figure id="fig:discopy-passive">
+<img src="output/figures/discopy_passive.png"
+alt="Passivization is a topological change in wire connectivity, not a lexical substitution. The passive construction &quot;Bob is-chased&quot; rendered by DisCoPy shows that voice alternation removes one Cup contraction relative to the active form, lowering the syntactic complexity score of  (defined in ). The structural difference between active and passive voice is thus captured entirely by diagram topology." />
+<figcaption aria-hidden="true">Passivization is a topological change in
+wire connectivity, not a lexical substitution. The passive construction
+"Bob is-chased" rendered by DisCoPy shows that voice alternation removes
+one Cup contraction relative to the active form, lowering the syntactic
+complexity score of (defined in ). The structural difference between
+active and passive voice is thus captured entirely by diagram
+topology.</figcaption>
+</figure>
+</body>
+</html>

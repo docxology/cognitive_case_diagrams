@@ -41,6 +41,7 @@ class CasePOVM:
     roles: list
     elements: dict = field(default_factory=dict)
     dimension: int = 2
+    name: str = "povm"
 
     def __post_init__(self) -> None:
         """Validate POVM elements if already provided."""

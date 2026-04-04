@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -239,54 +239,64 @@
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:enriched-categories">Enriched Categories: Magnitude and
-Quantitative Grading</h1>
-<h2 id="beyond-discrete-categories-quantitative-grading">Beyond Discrete
-Categories: Quantitative Grading</h2>
-<p>The categories introduced in —with case roles as objects and
+<h1 id="sec:enriched-categories"><span
+class="math inline">\([0,1]\)</span>-Enriched Case Categories:
+Hom-Values as Distributional Proximity, Magnitude as Complexity</h1>
+<h2 id="why-binary-morphisms-are-not-enough">Why Binary Morphisms Are
+Not Enough</h2>
+<p>The categories established in —modeling case roles as objects and
 grammatical relations as morphisms—capture the <em>qualitative</em>
-structure of case systems: which roles exist and how they connect. But
-linguistic data is fundamentally <em>quantitative</em>: some grammatical
-relations are more probable than others, some role assignments are
-stronger than others, and distributional similarity is a matter of
-degree.</p>
-<p>To accommodate this quantitative dimension, we move from ordinary
-categories to <strong>enriched categories</strong>, where hom-sets are
-not just sets of morphisms but carry additional algebraic structure. The
-framework of Bradley et al. <span class="citation"
-data-cites="fritz2021enriched">[-@fritz2021enriched]</span> provides the
-key construction.</p>
-<h2 id="the-01-enrichment-of-case-categories">The <span
-class="math inline">\([0,1]\)</span>-Enrichment of Case Categories</h2>
-<h3 id="definition">Definition</h3>
+topology of case systems: which roles exist and how they connect.
+However, actual linguistic data is fundamentally <em>quantitative</em>:
+certain grammatical relations are more probable than others, proto-role
+assignments vary in strength, and distributional similarity is a matter
+of degree.</p>
+<p>To accommodate this quantitative dimension without sacrificing
+algebraic structure, we advance from ordinary categories to
+<strong>enriched categories</strong>. In an enriched category, hom-sets
+carry additional measurable structure rather than functioning as mere
+discrete sets of morphisms. The framework of Bradley et al. <span
+class="citation"
+data-cites="fritz2021enriched">[-@fritz2021enriched]</span> supplies the
+key formal construction.</p>
+<h2 id="enriching-over-01cdot1">Enriching Over <span
+class="math inline">\(([0,1],\cdot,1)\)</span></h2>
+<h3
+id="hom-values-as-graded-distributional-proximity-four-linguistic-interpretations">Hom-Values
+as Graded Distributional Proximity: Four Linguistic Interpretations</h3>
 <p>A category <span class="math inline">\(\mathcal{C}\)</span> enriched
 over the unit interval <span class="math inline">\(([0,1], \cdot,
 1)\)</span> assigns to every pair of objects <span
 class="math inline">\(A, B\)</span> a <em>hom-value</em> <span
 class="math inline">\(\mathcal{C}(A, B) \in [0,1]\)</span>
 satisfying:</p>
-<p><span class="math display">\[\mathcal{C}(A, A) = 1 \quad
-\text{(Identity)} \]</span> {#eq:eq-5-1}</p>
-<p><span class="math display">\[\mathcal{C}(A, C) \geq \mathcal{C}(A, B)
-\cdot \mathcal{C}(B, C) \quad \text{(Composition)} \]</span>
-{#eq:eq-5-2}</p>
-<p>The identity axiom says that every expression is maximally related to
-itself. The composition inequality says that distributional relatedness
-composes sub-multiplicatively: if <span class="math inline">\(A\)</span>
-is 80% related to <span class="math inline">\(B\)</span> and <span
-class="math inline">\(B\)</span> is 70% related to <span
-class="math inline">\(C\)</span>, then <span
-class="math inline">\(A\)</span> must be at least <span
-class="math inline">\(0.8 \times 0.7 = 56\%\)</span> related to <span
-class="math inline">\(C\)</span>.</p>
-<h3 id="interpreting-hom-values-in-linguistic-context">Interpreting
-Hom-Values in Linguistic Context</h3>
+<p><span class="math display">\[\begin{align}
+\mathcal{C}(A, A) &amp;= 1 \quad \text{(Identity)} \label{eq:eq-5-1} \\
+\mathcal{C}(A, C) &amp;\geq \mathcal{C}(A, B) \cdot \mathcal{C}(B, C)
+\quad \text{(Composition)} \label{eq:eq-5-2}
+\end{align}\]</span></p>
+<p>The identity axiom physically dictates that every distinct linguistic
+expression remains perfectly and maximally related to itself. The
+composition inequality imposes a strict logical boundary, demanding that
+distributional relatedness inherently composes sub-multiplicatively: if
+expression <span class="math inline">\(A\)</span> proves 80% related to
+<span class="math inline">\(B\)</span>, and <span
+class="math inline">\(B\)</span> remains 70% related to <span
+class="math inline">\(C\)</span>, the overarching algebraic structure
+formally guarantees that <span class="math inline">\(A\)</span> must be
+at least <span class="math inline">\(0.8 \times 0.7 = 56\%\)</span>
+related to <span class="math inline">\(C\)</span>.</p>
+<h3
+id="conditional-probability-proto-role-strength-cosine-similarity">Conditional
+Probability, Proto-Role Strength, Cosine Similarity</h3>
 <p>Bradley et al. <span class="citation"
-data-cites="fritz2021enriched">[-@fritz2021enriched]</span> interpret
-hom-values as <em>conditional probabilities</em> in a distributional
-model: <span class="math inline">\(\mathcal{C}(A, B) = P(\text{context}
-\mid A \text{ and } B \text{ co-occur})\)</span>. In our case-theoretic
-application, we interpret them more broadly:</p>
+data-cites="fritz2021enriched">[-@fritz2021enriched]</span> originally
+interpret these numerical hom-values strictly as empirical
+<em>conditional probabilities</em> measured within a massive
+distributional model: <span class="math inline">\(\mathcal{C}(A, B) =
+P(\text{context} \mid A \text{ and } B \text{ co-occur})\)</span>.
+Within our customized case-theoretic application, we actively broaden
+this interpretation to capture deep grammatical phenomena:</p>
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -324,14 +334,14 @@ embeddings</td>
 </tr>
 </tbody>
 </table>
-<h3 id="implementation-via-the-enrichedcategory-class">Implementation
-via the EnrichedCategory Class</h3>
+<h3 id="when-composition-inequality-fails">When Composition Inequality
+Fails</h3>
 <p>Our <code>EnrichedCategory</code> class implements this structure
 directly. The constructor takes a list of <code>CaseRole</code> objects
 and a NumPy proximity matrix encoding hom-values:</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.enriched <span class="im">import</span> EnrichedCategory</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.case_category <span class="im">import</span> CaseRole</span>
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.enriched_cat.enriched <span class="im">import</span> EnrichedCategory</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.case_systems.case_category <span class="im">import</span> CaseRole</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>roles <span class="op">=</span> [CaseRole.NOM, CaseRole.ACC, CaseRole.DAT]</span>
@@ -358,190 +368,21 @@ proximities. shows the distributional relations between case roles as a
 categorical relation graph.</p>
 <figure id="fig:enriched-heatmap">
 <img src="output/figures/enriched_hom_matrix.png"
-alt="Case role distributional relation graph visualizing the enriched hom-values \mathcal{C}(A,B) \in [0,1] among all eight case roles. Strong relations (high distributional co-occurrence, solid edges) cluster into two groups: the core argument complex (NOM–ACC–DAT, linked by transitive and transfer morphisms) and the peripheral complex (LOC–INS–ABL, linked by spatial and instrumental relations). GEN bridges both clusters via possessive modification. Weak relations (dashed edges) connect VOC to the network—its peripheral isolation reflects the pragmatic rather than syntactic function of direct address. The edge weights in this graph are the hom-values from which the 3 \times 3 similarity matrix Z ([@eq:eq-5-4]) and categorical magnitude of  are computed." />
-<figcaption aria-hidden="true">Case role distributional relation graph
-visualizing the enriched hom-values <span
-class="math inline">\(\mathcal{C}(A,B) \in [0,1]\)</span> among all
-eight case roles. Strong relations (high distributional co-occurrence,
-solid edges) cluster into two groups: the <strong>core argument
+alt="Core and peripheral argument complexes emerge from enriched distributional hom-values. Relation graph visualizing \mathcal{C}(A,B) \in [0,1] among all eight case roles. Strong relations (solid edges) cluster into two groups: the core argument complex (NOM–ACC–DAT, linked by transitive and transfer morphisms) and the peripheral complex (LOC–INS–ABL, linked by spatial and instrumental relations). GEN bridges both via possessive modification. Weak relations (dashed edges) connect VOC—its peripheral isolation reflects the pragmatic rather than syntactic function of direct address. These hom-values yield the similarity matrix Z () and categorical magnitude of . Generated programmatically from the EnrichedCategory class." />
+<figcaption aria-hidden="true">Core and peripheral argument complexes
+emerge from enriched distributional hom-values. Relation graph
+visualizing <span class="math inline">\(\mathcal{C}(A,B) \in
+[0,1]\)</span> among all eight case roles. Strong relations (solid
+edges) cluster into two groups: the <strong>core argument
 complex</strong> (NOM–ACC–DAT, linked by transitive and transfer
 morphisms) and the <strong>peripheral complex</strong> (LOC–INS–ABL,
-linked by spatial and instrumental relations). GEN bridges both clusters
-via possessive modification. Weak relations (dashed edges) connect VOC
-to the network—its peripheral isolation reflects the pragmatic rather
-than syntactic function of direct address. The edge weights in this
-graph are the hom-values from which the <span class="math inline">\(3
-\times 3\)</span> similarity matrix <span
-class="math inline">\(Z\)</span> (<span class="citation"
-data-cites="eq:eq-5-4">[@eq:eq-5-4]</span>) and categorical magnitude of
-are computed.</figcaption>
+linked by spatial and instrumental relations). GEN bridges both via
+possessive modification. Weak relations (dashed edges) connect VOC—its
+peripheral isolation reflects the pragmatic rather than syntactic
+function of direct address. These hom-values yield the similarity matrix
+<span class="math inline">\(Z\)</span> () and categorical magnitude of .
+Generated programmatically from the <code>EnrichedCategory</code>
+class.</figcaption>
 </figure>
-<h2 id="categorical-magnitude-as-a-complexity-invariant">Categorical
-Magnitude as a Complexity Invariant</h2>
-<p>A key invariant of enriched categories is their
-<strong>magnitude</strong>—a numerical quantity that captures the
-“effective size” of the category, discounting for overlap between
-objects.</p>
-<p>For an enriched category with <span class="math inline">\(n\)</span>
-objects, let <span class="math inline">\(Z\)</span> be the <span
-class="math inline">\(n \times n\)</span> matrix with <span
-class="math inline">\(Z_{ij} = \mathcal{C}(i, j)\)</span>. The magnitude
-is:</p>
-<p><span class="math display">\[|\mathcal{C}| = \sum_{i,j} (Z^{-1})_{ij}
-\]</span> {#eq:eq-5-3}</p>
-<p>when <span class="math inline">\(Z\)</span> is invertible. Magnitude
-has deep connections to information theory:</p>
-<ul>
-<li>For a <em>discrete</em> category (no non-trivial relationships),
-<span class="math inline">\(|\mathcal{C}| = n\)</span> (the number of
-objects)</li>
-<li>For a highly connected category, <span
-class="math inline">\(|\mathcal{C}| &lt; n\)</span> (objects are
-“redundant”)</li>
-<li>Magnitude connects to the diversity measures studied in ecology
-(species diversity), graph theory (effective graph resistance), and
-information geometry (Fisher information)</li>
-</ul>
-<p><strong>Worked example.</strong> Consider the minimal 3-case category
-with objects <span class="math inline">\(\{S, A, P\}\)</span> and
-hom-values <span class="math inline">\(\mathcal{C}(S,A) = 0.85\)</span>
-(S and A share agentive contexts), <span
-class="math inline">\(\mathcal{C}(A,P) = 0.70\)</span> (transitive
-co-occurrence), <span class="math inline">\(\mathcal{C}(S,P) =
-0.40\)</span> (weak S–P overlap). The similarity matrix <span
-class="math inline">\(Z\)</span> is:</p>
-<p><span class="math display">\[Z = \begin{pmatrix} 1.00 &amp; 0.85
-&amp; 0.40 \\ 0.85 &amp; 1.00 &amp; 0.70 \\ 0.40 &amp; 0.70 &amp; 1.00
-\end{pmatrix}, \quad Z^{-1} \approx \begin{pmatrix} 2.45 &amp; -1.35
-&amp; 0.55 \\ -1.35 &amp; 3.00 &amp; -1.80 \\ 0.55 &amp; -1.80 &amp;
-2.65 \end{pmatrix} \]</span> {#eq:eq-5-4}</p>
-<p>The magnitude is <span class="math inline">\(|\mathcal{C}| =
-\sum_{i,j} (Z^{-1})_{ij} \approx 2.45 - 1.35 + 0.55 - 1.35 + 3.00 - 1.80
-+ 0.55 - 1.80 + 2.65 \approx 2.90\)</span>—less than the cardinality 3
-of the role inventory. The deficit <span class="math inline">\(3 - 2.90
-= 0.10\)</span> is small because these three core arguments are
-relatively independent (the S–P overlap of 0.40 is the main source of
-redundancy). By contrast, an accusative alignment—which merges S and A
-into a single NOM role—would yield a 2-object category with magnitude
-exactly 2.0, and the deficit <span class="math inline">\(3 - 2.0 =
-1.0\)</span> quantifies the information lost by neutralization.</p>
-<p><strong>Scaling to full categories.</strong> Our
-<code>EnrichedCategory</code> implementation computes magnitude for any
-case category. For the standard 8-case English category with empirically
-calibrated distributional proximity values, the magnitude is
-approximately 5.2—the deficit <span class="math inline">\(8 - 5.2 =
-2.8\)</span> reflects distributional overlap: NOM and ACC share
-transitive contexts, DAT and ACC overlap in double-object constructions,
-and the peripheral cases (VOC, ABL) are relatively independent. This
-magnitude differential provides a quantitative formalization of
-Silverstein’s <span class="citation"
-data-cites="silverstein1976hierarchy">[-@silverstein1976hierarchy]</span>
-case hierarchy: languages with more alignment-based neutralization
-(lower magnitude) have less relational discriminability, while richer
-case inventories (higher magnitude) make finer-grained relational
-distinctions.</p>
-<p>Bradley <span class="citation"
-data-cites="bradley2020entropy">[-@bradley2020entropy]</span>
-establishes a foundational link between categorical magnitude and
-information entropy through topological operad derivations. Her result
-shows that Shannon entropy can be characterized as the unique derivation
-of a certain topological operad—a categorical structure that also
-governs the composition of enriched categories. This provides a deep
-theoretical justification for using magnitude as a measure of linguistic
-complexity: the magnitude of a case category quantifies how much
-“information” the case system encodes about relational structure.</p>
-<p>Leinster and Shulman <span class="citation"
-data-cites="leinster2021magnitude">[-@leinster2021magnitude]</span>
-further develop <strong>magnitude homology</strong>, which categorifies
-magnitude from a scalar invariant to a graded homological
-invariant—detecting not just the “effective number” of objects but the
-higher-dimensional “holes” in the distributional landscape. For case
-categories, magnitude homology can distinguish between two systems with
-the same magnitude but different topological structure: a category where
-NOM–ACC–DAT form a tight cluster and all other cases are isolated looks
-identical in magnitude to one where the clustering is evenly
-distributed, but their magnitude homology groups differ, revealing that
-the former has a 1-dimensional “hole” (a missing transitive link) that
-the latter fills. This finer invariant provides a richer classification
-of case systems than magnitude alone.</p>
-<h2
-id="enriched-functors-bradleys-language-as-category-model-and-the-llm-connection">Enriched
-Functors, Bradley’s Language-as-Category Model, and the LLM
-Connection</h2>
-<p>Bradley’s <span class="citation"
-data-cites="bradley2024ipam bradley2025tea">[-@bradley2024ipam;
--@bradley2025tea]</span> broader program treats natural language itself
-as an enriched category, where:</p>
-<ul>
-<li><strong>Objects</strong> are expressions (words, phrases,
-sentences)</li>
-<li><strong>Hom-values</strong> encode distributional co-occurrence
-probabilities</li>
-<li><strong>Composition</strong> models transitivity of distributional
-relatedness</li>
-</ul>
-<p>This “language as enriched category” perspective has profound
-implications for case theory:</p>
-<ol type="1">
-<li><p><strong>Case roles emerge from distributional structure</strong>:
-Rather than being imposed a priori, case distinctions arise from
-clusters of high hom-values in the enriched language category. Nouns
-that frequently appear in agent contexts cluster together, forming the
-“nominative” region of the category.</p></li>
-<li><p><strong>Alignment types correspond to enriched
-structure</strong>: Different languages partition the enriched category
-differently, and these partitions correspond to the alignment types
-(accusative, ergative, etc.) discussed in .</p></li>
-<li><p><strong>Language models are enriched functors</strong>: A neural
-language model (such as a transformer) can be viewed as an enriched
-functor from the syntactic category to the semantic category, mapping
-type-logical derivations to distributional meaning representations while
-preserving the enriched structure.</p></li>
-</ol>
-<p>The deep connection to modern distributional semantics is this: the
-static word embeddings of Word2Vec <span class="citation"
-data-cites="mikolov2013efficient">[@mikolov2013efficient]</span> and
-GloVe <span class="citation"
-data-cites="pennington2014glove">[@pennington2014glove]</span>
-operationalize the enriched hom-values as <em>cosine similarities</em>
-in a learned vector space—<span class="math inline">\(\mathcal{C}(A, B)
-= \cos(\vec{v}_A, \vec{v}_B)\)</span>—while contextualized embeddings
-from transformers <span class="citation"
-data-cites="devlin2019bert vaswani2017attention">[@devlin2019bert;
-@vaswani2017attention]</span> compute <em>dynamic</em> hom-values that
-depend on the sentential context. In the enriched-categorical framework,
-this transition from static to contextualized embeddings corresponds to
-moving from a <em>fixed</em> enriched category (where hom-values are
-precomputed from corpus statistics) to a <em>parameterized</em> enriched
-category (where hom-values are computed on-the-fly by attention
-mechanisms). Transformer attention weights <span
-class="math inline">\(\alpha_{ij}\)</span> are precisely such
-context-dependent enriched hom-values: they encode how “related” token
-<span class="math inline">\(i\)</span> is to token <span
-class="math inline">\(j\)</span> in a given representational layer,
-satisfying a softmax normalization that parallels the probabilistic
-interpretation of Bradley et al.’s <span class="citation"
-data-cites="fritz2021enriched">[-@fritz2021enriched]</span> hom-values
-as conditional probabilities.</p>
-<h2
-id="connection-to-lawveres-metric-spaces-and-generalized-logic">Connection
-to Lawvere’s Metric Spaces and Generalized Logic</h2>
-<p>The <span class="math inline">\([0,1]\)</span>-enrichment connects to
-a deep tradition in categorical algebra. Lawvere showed that metric
-spaces are categories enriched over <span class="math inline">\(([0,
-\infty], +, 0)\)</span>: the hom-value is the distance between points,
-the identity axiom says <span class="math inline">\(d(x, x) =
-0\)</span>, and the composition inequality is the triangle inequality
-<span class="math inline">\(d(x, z) \leq d(x, y) + d(y, z)\)</span>. Our
-<span class="math inline">\([0,1]\)</span>-enrichment is the
-multiplicative analogue: hom-values are <em>similarities</em> rather
-than distances, and the composition inequality is sub-multiplicative
-rather than sub-additive.</p>
-<p>This Lawvere-style perspective unifies our case categories with the
-geometry of distributional semantics: case roles are points in a
-“similarity space,” and morphisms between them are paths weighted by
-distributional proximity. The magnitude of this space then quantifies
-the “effective dimensionality” of the case system—how many independent
-relational distinctions the language makes.</p>
 </body>
 </html>

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.1)  15 MAR 2026 08:51
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  4 APR 2026 12:39
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -84,7 +84,7 @@ Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
 \beamer@paperheight=\skip51
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/geometry/geometry.sty
-Package: geometry 2020/01/02 v5.9 Page Geometry
+Package: geometry 2026/03/07 v6.0 Page Geometry
 
 (/usr/local/texlive/2026/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
@@ -1488,47 +1488,55 @@ Package microtype Info: Loading generic protrusion settings for font family
 ides/10_conclusion_slides.nav) [1
 
 ]
+\openout4 = `10_conclusion_slides.vrb'.
+
+
+(/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/sl
+ides/10_conclusion_slides.vrb
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 10.
+LaTeX Font Info:    Font shape `TU/lmss/bx/it' in size <10.95> not available
+(Font)              Font shape `TU/lmss/bx/sl' tried instead on input line 11.
+
 
 LaTeX Warning: Reference `sec:case-systems' on page 2 undefined on input line 2
-71.
+0.
 
 
 LaTeX Warning: Reference `sec:categorial-grammar' on page 2 undefined on input 
-line 271.
+line 36.
 
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 271.
 
 LaTeX Warning: Reference `sec:categorical-semantics' on page 2 undefined on inp
-ut line 271.
+ut line 51.
 
 
 LaTeX Warning: Reference `sec:enriched-categories' on page 2 undefined on input
- line 271.
+ line 78.
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.8961pt on input line 271.
+(Font)              scaled to size 7.8961pt on input line 79.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.64008pt on input line 271.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
-71.
+(Font)              scaled to size 5.64008pt on input line 79.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 7
+9.
 (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 11.28131pt on input line 271.
+(Font)              scaled to size 11.28131pt on input line 79.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.89691pt on input line 271.
+(Font)              scaled to size 7.89691pt on input line 79.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.64066pt on input line 271.
+(Font)              scaled to size 5.64066pt on input line 79.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.27914pt on input line 271.
+(Font)              scaled to size 11.27914pt on input line 79.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.8954pt on input line 271.
+(Font)              scaled to size 7.8954pt on input line 79.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.63957pt on input line 271.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 271
-.
+(Font)              scaled to size 5.63957pt on input line 79.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 79.
+
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -1536,8 +1544,8 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 271
-.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 79.
+
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1546,31 +1554,49 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 
-LaTeX Warning: Reference `sec:topos-theory' on page 2 undefined on input line 2
-71.
+LaTeX Warning: Reference `sec:topos-theory' on page 2 undefined on input line 9
+1.
 
 
-LaTeX Warning: Reference `sec:cognitive-integration' on page 2 undefined on inp
-ut line 271.
+LaTeX Warning: Reference `sec:topos-theory' on page 2 undefined on input line 9
+5.
+
+Missing character: There is no ≥ (U+2265) in font [lmsans10-bold]:mapping=tex-t
+ext;!
+
+LaTeX Warning: Reference `sec:diagrammatic-cognition' on page 2 undefined on in
+put line 122.
+
+
+LaTeX Warning: Reference `sec:daif-results' on page 2 undefined on input line 1
+23.
 
 
 LaTeX Warning: Reference `sec:quantum-active-inference' on page 2 undefined on 
-input line 271.
+input line 143.
+
+
+LaTeX Warning: Reference `sec:cognitive-security' on page 2 undefined on input 
+line 156.
 
 
 LaTeX Warning: Reference `sec:ai-implications' on page 2 undefined on input lin
-e 271.
+e 157.
 
 
 LaTeX Warning: Reference `sec:cognitive-integration' on page 2 undefined on inp
-ut line 271.
+ut line 178.
 
 
 LaTeX Warning: Reference `sec:ai-implications' on page 2 undefined on input lin
-e 271.
+e 198.
 
 
-Overfull \vbox (1801.82962pt too high) detected at line 271
+LaTeX Warning: Reference `sec:topos-theory' on page 2 undefined on input line 2
+04.
+
+)
+Overfull \vbox (2146.70403pt too high) detected at line 303
  []
 
 [2
@@ -1583,32 +1609,39 @@ Overfull \vbox (1801.82962pt too high) detected at line 271
 ides/10_conclusion_slides.vrb
 
 LaTeX Warning: Reference `fig:three-sentence-discourse' on page 3 undefined on 
-input line 11.
+input line 13.
 
 
 LaTeX Warning: Reference `sec:categorical-semantics' on page 3 undefined on inp
-ut line 58.
-
-
-LaTeX Warning: Reference `sec:cognitive-integration' on page 3 undefined on inp
 ut line 70.
 
 
+LaTeX Warning: Reference `eq:eq-8-1' on page 3 undefined on input line 83.
+
+
 LaTeX Warning: Reference `sec:cognitive-integration' on page 3 undefined on inp
-ut line 90.
+ut line 91.
+
+
+LaTeX Warning: Reference `sec:cognitive-integration' on page 3 undefined on inp
+ut line 111.
+
+
+LaTeX Warning: Reference `sec:daif-results' on page 3 undefined on input line 1
+41.
 
 
 LaTeX Warning: Reference `sec:enriched-categories' on page 3 undefined on input
- line 128.
+ line 164.
 
 )
-Overfull \vbox (1020.3253pt too high) detected at line 403
+Overfull \vbox (1458.57347pt too high) detected at line 475
  []
 
 [3
 
 ]
-Overfull \vbox (231.99553pt too high) detected at line 440
+Overfull \vbox (222.79552pt too high) detected at line 511
  []
 
 [4
@@ -1636,13 +1669,13 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 29407 strings out of 468168
- 595229 string characters out of 5432816
- 1229631 words of memory out of 5000000
- 57606 multiletter control sequences out of 15000+600000
- 631248 words of font info for 71 fonts, out of 8000000 for 9000
+ 29438 strings out of 468168
+ 596184 string characters out of 5432815
+ 1193380 words of memory out of 5000000
+ 57633 multiletter control sequences out of 15000+600000
+ 631256 words of font info for 72 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,11n,123p,1100b,561s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,11n,123p,1100b,602s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_case_d
 iagrams/output/slides/10_conclusion_slides.pdf (4 pages).

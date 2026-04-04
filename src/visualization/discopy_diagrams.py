@@ -18,9 +18,10 @@ References:
 
 import logging
 from pathlib import Path
-from typing import Optional
+from contextlib import contextmanager
+from typing import Iterator, Optional
 
-import matplotlib
+import matplotlib.pyplot as plt
 
 from ..diagrams.string_diagram import (
     create_discopy_transitive,
@@ -33,8 +34,27 @@ from ..diagrams.string_diagram import (
 
 logger = logging.getLogger(__name__)
 
-# Standard draw kwargs for consistent, publication-quality output
-DRAW_KWARGS = dict(fontsize=14, margins=(0.1, 0.1))
+# Standard draw kwargs for consistent, publication-quality output.
+# fontsize=18 satisfies the 16pt floor with margin for rendering variance.
+DRAW_KWARGS = dict(fontsize=18, margins=(0.12, 0.12))
+
+
+@contextmanager
+def _glyph_safe_rc() -> Iterator[None]:
+    """Prefer DejaVu for DisCoPy text so Unicode math symbols survive savefig."""
+    with plt.rc_context(
+        {
+            "font.family": "sans-serif",
+            "font.sans-serif": [
+                "DejaVu Sans",
+                "Helvetica",
+                "Arial",
+                "Liberation Sans",
+                "sans-serif",
+            ],
+        }
+    ):
+        yield
 
 
 def render_discopy_transitive(
@@ -52,11 +72,12 @@ def render_discopy_transitive(
         output_path: Path to save. Required.
     """
     diagram = create_discopy_transitive(subject, verb, obj)
-    diagram.draw(
-        path=str(output_path),
-        figsize=(10, 5),
-        **DRAW_KWARGS,
-    )
+    with _glyph_safe_rc():
+        diagram.draw(
+            path=str(output_path),
+            figsize=(10, 5),
+            **DRAW_KWARGS,
+        )
     logger.info("Saved DisCoPy transitive to %s", output_path)
 
 
@@ -66,9 +87,10 @@ def render_discopy_composition(
     obj: str = "Bob",
     output_path: Optional[Path] = None,
 ) -> None:
-    """Render a DisCoPy diagram with its composition (normal form).
+    """Render a DisCoPy diagram showing pre-contraction → post-contraction.
 
-    Shows original diagram = normal form side by side.
+    Left panel: uncontracted word tensor n ⊗ (n.r ⊗ s ⊗ n.l) ⊗ n
+    Right panel: contracted sentence type s after Cup contractions
 
     Args:
         subject, verb, obj: Sentence components.
@@ -76,13 +98,14 @@ def render_discopy_composition(
     """
     from discopy.drawing import Equation
 
-    diagram, normal = create_discopy_composition(subject, verb, obj)
-    eq = Equation(diagram, normal)
-    eq.draw(
-        path=str(output_path),
-        figsize=(16, 6),
-        **DRAW_KWARGS,
-    )
+    words, contracted = create_discopy_composition(subject, verb, obj)
+    eq = Equation(words, contracted, symbol="→")
+    with _glyph_safe_rc():
+        eq.draw(
+            path=str(output_path),
+            figsize=(16, 6),
+            **DRAW_KWARGS,
+        )
     logger.info("Saved DisCoPy composition to %s", output_path)
 
 
@@ -97,11 +120,12 @@ def render_discopy_snake(
 
     left, identity, right = create_discopy_snake_equation()
     eq = Equation(left, identity, right)
-    eq.draw(
-        path=str(output_path),
-        figsize=(18, 5),
-        **DRAW_KWARGS,
-    )
+    with _glyph_safe_rc():
+        eq.draw(
+            path=str(output_path),
+            figsize=(18, 5),
+            **DRAW_KWARGS,
+        )
     logger.info("Saved DisCoPy snake equations to %s", output_path)
 
 
@@ -113,11 +137,12 @@ def render_discopy_passive(
     'Bob is chased by Alice' — passivization as type permutation.
     """
     diagram = create_discopy_passive("Bob", "chased", "Alice")
-    diagram.draw(
-        path=str(output_path),
-        figsize=(10, 5),
-        **DRAW_KWARGS,
-    )
+    with _glyph_safe_rc():
+        diagram.draw(
+            path=str(output_path),
+            figsize=(10, 5),
+            **DRAW_KWARGS,
+        )
     logger.info("Saved DisCoPy passive to %s", output_path)
 
 
@@ -135,12 +160,13 @@ def render_discopy_sentence_progression(
     passive = create_discopy_passive("Bob", "chased", "Alice")
 
     eq = Equation(intrans, trans, passive, symbol="→")
-    eq.draw(
-        path=str(output_path),
-        figsize=(20, 6),
-        fontsize=12,
-        margins=(0.1, 0.1),
-    )
+    with _glyph_safe_rc():
+        eq.draw(
+            path=str(output_path),
+            figsize=(24, 7),
+            fontsize=18,
+            margins=(0.12, 0.12),
+        )
     logger.info("Saved sentence progression to %s", output_path)
 
 
@@ -159,12 +185,13 @@ def render_discopy_multilingual(
 
     # Show first 3 languages on one line
     eq = Equation(*diagram_list[:3], symbol="≅")
-    eq.draw(
-        path=str(output_path),
-        figsize=(22, 6),
-        fontsize=16,
-        margins=(0.05, 0.05),
-    )
+    with _glyph_safe_rc():
+        eq.draw(
+            path=str(output_path),
+            figsize=(26, 7),
+            fontsize=18,
+            margins=(0.08, 0.08),
+        )
     logger.info("Saved multilingual diagrams to %s", output_path)
 
 
@@ -192,11 +219,12 @@ def render_discopy_ditransitive(
     diagram = diagram >> Id(s) @ Id(n.l) @ Cup(n.l, n) @ Id(n)
     diagram = diagram >> Id(s) @ Cup(n.l, n)
 
-    diagram.draw(
-        path=str(output_path),
-        figsize=(12, 6),
-        **DRAW_KWARGS,
-    )
+    with _glyph_safe_rc():
+        diagram.draw(
+            path=str(output_path),
+            figsize=(12, 6),
+            **DRAW_KWARGS,
+        )
     logger.info("Saved ditransitive diagram to %s", output_path)
 
 
@@ -213,11 +241,12 @@ def render_discopy_discocirc_discourse(
     intrans = create_discopy_intransitive("Bob", "runs")
 
     eq = Equation(trans, intrans, symbol="⊗")
-    eq.draw(
-        path=str(output_path),
-        figsize=(16, 6),
-        **DRAW_KWARGS,
-    )
+    with _glyph_safe_rc():
+        eq.draw(
+            path=str(output_path),
+            figsize=(16, 6),
+            **DRAW_KWARGS,
+        )
     logger.info("Saved DisCoPy discourse to %s", output_path)
 
 
@@ -235,12 +264,13 @@ def render_discopy_three_sentence_discourse(
     s3 = create_discopy_intransitive("Alice", "escapes")
 
     eq = Equation(s1, s2, s3, symbol="⊗")
-    eq.draw(
-        path=str(output_path),
-        figsize=(22, 6),
-        fontsize=12,
-        margins=(0.05, 0.05),
-    )
+    with _glyph_safe_rc():
+        eq.draw(
+            path=str(output_path),
+            figsize=(26, 7),
+            fontsize=18,
+            margins=(0.08, 0.08),
+        )
     logger.info("Saved three-sentence discourse to %s", output_path)
 
 

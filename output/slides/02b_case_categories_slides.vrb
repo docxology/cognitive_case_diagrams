@@ -1,0 +1,46 @@
+\frametitle{Alignment Shifts as Natural Transformations: Grammar Agreement as Functor Commutativity}
+\protect\phantomsection\label{alignment-shifts-as-natural-transformations-grammar-agreement-as-functor-commutativity}
+Having established that alignment systems are functors
+\(F, G: \mathcal{U} \to \mathcal{L}\) from a universal case category to
+language-specific categories, a natural question arises: \emph{how do
+different alignment systems relate to each other?} The categorical
+answer is a \textbf{natural transformation}
+\(\alpha: F \Rightarrow G\)---a systematic family of morphisms
+\(\alpha_A: F(A) \to G(A)\) for each case role \(A\), satisfying the
+\textbf{naturality condition}:
+
+\begin{equation}
+G(f) \circ \alpha_A = \alpha_B \circ F(f) \quad \text{for every morphism } f: A \to B
+\label{eq:eq-2-2}
+\end{equation}
+
+This naturality constraint is the formal expression of \emph{grammatical
+coherence}: transforming one alignment into another and then applying a
+grammatical relation yields the same result as first applying the
+relation and then transforming---ensuring that alignment comparison
+respects the relational fabric of the grammar.
+
+\textbf{Worked example.} Consider the accusative functor \(F\) (which
+maps S and A to NOM, P to ACC) alongside the tripartite functor \(G\)
+(which maps explicitly to S \(\to\) ABS, A \(\to\) ERG, P \(\to\) ACC).
+The \textbf{identity natural transformation}
+\(\text{id}_F: F \Rightarrow F\) provides components
+\({(\text{id}_F)}_A = \text{id}_{F{(A)}}\) over every role \(A\),
+trivially satisfying the naturality condition. We construct the
+\textbf{vertical composition} \(\beta \circ \alpha{}\) of two natural
+transformations \(\alpha: F \Rightarrow G\) and
+\(\beta: G \Rightarrow H\) purely componentwise:
+\({(\beta \circ \alpha)}_A = \beta_A \circ \alpha_A\).
+
+Our \texttt{NaturalTransformation} class implements these operations,
+with \texttt{ComponentMorphism} objects encoding each \(\alpha_A\), and
+\texttt{compose\_transformations()} implementing vertical composition.
+The \texttt{IdentityNaturalTransformation} constructor automatically
+generates identity components for every object in an
+\texttt{AlignmentFunctor}'s domain. This machinery provides the formal
+infrastructure for comparing alignment types not merely by listing their
+neutralization patterns but by characterizing the \emph{structural
+mappings} between them---e.g., the natural transformation from
+accusative to tripartite alignment is injective (no two roles merge in
+the target), while the transformation from tripartite to ergative is
+non-injective (S and P merge into ABS).

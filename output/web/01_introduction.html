@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -176,51 +176,59 @@
 <body>
 <h1 id="sec:introduction">Introduction: Case Diagrams and Categorical
 Linguistics</h1>
-<h2 id="the-architecture-of-case-assignment">The Architecture of Case
-Assignment</h2>
-<p>Natural language encodes situational relations—<em>who does what to
-whom, with what, where, and why</em>—through various mechanisms,
-including noun case systems. In morphologically rich languages like
-Finnish, Latin, or Sanskrit, this case encoding is overt: distinct
-affixes mark the agent, patient, instrument, and location. In languages
-like Mandarin or English, this relational skeleton is orchestrated
-through word order and adpositions. Beyond the surface variation of
-morphological case, the underlying computational problem is universal: a
-cognitive agent benefits from assembling and assigning <em>structured
-roles</em> to the participants of every scenario it encounters ()),
-predicting and sketching relationships against the constraints of a
-conceptual plane.</p>
-<p>This universality suggests that case is not merely a morphosyntactic
-accident, but a reflection of a deeper, embodied cognitive architecture.
-This paper reviews the long lineage of this hypothesis, tracing its
-roots from Pāṇini’s ancient <em>kāraka</em> theory (which first
-abstracted nominal roles derived from actions), through Roman Jakobson’s
-structuralist feature matrices that viewed cases as oppositional
-spatial/semantic networks, to Fillmore’s <span class="citation"
-data-cites="fillmore1968case">[-@fillmore1968case]</span> “Case for
-Case” which posited a universal inventory of <em>deep cases</em> (Agent,
-Patient, Instrument). We review how Igor Mel’čuk’s Meaning-Text Theory
-integrated these insights, treating cases as profound relational
-networks mapping form to deep semantic substance. Subsequent typological
-work by Polinsky and Preminger <span class="citation"
+<h2
+id="case-as-relational-algebra-from-surface-inflection-to-categorical-morphism">Case
+as Relational Algebra: From Surface Inflection to Categorical
+Morphism</h2>
+<p>Every natural language must solve the same fundamental problem:
+encoding <em>who does what to whom, with what, where, and why</em>.
+Morphologically rich languages encode these situational relations
+overtly via distinct word modifications marking the agent, patient,
+instrument, or location. Languages like Mandarin or English achieve the
+same end through strict word order and adpositions. Beneath this surface
+variation lies a universal computational challenge: a cognitive agent
+must dynamically assemble and assign <em>structured roles</em> to the
+participants of every encountered scenario, predicting relationships and
+mapping them against the constraints of a conceptual space.</p>
+<p>Today, this same universal computational challenge lies at the heart
+of the artificial intelligence alignment crisis. The inability of
+contemporary Large Language Models (LLMs) to securely distinguish
+<em>who is allowed to do what to whom</em> within a text block—allowing
+passive data to masquerade as commanding instructions—is the root cause
+of prompt injection and agentic hijacking.</p>
+<p>This universality suggests that linguistic <em>case</em> is not a
+morphosyntactic accident, but the reflection of a deeper, embodied
+cognitive architecture. The lineage of this hypothesis is long: from
+Pāṇini’s ancient <em>kāraka</em> theory (which abstracted nominal roles
+from root actions), through Jakobson’s structuralist feature matrices
+and Fillmore’s <span class="citation"
+data-cites="fillmore1968case">[-@fillmore1968case]</span> establishment
+of a universal inventory of <em>deep cases</em> (Agent, Patient,
+Instrument), to Mel’čuk’s Meaning-Text Theory, which formally treats
+cases as relational networks mapping surface form to deep semantic
+structure. Modern typological work by Polinsky and Preminger <span
+class="citation"
 data-cites="polinsky2015case">[-@polinsky2015case]</span>, Blake <span
 class="citation"
 data-cites="blake2001grammatical">[-@blake2001grammatical]</span>, and
 Haspelmath <span class="citation"
 data-cites="haspelmath2009universality">[-@haspelmath2009universality]</span>
-has confirmed that the space of variation across human language is
-tightly structured into a small number of <em>alignment types</em>
-related by systematic transformations.</p>
-<p>This review highlights how <strong>category theory</strong> provides
-the natural mathematical language for formalizing this structure, and
-how <strong>commutative diagrams</strong> function not merely as
-convenient notation, but as <em>cognitively privileged, embodied
-representations</em>. By constraining relationships to a two-dimensional
-graph, these diagrams mimic the hand-eye coordination of sketching
-thought, providing inferential advantages unavailable to purely linear,
-sentential encodings.</p>
-<h2 id="why-diagrams-constraints-on-the-plane">Why Diagrams? Constraints
-on the Plane</h2>
+confirms that cross-linguistic variation is tightly bounded into a small
+number of <em>alignment types</em>, related by systematic
+transformations.</p>
+<p>This review demonstrates that <strong>category theory</strong>
+supplies the precise mathematical language to formalize this structure,
+yielding immense defensive value for AI. Furthermore,
+<strong>commutative diagrams</strong> function not merely as convenient
+white-board notation, but as <em>cognitively privileged, embodied
+representations</em>. By constraining relational algebras to a
+two-dimensional graph, these diagrams directly recruit spatial
+reasoning, providing structural boundary enforcement and inferential
+free rides unavailable to linear, un-typed sentential encodings.</p>
+<h2
+id="why-diagrams-earn-free-rides-spatial-constraints-as-inferential-engines">Why
+Diagrams Earn Free Rides: Spatial Constraints as Inferential
+Engines</h2>
 <p>The cognitive science of diagrammatic reasoning provides a strong
 empirical foundation for this claim. To cast a problem onto a
 two-dimensional visual topology is to recruit the nervous system’s
@@ -248,8 +256,28 @@ visual routes yield the same mathematical result).</li>
 apprehensible in a single perceptual glance).</li>
 </ol>
 <p>This is exactly the kind of gestalt understanding that linear
-notation obscures. illustrates this with a minimal three-case category.
-As Giardino <span class="citation"
+notation obscures. lays out a concrete instance. Let <span
+class="math inline">\(f\colon\text{NOM}\to\text{INS}\)</span> be (<span
+class="math inline">\(w=0.9\)</span>), <span
+class="math inline">\(g\colon\text{INS}\to\text{ACC}\)</span> be (<span
+class="math inline">\(w=0.7\)</span>), and <span
+class="math inline">\(h\colon\text{NOM}\to\text{ACC}\)</span> be with
+<span class="math inline">\(h=g\circ f\)</span> and <span
+class="math inline">\(w(h)=0.63=w(g)\cdot w(f)\)</span> as in . The
+single morphism <span class="math inline">\(h\)</span> is drawn twice in
+the diagram: once as the direct arrow <span
+class="math inline">\(\text{NOM}\to\text{ACC}\)</span> and once as the
+composite path through <span class="math inline">\(\text{INS}\)</span>;
+commutativity identifies those routes—they are not two independent
+relations. A separate licensed arrow <span
+class="math inline">\(\text{NOM}\to\text{VOC}\)</span> (, <span
+class="math inline">\(w=0.85\)</span>) lies outside that triangle.
+Dashed red arrows depict structurally maps (not elements of any <span
+class="math inline">\(\operatorname{Mor}(\mathcal{C})\)</span>),
+including <span class="math inline">\(\text{VOC}\to\text{NOM}\)</span>
+and <span class="math inline">\(\text{ACC}\to\text{NOM}\)</span>, for
+contrast with the solid licensed morphisms. As Giardino <span
+class="citation"
 data-cites="giardino2017diagrammatic">[-@giardino2017diagrammatic]</span>
 emphasizes, mathematical diagrams engage a hybrid mode of reasoning,
 intimately wedding perceptual pattern-recognition with theoretical
@@ -264,49 +292,54 @@ semantics: inference proceeds not by algebraic churning, but by tracing
 lines and composing arrows—drawing the contours of thought itself.</p>
 <figure id="fig:case-minimal">
 <img src="output/figures/case_category_minimal.png"
-alt="A minimal case category \mathcal{C} with three objects—Agent (NOM), Patient (ACC), and Instrument (INS)—and three morphisms: f\colon\text{NOM}\to\text{ACC} (transitive action, weight w=0.9), g\colon\text{INS}\to\text{ACC} (instrumental application, w=0.7), and the composite g \circ h\colon\text{NOM}\to\text{INS}\to\text{ACC} (acts-via, w=0.9 \times 0.7 = 0.63). The commutative triangle encodes that the direct path f and the factored path g \circ h yield the same patient—making the argument-structure factorization through the instrument role visually immediate. This exemplifies Shimojima’s [-@shimojima1996reasoning] free-ride inference: the two-dimensional layout reveals compositional structure that linear notation obscures." />
-<figcaption aria-hidden="true">A minimal case category <span
-class="math inline">\(\mathcal{C}\)</span> with three objects—Agent
-(NOM), Patient (ACC), and Instrument (INS)—and three morphisms: <span
-class="math inline">\(f\colon\text{NOM}\to\text{ACC}\)</span>
-(transitive action, weight <span class="math inline">\(w=0.9\)</span>),
-<span class="math inline">\(g\colon\text{INS}\to\text{ACC}\)</span>
-(instrumental application, <span class="math inline">\(w=0.7\)</span>),
-and the composite <span class="math inline">\(g \circ
-h\colon\text{NOM}\to\text{INS}\to\text{ACC}\)</span> (acts-via, <span
-class="math inline">\(w=0.9 \times 0.7 = 0.63\)</span>). The commutative
-triangle encodes that the direct path <span
-class="math inline">\(f\)</span> and the factored path <span
-class="math inline">\(g \circ h\)</span> yield the same patient—making
-the argument-structure factorization through the instrument role
-visually immediate. This exemplifies Shimojima’s <span class="citation"
-data-cites="shimojima1996reasoning">[-@shimojima1996reasoning]</span>
-free-ride inference: the two-dimensional layout reveals compositional
-structure that linear notation obscures.</figcaption>
+alt="Commutativity in a small case category yields free-ride inference (). Objects: NOM, ACC, INS, VOC. Solid green arrows: licensed morphisms; edge labels use f,g,h on the commuting triangle and weights w\in[0,1]. Dashed red: structurally prohibited \text{VOC}\to\text{NOM} and \text{ACC}\to\text{NOM} (not in \operatorname{Mor}(\mathcal{C})). Generated by introductory_case_category() and render_case_category." />
+<figcaption aria-hidden="true">Commutativity in a small case category
+yields free-ride inference (). Objects: NOM, ACC, INS, VOC. Solid green
+arrows: licensed morphisms; edge labels use <span
+class="math inline">\(f,g,h\)</span> on the commuting triangle and
+weights <span class="math inline">\(w\in[0,1]\)</span>. Dashed red:
+structurally prohibited <span
+class="math inline">\(\text{VOC}\to\text{NOM}\)</span> and <span
+class="math inline">\(\text{ACC}\to\text{NOM}\)</span> (not in <span
+class="math inline">\(\operatorname{Mor}(\mathcal{C})\)</span>).
+Generated by <code>introductory_case_category()</code> and
+<code>render_case_category</code>.</figcaption>
 </figure>
-<h2 id="five-converging-research-pillars">Five Converging Research
-Pillars</h2>
+<h2 id="five-converging-linguistic-and-mathematical-traditions">Five
+Converging Linguistic and Mathematical Traditions</h2>
 <p>The present synthesis draws on five research traditions, each
 contributing an essential formal ingredient:</p>
 <h3
-id="pillar-1-case-systems-alignment-typology-and-grammatical-relations">Pillar
-1: Case Systems, Alignment Typology, and Grammatical Relations</h3>
+id="pillar-1-case-systems-alignment-typology-and-structural-admissibility">Pillar
+1: Case Systems, Alignment Typology, and Structural Admissibility</h3>
 <p>The empirical foundation comes from linguistic typology. We formalize
 the case inventory and alignment systems catalogued by Polinsky and
 Preminger <span class="citation"
 data-cites="polinsky2015case">[-@polinsky2015case]</span>, Claassen
 <span class="citation"
-data-cites="claassen2025alignment">[-@claassen2025alignment]</span>, and
+data-cites="claassen2019alignment">[-@claassen2019alignment]</span>, and
 Wu <span class="citation" data-cites="wu2024amis">[-@wu2024amis]</span>
-as categories with case roles as objects and grammatical relations as
-morphisms. Dowty’s <span class="citation"
+as categories with <em>noun case roles</em> as objects and grammatical
+relations as morphisms. Crucially, the categorical framework makes
+explicit a distinction often implicit in traditional accounts:
+<strong>structural admissibility</strong>—which morphisms between case
+roles are <em>licensed</em> (structurally well-formed) versus
+<em>prohibited</em> (ill-formed). For example, the morphism NOM→ACC
+(“agent acts on patient”) is universally licensed, while VOC→NOM
+(“addressee as agent”) is structurally inadmissible. This admissibility
+structure, visualized through solid licensed edges, dashed prohibited
+edges, and absent transitions in the case category diagram (), encodes
+the combinatorial constraints of argument structure more transparently
+than any linear notation. Dowty’s <span class="citation"
 data-cites="dowty1991thematic">[-@dowty1991thematic]</span> proto-role
 theory—which decomposes thematic roles into clusters of entailments
 rather than discrete atoms—motivates our use of enriched (weighted)
-morphisms. <strong>Our novel addition, Synthetic Case-Role Algebra,
-extends this by formalizing these proto-roles as objects in a
-[0,1]-enriched monoidal category, enabling purely algebraic manipulation
-of semantic roles contextually.</strong></p>
+morphisms, where the morphism weight quantifies the <em>degree</em> of
+admissibility along a licensed transition. <strong>Synthetic Case-Role
+Algebra</strong> (introduced in ) extends this line by formalizing
+proto-roles in a <span class="math inline">\([0,1]\)</span>-enriched
+monoidal setting, enabling context-sensitive algebraic manipulation of
+case-role semantics without ad hoc feature bundles.</p>
 <h3 id="pillar-2-categorial-and-type-theoretic-grammar">Pillar 2:
 Categorial and Type-Theoretic Grammar</h3>
 <p>Lambek’s <span class="citation"
@@ -338,32 +371,31 @@ transformer architectures <span class="citation"
 data-cites="vaswani2017attention devlin2019bert">[@vaswani2017attention;
 @devlin2019bert]</span>) implement empirically, making it possible to
 analyse both symbolic and neural approaches to language within a single
-mathematical framework. Recent extensions include DisCoCirc <span
-class="citation"
+mathematical framework. DisCoCirc <span class="citation"
 data-cites="defelice2020discourse defelice2022discocirc">[@defelice2020discourse;
-@defelice2022discocirc]</span> for discourse-level coherence and the
-lambeq library <span class="citation"
-data-cites="lorenz2023lambeq">[@lorenz2023lambeq]</span> for quantum
-NLP, which implements the full categorical pipeline on quantum
-hardware.</p>
+@defelice2022discocirc]</span> and the lambeq QNLP stack <span
+class="citation"
+data-cites="lorenz2023lambeq quantinuum2025genii">[@lorenz2023lambeq;
+@quantinuum2025genii]</span> extend this to discourse and circuit
+compilation; gives the discourse-level and Gen II details.</p>
 <h3
 id="pillar-4-enriched-category-theory-and-distributional-measures">Pillar
 4: Enriched Category Theory and Distributional Measures</h3>
 <p>Bradley et al.’s <span class="citation"
 data-cites="fritz2021enriched">[-@fritz2021enriched]</span> enrichment
 over <span class="math inline">\([0,1]\)</span> equips hom-sets with
-distributional proximity measures. Bradley’s <span class="citation"
-data-cites="bradley2020entropy bradley2024ipam">[-@bradley2020entropy;
--@bradley2024ipam]</span> work on topological operads and categorical
-magnitude provides information-theoretic invariants that quantify the
-“effective size” of a linguistic category—a measure that captures how
-much distributional information the category encodes. Leinster and
-Shulman <span class="citation"
+distributional proximity measures, supplying the bridge from syntax to
+statistical semantics. <strong>Categorical magnitude</strong> (scalar
+``effective size’’ of an enriched category) is the Leinster-style
+invariant that summarises how much relational structure a case system
+encodes; Bradley’s <span class="citation"
+data-cites="bradley2021entropy bradley2024ipam">[-@bradley2021entropy;
+-@bradley2024ipam]</span> operadic and information-theoretic work
+complements that picture. Leinster and Shulman <span class="citation"
 data-cites="leinster2021magnitude">[-@leinster2021magnitude]</span>
-extend this to <strong>magnitude homology</strong>, categorifying
-magnitude into a graded homological invariant that detects
-higher-dimensional structural differences between case systems
-indistinguishable by scalar magnitude alone.</p>
+extend magnitude to <strong>magnitude homology</strong>, a graded
+homological invariant that detects higher-dimensional differences
+between case systems indistinguishable by scalar magnitude alone.</p>
 <h3
 id="pillar-5-topos-theoretic-bridges-and-inter-theoretic-transfer">Pillar
 5: Topos-Theoretic Bridges and Inter-Theoretic Transfer</h3>
@@ -371,15 +403,15 @@ id="pillar-5-topos-theoretic-bridges-and-inter-theoretic-transfer">Pillar
 data-cites="caramello2016bridges caramello2021five caramello2023syntactic">[-@caramello2016bridges;
 -@caramello2021five; -@caramello2023syntactic]</span> bridge technique
 uses classifying toposes as transfer points between mathematical
-theories, enabling results proved in one formalization of case to port
-automatically to another. Phillips <span class="citation"
-data-cites="phillips2024lot">[-@phillips2024lot]</span> strengthens this
-by showing that the Language of Thought admits universal constructions
-in a topos, grounding the systematicity of case assignment in the
-deepest structures of categorical logic.</p>
-<h2
-id="unifying-integration-active-inference-and-the-cerebrum-architecture">Unifying
-Integration: Active Inference and the CEREBRUM Architecture</h2>
+theories: when two formalizations are Morita equivalent (or linked by an
+explicit bridge), <strong>topos-level invariants</strong> proved in one
+setting carry over without separate proof. Phillips <span
+class="citation" data-cites="phillips2024lot">[-@phillips2024lot]</span>
+strengthens this by showing that the Language of Thought admits
+universal constructions in a topos, grounding the systematicity of case
+assignment in the deepest structures of categorical logic.</p>
+<h2 id="active-inference-closes-the-loop">Active Inference Closes the
+Loop</h2>
 <p>The unifying framework is <strong>active inference</strong> <span
 class="citation"
 data-cites="friston2017active">[@friston2017active]</span>, which casts
@@ -395,43 +427,25 @@ Reasoning Engine with Bayesian Representations for Unified
 Modeling—provides a computational instantiation of this framework, with
 case roles as functional specializations of model components in an
 active inference cycle.</p>
-<p>This integration is not merely metaphorical. The situation semantics
-of Barwise and Perry <span class="citation"
+<p>The situation semantics of Barwise and Perry <span class="citation"
 data-cites="barwise1983situations">[-@barwise1983situations]</span>
 already conceptualized meaning as structured <em>situations</em> with
 typed constituents—an ontology that maps naturally onto the objects and
 morphisms of our case categories. Active inference adds dynamics: the
 agent actively samples evidence to confirm or update its case
 assignments, using diagrammatic structure to guide exploration.</p>
-<h2 id="paper-outline-and-chapter-overview">Paper Outline and Chapter
-Overview</h2>
-<p>The remainder of the paper is organized as follows. reviews case
-systems and alignment typology, formalizing them as categories with
-functors between alignment types—including Fluid-S as a
-context-dependent functor parameterized by agentive volition. develops
-the categorial grammar foundations, including pregroup types, string
-diagrams, and passivization as algebraic type permutation. presents the
-DisCoCat framework and its case-enriched extension, demonstrating that
-categorical semantics provides the algebraic formalization of the
-distributional programme underlying modern LLMs. extends the framework
-through the compact closure axiom, diagrammatic complexity metrics,
-DisCoCirc discourse circuits with case role reversal, and the lambeq Gen
-II quantum NLP pipeline. introduces <span
-class="math inline">\([0,1]\)</span>-enriched categories with
-categorical magnitude and magnitude homology as complexity and
-topological invariants. develops Caramello’s topos-theoretic bridges for
-inter-theoretic transfer via Morita equivalence, with a four-phase
-algorithmic sketch for topos-theoretic grammatical induction. integrates
-the five pillars within active inference, CEREBRUM, and Distributional
-Active Inference, deriving falsifiable electrophysiological predictions
-linking enriched weights to ERP amplitudes. extends the framework into
-quantum topological computation via TQNNs, the ZX-calculus, and
-sheaf-theoretic semantic communication. develops implications for
-categorical deep learning, multi-agent protocols, and compositional game
-theory. introduces case-theoretic firewalls and epistemic case security
-as defenses against adversarial case-frame manipulation, with a formal
-characterization of prompt injection as decidable categorical type
-violation. concludes with eleven contributions and nine future research
-directions. The following sections develop this roadmap in detail.</p>
+<h2 id="roadmap-navigating-the-eleven-principal-contributions">Roadmap:
+Navigating the Eleven Principal Contributions</h2>
+<p>The remainder of the paper develops this synthesis in order: –
+(typology and functorial alignment); – (pregroup diagrams and
+case-marked types); and (DisCoCat); (compact closure and diagram
+complexity); (discourse and QNLP); –; ; –; quantum extensions (, );
+applications (, ). maps questions
+<strong>RQ1</strong>–<strong>RQ11</strong> to sections and contributions
+<strong>C1</strong>–<strong>C11</strong>. Computational verification is
+summarized in with test inventory in .</p>
+<p>Each subsequent section is self-contained yet cumulative: the reader
+may enter at any pillar and follow the cross-references forward to the
+synthesis.</p>
 </body>
 </html>

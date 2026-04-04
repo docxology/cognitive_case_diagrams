@@ -11,7 +11,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .styles import CASE_COLORS, FONT_SIZE_FLOOR
+from .styles import (
+    CASE_COLORS, FONT_SIZE_FLOOR, FIGURE_DPI,
+    NARROW_FIGSIZE, POLAR_FIGSIZE, COMPARISON_FIGSIZE,
+    BAR_WIDTH_NARROW, BAR_WIDTH_STANDARD, BAR_ALPHA, GRID_ALPHA,
+    COLOR_ANNOTATION_DARK,
+)
 
 # Local aliases for convenience
 COLORS = {
@@ -48,17 +53,17 @@ def render_complexity_comparison(
     Returns:
         The output path.
     """
-    fig, ax = plt.subplots(figsize=(12, 7))
+    fig, ax = plt.subplots(figsize=COMPARISON_FIGSIZE)
 
     x = np.arange(len(labels))
-    width = 0.25
+    width = BAR_WIDTH_NARROW
 
     bars1 = ax.bar(x - width, box_counts, width, label="Total Boxes",
-                   color=COLORS["primary"], alpha=0.85)
+                   color=COLORS["primary"], alpha=BAR_ALPHA)
     bars2 = ax.bar(x, word_counts, width, label="Word Boxes",
-                   color=COLORS["secondary"], alpha=0.85)
+                   color=COLORS["secondary"], alpha=BAR_ALPHA)
     bars3 = ax.bar(x + width, cup_counts, width, label="Cup Contractions",
-                   color=COLORS["accent"], alpha=0.85)
+                   color=COLORS["accent"], alpha=BAR_ALPHA)
 
     ax.set_xlabel("Sentence Type", fontsize=FONT_SIZE)
     ax.set_ylabel("Count", fontsize=FONT_SIZE)
@@ -68,7 +73,7 @@ def render_complexity_comparison(
     ax.set_xticklabels(labels, fontsize=FONT_SIZE - 2, rotation=15, ha="right")
     ax.tick_params(axis="y", labelsize=FONT_SIZE - 2)
     ax.legend(fontsize=FONT_SIZE - 2, loc='upper left')
-    ax.grid(axis="y", alpha=0.3)
+    ax.grid(axis="y", alpha=GRID_ALPHA)
 
     # Add value labels on bars
     for bars in [bars1, bars2, bars3]:
@@ -87,13 +92,13 @@ def render_complexity_comparison(
         ax.text(
             x[i], max_height + 0.8,
             f'"{sentence}"', ha="center", va="bottom",
-            fontsize=FONT_SIZE - 4, rotation=45, color="#333333"
+            fontsize=FONT_SIZE - 4, rotation=45, color=COLOR_ANNOTATION_DARK
         )
     
     ax.set_ylim(0, max_height + 3.0) # make room for text at top
 
     fig.tight_layout()
-    fig.savefig(output_path, dpi=150, bbox_inches="tight")
+    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved complexity comparison plot to %s", output_path)
     return output_path
@@ -116,15 +121,15 @@ def render_normal_form_comparison(
     Returns:
         The output path.
     """
-    fig, ax = plt.subplots(figsize=(9, 6))
+    fig, ax = plt.subplots(figsize=NARROW_FIGSIZE)
 
     x = np.arange(len(labels))
-    width = 0.35
+    width = BAR_WIDTH_STANDARD
 
     ax.bar(x - width / 2, original_counts, width, label="Original",
-           color=COLORS["primary"], alpha=0.85)
+           color=COLORS["primary"], alpha=BAR_ALPHA)
     ax.bar(x + width / 2, normal_form_counts, width, label="Normal Form",
-           color=COLORS["accent"], alpha=0.85)
+           color=COLORS["accent"], alpha=BAR_ALPHA)
 
     ax.set_xlabel("Diagram Type", fontsize=FONT_SIZE)
     ax.set_ylabel("Box Count", fontsize=FONT_SIZE)
@@ -134,10 +139,10 @@ def render_normal_form_comparison(
     ax.set_xticklabels(labels, fontsize=FONT_SIZE - 2, rotation=15, ha="right")
     ax.tick_params(axis="y", labelsize=FONT_SIZE - 2)
     ax.legend(fontsize=FONT_SIZE - 2)
-    ax.grid(axis="y", alpha=0.3)
+    ax.grid(axis="y", alpha=GRID_ALPHA)
 
     fig.tight_layout()
-    fig.savefig(output_path, dpi=150, bbox_inches="tight")
+    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved normal form comparison plot to %s", output_path)
     return output_path
@@ -162,7 +167,7 @@ def render_syntactic_complexity_radar(
     angles = np.linspace(0, 2 * np.pi, n, endpoint=False).tolist()
     angles += angles[:1]  # close the polygon
 
-    fig, ax = plt.subplots(figsize=(8, 8), subplot_kw={"polar": True})
+    fig, ax = plt.subplots(figsize=POLAR_FIGSIZE, subplot_kw={"polar": True})
 
     colors_list = [COLORS["primary"], COLORS["secondary"], COLORS["accent"]]
     for idx, (metric_name, values) in enumerate(metrics.items()):
@@ -179,7 +184,7 @@ def render_syntactic_complexity_radar(
               fontsize=FONT_SIZE - 2)
 
     fig.tight_layout()
-    fig.savefig(output_path, dpi=150, bbox_inches="tight")
+    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved complexity radar chart to %s", output_path)
     return output_path

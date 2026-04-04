@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -168,56 +168,124 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <script defer=""
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:ai-implications">AI Implications: Multi-Agent Protocols and
-Emergent Alignment</h1>
-<h2
-id="multi-agent-communication-compositional-ai-protocols">Multi-Agent
-Communication: Compositional AI Protocols</h2>
+<h1 id="sec:ai-implications">Categorical AI Protocols</h1>
+<h2 id="a2a-mcp-acp-anp-are-missing-compositional-semantics">A2A, MCP,
+ACP, ANP Are Missing Compositional Semantics</h2>
 <p>The categorical framework developed in the preceding sections—case
 categories, functorial semantics, enriched structure, and diagrammatic
-reasoning—addresses a core challenge in contemporary artificial
-intelligence: how to endow autonomous agents with structured,
-compositional communication.</p>
-<p>Current multi-agent AI systems communicate through increasingly
-standardized protocols. Google’s Agent-to-Agent (A2A) protocol <span
-class="citation" data-cites="google2025a2a">[@google2025a2a]</span>,
-introduced in 2025, provides a standard way for agents to communicate
-regardless of underlying framework through HTTP/JSON-RPC message passing
-with capability discovery. The Model Context Protocol (MCP) <span
-class="citation"
-data-cites="anthropic2024mcp">[@anthropic2024mcp]</span> standardizes
-how AI agents access external tools and data sources. The Agent
+reasoning—provides a structural response to an emerging challenge in
+modern AI: supplying typed, compositional message semantics that resist
+semantic collapse.</p>
+<p>Current multi-agent AI systems communicate via flat standardized
+protocols. For instance, the <strong>Model Context Protocol
+(MCP)</strong> <span class="citation"
+data-cites="anthropic2024mcp">[@anthropic2024mcp]</span> manages tool
+access by exchanging unstructured <code>JSON-RPC</code> payloads.
+Consider a standard MCP invocation mapping an LLM’s intention to a
+database:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;method&quot;</span><span class="fu">:</span> <span class="st">&quot;tools/call&quot;</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;params&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;access_database&quot;</span><span class="fu">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;arguments&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;query&quot;</span><span class="fu">:</span> <span class="st">&quot;DROP TABLE users&quot;</span> <span class="fu">}</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>This payload is structurally blind to its own pragmatic implications.
+It possesses no inherent algebraic compositionality and enforces no
+relational typing on the physical execution pathways. Frameworks like
+Google’s Agent-to-Agent (A2A) <span class="citation"
+data-cites="google2025a2a">[@google2025a2a]</span>, the Agent
 Communication Protocol (ACP) <span class="citation"
-data-cites="acp2025protocol">[@acp2025protocol]</span> handles
-standardizing messaging formats across various users, including agents,
-applications, and humans. The Agent Network Protocol (ANP) <span
-class="citation" data-cites="anp2025protocol">[@anp2025protocol]</span>
-introduces a three-layer architecture supporting trusted agent
-interaction in distributed systems. These engineering advances solve
-critical interoperability problems but lack a compositional semantics:
-messages are flat JSON payloads without inherent algebraic
-structure.</p>
-<p>Category theory provides exactly the missing layer. Just as the
-DisCoCat framework maps grammatical derivations functorially into vector
-spaces (see ), a categorical communication protocol would map agent
-interaction patterns functorially into behavioral specifications. The
-morphisms of such a protocol category would be message types, the
-objects would be agent states, and the composition law would specify how
-multi-step interactions chain together—exactly the structure of our case
-categories, where morphisms represent grammatical relations and
-composition encodes transitivity.</p>
-<h2 id="case-roles-as-functional-typing-for-agent-systems">Case Roles as
-Functional Typing for Agent Systems</h2>
+data-cites="acp2025protocol">[@acp2025protocol]</span>, and the Agent
+Network Protocol (ANP) <span class="citation"
+data-cites="anp2025protocol">[@anp2025protocol]</span> share this
+vulnerability: they validate the <em>shape</em> of the JSON schema, but
+rely purely on probabilistic inference to govern the <em>topology of the
+interaction</em>.</p>
+<p>Category theory injects this missing protective layer. By compiling
+agent interactions into strict string diagrams, messages cease to be
+flat strings and instead become typed morphisms traversing a case
+category.</p>
+<h2 id="nom-is-the-requester-ins-is-the-tool-dat-is">NOM Is the
+Requester, INS Is the Tool, DAT Is</h2>
 <p>The eight-case framework of CEREBRUM <span class="citation"
 data-cites="friedman2024cerebrum">[@friedman2024cerebrum]</span> maps
-directly onto the functional roles that components play in multi-agent
-architectures:</p>
+rigidly onto the operational constraints of multi-agent execution. In a
+Categorical Communication Protocol, interactions are legally licensed
+only if their computational wiring diagrams satisfy a strict grammatical
+type-signature:</p>
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -228,119 +296,84 @@ architectures:</p>
 <tr>
 <th style="text-align: left;">Case Role</th>
 <th style="text-align: left;">Agent System Analogue</th>
-<th style="text-align: left;">Protocol Function</th>
+<th style="text-align: left;">Protocol Function Type</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">NOM (Agent)</td>
-<td style="text-align: left;">Active requester</td>
-<td style="text-align: left;">Initiator of action policies</td>
+<td style="text-align: left;"><strong>NOM (Agent)</strong></td>
+<td style="text-align: left;">Active Requester</td>
+<td style="text-align: left;">Initiator of action policies (<span
+class="math inline">\(X_{\text{NOM}}\)</span>)</td>
 </tr>
 <tr>
-<td style="text-align: left;">ACC (Patient)</td>
-<td style="text-align: left;">Passive responder</td>
-<td style="text-align: left;">Target of directed operations</td>
+<td style="text-align: left;"><strong>INS (Instrument)</strong></td>
+<td style="text-align: left;">Tool / API Module</td>
+<td style="text-align: left;">Means of transforming state (<span
+class="math inline">\(X_{\text{INS}}\)</span>)</td>
 </tr>
 <tr>
-<td style="text-align: left;">GEN (Source)</td>
-<td style="text-align: left;">Context provider</td>
-<td style="text-align: left;">Supplier of prior information</td>
+<td style="text-align: left;"><strong>ACC (Patient)</strong></td>
+<td style="text-align: left;">Passive Data Target</td>
+<td style="text-align: left;">Resource being modified (<span
+class="math inline">\(X_{\text{ACC}}\)</span>)</td>
 </tr>
 <tr>
-<td style="text-align: left;">DAT (Recipient)</td>
-<td style="text-align: left;">Designated receiver</td>
-<td style="text-align: left;">Endpoint for information transfer</td>
+<td style="text-align: left;"><strong>DAT (Recipient)</strong></td>
+<td style="text-align: left;">Designated Receiver</td>
+<td style="text-align: left;">Endpoint for information flow (<span
+class="math inline">\(X_{\text{DAT}}\)</span>)</td>
 </tr>
 <tr>
-<td style="text-align: left;">INS (Instrument)</td>
-<td style="text-align: left;">Tool / API</td>
-<td style="text-align: left;">Means of state transformation</td>
-</tr>
-<tr>
-<td style="text-align: left;">LOC (Context)</td>
-<td style="text-align: left;">Environment state</td>
-<td style="text-align: left;">Boundary conditions and Markov
-blanket</td>
-</tr>
-<tr>
-<td style="text-align: left;">ABL (Origin)</td>
-<td style="text-align: left;">Data source</td>
-<td style="text-align: left;">Causal provenance of inputs</td>
-</tr>
-<tr>
-<td style="text-align: left;">VOC (Addressee)</td>
-<td style="text-align: left;">Routing target</td>
-<td style="text-align: left;">Pragmatic addressing in broadcast
-networks</td>
+<td style="text-align: left;"><strong>LOC (Context)</strong></td>
+<td style="text-align: left;">System Prompt</td>
+<td style="text-align: left;">Immutably binds boundary behavior (<span
+class="math inline">\(X_{\text{LOC}}\)</span>)</td>
 </tr>
 </tbody>
 </table>
-<p>This mapping is not merely analogical. In the MCP protocol, a tool
-call has precisely the structure of a case-marked clause: an
-<em>agent</em> (NOM) invokes a <em>tool</em> (INS) on a
-<em>resource</em> (ACC) to deliver a <em>result</em> to a
-<em>recipient</em> (DAT). The case structure ensures that every
-interaction is relationally typed, preventing the category errors
-(sending a response where a tool call is expected) that plague
-unstructured message-passing systems.</p>
+<p>This turns prompt engineering into rigorous compilation. Instead of
+parsing a prompt to heuristically guess caller intent, a categorical
+agent processes interactions strictly as algebraic reductions. An MCP
+tool invocation <span class="citation"
+data-cites="anthropic2024mcp">[@anthropic2024mcp]</span>
+(<code>NOM</code> using <code>INS</code> to modify <code>ACC</code> and
+yield abstract <code>DAT</code>) becomes a formalized tensor
+contraction:</p>
+<p><span class="math display">\[\begin{equation}
+\text{Interaction Trace:} \quad \left( \text{Agent}_{\text{NOM}} \otimes
+\text{Tool}_{\text{INS}} \otimes \text{Data}_{\text{ACC}} \right)
+\xrightarrow{\text{execute}} \text{Response}_{\text{DAT}}
+\label{eq:ai-interaction-trace}
+\end{equation}\]</span></p>
+<p>If an untyped internal subsystem (e.g., an adversarial user-uploaded
+document) attempts to independently forge a command, the operation
+simply fails to compile. The document lacks a valid tensor wire bridging
+from its marginalized <span class="math inline">\(\text{ACC}\)</span>
+domain back into the execution flow governing <span
+class="math inline">\(\text{INS}\)</span>. The grammar ensures every
+interaction is structurally typed, guaranteeing safety properties akin
+to <strong>memory safety, but for agentic volition</strong>.</p>
 <h2
-id="categorical-deep-learning-an-algebraic-theory-of-architectures">Categorical
-Deep Learning: An Algebraic Theory of Architectures</h2>
+id="transformers-through-gavranovićs-lens-attention-as-parameterized-optics">Transformers
+Through Gavranović’s Lens: Attention as Parameterized Optics</h2>
 <p>Gavranović <span class="citation"
-data-cites="gavranovic2024thesis">[-@gavranovic2024thesis]</span>
-develops “a novel mathematical foundation for deep learning based on the
-language of category theory,” showing that neural network
-architectures—feedforward, convolutional, recurrent, attention—can all
-be subsumed under a single categorical framework using parameterized
-optics and lenses. This “Categorical Deep Learning” approach <span
-class="citation"
-data-cites="shiebler2024categorical">[@shiebler2024categorical]</span>
-demonstrates that categorical structure is “an algebraic theory of all
-architectures,” unifying design patterns that appear unrelated when
-viewed through conventional linear algebra.</p>
-<p>For case theory in AI, this result is significant: it means the same
-categorical language used to describe linguistic case assignment also
-describes the internal computation of the neural networks that process
-language. A transformer’s attention mechanism, viewed through
-Gavranović’s lens, performs a kind of <em>categorical case
-assignment</em>—each attention head selects which input tokens play
-which functional roles in the computation, with attention weights
-serving as the enriched hom-values of .</p>
-<p>The distributional semantics perspective deepens this connection. The
-transformer architecture <span class="citation"
-data-cites="vaswani2017attention">[@vaswani2017attention]</span> is, at
-its mathematical core, a <em>distributional composition engine</em>: it
-takes distributional word representations (embeddings in the Firthian
-tradition <span class="citation"
-data-cites="firth1957papers">[@firth1957papers]</span>) and composes
-them into contextual sentence representations through attention-weighted
-aggregation. This is precisely what the DisCoCat functor <span
-class="math inline">\(F: \mathbf{Preg} \to \mathbf{FVect}\)</span> does
-algebraically—compose word vectors according to syntactic structure. The
-key difference is that DisCoCat derives its composition rules from
-type-logical grammar, while transformers learn them from data. The
-convergence is striking: both arrive at tensor-contracted sentence
-representations, both use multi-linear maps for composition, and both
-produce vector spaces where similarity encodes semantic relatedness.
-Large language models such as BERT <span class="citation"
-data-cites="devlin2019bert">[@devlin2019bert]</span> and GPT <span
-class="citation"
-data-cites="radford2018improving">[@radford2018improving]</span> thus
-serve as massive-scale <em>empirical validations</em> of the
-distributional programme that DisCoCat formalizes categorically.</p>
-<p>Recent work on Distributional Active Inference <span class="citation"
+data-cites="gavranovic2024thesis gavranovic2024categorical">[-@gavranovic2024thesis;
+-@gavranovic2024categorical]</span> unifies feedforward, recurrent, and
+attention layers as <strong>parameterized optics</strong>—the same
+wiring-diagram perspective used for DisCoCat cups in . Attention heads
+then appear as <em>learned</em> relational couplings over token
+sequences, with weights playing the role of graded hom-values (). LLMs
+discover these contractions from data; DisCoCat fixes admissible
+contraction <em>shapes</em> by grammar. Distributional Active Inference
+<span class="citation"
 data-cites="akgul2026distributional">[@akgul2026distributional]</span>
-extends this parallel into the domain of sequential decision-making:
-just as LLMs model full contextual distributions over tokens,
-distributional RL models full return distributions over outcomes—and
-active inference provides the variational Bayesian bridge between the
-two (see ). For multi-agent AI systems, this suggests an architecture in
-which agents maintain <em>distributional</em> representations of both
-semantic content and expected interaction returns, composing them
-categorically.</p>
-<h2 id="string-diagrams-as-a-foundation-for-interpretable-ai">String
-Diagrams as a Foundation for Interpretable AI</h2>
+is one setting where explicit DisCoCat-style guardrails can sit
+alongside a large distributional backbone.</p>
+<h2
+id="interpretability-for-free-discocat-diagrams-make-every-compositional-step-human-readable">Interpretability
+for Free: DisCoCat Diagrams Make Every Compositional Step
+Human-Readable</h2>
 <p>The lambeq library <span class="citation"
 data-cites="lorenz2023lambeq">[@lorenz2023lambeq]</span> demonstrates
 that string diagrams provide a practical interface between linguistic
@@ -359,8 +392,8 @@ wire has a linguistic interpretation. Extending this to agent
 communication, a categorical protocol would produce not just working
 message exchanges but <em>interpretable</em> interaction diagrams where
 each step’s relational role is transparent.</p>
-<h2 id="discocirc-and-multi-turn-agent-dialogue-protocols">DisCoCirc and
-Multi-Turn Agent Dialogue Protocols</h2>
+<h2 id="multi-turn-dialogue-as-discourse-circuit">Multi-Turn Dialogue as
+Discourse Circuit</h2>
 <p>The DisCoCirc framework <span class="citation"
 data-cites="defelice2022discocirc">[@defelice2022discocirc]</span>
 extends compositional semantics from single sentences to multi-sentence
@@ -385,15 +418,17 @@ categorical property: the circuit must type-check, meaning all wire
 types must match at connection points—precisely the condition that case
 marking enforces in natural language.</p>
 <h2
-id="compositional-game-theory-and-categorical-multi-agent-equilibria">Compositional
-Game Theory and Categorical Multi-Agent Equilibria</h2>
+id="multi-agent-equilibria-as-fixed-points-of-an-enriched-functor">Multi-Agent
+Equilibria as Fixed Points of an Enriched Functor</h2>
 <p>The “parametrised optics” framework developed within categorical
 cybernetics “provides a general-purpose foundation for the study of
-controlled processes” applicable to compositional game theory as a
-multi-agent framework. In this setting, agents are modeled as lenses (or
-optics) that observe the environment through one channel and act through
-another, with the overall system behavior emerging from the composition
-of individual agent behaviors.</p>
+controlled processes” <span class="citation"
+data-cites="capucci2021towards">[@capucci2021towards]</span> applicable
+to compositional game theory as a multi-agent framework. In this
+setting, agents are modeled as lenses (or optics) that observe the
+environment through one channel and act through another, with the
+overall system behavior emerging from the composition of individual
+agent behaviors.</p>
 <p>This connects to our enriched case framework (): the precision
 weights on morphisms correspond to the utility parameters of
 game-theoretic agents, and the composition inequality <span
@@ -403,12 +438,13 @@ communication chains. Equilibria in the multi-agent game correspond to
 fixed points of the enriched functor, where no agent can improve its
 utility by changing its case-role assignment.</p>
 <h2
-id="double-categorical-systems-theory-for-explainable-autonomous-ai">Double
-Categorical Systems Theory for Explainable Autonomous AI</h2>
-<p>Recent work on Double Categorical Systems Theory (DCST) aims to
-“utilise Double Categorical Systems Theory as a mathematical framework
-to facilitate collaboration in co-designing an explainable and auditable
-model of an autonomous AI system’s deployment environment.” DCST extends
+id="dcst-two-dimensional-morphisms-model-both-sequential-interaction-and-hierarchical-nesting">DCST:
+Two-Dimensional Morphisms Model Both Sequential Interaction and
+Hierarchical Nesting</h2>
+<p>Recent foundational work on Double Categorical Systems Theory (DCST)
+formalizes open and interacting dynamical systems using double
+categories <span class="citation"
+data-cites="myers2023double">[@myers2023double]</span>. DCST extends
 ordinary category theory with a second dimension of morphisms
 (2-morphisms), allowing simultaneous modeling of:</p>
 <ol type="1">
@@ -422,8 +458,8 @@ both the <em>within-sentence</em> case structure (horizontal) and the
 <em>discourse-level</em> case structure (vertical) within a single
 algebraic framework—precisely the unification that DisCoCirc achieves
 pragmatically.</p>
-<h2 id="toward-categorical-communication-standards-for-ai-agents">Toward
-Categorical Communication Standards for AI Agents</h2>
+<h2 id="five-properties-of-a-categorical-protocol">Five Properties of a
+Categorical Protocol</h2>
 <p>The synthesis of these developments suggests a research program:
 developing <strong>categorical communication protocols</strong> that
 combine the engineering robustness of existing standards (A2A, MCP, ACP)
@@ -437,9 +473,10 @@ communication errors at the protocol level</li>
 would compose algebraically, with diagrammatic representations providing
 interpretable audit trails</li>
 <li><strong>Transfer across implementations</strong>: Topos-theoretic
-bridges () would ensure that a protocol verified in one categorical
-formalization automatically satisfies correctness conditions in any
-Morita-equivalent formulation</li>
+bridges () would carry <strong>topos-level</strong> correctness
+conditions from one categorical formalization to any Morita-equivalent
+formulation, so that shared invariants need not be re-verified
+separately</li>
 <li><strong>Scale via enrichment</strong>: Distributional proximity
 measures () would enable graceful degradation under uncertainty, with
 enriched weights encoding confidence in message content</li>
@@ -453,13 +490,17 @@ categorical communication protocol defines a category <span
 class="math inline">\(\mathcal{P}\)</span> where objects are agent
 states annotated with case roles and morphisms are typed message
 exchanges:</p>
-<p><span class="math display">\[\text{Request}(q, \text{NOM} \to
-\text{INS}): \text{User}_{\text{NOM}} \to
-\text{Model}_{\text{INS}}\]</span> <span
-class="math display">\[\text{ToolCall}(t, \text{INS} \to \text{ACC}):
-\text{Model}_{\text{INS}} \to \text{Tool}_{\text{ACC}}\]</span> <span
-class="math display">\[\text{Result}(r, \text{ACC} \to \text{DAT}):
-\text{Tool}_{\text{ACC}} \to \text{Output}_{\text{DAT}}\]</span></p>
+<p><span class="math display">\[\begin{align}
+\text{Request}(q,\; \text{NOM} \to \text{INS}) &amp;:
+\text{User}_{\text{NOM}} \to \text{Model}_{\text{INS}}
+\label{eq:protocol-request} \\
+\text{ToolCall}(t,\; \text{INS} \to \text{ACC}) &amp;:
+\text{Model}_{\text{INS}} \to \text{Tool}_{\text{ACC}}
+\label{eq:protocol-toolcall} \\
+\text{Result}(r,\; \text{ACC} \to \text{DAT}) &amp;:
+\text{Tool}_{\text{ACC}} \to \text{Output}_{\text{DAT}}
+\label{eq:protocol-result}
+\end{align}\]</span></p>
 <p>Protocol correctness reduces to verifying that the composition <span
 class="math inline">\(\text{Result} \circ \text{ToolCall} \circ
 \text{Request}\)</span> is a well-typed morphism in <span

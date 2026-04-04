@@ -1,0 +1,246 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\section{Compact Closure and Diagram Complexity: Snake Equation and
+Valency Metrics}\label{sec:compact-closure-complexity}
+
+\subsection{The Snake Equation Powers Every Pregroup
+Contraction}\label{the-snake-equation-powers-every-pregroup-contraction}
+
+\begin{frame}[fragile]{The Snake Equation (Zigzag Identity)}
+\protect\phantomsection\label{the-snake-equation-zigzag-identity}
+The essential algebraic engine driving DisCoCat is the strict
+\textbf{compact closure} of the governing pregroup category. For every
+lexical type \(n\), the corresponding adjunction
+maps---\(\eta_n: 1 \to n \otimes n^r\) (the cap expansion) and
+\(\varepsilon_n: n^r \otimes n \to 1\) (the cup contraction)---must
+mathematically satisfy the fundamental \textbf{snake equation} (also
+known as the topological zigzag identity):
+
+\begin{equation}
+(\varepsilon_n \otimes 1_n) \circ (1_n \otimes \eta_n) = 1_n
+\label{eq:eq-4-3}
+\end{equation}
+
+Translated into intuitive string-diagrammatic terms, a cup geometrically
+composed with a cap bridging adjacent wires immediately ``straightens
+out'' into a solid identity wire---a topological zigzag seamlessly
+canceling into a continuous straight line. This foundational axiom is
+not merely a geometric curiosity: it physically functions as the
+\emph{engine} powering every valid pregroup type reduction. Every
+recorded grammatical contraction (e.g., a noun canceling against an
+active verb argument slot) constitutes a direct instance of the cup map
+\(\varepsilon{}\), and every grammatical expansion instantiates the cap
+map \(\eta{}\). The continuous snake equation algebraically guarantees
+that these interwoven contractions and expansions remain globally
+well-behaved---ensuring they can be freely inserted and removed without
+ever altering the final semantic meaning of the derivation.
+
+Cognitively, the snake equation provides an immediate \emph{visual
+proof} of coherence. A cognitive agent inspecting a string diagram can
+verify well-formedness by confirming that all zigzags cancel---a purely
+spatial operation requiring no sequential algebraic computation, and
+thus instantiating Shimojima's {[}-@shimojima1996reasoning{]} free-ride
+inference in its most direct form.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={The snake equation is the algebraic engine powering every pregroup type reduction. The compact closure axiom () rendered by DisCoPy: left panel shows the zigzag (\textbackslash varepsilon\_n \textbackslash otimes 1\_n) \textbackslash circ (1\_n \textbackslash otimes \textbackslash eta\_n) where a Cup \textbackslash varepsilon\{\} composed with a Cap \textbackslash eta\{\} forms a snake; right panel shows the identity wire 1\_n it equals. Verified computationally via diagram.normal\_form() == Id(Ty(\textquotesingle x\textquotesingle)). Each pregroup contraction (noun canceling with verb argument) is an instance of \textbackslash varepsilon\{\}; the snake equation guarantees that cup-cap pair insertions and removals leave derivations invariant (cf.~).}]{../figures/discopy_snake.png}}
+\caption{The snake equation is the algebraic engine powering every
+pregroup type reduction. The compact closure axiom (\autoref{eq:eq-4-3})
+rendered by DisCoPy: \textbf{left panel} shows the zigzag
+\((\varepsilon_n \otimes 1_n) \circ (1_n \otimes \eta_n)\) where a Cup
+\(\varepsilon{}\) composed with a Cap \(\eta{}\) forms a snake;
+\textbf{right panel} shows the identity wire \(1_n\) it equals. Verified
+computationally via
+\protect\texttt{diagram.normal\_form()\ ==\ Id(Ty(\textquotesingle{}x\textquotesingle{}))}.
+Each pregroup contraction (noun canceling with verb argument) is an
+instance of \(\varepsilon{}\); the snake equation guarantees that
+cup-cap pair insertions and removals leave derivations invariant
+(cf.~\autoref{sec:categorial-grammar}).}\label{fig:discopy-snake}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Four Metrics Quantify Derivational Complexity}
+\protect\phantomsection\label{four-metrics-quantify-derivational-complexity}
+The algebraic properties of pregroup diagrams support quantitative
+analysis of derivational complexity. Our \texttt{complexity\_metrics}
+module implements four complementary measures using the DisCoPy library:
+
+\begin{enumerate}
+\item
+  \textbf{Box count}: The number of lexical entries (Word boxes) in the
+  diagram, corresponding to the sentence's word count from the
+  type-logical perspective. A transitive sentence has 3 boxes (subject,
+  verb, object); a ditransitive sentence has 4 or more.
+\item
+  \textbf{Cup/Cap count}: The number of contraction and expansion
+  operations. Cups (denoted \(\varepsilon{}\)) count argument
+  consumption; caps (denoted \(\eta{}\)) count argument introduction.
+  The cup count directly reflects verb valency: an intransitive verb
+  requires 1 cup, a transitive verb 2, and a ditransitive verb 3.
+\item
+  \textbf{Normal form}: A diagram is in \emph{normal form} if no further
+  simplifications (zigzag cancellations, box reordering) are possible.
+  The \texttt{normal\_form()} operation computes this canonical
+  representative of the diagram's equivalence class. Normal form
+  preservation under algebraic manipulation provides a correctness check
+  for compositional operations.
+\item
+  \textbf{Syntactic complexity score}: A composite metric defined as:
+\end{enumerate}
+
+\begin{equation}
+\text{complexity}(D) = w_b \cdot |D|_{\text{box}} + w_c \cdot |D|_{\text{cup}} + w_d \cdot \text{depth}(D)
+\label{eq:eq-4-4}
+\end{equation}
+
+where \(|D|_{\text{box}}\), \(|D|_{\text{cup}}\), and
+\(\text{depth}(D)\) are the box count, cup count, and depth
+respectively, and \(w_b, w_c, w_d\) are configurable weights (defaulting
+to equal weights). The \emph{depth} of a diagram is the length of the
+longest path from input to output, counting boxes. Deeper diagrams
+encode more complex syntactic derivations---a ditransitive sentence like
+``Alice gave Bob a book'' (depth 7) is structurally more complex than a
+simple intransitive ``Alice runs'' (depth 3).
+
+The \texttt{compare\_diagrams()} function applies these metrics across a
+collection of diagrams, producing tabular comparisons suitable for
+cross-linguistic analysis. \autoref{fig:complexity-comparison}
+visualizes these metrics across sentence types of increasing valency,
+demonstrating the monotonic relationship between argument structure and
+derivational complexity.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={Argument-structure complexity maps monotonically onto diagram topology. Complexity metrics () plotted across ten sentence types of increasing valency: from intransitive ``Alice runs'' (2 boxes, 1 cup) through transitive (3 boxes, 2 cups), ditransitive (4 boxes, 3 cups), and adjunct-stacked constructions up to ``fast Alice gave Bob book quickly'' (8 boxes, 4 cups). Cup count \textbar D\textbar\_\{\textbackslash text\{cup\}\} increases monotonically with verb valency and adjunct stacking, confirming that argument-structure complexity is a topological invariant of the diagram. Actual sentences are overlaid in the plot; cup count is computable from the DisCoPy diagram via len({[}b for b in diagram.boxes if isinstance(b, Cup){]}).}]{output/figures/complexity_comparison.png}}
+\caption{Argument-structure complexity maps monotonically onto diagram
+topology. Complexity metrics (\autoref{eq:eq-4-4}) plotted across ten
+sentence types of increasing valency: from intransitive ``Alice runs''
+(2 boxes, 1 cup) through transitive (3 boxes, 2 cups), ditransitive (4
+boxes, 3 cups), and adjunct-stacked constructions up to ``fast Alice
+gave Bob book quickly'' (8 boxes, 4 cups). Cup count
+\(|D|_{\text{cup}}\) increases monotonically with verb valency and
+adjunct stacking, confirming that argument-structure complexity is a
+topological invariant of the diagram. Actual sentences are overlaid in
+the plot; cup count is computable from the DisCoPy diagram via
+\protect\texttt{len({[}b\ for\ b\ in\ diagram.boxes\ if\ isinstance(b,\ Cup){]})}.}\label{fig:complexity-comparison}
+\end{figure}
+
+These metrics connect naturally to the enriched framework of
+\autoref{sec:enriched-categories}: diagram depth serves as a syntactic
+complexity proxy that can be incorporated into the enriched hom-value,
+providing a principled bridge between type-logical derivation cost and
+distributional semantic distance. Discourse-level persistence of entity
+wires (DisCoCirc) is developed in \autoref{sec:discocirc-discourse}. For
+multi-agent security, when tracking networks isolate an adversarial
+identity wire (a prompt injection) covertly attempting to merge with an
+ongoing command wire across communication boundaries, the circuit
+topology can flag the type violation before execution
+(\autoref{sec:cognitive-security}).
+\end{frame}
+
+\end{document}

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>04b_compact_closure_complexity</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="sec:compact-closure-complexity">Compact Closure and Diagram
+Complexity: Snake Equation and Valency Metrics</h1>
+<h2 id="the-snake-equation-powers-every-pregroup-contraction">The Snake
+Equation Powers Every Pregroup Contraction</h2>
+<h3 id="the-snake-equation-zigzag-identity">The Snake Equation (Zigzag
+Identity)</h3>
+<p>The essential algebraic engine driving DisCoCat is the strict
+<strong>compact closure</strong> of the governing pregroup category. For
+every lexical type <span class="math inline">\(n\)</span>, the
+corresponding adjunction maps—<span class="math inline">\(\eta_n: 1 \to
+n \otimes n^r\)</span> (the cap expansion) and <span
+class="math inline">\(\varepsilon_n: n^r \otimes n \to 1\)</span> (the
+cup contraction)—must mathematically satisfy the fundamental
+<strong>snake equation</strong> (also known as the topological zigzag
+identity):</p>
+<p><span class="math display">\[\begin{equation}
+(\varepsilon_n \otimes 1_n) \circ (1_n \otimes \eta_n) = 1_n
+\label{eq:eq-4-3}
+\end{equation}\]</span></p>
+<p>Translated into intuitive string-diagrammatic terms, a cup
+geometrically composed with a cap bridging adjacent wires immediately
+“straightens out” into a solid identity wire—a topological zigzag
+seamlessly canceling into a continuous straight line. This foundational
+axiom is not merely a geometric curiosity: it physically functions as
+the <em>engine</em> powering every valid pregroup type reduction. Every
+recorded grammatical contraction (e.g., a noun canceling against an
+active verb argument slot) constitutes a direct instance of the cup map
+<span class="math inline">\(\varepsilon{}\)</span>, and every
+grammatical expansion instantiates the cap map <span
+class="math inline">\(\eta{}\)</span>. The continuous snake equation
+algebraically guarantees that these interwoven contractions and
+expansions remain globally well-behaved—ensuring they can be freely
+inserted and removed without ever altering the final semantic meaning of
+the derivation.</p>
+<p>Cognitively, the snake equation provides an immediate <em>visual
+proof</em> of coherence. A cognitive agent inspecting a string diagram
+can verify well-formedness by confirming that all zigzags cancel—a
+purely spatial operation requiring no sequential algebraic computation,
+and thus instantiating Shimojima’s <span class="citation"
+data-cites="shimojima1996reasoning">[-@shimojima1996reasoning]</span>
+free-ride inference in its most direct form.</p>
+<figure id="fig:discopy-snake">
+<img src="output/figures/discopy_snake.png"
+alt="The snake equation is the algebraic engine powering every pregroup type reduction. The compact closure axiom () rendered by DisCoPy: left panel shows the zigzag (\varepsilon_n \otimes 1_n) \circ (1_n \otimes \eta_n) where a Cup \varepsilon{} composed with a Cap \eta{} forms a snake; right panel shows the identity wire 1_n it equals. Verified computationally via diagram.normal_form() == Id(Ty(&#39;x&#39;)). Each pregroup contraction (noun canceling with verb argument) is an instance of \varepsilon{}; the snake equation guarantees that cup-cap pair insertions and removals leave derivations invariant (cf. )." />
+<figcaption aria-hidden="true">The snake equation is the algebraic
+engine powering every pregroup type reduction. The compact closure axiom
+() rendered by DisCoPy: <strong>left panel</strong> shows the zigzag
+<span class="math inline">\((\varepsilon_n \otimes 1_n) \circ (1_n
+\otimes \eta_n)\)</span> where a Cup <span
+class="math inline">\(\varepsilon{}\)</span> composed with a Cap <span
+class="math inline">\(\eta{}\)</span> forms a snake; <strong>right
+panel</strong> shows the identity wire <span
+class="math inline">\(1_n\)</span> it equals. Verified computationally
+via <code>diagram.normal_form() == Id(Ty('x'))</code>. Each pregroup
+contraction (noun canceling with verb argument) is an instance of <span
+class="math inline">\(\varepsilon{}\)</span>; the snake equation
+guarantees that cup-cap pair insertions and removals leave derivations
+invariant (cf. ).</figcaption>
+</figure>
+<h3 id="four-metrics-quantify-derivational-complexity">Four Metrics
+Quantify Derivational Complexity</h3>
+<p>The algebraic properties of pregroup diagrams support quantitative
+analysis of derivational complexity. Our <code>complexity_metrics</code>
+module implements four complementary measures using the DisCoPy
+library:</p>
+<ol type="1">
+<li><p><strong>Box count</strong>: The number of lexical entries (Word
+boxes) in the diagram, corresponding to the sentence’s word count from
+the type-logical perspective. A transitive sentence has 3 boxes
+(subject, verb, object); a ditransitive sentence has 4 or more.</p></li>
+<li><p><strong>Cup/Cap count</strong>: The number of contraction and
+expansion operations. Cups (denoted <span
+class="math inline">\(\varepsilon{}\)</span>) count argument
+consumption; caps (denoted <span class="math inline">\(\eta{}\)</span>)
+count argument introduction. The cup count directly reflects verb
+valency: an intransitive verb requires 1 cup, a transitive verb 2, and a
+ditransitive verb 3.</p></li>
+<li><p><strong>Normal form</strong>: A diagram is in <em>normal
+form</em> if no further simplifications (zigzag cancellations, box
+reordering) are possible. The <code>normal_form()</code> operation
+computes this canonical representative of the diagram’s equivalence
+class. Normal form preservation under algebraic manipulation provides a
+correctness check for compositional operations.</p></li>
+<li><p><strong>Syntactic complexity score</strong>: A composite metric
+defined as:</p></li>
+</ol>
+<p><span class="math display">\[\begin{equation}
+\text{complexity}(D) = w_b \cdot |D|_{\text{box}} + w_c \cdot
+|D|_{\text{cup}} + w_d \cdot \text{depth}(D)
+\label{eq:eq-4-4}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(|D|_{\text{box}}\)</span>, <span
+class="math inline">\(|D|_{\text{cup}}\)</span>, and <span
+class="math inline">\(\text{depth}(D)\)</span> are the box count, cup
+count, and depth respectively, and <span class="math inline">\(w_b, w_c,
+w_d\)</span> are configurable weights (defaulting to equal weights). The
+<em>depth</em> of a diagram is the length of the longest path from input
+to output, counting boxes. Deeper diagrams encode more complex syntactic
+derivations—a ditransitive sentence like “Alice gave Bob a book” (depth
+7) is structurally more complex than a simple intransitive “Alice runs”
+(depth 3).</p>
+<p>The <code>compare_diagrams()</code> function applies these metrics
+across a collection of diagrams, producing tabular comparisons suitable
+for cross-linguistic analysis. visualizes these metrics across sentence
+types of increasing valency, demonstrating the monotonic relationship
+between argument structure and derivational complexity.</p>
+<figure id="fig:complexity-comparison">
+<img src="output/figures/complexity_comparison.png"
+alt="Argument-structure complexity maps monotonically onto diagram topology. Complexity metrics () plotted across ten sentence types of increasing valency: from intransitive “Alice runs” (2 boxes, 1 cup) through transitive (3 boxes, 2 cups), ditransitive (4 boxes, 3 cups), and adjunct-stacked constructions up to “fast Alice gave Bob book quickly” (8 boxes, 4 cups). Cup count |D|_{\text{cup}} increases monotonically with verb valency and adjunct stacking, confirming that argument-structure complexity is a topological invariant of the diagram. Actual sentences are overlaid in the plot; cup count is computable from the DisCoPy diagram via len([b for b in diagram.boxes if isinstance(b, Cup)])." />
+<figcaption aria-hidden="true">Argument-structure complexity maps
+monotonically onto diagram topology. Complexity metrics () plotted
+across ten sentence types of increasing valency: from intransitive
+“Alice runs” (2 boxes, 1 cup) through transitive (3 boxes, 2 cups),
+ditransitive (4 boxes, 3 cups), and adjunct-stacked constructions up to
+“fast Alice gave Bob book quickly” (8 boxes, 4 cups). Cup count <span
+class="math inline">\(|D|_{\text{cup}}\)</span> increases monotonically
+with verb valency and adjunct stacking, confirming that
+argument-structure complexity is a topological invariant of the diagram.
+Actual sentences are overlaid in the plot; cup count is computable from
+the DisCoPy diagram via
+<code>len([b for b in diagram.boxes if isinstance(b, Cup)])</code>.</figcaption>
+</figure>
+<p>These metrics connect naturally to the enriched framework of :
+diagram depth serves as a syntactic complexity proxy that can be
+incorporated into the enriched hom-value, providing a principled bridge
+between type-logical derivation cost and distributional semantic
+distance. Discourse-level persistence of entity wires (DisCoCirc) is
+developed in . For multi-agent security, when tracking networks isolate
+an adversarial identity wire (a prompt injection) covertly attempting to
+merge with an ongoing command wire across communication boundaries, the
+circuit topology can flag the type violation before execution ().</p>
+</body>
+</html>

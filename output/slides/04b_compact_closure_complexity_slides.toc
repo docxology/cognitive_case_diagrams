@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{Compact Closure and Diagram Complexity: Snake Equation and Valency Metrics}{1}{0}{1}
+\beamer@subsectionintoc {1}{1}{The Snake Equation Powers Every Pregroup Contraction}{2}{0}{1}

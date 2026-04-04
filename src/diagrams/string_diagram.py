@@ -415,14 +415,35 @@ def create_discopy_snake_equation():
 
 
 def create_discopy_composition(subject: str, verb: str, obj: str):
-    """Create a DisCoPy composition diagram showing functorial semantics.
+    """Create a DisCoPy composition diagram showing pre- and post-contraction.
 
-    Returns the composed diagram along with its normal form.
+    Returns the pre-contraction word tensor (before Cup contractions)
+    alongside the fully contracted diagram. This makes the DisCoCat
+    functor mapping F: Preg → FVect visible: the left panel shows the
+    uncontracted word boxes, the right panel shows the result after
+    Cup contractions reduce the type to s.
+
+    Returns:
+        Tuple of (words_tensor, contracted_diagram).
     """
-    diagram = create_discopy_transitive(subject, verb, obj)
-    normal = diagram.normal_form()
-    logger.info("Created composition diagram with %d boxes", len(diagram.boxes))
-    return diagram, normal
+    from discopy.rigid import Ty, Box as RBox, Cup, Id
+
+    n = Ty('n')
+    s = Ty('s')
+
+    subject_box = RBox(subject, Ty(), n)
+    verb_box = RBox(verb, Ty(), n.r @ s @ n.l)
+    object_box = RBox(obj, Ty(), n)
+
+    # Pre-contraction: just the word tensor product (no cups applied)
+    words = subject_box @ verb_box @ object_box
+
+    # Fully contracted diagram (cups applied)
+    diagram = words >> Cup(n, n.r) @ Id(s) @ Cup(n.l, n)
+
+    logger.info("Created composition diagram: words (%d boxes) → contracted (%d boxes)",
+                len(words.boxes), len(diagram.boxes))
+    return words, diagram
 
 
 def create_discopy_multilingual(translations: Optional[dict] = None):
@@ -447,7 +468,7 @@ def create_discopy_multilingual(translations: Optional[dict] = None):
 
     diagrams = {}
     for lang, (subj, verb, obj) in translations.items():
-        diagrams[lang] = create_discopy_transitive(subj, verb, obj, s_type=lang)
+        diagrams[lang] = create_discopy_transitive(subj, verb, obj, s_type='s')
         logger.debug("Created %s diagram", lang)
 
     logger.info("Created multilingual diagrams for %d languages", len(diagrams))

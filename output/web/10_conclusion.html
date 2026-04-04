@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -174,15 +174,23 @@
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:conclusion">Conclusion: Summary, Contributions, and
-Synthesis</h1>
-<h2 id="summary-of-principal-contributions">Summary of Principal
-Contributions</h2>
-<p>This paper has developed a unified category-theoretic framework for
-analyzing linguistic case systems, synthesizing five distinct research
-traditions into a coherent whole and embedding it within an active
-inference model of cognition. Our eleven principal contributions
-are:</p>
+<h1 id="sec:conclusion">Conclusion: Eleven Formal and Computational
+Contributions</h1>
+<h2 id="what-this-paper-actually-did-eleven-concrete-deliverables">What
+This Paper Actually Did: Eleven Concrete Deliverables</h2>
+<p>This paper developed a unified category-theoretic framework for
+linguistic case systems, synthesizing five research
+traditions—typological, type-logical, distributional,
+enriched-categorical, and topos-theoretic—and embedding the result
+within an active inference model of cognition. Our eleven principal
+contributions are:</p>
+<blockquote>
+<p><strong>Notation</strong>: Each entry is labelled
+<strong>C</strong>_n_ (<em>n</em>th contribution,
+<strong>C1</strong>–<strong>C11</strong>) or <strong>F</strong>_n_
+(<em>n</em>th future direction,
+<strong>F1</strong>–<strong>F7</strong>).</p>
+</blockquote>
 <h3 id="c1-case-categories-as-a-formal-algebraic-framework">C1: Case
 Categories as a Formal Algebraic Framework</h3>
 <p>The review formalized case systems as categories with case roles as
@@ -253,24 +261,32 @@ Enriched Cases, Categorical Magnitude, and Information Theory</h3>
 <p>Through Bradley et al.’s <span class="citation"
 data-cites="fritz2021enriched">[-@fritz2021enriched]</span> enrichment
 framework and Bradley’s <span class="citation"
-data-cites="bradley2020entropy">[-@bradley2020entropy]</span>
+data-cites="bradley2021entropy">[-@bradley2021entropy]</span>
 information-theoretic analysis (), we showed that equipping case
 categories with <span class="math inline">\([0,1]\)</span>-valued
 hom-objects yields a principled bridge between symbolic case grammar and
-statistical semantics. Categorical magnitude provides a new quantitative
-invariant for comparing case systems: the “effective size” of a case
-category captures how much relational information the language
-encodes.</p>
+statistical semantics. Categorical magnitude provides a quantitative
+``effective size’’ invariant for comparing case systems; magnitude
+homology <span class="citation"
+data-cites="leinster2021magnitude">[-@leinster2021magnitude]</span>
+refines that comparison when scalar magnitude does not separate two
+systems.</p>
 <h3 id="c5-topos-theoretic-transfer-via-morita-equivalence">C5:
 Topos-Theoretic Transfer via Morita Equivalence</h3>
 <p>Using Caramello’s <span class="citation"
-data-cites="caramello2016bridges">[-@caramello2016bridges]</span> bridge
-technique and Phillips’s <span class="citation"
-data-cites="phillips2024lot">[-@phillips2024lot]</span> universality
-result (), we established that results proved in any one of our four
-case-theoretic frameworks (typological, type-logical, distributional,
-enriched) transfer automatically to the others via Morita equivalence of
-classifying toposes.</p>
+data-cites="caramello2016bridges caramello2021five">[-@caramello2016bridges;
+-@caramello2021five]</span> bridge technique and Phillips’s <span
+class="citation" data-cites="phillips2024lot">[-@phillips2024lot]</span>
+universality result (), we articulate how <strong>topos-theoretic
+invariants</strong> of a classifying topos can scaffold inter-theoretic
+transfer: when two formalizations admit Morita-equivalent classifying
+toposes (or an explicit bridge topos, as sketched in ), properties
+expressible as shared invariants transfer without separate proof in each
+framework. The schematic equivalence chain for typological,
+type-logical, distributional, and enriched case theories is a
+<strong>research program</strong>—not a single finished theorem covering
+all of linguistics—but it aligns the four perspectives with Caramello’s
+methodology.</p>
 <h3 id="c6-diagrams-as-cognitively-privileged-representations">C6:
 Diagrams as Cognitively Privileged Representations</h3>
 <p>The meta-contribution (Sections 1 and 7) is the argument—supported by
@@ -289,12 +305,20 @@ cognitive scenario understanding.</p>
 <h3 id="c7-computational-verification-and-test-suite">C7: Computational
 Verification and Test Suite</h3>
 <p>The entire framework is computationally implemented and verified
-through 170+ automated tests with &gt;85% code coverage (). The DisCoPy
-integration exercises pregroup type theory (types, words, cups, caps,
-swaps, normal forms, depth analysis) against the same algebraic
-structures described theoretically, confirming that the categorical
-abstractions are not just mathematically elegant but computationally
-executable.</p>
+through <strong>804 automated tests across 47 test files with ≥90% code
+coverage target</strong> (; DAIF implementation and metrics in ),
+enforced in the build configuration. The DisCoPy integration exercises
+pregroup type theory (types, words, cups, caps, swaps, normal forms,
+depth analysis) against the same algebraic structures described
+theoretically, confirming that the categorical abstractions are not just
+mathematically elegant but computationally executable. The
+<code>src/daif/</code> subpackage (7 modules, 24 symbols, 161 dedicated
+tests) provides the full distributional RL implementation: push-forward
+returns, quantile TD, variational message passing, Bethe free energy,
+ERP profile generation, policy selection, and convergence diagnostics.
+Every test uses real mathematical computations—no mocks or
+fakes—ensuring that results reflect genuine behaviour of the formal
+structures.</p>
 <h3 id="c8-quantum-active-inference-and-topological-semantic-flow">C8:
 Quantum Active Inference and Topological Semantic Flow</h3>
 <p>The framework’s categorical string diagrams were extended into their
@@ -310,19 +334,21 @@ semantic communication of relational structure.</p>
 <h3 id="c9-cognitive-security-and-case-theoretic-ai-safety">C9:
 Cognitive Security and Case-Theoretic AI Safety</h3>
 <p>The framework yielded a novel analysis of AI security through the
-lens of case theory (). We demonstrated that prompt injection
-attacks—the predominant vulnerability in LLM-based agent systems—are
-structurally equivalent to <em>illicit case-role re-assignments</em>:
-adversarial text promotes itself from ACC (passive data) to NOM (active
-commander), constituting a type violation in the interaction grammar.
-This analysis led to the proposal of <em>case-theoretic firewalls</em>
-that enforce relational type constraints on agent communication
-boundaries, and <em>epistemic case security</em> as a framework for
-protecting multi-agent relational reasoning against belief injection,
-precision poisoning, and cascade corruption via Morita equivalence. The
-compositional structure of the categorical framework enables local
-verification—each morphism can be independently authenticated—providing
-defense-in-depth that content-based filtering cannot achieve.</p>
+lens of case theory (; compositional protocol typing in ). We
+demonstrated that prompt injection attacks—the predominant vulnerability
+in LLM-based agent systems—are structurally equivalent to <em>illicit
+case-role re-assignments</em>: adversarial text promotes itself from ACC
+(passive data) to NOM (active commander), constituting a type violation
+in the interaction grammar. This analysis led to the proposal of
+<em>case-theoretic firewalls</em> that enforce relational type
+constraints on agent communication boundaries, and <em>epistemic case
+security</em> as a framework for protecting multi-agent relational
+reasoning against belief injection, precision poisoning, and cascade
+corruption when results are transferred across Morita-equivalent
+formalizations. The compositional structure of the categorical framework
+enables local verification—each morphism can be independently
+authenticated—providing defense-in-depth that content-based filtering
+cannot achieve.</p>
 <h3 id="c10-falsifiable-neurolinguistic-predictions">C10: Falsifiable
 Neurolinguistic Predictions</h3>
 <p>The integration of enriched category theory with active inference
@@ -332,9 +358,14 @@ components (P600, N400) is predicted to scale with the enriched
 hom-value (precision) of the violated morphism, and garden-path
 reanalysis costs are predicted to correlate with the change in
 categorical magnitude between the initial and revised case diagrams.
-These predictions bridge the gap between abstract categorical formalism
-and empirical neurolinguistics, making the framework falsifiable at the
-single-trial level.</p>
+These hypotheses <strong>extend</strong> computational accounts that
+decompose surprisal into components linked to N400- vs P600-like
+signatures <span class="citation"
+data-cites="li2023decomposition li2024shallow">[@li2023decomposition;
+@li2024shallow]</span>, by tying amplitudes to enriched morphism weights
+and magnitude change in an explicit case-diagram prior. They bridge
+abstract categorical formalism and empirical neurolinguistics, making
+the framework falsifiable at the single-trial level.</p>
 <h3 id="c11-categorical-communication-protocols-for-multi-agent-ai">C11:
 Categorical Communication Protocols for Multi-Agent AI</h3>
 <p>The synthesis of case categories with modern agent communication
@@ -342,24 +373,37 @@ standards (A2A, MCP, ACP, ANP) yields a principled design for
 compositional, type-safe agent protocols (). By assigning case roles
 (NOM, ACC, INS, LOC, DAT) to interaction participants and enforcing
 relational type constraints at protocol boundaries, the framework
-provides interpretable, composable, and Morita-transferable interaction
-schemas that go beyond the flat JSON payloads of current standards. The
-DisCoCirc extension enables discourse-level tracking of agent states
-across multi-turn dialogues, with protocol correctness reducing to
-categorical type-checking.</p>
-<h2 id="future-research-directions">Future Research Directions</h2>
+provides interpretable, composable interaction schemas that go beyond
+the flat JSON payloads of current standards, with topos-level invariants
+transferable across Morita-equivalent formalizations when equivalence is
+exhibited (). The DisCoCirc extension enables discourse-level tracking
+of agent states across multi-turn dialogues, with protocol correctness
+reducing to categorical type-checking.</p>
+<h2 id="seven-open-directions">Seven Open Directions</h2>
+<p>The following seven directions
+(<strong>F1</strong>–<strong>F7</strong>) identify the most tractable
+and impactful extensions of this framework:</p>
 <h3 id="f1-computational-experiments-with-discocirc-and-lambeq">F1:
 Computational Experiments with DisCoCirc and lambeq</h3>
 <p>The DisCoCirc framework <span class="citation"
-data-cites="defelice2020discourse defelice2022discocirc">[@defelice2020discourse;
-@defelice2022discocirc]</span> offers a natural platform for testing our
-case-theoretic predictions computationally. The release of
-<strong>lambeq Gen II</strong> <span class="citation"
-data-cites="lambeq2025genii">[@lambeq2025genii]</span> with full
-DisCoCirc support makes this direction immediately tractable:
+data-cites="defelice2022discocirc">[@defelice2022discocirc]</span>
+offers a natural platform for testing our case-theoretic predictions
+computationally. The release of <strong>lambeq Gen II</strong> <span
+class="citation" data-cites="lambeq2025genii">[@lambeq2025genii]</span>
+with full DisCoCirc support makes this direction immediately tractable:
 discourse-level case role tracking—including the dynamic role reversals
-of —can now be compiled into parameterized quantum circuits and trained
-end-to-end. Concrete experiments could include:</p>
+of —can now be compiled into parameterized quantum circuits (PQCs) and
+trained end-to-end. Krawchuk et al. <span class="citation"
+data-cites="krawchuk2025paramqnlp">[@krawchuk2025paramqnlp]</span>
+demonstrate efficient generation of PQCs from large-scale texts (up to
+6,410 words) with competitive performance on sentiment classification;
+<span class="citation"
+data-cites="letcher2024tight">[@letcher2024tight]</span> and <span
+class="citation"
+data-cites="rad2024trainability">[@rad2024trainability]</span> provide
+gradient bounds and reduced-domain initialization techniques that
+mitigate barren plateaus, making discourse-level circuit training
+practically feasible. Concrete experiments could include:</p>
 <ul>
 <li>Implementing case-marked DisCoCat models in <strong>lambeq Gen
 II</strong> and evaluating them on semantic role labeling (SRL) tasks,
@@ -374,6 +418,10 @@ measures</li>
 derivational complexity across sentence types and correlating syntactic
 complexity scores with human processing difficulty (reading times,
 surprisal)</li>
+<li>Training lambeq Gen II circuits on case role reversal discourses
+using reduced-domain parameter initialization <span class="citation"
+data-cites="rad2024trainability">[@rad2024trainability]</span> to avoid
+local minima</li>
 </ul>
 <h3 id="f2-topos-theoretic-grammatical-induction-from-corpora">F2:
 Topos-Theoretic Grammatical Induction from Corpora</h3>
@@ -397,7 +445,18 @@ quantum registers, grammatical relations to parameterized gates, and
 alignment functors to circuit transformations. This would provide a
 genuinely new computational paradigm for grammatical
 inference—exploiting quantum parallelism to explore the space of case
-assignments simultaneously.</p>
+assignments simultaneously. Two recent results make this direction
+practically tractable: (1) Rad et al.’s <span class="citation"
+data-cites="rad2024trainability">[-@rad2024trainability]</span>
+reduced-domain parameter initialization yields polynomial gradient
+decay, suppressing the barren plateau problem for circuits of linguistic
+depth; and (2) Letcher et al.’s <span class="citation"
+data-cites="letcher2024tight">[-@letcher2024tight]</span>
+assumption-free gradient bounds rule out vanishing gradients for
+circuits with local observables, which includes the case-role
+measurement POVMs of . Together these results suggest that near-term
+quantum hardware can support case category training without exponential
+gradient overhead.</p>
 <h3
 id="f4-neural-predictive-processing-and-electrophysiological-predictions">F4:
 Neural Predictive Processing and Electrophysiological Predictions</h3>
@@ -434,28 +493,41 @@ that best explains the observed distributional patterns. Applied to
 case, this would yield <em>empirically grounded</em> case categories
 whose objects (roles) and morphisms (relations) emerge from data rather
 than being stipulated a priori.</p>
-<h3 id="f7-distributional-active-inference-for-linguistic-agents">F7:
-Distributional Active Inference for Linguistic Agents</h3>
+<h3
+id="f7-extending-distributional-active-inference-for-linguistic-agents">F7:
+Extending Distributional Active Inference for Linguistic Agents</h3>
 <p>The Distributional Active Inference (DAIF) framework of Akgül et al.
 <span class="citation"
 data-cites="akgul2026distributional">[-@akgul2026distributional]</span>
-opens a novel direction for linguistic case reasoning. DAIF integrates
-active inference into distributional reinforcement learning <span
-class="citation"
-data-cites="bellemare2017distributional">[@bellemare2017distributional]</span>,
-modeling full return distributions rather than scalar expectations via
-push-forward measures on representation paths. Applied to language, this
-framework would enable agents to maintain <em>distributions over case
-diagrams</em> rather than point estimates—assigning probability mass
-across role assignments and sharpening distributional beliefs through
-variational message passing as evidence accumulates. The terminological
-convergence between <em>distributional semantics</em> (Firth’s <span
-class="citation" data-cites="firth1957papers">[-@firth1957papers]</span>
-contextual theory of meaning) and <em>distributional RL</em> (full
-return distributions) is not accidental: both replace scalar summaries
-with distributional representations, and the enriched-categorical
-framework of provides the unifying mathematical abstraction.</p>
-<h2 id="closing-remarks">Closing Remarks</h2>
+has been computationally implemented in this paper’s
+<code>src/daif/</code> subpackage, integrating active inference into
+distributional reinforcement learning <span class="citation"
+data-cites="bellemare2017distributional">[@bellemare2017distributional]</span>
+via push-forward measures on representation paths (). The current
+implementation models case assignment distributionally: agents maintain
+<em>distributions over case diagrams</em>, sharpening beliefs through
+variational message passing as linguistic evidence accumulates. Key open
+extensions include:</p>
+<ul>
+<li>Training distributional case-assignment circuits end-to-end in
+<strong>lambeq Gen II</strong> using quantile regression losses,
+enabling gradient-based learning of the enriched weight matrix from
+annotated corpora</li>
+<li>Extending the DAIF policy selection (<code>G_policy</code>,
+<code>softmax_policy_selection</code>) to multi-turn dialogue management
+with DisCoCirc entity persistence—tracking agent state distributions
+across sentence boundaries</li>
+<li>Cross-lingual transfer of Bethe free energy convergence profiles:
+testing whether the free energy minima differ systematically between
+nominative-accusative and ergative-absolutive languages,
+operationalizing the typological complexity predictions of </li>
+<li>Integrating IQN risk distortion modes (optimistic/pessimistic/CVaR)
+into the CEREBRUM architecture to model individual differences in
+syntactic risk tolerance</li>
+</ul>
+<h2
+id="case-categories-are-the-geometry-of-meaning-a-unifying-coda">Case
+Categories Are the Geometry of Meaning: A Unifying Coda</h2>
 <p>The commutative diagram is the central motif of this review—both as a
 mathematical tool and as a cognitive instrument. The analysis has
 demonstrated that the same diagrammatic language that makes category
@@ -469,9 +541,9 @@ brain operates by constructing and updating generative models of the
 world’s relational structure. Category theory provides the structural
 algebra for these generative models; commutative diagrams supply their
 natural topology; and case categories instantiate the precise relational
-vocabulary that cognitive systems deploy to organize the entropy of
-experience into coherent narratives of <em>who does what to whom</em>.
-The distributional revolution in both semantics and reinforcement
+vocabulary that cognitive systems deploy to organize experience into
+coherent narratives of <em>who does what to whom</em>. The
+distributional revolution in both semantics and reinforcement
 learning—from Firth’s <span class="citation"
 data-cites="firth1957papers">[-@firth1957papers]</span> co-occurrence
 statistics through transformer attention weights to Distributional
@@ -480,14 +552,12 @@ data-cites="akgul2026distributional">[@akgul2026distributional]</span>—confirm
 that meaning is not an atomic property of symbols but emerges from the
 relational structure of contexts, a principle that enriched category
 theory captures with mathematical precision.</p>
-<p>Ultimately, the mathematics of case alignment is not merely an
-abstraction of human grammar, but the formal geometry of meaning
-itself—the syntactic architecture through which consciousness navigates
-and renders the cosmos intelligible. The convergence of formal
+<p>Ultimately, the mathematics of case alignment presents a highly
+structured formal geometry of meaning—the relational algebra through
+which cognitive agents navigate and render intelligible the structured
+world of events, participants, and relations. The convergence of formal
 semantics, distributional semantics, and active inference within a
-single categorical framework reveals that the relational algebras
-governing linguistic case are the same algebras that structure
-perception, action, and understanding: commutative diagrams are the
-hieroglyphs in which nature writes the grammar of thought.</p>
+single categorical framework suggests that commutative diagrams offer a
+natural formalism in which relational cognition can be modeled.</p>
 </body>
 </html>

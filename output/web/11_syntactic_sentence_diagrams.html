@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>11_syntactic_sentence_diagrams</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1 id="sec:syntactic-diagrams">Appendix A: Syntactic and Semantic Case
+Assignment Diagrams</h1>
+<p>This appendix presents a curated panel of syntactic
+constituency-style diagrams paired with their categorical pregroup type
+derivations, covering eight linguistically significant case assignment
+constructions—from simple intransitive clauses to complex embedded
+relative clauses with ditransitive verbs. The figure synthesizes the
+formal correspondences developed throughout the manuscript, making
+explicit how each surface syntactic pattern maps to a specific morphism
+composition in the pregroup grammar.</p>
+<h2
+id="syntactic-trees-and-pregroup-types-eight-constructions">Syntactic
+Trees and Pregroup Types: Eight Constructions</h2>
+<p>The figure below () presents eight constructions arrayed in two rows
+of four panels, each panel containing:</p>
+<ol type="1">
+<li><strong>Syntactic tree</strong> (top): a constituency-style diagram
+with arcs linking argument to predicate, nodes colour-coded by case role
+following the palette of , §A.</li>
+<li><strong>Pregroup type formula</strong> (bottom): the formal typing
+derivation from , showing how Cup contractions collapse all argument
+wires to sentence type <span class="math inline">\(s\)</span>.</li>
+</ol>
+<p>The constructions span a deliberate difficulty gradient:</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 31%" />
+<col style="width: 13%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Panel</th>
+<th style="text-align: left;">Construction</th>
+<th style="text-align: center;">Roles</th>
+<th style="text-align: center;">Type Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Intransitive (NOM)</td>
+<td style="text-align: center;">NOM, V</td>
+<td style="text-align: center;">2 boxes, 1 Cup</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Transitive (NOM+ACC)</td>
+<td style="text-align: center;">NOM, V, ACC</td>
+<td style="text-align: center;">3 boxes, 2 Cups</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Ditransitive (NOM+DAT+ACC)</td>
+<td style="text-align: center;">NOM, V, DAT, ACC</td>
+<td style="text-align: center;">4 boxes, 3 Cups</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Passive voice (Patient→NOM)</td>
+<td style="text-align: center;">NOM, V, INS</td>
+<td style="text-align: center;">3 boxes + <span
+class="math inline">\(\sigma{}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Ergative clause (ERG+ABS)</td>
+<td style="text-align: center;">ERG×2, ABS×2, V</td>
+<td style="text-align: center;">5 boxes, 2 Cups</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: left;">Benefactive (NOM+DAT+ACC+oblique)</td>
+<td style="text-align: center;">NOM, V, ACC, DAT</td>
+<td style="text-align: center;">4 boxes, 3 Cups</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td style="text-align: left;">Relative clause (embedded NOM)</td>
+<td style="text-align: center;">NOM×2, V1, V2</td>
+<td style="text-align: center;">6 boxes, 3 Cups</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td style="text-align: left;">Causative + Adj + Adv (complex)</td>
+<td style="text-align: center;">NOM, V, ACC, V2, ADV</td>
+<td style="text-align: center;">8 boxes, 5 Cups</td>
+</tr>
+</tbody>
+</table>
+<p>The monotonic increase in Cup count and box count across rows is
+precisely what captures as the categorical complexity <span
+class="math inline">\(\kappa{(D)}\)</span>: each additional argument
+slot requires one additional Cup contraction, and each modifier requires
+one additional Box–Cup pair.</p>
+<h3 id="ergative-clauses-and-the-alignment-functor">Ergative Clauses and
+the Alignment Functor</h3>
+<p>Panel 5 (Ergative clause) uses the Warlpiri example from :
+<em>Mariyk-angku</em> (ERG) <em>yapaku wawirri</em> (ABS)
+<em>parnta-nu</em> (chased). The pregroup typing is structurally
+identical to the transitive (Panel 2), but the morphological realisation
+is governed by the alignment functor <span
+class="math inline">\(F_{\mathrm{ERG}}: \mathcal{U} \to
+\mathcal{L}_{\mathrm{Warlpiri}}\)</span> from , which maps <span
+class="math inline">\(A \mapsto \mathrm{ERG}\)</span> and <span
+class="math inline">\(S = P \mapsto \mathrm{ABS}\)</span> rather than
+<span class="math inline">\(A = S \mapsto \mathrm{NOM}\)</span>.</p>
+<h3 id="passivisation-as-a-swap-morphism">Passivisation as a Swap
+Morphism</h3>
+<p>Panel 4 illustrates passivisation: in <em>Bob is chased by
+Alice</em>, the patient Bob is promoted to subject position (NOM) while
+Alice is demoted to an oblique instrumental (INS). Formally, this is the
+Swap morphism <span class="math inline">\(\sigma_{A,B}: A \otimes B \to
+B \otimes A\)</span> introduced in . The pregroup typing includes a
+<span class="math inline">\(\sigma{}\)</span> marker indicating that the
+type permutation is not a simple contraction sequence but requires an
+explicit braiding operation.</p>
+<h3 id="relative-clauses-and-wire-threading">Relative Clauses and Wire
+Threading</h3>
+<p>Panel 7 (Relative clause) is the most structurally novel: in <em>The
+man the dog chased ran</em>, the head noun <em>man</em> is
+simultaneously the subject of <em>ran</em> and the implicit object of
+<em>chased</em> (the gap site). The pregroup type formula <span
+class="math inline">\(n \cdot n^l \cdot n \cdot (n^r \cdot n \cdot n^l)
+\cdot (n^r \cdot s) \Rightarrow s\)</span> shows how the relative-clause
+verb type <span class="math inline">\(n^r \cdot n \cdot n^l\)</span>
+threads the shared entity wire through two predicate slots — exactly the
+entity persistence mechanism that DisCoCirc’s state wires formalise at
+discourse level ().</p>
+<h3 id="complex-construction-and-the-complexity-metric">Complex
+Construction and the Complexity Metric</h3>
+<p>Panel 8 (Causative + Adj + Adv) reaches the highest complexity: 8
+boxes and 5 Cup contractions. This corresponds to a categorical
+complexity value of <span class="math inline">\(\kappa = 8 + 5 =
+13\)</span>, placing it at the upper end of the single-sentence range
+plotted in . The formula illustrates how clausal complement embedding
+(the causative taking a VP complement) adds a full additional layer of
+type nesting beyond even the ditransitive.</p>
+<figure id="fig:syntactic-panel">
+<img src="output/figures/syntactic_case_panel.png"
+alt="Compositional complexity increases monotonically from intransitive to causative constructions across eight case-assignment patterns. Multi-panel diagram ordered by categorical complexity \kappa(D) (). Top of each panel: constituency-style syntactic tree with argument arcs and colour-coded case roles (Blue=NOM, Red=ACC, Violet=DAT, Purple=ERG, Teal=ABS, Dark=V). Bottom of each panel: categorical pregroup type formula showing Cup contractions that collapse argument wires to sentence type s. Panels 1–4 cover nominative-accusative (intransitive, transitive, ditransitive, passive); Panels 5–6 show ergative-absolutive and benefactive; Panels 7–8 demonstrate relative-clause embedding and causative complex predicates. Cup count and box count increase monotonically across panels, directly instantiating \kappa(D). Generated programmatically from src.visualization.syntactic_sentence_diagrams.render_syntactic_panel()." />
+<figcaption aria-hidden="true">Compositional complexity increases
+monotonically from intransitive to causative constructions across eight
+case-assignment patterns. Multi-panel diagram ordered by categorical
+complexity <span class="math inline">\(\kappa(D)\)</span> ().
+<strong>Top of each panel</strong>: constituency-style syntactic tree
+with argument arcs and colour-coded case roles (Blue=NOM, Red=ACC,
+Violet=DAT, Purple=ERG, Teal=ABS, Dark=V). <strong>Bottom of each
+panel</strong>: categorical pregroup type formula showing Cup
+contractions that collapse argument wires to sentence type <span
+class="math inline">\(s\)</span>. Panels 1–4 cover nominative-accusative
+(intransitive, transitive, ditransitive, passive); Panels 5–6 show
+ergative-absolutive and benefactive; Panels 7–8 demonstrate
+relative-clause embedding and causative complex predicates. Cup count
+and box count increase monotonically across panels, directly
+instantiating <span class="math inline">\(\kappa(D)\)</span>. Generated
+programmatically from
+<code>src.visualization.syntactic_sentence_diagrams.render_syntactic_panel()</code>.</figcaption>
+</figure>
+</body>
+</html>

@@ -1,41 +1,159 @@
-\frametitle{Passivization as Algebraic Type Permutation}
-\protect\phantomsection\label{passivization-as-algebraic-type-permutation}
-One of the most revealing case-theoretic operations is
-\textbf{passivization}, which transforms an active transitive clause
-into a passive construction by promoting the patient to subject position
-and (optionally) demoting the agent to an oblique role. In our
-categorical framework, passivization is not an ad hoc syntactic
-transformation but a precise \emph{type permutation}---a swap of the
-noun types feeding into the verb's pregroup derivation.
+\frametitle{Cups, Caps, and Joyal--Street: How Wires Prove Grammaticality}
+\protect\phantomsection\label{cups-caps-and-joyalstreet-how-wires-prove-grammaticality}
+The pivotal connection between categorial grammar and visualization
+comes from Joyal and Street {[}-@joyalstreet1991geometry{]}, who proved
+that morphisms in monoidal categories can be faithfully represented as
+\emph{string diagrams}---planar graphs where:
 
-In a pregroup grammar, the active transitive ``Alice chases Bob'' has
-the type reduction:
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Wires} represent types (objects of the category)
+\item
+  \textbf{Boxes} represent words or operations (morphisms)
+\item
+  \textbf{Vertical composition} represents sequential application
+\item
+  \textbf{Horizontal juxtaposition} represents the tensor product
+  (concatenation)
+\item
+  \textbf{Cups and caps} represent the contraction/expansion of a
+  pregroup
+\end{itemize}
 
-\[n_{\text{NOM}} \cdot (n^r \cdot s \cdot n^l) \cdot n_{\text{ACC}} \to s \]
-\{\#eq:eq-3-3\}
+\autoref{fig:string-diagram} surveys three syntactic structures side by
+side (progression from intransitive to passive);
+\autoref{fig:native-discocat} shows the same transitive sentence
+rendered by our native matplotlib pipeline---a direct computational
+output confirming word-box layout, wire routing, and cup-contraction
+geometry independently of DisCoPy.
 
-Passivization permutes the noun arguments, yielding ``Bob is chased by
-Alice'' with the swapped type assignment:
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={Native matplotlib rendering cross-validates DisCoPy pregroup geometry. String diagram for ``Alice chases Bob'' generated via src.visualization.string\_diagrams.render\_discocat\_sentence() without the DisCoPy library. Three Word boxes carry pregroup types: n (Alice, blue = NOM), n\^{}r \textbackslash otimes s \textbackslash otimes n\^{}l (chases, neutral), and n (Bob, red = ACC). Dashed arcs trace cup connections from noun wires to the verb's adjoint slots, rendering \textbackslash varepsilon: n\^{}r \textbackslash otimes n \textbackslash to 1 and \textbackslash varepsilon: n\^{}l \textbackslash otimes n \textbackslash to 1 as paired ligatures. This confirms that our visualization pipeline correctly reconstructs pregroup string-diagram geometry using only case-role metadata from src.case\_systems.case\_category, cross-validating the DisCoPy canonical output in .}]{../figures/string_diagram_discocat.png}}
+\caption{Native matplotlib rendering cross-validates DisCoPy pregroup
+geometry. String diagram for ``Alice chases Bob'' generated via
+\protect\texttt{src.visualization.string\_diagrams.render\_discocat\_sentence()}
+without the DisCoPy library. Three Word boxes carry pregroup types:
+\(n\) (Alice, \textbf{blue} = NOM), \(n^r \otimes s \otimes n^l\)
+(chases, \textbf{neutral}), and \(n\) (Bob, \textbf{red} = ACC). Dashed
+arcs trace cup connections from noun wires to the verb's adjoint slots,
+rendering \(\varepsilon: n^r \otimes n \to 1\) and
+\(\varepsilon: n^l \otimes n \to 1\) as paired ligatures. This confirms
+that our visualization pipeline correctly reconstructs pregroup
+string-diagram geometry using only case-role metadata from
+\protect\texttt{src.case\_systems.case\_category}, cross-validating the
+DisCoPy canonical output in
+\autoref{fig:discopy-transitive}.}\label{fig:native-discocat}
+\end{figure}
 
-\[n_{\text{ACC}} \cdot (n^r \cdot s \cdot n^l) \cdot n_{\text{NOM}} \to s \]
-\{\#eq:eq-3-4\}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={Sentence complexity increases monotonically from intransitive to passive. A 1×3 DisCoPy pregroup grammar visualization: Panel (a) intransitive ``Bob runs'' (NOM, 1 cup); Panel (b) transitive ``Alice chases Bob'' (NOM+ACC, 2 cups); Panel (c) passive ``Bob is-chased'' (patient promoted to subject via reduced pregroup type). Cup count directly reflects verb valency per .}]{../figures/discopy_sentence_progression.png}}
+\caption{Sentence complexity increases monotonically from intransitive
+to passive. A 1×3 DisCoPy pregroup grammar visualization: Panel (a)
+intransitive ``Bob runs'' (NOM, 1 cup); Panel (b) transitive ``Alice
+chases Bob'' (NOM+ACC, 2 cups); Panel (c) passive ``Bob is-chased''
+(patient promoted to subject via reduced pregroup type). Cup count
+directly reflects verb valency per
+\autoref{eq:eq-4-4}.}\label{fig:string-diagram}
+\end{figure}
 
-Crucially, DisCoPy's \texttt{Swap} primitive makes this permutation
-explicit and algebraically precise: the swap operation
-\(\sigma_{n,n}: n \otimes n \to n \otimes n\) permutes the two noun
-wires without violating the monoidal structure. The resulting diagram
-differs from the active version precisely in the crossing of the noun
-wires---making the voice alternation \emph{visible} as a topological
-feature of the string diagram.
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={Type-logical structure is invariant under surface word-order permutation. Pregroup derivations for ``SUBJ chases OBJ'' across three typologically diverse languages: English (SVO), Latin (inflected, free order), and Japanese (agglutinative, SOV). Each renders an identical type reduction n \textbackslash otimes (n\^{}r \textbackslash otimes s \textbackslash otimes n\^{}l) \textbackslash otimes n \textbackslash to s, confirming the central claim of categorial grammar: syntactic universals reside in the type algebra, not in linear word order.}]{../figures/discopy_multilingual.png}}
+\caption{Type-logical structure is invariant under surface word-order
+permutation. Pregroup derivations for ``SUBJ chases OBJ'' across three
+typologically diverse languages: English (SVO), Latin (inflected, free
+order), and Japanese (agglutinative, SOV). Each renders an identical
+type reduction
+\(n \otimes (n^r \otimes s \otimes n^l) \otimes n \to s\), confirming
+the central claim of categorial grammar: syntactic universals reside in
+the type algebra, not in linear word
+order.}\label{fig:multilingual-isomorphism}
+\end{figure}
 
-This diagrammatic transparency exemplifies Shimojima's
-{[}-@shimojima1996reasoning{]} free-ride inference: by inspecting the
-diagram, one can immediately see that passivization preserves the verb's
-inherent argument structure while rearranging the surface
-realization---a fact that requires multiple inference steps to establish
-in a linear notation.
+This result---the soundness and completeness of string-diagrammatic
+reasoning---formally guarantees that any topological conclusion drawn
+visually from the diagram is algebraically valid: the diagram is not a
+heuristic but a rigorous proof instrument.
 
-The structural difference between voice alternations is a topological
-change in wire connectivity: passivization removes one Cup contraction,
-lowering the syntactic complexity score of
-{[}@eq:eq-4-4{]}.{]}(output/figures/discopy\_passive.png)\{\#fig:discopy-passive\}
+This profound visual transparency instantiates exactly the ``free ride''
+phenomenon identified by Shimojima {[}-@shimojima1996reasoning{]}: a
+single diagram simultaneously exposes the syntactic derivation, the deep
+argument structure, and the compositional flow of semantic
+meaning---entirely eliminating the need for sequential, explicit
+inference steps.
+
+\textbf{Concrete derivation in DisCoPy.} The type reduction for ``Alice
+chases Bob'' is computationally verified using the DisCoPy library's
+\texttt{discopy.rigid} module:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ discopy.rigid }\ImportTok{import}\NormalTok{ Ty, Box, Cup, Id}
+\NormalTok{n, s }\OperatorTok{=}\NormalTok{ Ty(}\StringTok{\textquotesingle{}n\textquotesingle{}}\NormalTok{), Ty(}\StringTok{\textquotesingle{}s\textquotesingle{}}\NormalTok{)}
+\NormalTok{alice }\OperatorTok{=}\NormalTok{ Box(}\StringTok{\textquotesingle{}Alice\textquotesingle{}}\NormalTok{, Ty(), n)}
+\NormalTok{chases }\OperatorTok{=}\NormalTok{ Box(}\StringTok{\textquotesingle{}chases\textquotesingle{}}\NormalTok{, Ty(), n.r }\OperatorTok{@}\NormalTok{ s }\OperatorTok{@}\NormalTok{ n.l)}
+\NormalTok{bob  }\OperatorTok{=}\NormalTok{ Box(}\StringTok{\textquotesingle{}Bob\textquotesingle{}}\NormalTok{,  Ty(), n)}
+\NormalTok{words }\OperatorTok{=}\NormalTok{ alice }\OperatorTok{@}\NormalTok{ chases }\OperatorTok{@}\NormalTok{ bob          }\CommentTok{\# n ⊗ (n.r ⊗ s ⊗ n.l) ⊗ n}
+\NormalTok{cups  }\OperatorTok{=}\NormalTok{ Cup(n, n.r) }\OperatorTok{@}\NormalTok{ Id(s) }\OperatorTok{@}\NormalTok{ Cup(n.l, n)}
+\NormalTok{diagram }\OperatorTok{=}\NormalTok{ words }\OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ cups               }\CommentTok{\# reduces to s}
+\ControlFlowTok{assert}\NormalTok{ diagram.cod }\OperatorTok{==}\NormalTok{ s               }\CommentTok{\# type{-}checks: sentence type}
+\end{Highlighting}
+\end{Shaded}
+
+The two \texttt{Cup} operations successfully contract \(n\) with \(n^r\)
+(resolving the subject--verb link) and \(n^l\) with \(n\) (resolving the
+verb--object link). This topological reduction collapses the five-wire
+tensor product into a single, valid sentence wire \(s\). Consequently,
+the assertion \texttt{diagram.cod\ ==\ s} constitutes a direct,
+machine-processable proof of grammaticality.
+
+\textbf{From pregroup types to graded types.} The standard pregroup
+derivation produces a rigid, binary grammaticality judgment: the final
+codomain of the fully contracted tensor product either matches the
+sentence type \(s\) (grammatical) or fails (ill-formed). However, we can
+\emph{grade} this binary verdict by replacing the underlying Boolean
+algebra \(\{0,1\}\) with the continuous unit interval \([0,1]\). This
+substitution yields a graded type theory where type judgments carry
+continuous confidence weights rather than truth values. Asudeh and
+Giorgolo {[}-@asudeh2020graded{]} developed this approach using a
+monadic semantics that wraps base types inside a computational effect
+tracking epistemic uncertainty---an idea whose categorical content is
+precisely a change of enrichment base.
+
+Mapped into our framework, this operation corresponds exactly to the
+\([0,1]\)-enrichment detailed in \autoref{sec:enriched-categories}: the
+enriched scalar weight on any specific morphism \(f: A \to B\)
+quantifies the systemic confidence that the categorical case assignment
+\(A \to B\) remains well-typed. From there, categorical magnitude
+aggregates these sparse, local confidence scores into a robust global
+complexity measure evaluating the entire syntactic derivation.
+Ultimately, the systematic progression from rigid pregroup strings,
+through graded types, into fully enriched case categories operates
+mathematically as a strict cascade of base-change functors
+(\(\mathbf{Bool} \hookrightarrow [0,1] \hookrightarrow \mathbf{R}_{\geq 0}\))---where
+each successive level grants greater representational nuance while
+demanding higher computational complexity.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={Direct DisCoPy machine output confirms pregroup type reduction to sentence wire s. Three Word boxes carry types n (Alice), n\^{}r \textbackslash otimes s \textbackslash otimes n\^{}l (chases), and n (Bob). Two Cup contractions \textbackslash varepsilon\textbackslash colon n\^{}r \textbackslash otimes n \textbackslash to 1 and \textbackslash varepsilon\textbackslash colon n\^{}l \textbackslash otimes n \textbackslash to 1 cancel adjoint pairs, reducing the five-wire tensor product to the single sentence wire s. Unlike the schematic progression in , this is the direct computational output confirming diagram.cod == s. By the Curry--Howard correspondence, this diagram simultaneously constitutes a syntactic derivation, a proof of well-typedness, and (under the meaning functor of ) a compositional semantic computation. Our extension decorates n-typed wires with functorial states S: \textbackslash mathbf\{Ent\} \textbackslash to \textbackslash mathbf\{Case\}, tracking role assignments across discourse boundaries via DisCoCirc entity wires.}]{../figures/discopy_transitive.png}}
+\caption{Direct DisCoPy machine output confirms pregroup type reduction
+to sentence wire \(s\). Three Word boxes carry types \(n\) (Alice),
+\(n^r \otimes s \otimes n^l\) (chases), and \(n\) (Bob). Two Cup
+contractions \(\varepsilon\colon n^r \otimes n \to 1\) and
+\(\varepsilon\colon n^l \otimes n \to 1\) cancel adjoint pairs, reducing
+the five-wire tensor product to the single sentence wire \(s\). Unlike
+the schematic progression in \autoref{fig:string-diagram}, this is the
+\emph{direct computational output} confirming
+\protect\texttt{diagram.cod\ ==\ s}. By the Curry--Howard
+correspondence, this diagram simultaneously constitutes a syntactic
+derivation, a proof of well-typedness, and (under the meaning functor of
+\autoref{sec:categorical-semantics}) a compositional semantic
+computation. Our extension decorates \(n\)-typed wires with functorial
+states \(S: \mathbf{Ent} \to \mathbf{Case}\), tracking role assignments
+across discourse boundaries via \textbf{DisCoCirc entity
+wires}.}\label{fig:discopy-transitive}
+\end{figure}

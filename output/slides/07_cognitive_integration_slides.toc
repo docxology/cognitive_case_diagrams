@@ -1,1 +1,1 @@
-\beamer@sectionintoc {1}{Cognitive Integration: Active Inference and Diagrammatic Reasoning}{1}{0}{1}
+\beamer@sectionintoc {1}{Active Inference as a Process Theory of Case}{1}{0}{1}

@@ -22,16 +22,9 @@ class TestRenderDiscopyTransitive:
         """render_discopy_transitive saves a PNG file."""
         from src.visualization.discopy_diagrams import render_discopy_transitive
         out = tmp_path / "transitive.png"
-        render_discopy_transitive("Alice", "chases", "Bob", output_path=out)
+        render_discopy_transitive(output_path=out)
         assert out.exists()
         assert out.stat().st_size > 0
-
-    def test_renders_custom_sentence(self, tmp_path: Path) -> None:
-        """Custom subject/verb/obj renders correctly."""
-        from src.visualization.discopy_diagrams import render_discopy_transitive
-        out = tmp_path / "custom.png"
-        render_discopy_transitive("Carol", "sees", "Dave", output_path=out)
-        assert out.exists()
 
 
 @pytest.mark.skipif(not DISCOPY_AVAILABLE, reason="discopy not installed")

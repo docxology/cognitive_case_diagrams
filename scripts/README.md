@@ -27,7 +27,7 @@ uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --li
 # Or run each sub-script directly
 uv run python projects/cognitive_case_diagrams/scripts/generate_discopy_figures.py
 
-# Via pipeline stage 2 (after promoting project to projects/cognitive_case_diagrams/)
+# Via template root pipeline stage 2
 uv run python scripts/02_run_analysis.py --project cognitive_case_diagrams
 ```
 

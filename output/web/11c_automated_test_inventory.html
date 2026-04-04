@@ -176,8 +176,12 @@
 <body>
 <h1 id="sec:test-suite-inventory">Appendix C: Automated Test Suite
 Inventory</h1>
-<p>This appendix lists the test categories behind the counts reported in
-. Every test uses real mathematical computations—no mocks or fakes.</p>
+<p>This appendix summarizes the <strong>categories</strong> of tests
+behind the counts in . Aggregate figures are injected at build time
+(<strong>804</strong> tests, <strong>47</strong> files; see
+<code>src/generate_manuscript_metrics.py</code> and
+<code>output/metrics.json</code>). Every test uses real mathematical
+computations—no mocks or fakes.</p>
 <ul>
 <li><strong>Categorical axiom tests</strong>: Identity morphism
 existence, composition associativity, weight invariants,
@@ -190,70 +194,73 @@ composition check, role clustering</li>
 diagram equality</li>
 <li><strong>Metrics tests</strong>: Normal form preservation, depth
 computation with graceful fallback for pregroup diagrams</li>
-<li><strong>Natural transformation tests</strong> (20 tests): Component
-morphism construction, <code>naturality_holds</code> /
+<li><strong>Natural transformation tests</strong>: Component morphism
+construction, <code>naturality_holds</code> /
 <code>verify_naturality</code> on identity and incomplete maps, identity
 transformation generation, vertical composition of transformations,
-completeness checking over all domain objects</li>
-<li><strong>Complexity metrics tests</strong> (17 tests): DisCoPy
-box/cup/cap counting on transitive/ditransitive diagrams, normal form
-computation and snake equation verification, syntactic complexity
-scoring with configurable weights, cross-diagram comparison
-utilities</li>
-<li><strong>Topos theory tests</strong> (18 tests): Geometric theory
-construction from standard and minimal case categories, classifying
-topos invariant computation, Morita equivalence verification (positive
-and negative cases), bridge transfer between equivalent theories with
+completeness checking over domain objects</li>
+<li><strong>Complexity metrics tests</strong>: DisCoPy box/cup/cap
+counting on transitive/ditransitive diagrams, normal form computation
+and snake equation verification, syntactic complexity scoring with
+configurable weights, cross-diagram comparison utilities</li>
+<li><strong>Topos theory tests</strong>: Geometric theory construction
+from standard and minimal case categories, classifying topos invariant
+computation, Morita equivalence verification (positive and negative
+cases), bridge transfer between equivalent theories with
 transfer-blocking for non-equivalent theories, enriched theory
 construction</li>
-<li><strong>Fluid-S tests</strong> (22 tests): Volitional/non-volitional
-mapping, probability splits, Bats language examples, kernel computation,
-enriched weight scaling</li>
-<li><strong>Active inference tests</strong> (107 tests across 7 test
-files): Belief construction and entropy, KL divergence (Gibbs’
-inequality, asymmetry), variational free energy, Bayesian belief update
-with zero-likelihood edge case, sequential multi-word belief update
-(five-step generative loop with entropy convergence), prediction error
-scaling including P600 ERP prediction with boundary weights, expected
-free energy decomposition (epistemic vs pragmatic), magnitude-based
-garden-path reanalysis cost with symmetry, N400 semantic violation proxy
-(includes integration tests in
+<li><strong>Fluid-S tests</strong>: Volitional/non-volitional mapping,
+probability splits, Bats language examples, kernel computation, enriched
+weight scaling</li>
+<li><strong>Active inference tests</strong>
+(<code>tests/test_cognitive_*.py</code>): Belief construction and
+entropy, KL divergence (Gibbs’ inequality, asymmetry), variational free
+energy, Bayesian belief update with zero-likelihood edge case,
+sequential multi-word belief update (five-step generative loop with
+entropy convergence), prediction error scaling including P600 ERP
+prediction with boundary weights, expected free energy decomposition
+(epistemic vs pragmatic), magnitude-based garden-path reanalysis cost
+with symmetry, N400 semantic violation proxy (including
 <code>test_cognitive_integration.py</code>)</li>
-<li><strong>Quantum case tests</strong> (20 tests): Crisp POVM
-orthogonal projectors, graded proto-role POVM, Fluid-S basis rotation,
-density matrix creation, (in ) P(c|ρ) = Tr(E_c ρ) verification</li>
-<li><strong>Cognitive security tests</strong> (18 tests): Type-violation
-detection, case frame validation, injection score computation,
-magnitude-based topological robustness, composition inequality as
-security boundary</li>
-<li><strong>Ditransitive tests</strong> (12 tests): Three-argument
-sentence creation, NOM/ACC/DAT case assignment, DisCoPy diagram with 3
-cups, complexity comparison with transitive</li>
-<li><strong>Visualization tests</strong> (4 tests): Complexity
-comparison bar chart rendering, normal form comparison chart, radar
-chart generation—all producing valid PNG output files</li>
+<li><strong>Quantum case tests</strong>: Crisp POVM orthogonal
+projectors, graded proto-role POVM, Fluid-S basis rotation, density
+matrix creation, (in ) P(c|ρ) = Tr(E_c ρ) verification</li>
+<li><strong>Cognitive security tests</strong>: Type-violation detection,
+case frame validation, injection score computation, magnitude-based
+topological robustness, composition inequality as security boundary</li>
+<li><strong>Ditransitive tests</strong>: Three-argument sentence
+creation, NOM/ACC/DAT case assignment, DisCoPy diagram with three cups,
+complexity comparison with transitive</li>
+<li><strong>Visualization tests</strong>
+(<code>tests/test_visualization_*.py</code>): Category graphs, enriched
+heatmaps, functor panels, string and DisCoPy diagrams, complexity and
+DAIF plots, quantum and security plots, Fluid-S landscapes, syntactic
+panels—PNG output and structural checks where applicable</li>
 <li><strong>DAIF subpackage tests</strong> (161 tests across 7 test
-files with 100% pass rate):
+files):
 <ul>
-<li><code>test_daif_core.py</code> (24 tests): Distributional Bellman
-operator, push-forward return, C51 categorical projection</li>
-<li><code>test_daif_quantile.py</code> (21 tests): QR-DQN quantile Huber
-loss, IQN risk distortion (neutral/optimistic/pessimistic/CVaR),
-Wasserstein distances <span class="math inline">\(W_1\)</span>/<span
+<li><code>test_daif_core.py</code>: Distributional Bellman operator,
+push-forward return, C51 categorical projection</li>
+<li><code>test_daif_quantile.py</code>: QR-DQN quantile Huber loss, IQN
+risk distortion (neutral/optimistic/pessimistic/CVaR), Wasserstein
+distances <span class="math inline">\(W_1\)</span>/<span
 class="math inline">\(W_2\)</span></li>
-<li><code>test_daif_inference.py</code> (25 tests):
+<li><code>test_daif_inference.py</code>:
 <code>distributional_case_assignment()</code> posterior convergence,
 variational message passing, Bethe free energy, expected information
 gain</li>
-<li><code>test_daif_prediction.py</code> (27 tests): DPE
-precision-weighting, N400/P600 amplitude from return distributions, full
+<li><code>test_daif_prediction.py</code>: DPE precision-weighting,
+N400/P600 amplitude from return distributions, full
 <code>ERPProfile</code> waveform generation and peak latency</li>
-<li><code>test_daif_policy.py</code> (19 tests): <code>G_policy()</code>
-EFE + risk term, Boltzmann policy temperature scaling, distributional
-epistemic value</li>
-<li><code>test_daif_metrics.py</code> (24 tests): Convergence
-diagnostics (monotonicity, reduction percentage), distributional KL
-divergence, quantile calibration error, return entropy</li>
+<li><code>test_daif_policy.py</code>: <code>G_policy()</code> EFE + risk
+term, Boltzmann policy temperature scaling, distributional epistemic
+value</li>
+<li><code>test_daif_metrics.py</code>: Convergence diagnostics
+(monotonicity, relative reduction), distributional KL divergence,
+quantile calibration error, return entropy</li>
+<li><code>test_daif_types.py</code>: <code>DistributionalReturn</code>
+helpers, <code>DAIFResult</code> / <code>ERPProfile</code> properties
+(with integration coverage of re-exported DAIF entrypoints)</li>
 </ul></li>
 </ul>
 </body>

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  4 APR 2026 12:39
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  4 APR 2026 13:12
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1487,9 +1487,9 @@ Package microtype Info: Loading generic protrusion settings for font family
 (/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/sl
 ides/00_abstract_slides.nav)
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 128.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 131.
 
-Overfull \vbox (211.59552pt too high) detected at line 128
+Overfull \vbox (266.47734pt too high) detected at line 131
  []
 
 [1
@@ -1515,7 +1515,7 @@ L3 programming layer <2026-01-19>
 Here is how much of TeX's memory you used:
  29140 strings out of 468168
  587429 string characters out of 5432815
- 1149641 words of memory out of 5000000
+ 1150641 words of memory out of 5000000
  57379 multiletter control sequences out of 15000+600000
  628397 words of font info for 52 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191

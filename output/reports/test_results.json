@@ -1,203 +1,6 @@
 {
-  "timestamp": "2026-04-04T12:44:42.225547",
-  "infrastructure": {
-    "passed": 0,
-    "failed": 1,
-    "skipped": 0,
-    "total": 6056,
-    "warnings": 0,
-    "exit_code": 1,
-    "discovery_count": 6056,
-    "collection_errors": 0,
-    "execution_phases": {
-      "setup": 1.3,
-      "collection": 1.3
-    },
-    "test_categories": {},
-    "coverage_percent": 16.181998021760634,
-    "failed_tests": [
-      {
-        "test": "tests/infra_tests/core/test_retry.py::TestRetryWithBackoff::test_retry_function_preserves_signature",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/core/test_retry.py::TestRetryOnTransientFailure::test_retry_on_ioerror",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/core/test_retry.py::TestRetryOnTransientFailure::test_retry_on_connection_error",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_config.py::TestOllamaClientConfig::test_config_system_prompt",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_config.py::TestOllamaClientConfig::test_config_temperature_range",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_config.py::TestOllamaClientConfig::test_config_context_window",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_config_expanded_coverage.py::TestOllamaClientConfigFromEnv::test_from_env_num_ctx_alternative",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_config_expanded_coverage.py::TestOllamaClientConfigFromEnv::test_from_env_num_ctx_ignored_when_context_window_set",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_config_expanded_coverage.py::TestOllamaClientConfigFromEnv::test_from_env_invalid_num_ctx_uses_default",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_connection_mixin_coverage.py::TestGenerateResponseDirect::test_thinking_tags_stripped",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_connection_mixin_coverage.py::TestGenerateResponseDirect::test_empty_after_strip_raises",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_connection_mixin_coverage.py::TestGenerateResponseDirect::test_http_error",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_logging.py::TestContextLogging::test_context_clear_logs",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_logging.py::TestContextLogging::test_context_prune_logs",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_logging.py::TestErrorLogging::test_connection_error_logs",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_coverage.py::TestGetAvailableModelInfo::test_success",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_coverage.py::TestGetAvailableModelInfo::test_empty_models",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_coverage.py::TestGetAvailableModelInfo::test_connection_error",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_full_coverage.py::TestGetAvailableModelInfo::test_successful_response",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_full_coverage.py::TestGetAvailableModelInfo::test_empty_model_list",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_full_coverage.py::TestGetAvailableModelInfo::test_connection_error",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_full_coverage.py::TestPreloadModel::test_skip_loaded_check",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_full_coverage.py::TestPreloadModel::test_connection_error",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_full_coverage.py::TestPreloadModel::test_http_error",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_full_coverage.py::TestPreloadModel::test_http_error",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_retry_coverage.py::TestGetAvailableModelInfoRetry::test_timeout_then_success",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_models_retry_coverage.py::TestGetAvailableModelInfoRetry::test_connection_error_then_success",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_ollama_utils.py::TestOllamaUtilsWithoutServer::test_ensure_ollama_ready_no_server_no_auto_start",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_ollama_utils.py::TestCheckModelLoaded::test_check_model_loaded_no_server",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_ollama_utils.py::TestCheckModelLoaded::test_check_model_loaded_returns_tuple",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_ollama_utils.py::TestPullOllamaModel::test_pull_returns_false_when_ollama_missing",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_ollama_utils.py::TestPullOllamaModel::test_pull_success_on_zero_exit",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_ollama_utils.py::TestPullOllamaModel::test_pull_failure_on_nonzero_exit",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_review_generators.py::TestWarmupModelOffline::test_warmup_no_model_loaded_triggers_preload",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_review_generators.py::TestWarmupModelOffline::test_warmup_model_already_loaded_skips_preload",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      },
-      {
-        "test": "tests/infra_tests/llm/test_review_generators.py::TestReviewGeneratorsIntegration::test_generate_executive_summary_real_ollama",
-        "error_type": "TimeoutError",
-        "error_message": "Test timed out (increase timeout or optimize test)"
-      }
-    ]
-  },
+  "timestamp": "2026-04-04T13:12:04.972627",
+  "infrastructure": {},
   "project": {
     "passed": 804,
     "failed": 0,
@@ -208,30 +11,29 @@
     "discovery_count": 804,
     "collection_errors": 0,
     "execution_phases": {
-      "setup": 38.89,
-      "collection": 38.89,
-      "execution": 38.89
+      "setup": 36.44,
+      "collection": 36.44,
+      "execution": 36.44
     },
     "test_categories": {},
-    "coverage_percent": 95.48260381593715,
+    "coverage_percent": 95.51407077180274,
     "failed_tests": []
   },
   "summary": {
     "total_passed": 804,
-    "total_failed": 1,
+    "total_failed": 0,
     "total_skipped": 0,
-    "total_tests": 6860,
-    "all_passed": false,
-    "infrastructure_coverage": 16.181998021760634,
-    "project_coverage": 95.48260381593715
+    "total_tests": 804,
+    "all_passed": true,
+    "project_coverage": 95.51407077180274
   },
   "coverage_details": {
     "project": {
-      "overall_coverage": 96.30269523151348,
-      "total_executed": 2787,
+      "overall_coverage": 96.33436108256252,
+      "total_executed": 2812,
       "total_missing": 87,
       "total_excluded": 20,
-      "total_lines": 2894,
+      "total_lines": 2919,
       "file_coverage": {
         "projects/cognitive_case_diagrams/src/case_systems/case_category.py": {
           "coverage_percent": 94.20289855072464,
@@ -375,10 +177,10 @@
         },
         "projects/cognitive_case_diagrams/src/diagrams/string_diagram.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 185,
+          "executed_lines": 210,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 185
+          "total_lines": 210
         },
         "projects/cognitive_case_diagrams/src/enriched_cat/enriched.py": {
           "coverage_percent": 95.87628865979381,

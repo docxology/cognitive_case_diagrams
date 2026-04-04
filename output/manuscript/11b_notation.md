@@ -191,7 +191,7 @@ This appendix collects all notation, symbols, and technical terminology used thr
 | Holographic screen | — | Information boundary between interacting quantum systems carrying a qubit array | §8 |
 | Parameterized quantum circuit (PQC) | — | Quantum circuit with trainable angle parameters; the computational substrate of QNLP and case-category implementations | §4b |
 | IQP ansatz | — | Instantaneous Quantum Polynomial-time circuit: default lambeq PQC ansatz for noun and verb boxes | §4b |
-| Sim4 ansatz | — | Strongly entangling layer PQC ansatz used for discourse-level lambeq Gen II circuits | §4b |
+| Sim4 ansatz | — | Strongly entangling layer PQC ansatz used for discourse-level lambeq Gen II circuits | §4c |
 | Pointer state | — | Preferred quantum state selected by a QRF; determines the measurement basis | §8 |
 | Quantum contextuality | — | Quantum correlations that reduce cohomological obstructions to semantic alignment | §8 |
 | Quantum discord | — | Quantum correlation measure equal to integrated semantic information in sheaf framework | §8 |

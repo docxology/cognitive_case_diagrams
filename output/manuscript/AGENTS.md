@@ -49,7 +49,7 @@ Version 2.3 (2026)
 Use `[@author_year]` format. All references must be in `references.bib`.
 
 ```markdown
-...as shown by [@coecke2010mathematical] and [@bradley2021enriched].
+...as shown by [@coecke2010mathematical] and [@fritz2021enriched].
 ```
 
 ### Display Equations

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  4 APR 2026 12:39
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  4 APR 2026 13:12
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1505,7 +1505,7 @@ No file 01_introduction_slides.nav.
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
 (Font)              Font shape `TU/lmss/m/sl' tried instead on input line 155.
 
-Overfull \vbox (351.99557pt too high) detected at line 155
+Overfull \vbox (365.59558pt too high) detected at line 155
  []
 
 [2

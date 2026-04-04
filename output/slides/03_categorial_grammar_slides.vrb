@@ -139,21 +139,24 @@ demanding higher computational complexity.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio,alt={Direct DisCoPy machine output confirms pregroup type reduction to sentence wire s. Three Word boxes carry types n (Alice), n\^{}r \textbackslash otimes s \textbackslash otimes n\^{}l (chases), and n (Bob). Two Cup contractions \textbackslash varepsilon\textbackslash colon n\^{}r \textbackslash otimes n \textbackslash to 1 and \textbackslash varepsilon\textbackslash colon n\^{}l \textbackslash otimes n \textbackslash to 1 cancel adjoint pairs, reducing the five-wire tensor product to the single sentence wire s. Unlike the schematic progression in , this is the direct computational output confirming diagram.cod == s. By the Curry--Howard correspondence, this diagram simultaneously constitutes a syntactic derivation, a proof of well-typedness, and (under the meaning functor of ) a compositional semantic computation. Our extension decorates n-typed wires with functorial states S: \textbackslash mathbf\{Ent\} \textbackslash to \textbackslash mathbf\{Case\}, tracking role assignments across discourse boundaries via DisCoCirc entity wires.}]{../figures/discopy_transitive.png}}
+\pandocbounded{\includegraphics[keepaspectratio,alt={Direct DisCoPy machine output confirms pregroup type reduction to sentence wire s. Nine Word boxes carry complex noun-phrase types (e.g., n \textbackslash otimes n\^{}l for adjectives mapping an adjacent noun to a modified noun) and core verb types (n\^{}r \textbackslash otimes s \textbackslash otimes n\^{}l for the transitive ``intercepts''). Eight Cup contractions sequentially resolve the argument scopes from the deepest noun phrases outward, ultimately canceling all local adjoint pairs and reducing the extended initial tensor product to the single sentence wire s. Unlike the schematic progression in \textbackslash autoref\{fig:string-diagram\}, this is the direct computational output of a multi-word discourse component, strictly confirming diagram.cod == s. By the Curry--Howard correspondence, this diagram simultaneously constitutes a syntactic derivation, a proof of well-typedness, and (under the meaning functor of \textbackslash autoref\{sec:categorical-semantics\}) a compositional semantic computation. Our extension decorates n-typed wires with functorial states S: \textbackslash mathbf\{Ent\} \textbackslash to \textbackslash mathbf\{Case\}, tracking role assignments across discourse boundaries via DisCoCirc entity wires.}]{../figures/discopy_transitive.png}}
 \caption{Direct DisCoPy machine output confirms pregroup type reduction
-to sentence wire \(s\). Three Word boxes carry types \(n\) (Alice),
-\(n^r \otimes s \otimes n^l\) (chases), and \(n\) (Bob). Two Cup
-contractions \(\varepsilon\colon n^r \otimes n \to 1\) and
-\(\varepsilon\colon n^l \otimes n \to 1\) cancel adjoint pairs, reducing
-the five-wire tensor product to the single sentence wire \(s\). Unlike
-the schematic progression in \autoref{fig:string-diagram}, this is the
-\emph{direct computational output} confirming
-\protect\texttt{diagram.cod\ ==\ s}. By the Curry--Howard
-correspondence, this diagram simultaneously constitutes a syntactic
-derivation, a proof of well-typedness, and (under the meaning functor of
-\autoref{sec:categorical-semantics}) a compositional semantic
-computation. Our extension decorates \(n\)-typed wires with functorial
-states \(S: \mathbf{Ent} \to \mathbf{Case}\), tracking role assignments
-across discourse boundaries via \textbf{DisCoCirc entity
+to sentence wire \(s\). Nine Word boxes carry complex noun-phrase types
+(e.g., \(n \otimes n^l\) for adjectives mapping an adjacent noun to a
+modified noun) and core verb types (\(n^r \otimes s \otimes n^l\) for
+the transitive ``intercepts''). Eight Cup contractions sequentially
+resolve the argument scopes from the deepest noun phrases outward,
+ultimately canceling all local adjoint pairs and reducing the extended
+initial tensor product to the single sentence wire \(s\). Unlike the
+schematic progression in \textbackslash autoref\{fig:string-diagram\},
+this is the \emph{direct computational output} of a multi-word discourse
+component, strictly confirming \protect\texttt{diagram.cod\ ==\ s}. By
+the Curry--Howard correspondence, this diagram simultaneously
+constitutes a syntactic derivation, a proof of well-typedness, and
+(under the meaning functor of
+\textbackslash autoref\{sec:categorical-semantics\}) a compositional
+semantic computation. Our extension decorates \(n\)-typed wires with
+functorial states \(S: \mathbf{Ent} \to \mathbf{Case}\), tracking role
+assignments across discourse boundaries via \textbf{DisCoCirc entity
 wires}.}\label{fig:discopy-transitive}
 \end{figure}

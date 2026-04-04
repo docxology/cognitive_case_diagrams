@@ -25,6 +25,7 @@ import matplotlib.pyplot as plt
 
 from ..diagrams.string_diagram import (
     create_discopy_transitive,
+    create_discopy_complex_transitive,
     create_discopy_intransitive,
     create_discopy_passive,
     create_discopy_snake_equation,
@@ -58,24 +59,18 @@ def _glyph_safe_rc() -> Iterator[None]:
 
 
 def render_discopy_transitive(
-    subject: str = "Alice",
-    verb: str = "chases",
-    obj: str = "Bob",
     output_path: Optional[Path] = None,
 ) -> None:
-    """Render a DisCoPy transitive sentence diagram.
+    """Render a DisCoPy complex transitive sentence diagram.
 
     Args:
-        subject: Subject noun.
-        verb: Transitive verb.
-        obj: Object noun.
         output_path: Path to save. Required.
     """
-    diagram = create_discopy_transitive(subject, verb, obj)
+    diagram = create_discopy_complex_transitive()
     with _glyph_safe_rc():
         diagram.draw(
             path=str(output_path),
-            figsize=(10, 5),
+            figsize=(16, 5),
             **DRAW_KWARGS,
         )
     logger.info("Saved DisCoPy transitive to %s", output_path)

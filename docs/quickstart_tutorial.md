@@ -29,13 +29,13 @@ uv run python -c "from src import CaseRole, CaseCategory; print('✅ src importe
 | `matplotlib` | Figure generation | ≥3.7 |
 | `pytest` | Test framework | ≥7.0 |
 | `pytest-cov` | Coverage reporting | ≥4.0 |
+| `discopy` | DisCoCat / DisCoCirc diagrams | ≥1.0 (declared in `pyproject.toml`) |
 
 ### Optional Dependencies
 
 | Package | Purpose | Required for |
 |---------|---------|-------------|
-| `discopy` | String diagram rendering | §3–4 DisCoCat/DisCoCirc figures |
-| `lambeq` | QNLP compilation | §4c quantum NLP experiments |
+| `lambeq` | QNLP compilation | §4c quantum NLP experiments (not in default `pyproject.toml`) |
 | `scipy` | Advanced matrix operations | Some enriched category functions |
 
 ---

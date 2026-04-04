@@ -334,6 +334,51 @@ def create_discopy_transitive(subject: str, verb: str, obj: str, s_type: str = '
     return diagram
 
 
+def create_discopy_complex_transitive():
+    """Create a 9-word complex sentence diagram.
+    
+    Sentence: 'the clever autonomous agent intercepts the malicious adversarial payload'
+    
+    Returns:
+        A discopy.rigid.Diagram reducing the 9 words to sentence type 's'.
+    """
+    from discopy.rigid import Ty, Box as RBox, Id, Cup
+    n = Ty('n')
+    s = Ty('s')
+
+    the1 = RBox('the', Ty(), n @ n.l)
+    adj1 = RBox('clever', Ty(), n @ n.l)
+    adj2 = RBox('autonomous', Ty(), n @ n.l)
+    agent = RBox('agent', Ty(), n)
+
+    verb = RBox('intercepts', Ty(), n.r @ s @ n.l)
+
+    the2 = RBox('the', Ty(), n @ n.l)
+    adj3 = RBox('malicious', Ty(), n @ n.l)
+    adj4 = RBox('adversarial', Ty(), n @ n.l)
+    payload = RBox('payload', Ty(), n)
+
+    words = the1 @ adj1 @ adj2 @ agent @ verb @ the2 @ adj3 @ adj4 @ payload
+
+    # subject NP reduction (right to left typically, so n.l contracts with n)
+    cup1 = Id(n@n.l @ n@n.l @ n) @ Cup(n.l, n) @ Id(n.r@s@n.l @ n@n.l @ n@n.l @ n@n.l @ n)
+    cup2 = Id(n@n.l @ n) @ Cup(n.l, n) @ Id(n.r@s@n.l @ n@n.l @ n@n.l @ n@n.l @ n)
+    cup3 = Id(n) @ Cup(n.l, n) @ Id(n.r@s@n.l @ n@n.l @ n@n.l @ n@n.l @ n)
+
+    # object NP reduction
+    cup4 = Id(n @ n.r@s@n.l @ n@n.l @ n@n.l @ n) @ Cup(n.l, n)
+    cup5 = Id(n @ n.r@s@n.l @ n@n.l @ n) @ Cup(n.l, n)
+    cup6 = Id(n @ n.r@s@n.l @ n) @ Cup(n.l, n)
+
+    # verb reduction
+    cup7 = Cup(n, n.r) @ Id(s @ n.l @ n)
+    cup8 = Id(s) @ Cup(n.l, n)
+
+    diagram = words >> cup1 >> cup2 >> cup3 >> cup4 >> cup5 >> cup6 >> cup7 >> cup8
+    logger.info("Created complex transitive diagram")
+    return diagram
+
+
 def create_discopy_intransitive(subject: str, verb: str):
     """Create a DisCoPy diagram for an intransitive sentence.
 

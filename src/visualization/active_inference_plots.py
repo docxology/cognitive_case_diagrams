@@ -9,10 +9,10 @@ from typing import Optional
 import numpy as np
 import matplotlib.pyplot as plt
 
-from ..cognitive.active_inference import CaseDiagramBelief
+from ..cognitive.belief import CaseDiagramBelief
 from .styles import (
     CASE_COLORS, FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_LABEL,
-    DEFAULT_FIGSIZE, FIGURE_DPI
+    DEFAULT_FIGSIZE, FIGURE_DPI, COLOR_UNKNOWN,
 )
 
 logger = logging.getLogger(__name__)
@@ -39,7 +39,7 @@ def plot_belief_distribution(
     probs = belief.probabilities
 
     # Get colors, default to gray if role not in palette
-    colors = [CASE_COLORS.get(r, "#808080") for r in roles]
+    colors = [CASE_COLORS.get(r, COLOR_UNKNOWN) for r in roles]
 
     bars = ax.bar(roles, probs, color=colors, alpha=0.8, edgecolor="black", linewidth=1.5)
 

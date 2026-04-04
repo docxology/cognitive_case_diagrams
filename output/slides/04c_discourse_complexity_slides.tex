@@ -1,0 +1,379 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\newif\ifbibliography
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% remove section numbering
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{section title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{subsection title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{\texorpdfstring{}{}}
+\date{}
+
+\begin{document}
+
+\section{Beyond the Sentence: State Wires Accumulate Semantic History
+Across Discourse}\label{sec:discocirc-discourse}
+
+\begin{frame}[fragile]{DisCoCirc State Wires Resolve Coreference and
+Role Shifts}
+\protect\phantomsection\label{discocirc-state-wires-resolve-coreference-and-role-shifts}
+De Felice and Coecke {[}-@defelice2020discourse{]} address this
+limitation by formulating \textbf{DisCoCirc} (Distributional
+Compositional Circuits). DisCoCirc extends the base categorical
+framework, empowering it to dynamically handle discourse-level semantic
+structure.
+
+Specifically, DisCoCirc introduces continuous \emph{state wires} that
+actively persist across isolated sentence boundaries, continuously
+encoding the dynamically evolving states of distinct discourse entities
+(e.g., characters, objects, shifting topics). For example, a
+multi-sentence sequence like ``Alice chased Bob. He was terrified.'' is
+explicitly represented as an integrated geometric circuit where:
+
+\begin{itemize}
+\tightlist
+\item
+  Alice and Bob are wires that persist across both sentences.
+\item
+  The pronoun ``He'' is resolved by actively connecting its topological
+  wire directly to Bob's wire.
+\item
+  The shifting emotional state ``terrified'' seamlessly updates the
+  cumulative state information carried exclusively by Bob's persistent
+  wire.
+\end{itemize}
+
+De Felice et al. {[}-@defelice2022discocirc{]} subsequently extended
+this approach, developing a full-fledged, multi-layered circuit model
+built to systematically resolve ambiguity, tangled coreference, and
+overarching discourse coherence---all locked within the exact same
+continuous categorical formalism. A CCG-based pipeline for generating
+discourse circuits from syntactic parse trees has demonstrated that
+DisCoCirc can scale to text, dynamically composing sentence-level
+diagrams along shared entity wires via an iterative process of
+coreference resolution and wire merging {[}-@duneau2021parsing{]}.
+Complementary work on \textbf{DiscoSG} (Discourse Scene Graphs) extends
+this approach to multi-sentence image captions, parsing text into scene
+graphs that capture cross-sentence coreference relations.
+\textbackslash autoref\{fig:discourse\} illustrates a multi-sentence
+discourse diagram where entity wires persist across sentence boundaries.
+For case theory, DisCoCirc is significant because it shows how
+case-marked argument structure \emph{composes across discourse}: the
+nominative subject of one sentence can become the accusative object of
+the next, and this transformation is tracked as a morphism in the
+discourse category.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={Entity persistence across sentence boundaries enables case role tracking. A DisCoCirc-style discourse diagram for ``Alice chases Bob. Bob runs.'' generated via DisCoPy's pregroup grammar. Sentence 1: three Word boxes contract Alice (n) and Bob (n) into the transitive verb ``chases'' (n\^{}r \textbackslash otimes s \textbackslash otimes n\^{}l), producing sentence type s. Sentence 2: Bob (n) contracts into the intransitive ``runs'' (n\^{}r \textbackslash otimes s), producing a second s. The full discourse type is s \textbackslash otimes s, encoding inter-sentential coherence. In a full DisCoCirc implementation, Bob's shared entity wire would carry accumulated semantic state across the sentence boundary---the foundation for dynamic case role tracking in .}]{../figures/discopy_discocirc_discourse.png}}
+\caption{Entity persistence across sentence boundaries enables case role
+tracking. A DisCoCirc-style discourse diagram for ``Alice chases Bob.
+Bob runs.'' generated via DisCoPy's pregroup grammar. \textbf{Sentence
+1}: three Word boxes contract Alice (\(n\)) and Bob (\(n\)) into the
+transitive verb ``chases'' (\(n^r \otimes s \otimes n^l\)), producing
+sentence type \(s\). \textbf{Sentence 2}: Bob (\(n\)) contracts into the
+intransitive ``runs'' (\(n^r \otimes s\)), producing a second \(s\). The
+full discourse type is \(s \otimes s\), encoding inter-sentential
+coherence. In a full DisCoCirc implementation, Bob's shared entity wire
+would carry accumulated semantic state across the sentence
+boundary---the foundation for dynamic case role tracking in
+\autoref{fig:three-sentence-discourse}.}\label{fig:discourse}
+\end{figure}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={Wire colour directly encodes dynamic case-role transitions across sentence boundaries. Native matplotlib DisCoCirc diagram for ``Alice chases Bob. Bob runs.'' generated via src.visualization.string\_diagrams.render\_discocirc\_discourse(), cross-validating  without library dependency. Vertical wires (grey) are persistent entity wires for Alice and Bob. At each sentence boundary, a coloured disc marks Bob's case role: red (ACC) in sentence 1 (chased object), blue (NOM) in sentence 2 (running agent). The ACC \textbackslash to NOM transition is read directly from wire colour at successive levels. This confirms that our native string-diagram module correctly resolves entity identity and tracks role reassignment using src.diagrams.string\_diagram.Discourse data structures.}]{../figures/discourse_string_diagram.png}}
+\caption{Wire colour directly encodes dynamic case-role transitions
+across sentence boundaries. Native matplotlib DisCoCirc diagram for
+``Alice chases Bob. Bob runs.'' generated via
+\protect\texttt{src.visualization.string\_diagrams.render\_discocirc\_discourse()},
+cross-validating \autoref{fig:discourse} without library dependency.
+\textbf{Vertical wires} (grey) are persistent entity wires for Alice and
+Bob. At each sentence boundary, a coloured disc marks Bob's case role:
+\textbf{red} (ACC) in sentence 1 (chased object), \textbf{blue} (NOM) in
+sentence 2 (running agent). The ACC \(\to\) NOM transition is read
+directly from wire colour at successive levels. This confirms that our
+native string-diagram module correctly resolves entity identity and
+tracks role reassignment using
+\protect\texttt{src.diagrams.string\_diagram.Discourse} data
+structures.}\label{fig:native-discourse}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Alice's Trajectory NOM→ACC→NOM}
+\protect\phantomsection\label{alices-trajectory-nomaccnom}
+The power of DisCoCirc for case theory becomes particularly vivid in
+multi-sentence discourses where the \emph{same entity occupies different
+case roles} across sentences. Consider the three-sentence discourse:
+
+\begin{quote}
+\emph{``Alice chases Bob. Bob fears Alice. She smiles.''}
+\end{quote}
+
+In this discourse, Alice undergoes a complete cycle of case role
+reversals:
+
+\begin{enumerate}
+\tightlist
+\item
+  \textbf{Sentence 1}: Alice is \(\text{NOM}\) (Proto-Agent, the one
+  chasing) and Bob is \(\text{ACC}\) (Proto-Patient, the one chased).
+\item
+  \textbf{Sentence 2}: Bob is now \(\text{NOM}\) (the one fearing) and
+  Alice is \(\text{ACC}\) (the one feared)---a role reversal where Alice
+  moves from agent to patient.
+\item
+  \textbf{Sentence 3}: ``She'' resolves anaphorically to Alice, who
+  returns to \(\text{NOM}\) as the agent of smiling.
+\end{enumerate}
+
+This NOM \(\to\) ACC \(\to\) NOM trajectory for Alice across three
+sentences is precisely the kind of \emph{dynamic case assignment} that
+static single-sentence analyses cannot capture. The categorical
+representation as a triple tensor product \(s \otimes s \otimes s\)
+(\autoref{fig:three-sentence-discourse}) encodes each sentence as an
+independent pregroup derivation while preserving the entity identity
+that links them. This role reversal essentially requires applying the
+topological \texttt{Swap} operation (introduced for passivization in
+\autoref{sec:case-type-logic}) dynamically across the discourse
+boundary. In a full DisCoCirc implementation, Alice's entity wire would
+carry accumulated semantic state---the meaning of ``She'' in sentence 3
+inherits the enriched state of an Alice who has first chased and then
+been feared, not merely the bare lexical entry for ``Alice.''
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={Dynamic case role reversal tracks entity identity across three-sentence discourse. DisCoPy rendering of ``Alice chases Bob. Bob fears Alice. She smiles.'' Sentence 1: Alice NOM, Bob ACC. Sentence 2: Bob NOM, Alice ACC---a complete agent--patient reversal. Sentence 3: anaphoric ``She'' resolves to Alice, who returns to NOM. Alice's trajectory NOM\textbackslash toACC\textbackslash toNOM is tracked by the triple tensor s \textbackslash otimes s \textbackslash otimes s. In a full DisCoCirc implementation, Alice's entity wire carries accumulated semantic state---``She'' in sentence 3 inherits the enriched state of an Alice who has both chased and been feared. This dynamic case assignment across discourse boundaries is what lambeq Gen II {[}@lambeq2025genii{]} compiles into parameterized quantum circuits.}]{output/figures/discopy_three_sentence_discourse.png}}
+\caption{Dynamic case role reversal tracks entity identity across
+three-sentence discourse. DisCoPy rendering of ``Alice chases Bob. Bob
+fears Alice. She smiles.'' \textbf{Sentence 1}: Alice NOM, Bob ACC.
+\textbf{Sentence 2}: Bob NOM, Alice ACC---a complete agent--patient
+reversal. \textbf{Sentence 3}: anaphoric ``She'' resolves to Alice, who
+returns to NOM. Alice's trajectory NOM\(\to\)ACC\(\to\)NOM is tracked by
+the triple tensor \(s \otimes s \otimes s\). In a full DisCoCirc
+implementation, Alice's entity wire carries accumulated semantic
+state---``She'' in sentence 3 inherits the enriched state of an Alice
+who has both chased and been feared. This dynamic case assignment across
+discourse boundaries is what lambeq Gen II {[}@lambeq2025genii{]}
+compiles into parameterized quantum
+circuits.}\label{fig:three-sentence-discourse}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{lambeq Gen II Compiles DisCoCirc Discourse
+Diagrams}
+\protect\phantomsection\label{lambeq-gen-ii-compiles-discocirc-discourse-diagrams}
+The categorical structure of DisCoCat maps naturally onto quantum
+circuits: the tensor product structure of \(\mathbf{FVect}\) is
+identical to the tensor product structure of \(\mathbf{Qubit}\), the
+category of qubit systems. This observation underlies the \textbf{QNLP}
+(Quantum Natural Language Processing) program
+{[}@meichanetzidis2020qnlp{]}, which implements DisCoCat models as
+parameterized quantum circuits.
+
+The \textbf{lambeq} library {[}@lorenz2023lambeq{]} provides a practical
+pipeline:
+
+\begin{enumerate}
+\tightlist
+\item
+  Parse a sentence into a pregroup derivation (via the neural CCG parser
+  Bobcat or rule-based parsers)
+\item
+  Convert the derivation into a string diagram
+\item
+  Translate the diagram into a parameterized quantum circuit (or a
+  classical tensor network)
+\item
+  Train the parameters on NLP tasks (classification, similarity,
+  question answering)
+\end{enumerate}
+
+Kartsaklis et al. {[}-@kartsaklis2021functorial{]} demonstrate that this
+pipeline achieves competitive performance on question-answering tasks,
+confirming that the categorical structure captures genuine linguistic
+regularities even when instantiated on noisy near-term quantum hardware.
+
+\textbf{lambeq Gen II} (released May 22, 2025 by Quantinuum) marks a
+significant advance by incorporating full \textbf{DisCoCirc} support as
+its core mathematical foundation, enabling the framework to scale beyond
+single-sentence semantics to discourse-level NLP {[}@lambeq2025genii;
+@quantinuum2025genii{]}. With over 50,000 downloads, lambeq Gen II
+achieves language neutrality, improved trainability, and compositional
+interpretability for explainable AI on quantum hardware. The new
+\texttt{DisCoCircReader} API automatically compiles long texts and
+multi-page documents into discourse-level quantum circuits, with entity
+wires tracking semantic state persistence across sentence
+boundaries---closing the gap between sentence-level DisCoCat and
+discourse-level case role tracking. This is directly relevant to the
+case role reversal phenomena discussed in
+\autoref{fig:three-sentence-discourse}: lambeq Gen II can, in principle,
+compile such multi-sentence case-dynamic discourses into trainable
+quantum circuits.
+
+Foundational work by Meyer and Lewis integrates DisCoCat with density
+matrices for modeling dynamic meaning and lexical ambiguity in text,
+treating semantic states as mixed quantum states---providing an
+alternative to pure-state vector models that naturally accommodates
+ambiguity and partial information {[}-@meyer2020modelling{]}.
+
+Recent work on \textbf{string diagram rewriting} by Bonchi et al.
+{[}-@bonchi2022rewriting{]} provides the theoretical foundation for
+diagram simplification, showing that string diagram rewrite systems
+modulo Frobenius structure can be interpreted as double-pushout
+hypergraph rewriting---ensuring that the algebraic simplifications
+applied during normal form computation are provably sound. De Huybrecht
+{[}-@dehuybrecht2024subcategorizing{]} extends DisCoCat with
+\emph{subcategorization} for light verb constructions, demonstrating
+that the categorical framework accommodates sublexical compositional
+structure---a development that connects naturally to the monadic root
+syntax of Song {[}-@song2022act{]} discussed in
+\autoref{sec:categorial-grammar}.
+
+For our case-theoretic framework, QNLP offers a concrete computational
+substrate: case categories could be implemented as quantum circuits
+where case roles correspond to quantum registers and grammatical
+relations correspond to parameterized gates. This connection between
+linguistic case structure and quantum information processing---mediated
+entirely by the shared categorical formalism---illustrates the power of
+the diagrammatic approach.
+\end{frame}
+
+\begin{frame}{No Barren Plateau for Local Observables}
+\protect\phantomsection\label{no-barren-plateau-for-local-observables}
+A central challenge for practical QNLP on near-term quantum hardware is
+the \emph{trainability} of parameterized quantum circuits (PQCs): the
+vanishing gradient problem, or \emph{barren plateau}, makes
+gradient-based optimization exponentially hard as circuit width and
+depth scale. Two recent results (2024) directly resolve this obstacle
+for linguistically motivated circuits:
+
+\begin{enumerate}
+\item
+  \textbf{Rad et al. {[}-@rad2024trainability{]}} introduce
+  \emph{reduced-domain parameter initialization}: rather than sampling
+  all parameters uniformly from \([0, 2\pi)\), one initializes the
+  circuit in a small-angle domain close to the identity. For circuits of
+  the depth typical of DisCoCirc discourse diagrams (compiled from
+  multi-sentence texts via coreference resolution), this initialization
+  provably yields polynomial rather than exponential gradient
+  decay---keeping optimization tractable as discourse length grows.
+\item
+  \textbf{Letcher et al. {[}-@letcher2024tight{]}} derive tight,
+  \emph{assumption-free} lower bounds on the variance of cost function
+  gradients for PQCs with local observables (e.g., Pauli operators
+  restricted to a few-qubit subsystem). Their key finding is that, for
+  POVMs restricted to local observables---exactly the structure of the
+  case-role measurement operators \(E_c\) of \autoref{eq:eq-8-1}
+  (formalized in \autoref{sec:quantum-semantics})---no barren plateau
+  effect occurs. This provides a theoretical guarantee that case-role
+  classification circuits implemented via lambeq remain optimizable
+  regardless of total circuit size, so long as the readout observable is
+  local.
+\end{enumerate}
+
+Together, these results underpin the practical feasibility of the F1 and
+F3 research directions of \autoref{sec:conclusion}: scaling case-marked
+DisCoCat/DisCoCirc models to corpora-scale quantum hardware without
+exponential gradient overhead. The geometric structure of lambeq's IQP
+and Sim4 ansätze, combined with these initialization and observable
+choices, provides a principled recipe for quantum case category training
+on near-term devices.
+
+\newpage
+\end{frame}
+
+\end{document}

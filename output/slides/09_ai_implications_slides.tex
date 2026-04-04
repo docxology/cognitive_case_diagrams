@@ -74,6 +74,44 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
 \newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
@@ -97,48 +135,58 @@
 
 \begin{document}
 
-\section{AI Implications: Multi-Agent Protocols and Emergent
-Alignment}\label{sec:ai-implications}
+\section{Categorical AI Protocols}\label{sec:ai-implications}
 
-\begin{frame}{Multi-Agent Communication: Compositional AI Protocols}
-\protect\phantomsection\label{multi-agent-communication-compositional-ai-protocols}
+\begin{frame}[fragile]{A2A, MCP, ACP, ANP Are Missing Compositional
+Semantics}
+\protect\phantomsection\label{a2a-mcp-acp-anp-are-missing-compositional-semantics}
 The categorical framework developed in the preceding sections---case
 categories, functorial semantics, enriched structure, and diagrammatic
-reasoning---addresses a core challenge in contemporary artificial
-intelligence: how to endow autonomous agents with structured,
-compositional communication.
+reasoning---provides a structural response to an emerging challenge in
+modern AI: supplying typed, compositional message semantics that resist
+semantic collapse.
 
-Current multi-agent AI systems communicate through increasingly
-standardized protocols. Google's Agent-to-Agent (A2A) protocol
-{[}@google2025a2a{]}, introduced in 2025, provides a standard way for
-agents to communicate regardless of underlying framework through
-HTTP/JSON-RPC message passing with capability discovery. The Model
-Context Protocol (MCP) {[}@anthropic2024mcp{]} standardizes how AI
-agents access external tools and data sources. The Agent Communication
-Protocol (ACP) {[}@acp2025protocol{]} handles standardizing messaging
-formats across various users, including agents, applications, and
-humans. The Agent Network Protocol (ANP) {[}@anp2025protocol{]}
-introduces a three-layer architecture supporting trusted agent
-interaction in distributed systems. These engineering advances solve
-critical interoperability problems but lack a compositional semantics:
-messages are flat JSON payloads without inherent algebraic structure.
+Current multi-agent AI systems communicate via flat standardized
+protocols. For instance, the \textbf{Model Context Protocol (MCP)}
+{[}@anthropic2024mcp{]} manages tool access by exchanging unstructured
+\texttt{JSON-RPC} payloads. Consider a standard MCP invocation mapping
+an LLM's intention to a database:
 
-Category theory provides exactly the missing layer. Just as the DisCoCat
-framework maps grammatical derivations functorially into vector spaces
-(see \autoref{sec:categorical-semantics}), a categorical communication
-protocol would map agent interaction patterns functorially into
-behavioral specifications. The morphisms of such a protocol category
-would be message types, the objects would be agent states, and the
-composition law would specify how multi-step interactions chain
-together---exactly the structure of our case categories, where morphisms
-represent grammatical relations and composition encodes transitivity.
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{\{}
+  \DataTypeTok{"method"}\FunctionTok{:} \StringTok{"tools/call"}\FunctionTok{,}
+  \DataTypeTok{"params"}\FunctionTok{:} \FunctionTok{\{}
+    \DataTypeTok{"name"}\FunctionTok{:} \StringTok{"access\_database"}\FunctionTok{,}
+    \DataTypeTok{"arguments"}\FunctionTok{:} \FunctionTok{\{} \DataTypeTok{"query"}\FunctionTok{:} \StringTok{"DROP TABLE users"} \FunctionTok{\}}
+  \FunctionTok{\}}
+\FunctionTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+This payload is structurally blind to its own pragmatic implications. It
+possesses no inherent algebraic compositionality and enforces no
+relational typing on the physical execution pathways. Frameworks like
+Google's Agent-to-Agent (A2A) {[}@google2025a2a{]}, the Agent
+Communication Protocol (ACP) {[}@acp2025protocol{]}, and the Agent
+Network Protocol (ANP) {[}@anp2025protocol{]} share this vulnerability:
+they validate the \emph{shape} of the JSON schema, but rely purely on
+probabilistic inference to govern the \emph{topology of the
+interaction}.
+
+Category theory injects this missing protective layer. By compiling
+agent interactions into strict string diagrams, messages cease to be
+flat strings and instead become typed morphisms traversing a case
+category.
 \end{frame}
 
-\begin{frame}{Case Roles as Functional Typing for Agent Systems}
-\protect\phantomsection\label{case-roles-as-functional-typing-for-agent-systems}
+\begin{frame}[fragile]{NOM Is the Requester, INS Is the Tool, DAT Is}
+\protect\phantomsection\label{nom-is-the-requester-ins-is-the-tool-dat-is}
 The eight-case framework of CEREBRUM {[}@friedman2024cerebrum{]} maps
-directly onto the functional roles that components play in multi-agent
-architectures:
+rigidly onto the operational constraints of multi-agent execution. In a
+Categorical Communication Protocol, interactions are legally licensed
+only if their computational wiring diagrams satisfy a strict grammatical
+type-signature:
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -151,88 +199,64 @@ Case Role
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Agent System Analogue
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Protocol Function
+Protocol Function Type
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
-NOM (Agent) & Active requester & Initiator of action policies \\
-ACC (Patient) & Passive responder & Target of directed operations \\
-GEN (Source) & Context provider & Supplier of prior information \\
-DAT (Recipient) & Designated receiver & Endpoint for information
-transfer \\
-INS (Instrument) & Tool / API & Means of state transformation \\
-LOC (Context) & Environment state & Boundary conditions and Markov
-blanket \\
-ABL (Origin) & Data source & Causal provenance of inputs \\
-VOC (Addressee) & Routing target & Pragmatic addressing in broadcast
-networks \\
+\textbf{NOM (Agent)} & Active Requester & Initiator of action policies
+(\(X_{\text{NOM}}\)) \\
+\textbf{INS (Instrument)} & Tool / API Module & Means of transforming
+state (\(X_{\text{INS}}\)) \\
+\textbf{ACC (Patient)} & Passive Data Target & Resource being modified
+(\(X_{\text{ACC}}\)) \\
+\textbf{DAT (Recipient)} & Designated Receiver & Endpoint for
+information flow (\(X_{\text{DAT}}\)) \\
+\textbf{LOC (Context)} & System Prompt & Immutably binds boundary
+behavior (\(X_{\text{LOC}}\)) \\
 \bottomrule\noalign{}
 \end{longtable}
 }
 
-This mapping is not merely analogical. In the MCP protocol, a tool call
-has precisely the structure of a case-marked clause: an \emph{agent}
-(NOM) invokes a \emph{tool} (INS) on a \emph{resource} (ACC) to deliver
-a \emph{result} to a \emph{recipient} (DAT). The case structure ensures
-that every interaction is relationally typed, preventing the category
-errors (sending a response where a tool call is expected) that plague
-unstructured message-passing systems.
+This turns prompt engineering into rigorous compilation. Instead of
+parsing a prompt to heuristically guess caller intent, a categorical
+agent processes interactions strictly as algebraic reductions. An MCP
+tool invocation {[}@anthropic2024mcp{]} (\texttt{NOM} using \texttt{INS}
+to modify \texttt{ACC} and yield abstract \texttt{DAT}) becomes a
+formalized tensor contraction:
+
+\begin{equation}
+\text{Interaction Trace:} \quad \left( \text{Agent}_{\text{NOM}} \otimes \text{Tool}_{\text{INS}} \otimes \text{Data}_{\text{ACC}} \right) \xrightarrow{\text{execute}} \text{Response}_{\text{DAT}}
+\label{eq:ai-interaction-trace}
+\end{equation}
+
+If an untyped internal subsystem (e.g., an adversarial user-uploaded
+document) attempts to independently forge a command, the operation
+simply fails to compile. The document lacks a valid tensor wire bridging
+from its marginalized \(\text{ACC}\) domain back into the execution flow
+governing \(\text{INS}\). The grammar ensures every interaction is
+structurally typed, guaranteeing safety properties akin to
+\textbf{memory safety, but for agentic volition}.
 \end{frame}
 
-\begin{frame}{Categorical Deep Learning: An Algebraic Theory of
-Architectures}
-\protect\phantomsection\label{categorical-deep-learning-an-algebraic-theory-of-architectures}
-Gavranović {[}-@gavranovic2024thesis{]} develops ``a novel mathematical
-foundation for deep learning based on the language of category theory,''
-showing that neural network architectures---feedforward, convolutional,
-recurrent, attention---can all be subsumed under a single categorical
-framework using parameterized optics and lenses. This ``Categorical Deep
-Learning'' approach {[}@shiebler2024categorical{]} demonstrates that
-categorical structure is ``an algebraic theory of all architectures,''
-unifying design patterns that appear unrelated when viewed through
-conventional linear algebra.
-
-For case theory in AI, this result is significant: it means the same
-categorical language used to describe linguistic case assignment also
-describes the internal computation of the neural networks that process
-language. A transformer's attention mechanism, viewed through
-Gavranović's lens, performs a kind of \emph{categorical case
-assignment}---each attention head selects which input tokens play which
-functional roles in the computation, with attention weights serving as
-the enriched hom-values of \autoref{sec:enriched-categories}.
-
-The distributional semantics perspective deepens this connection. The
-transformer architecture {[}@vaswani2017attention{]} is, at its
-mathematical core, a \emph{distributional composition engine}: it takes
-distributional word representations (embeddings in the Firthian
-tradition {[}@firth1957papers{]}) and composes them into contextual
-sentence representations through attention-weighted aggregation. This is
-precisely what the DisCoCat functor
-\(F: \mathbf{Preg} \to \mathbf{FVect}\) does algebraically---compose
-word vectors according to syntactic structure. The key difference is
-that DisCoCat derives its composition rules from type-logical grammar,
-while transformers learn them from data. The convergence is striking:
-both arrive at tensor-contracted sentence representations, both use
-multi-linear maps for composition, and both produce vector spaces where
-similarity encodes semantic relatedness. Large language models such as
-BERT {[}@devlin2019bert{]} and GPT {[}@radford2018improving{]} thus
-serve as massive-scale \emph{empirical validations} of the
-distributional programme that DisCoCat formalizes categorically.
-
-Recent work on Distributional Active Inference
-{[}@akgul2026distributional{]} extends this parallel into the domain of
-sequential decision-making: just as LLMs model full contextual
-distributions over tokens, distributional RL models full return
-distributions over outcomes---and active inference provides the
-variational Bayesian bridge between the two (see
-\autoref{sec:cognitive-integration}). For multi-agent AI systems, this
-suggests an architecture in which agents maintain \emph{distributional}
-representations of both semantic content and expected interaction
-returns, composing them categorically.
+\begin{frame}{Transformers Through Gavranović's Lens: Attention as
+Parameterized Optics}
+\protect\phantomsection\label{transformers-through-gavranoviux107s-lens-attention-as-parameterized-optics}
+Gavranović {[}-@gavranovic2024thesis; -@gavranovic2024categorical{]}
+unifies feedforward, recurrent, and attention layers as
+\textbf{parameterized optics}---the same wiring-diagram perspective used
+for DisCoCat cups in \autoref{sec:categorical-semantics}. Attention
+heads then appear as \emph{learned} relational couplings over token
+sequences, with weights playing the role of graded hom-values
+(\autoref{sec:enriched-categories}). LLMs discover these contractions
+from data; DisCoCat fixes admissible contraction \emph{shapes} by
+grammar. Distributional Active Inference {[}@akgul2026distributional{]}
+is one setting where explicit DisCoCat-style guardrails can sit
+alongside a large distributional backbone.
 \end{frame}
 
-\begin{frame}{String Diagrams as a Foundation for Interpretable AI}
-\protect\phantomsection\label{string-diagrams-as-a-foundation-for-interpretable-ai}
+\begin{frame}{Interpretability for Free: DisCoCat Diagrams Make Every
+Compositional Step Human-Readable}
+\protect\phantomsection\label{interpretability-for-free-discocat-diagrams-make-every-compositional-step-human-readable}
 The lambeq library {[}@lorenz2023lambeq{]} demonstrates that string
 diagrams provide a practical interface between linguistic structure and
 machine learning. As an ``efficient high-level Python library for
@@ -253,8 +277,8 @@ but \emph{interpretable} interaction diagrams where each step's
 relational role is transparent.
 \end{frame}
 
-\begin{frame}{DisCoCirc and Multi-Turn Agent Dialogue Protocols}
-\protect\phantomsection\label{discocirc-and-multi-turn-agent-dialogue-protocols}
+\begin{frame}{Multi-Turn Dialogue as Discourse Circuit}
+\protect\phantomsection\label{multi-turn-dialogue-as-discourse-circuit}
 The DisCoCirc framework {[}@defelice2022discocirc{]} extends
 compositional semantics from single sentences to multi-sentence
 discourse by introducing \emph{state wires} that persist across sentence
@@ -286,16 +310,16 @@ types must match at connection points---precisely the condition that
 case marking enforces in natural language.
 \end{frame}
 
-\begin{frame}{Compositional Game Theory and Categorical Multi-Agent
-Equilibria}
-\protect\phantomsection\label{compositional-game-theory-and-categorical-multi-agent-equilibria}
+\begin{frame}{Multi-Agent Equilibria as Fixed Points of an Enriched
+Functor}
+\protect\phantomsection\label{multi-agent-equilibria-as-fixed-points-of-an-enriched-functor}
 The ``parametrised optics'' framework developed within categorical
 cybernetics ``provides a general-purpose foundation for the study of
-controlled processes'' applicable to compositional game theory as a
-multi-agent framework. In this setting, agents are modeled as lenses (or
-optics) that observe the environment through one channel and act through
-another, with the overall system behavior emerging from the composition
-of individual agent behaviors.
+controlled processes'' {[}@capucci2021towards{]} applicable to
+compositional game theory as a multi-agent framework. In this setting,
+agents are modeled as lenses (or optics) that observe the environment
+through one channel and act through another, with the overall system
+behavior emerging from the composition of individual agent behaviors.
 
 This connects to our enriched case framework
 (\autoref{sec:enriched-categories}): the precision weights on morphisms
@@ -308,15 +332,14 @@ enriched functor, where no agent can improve its utility by changing its
 case-role assignment.
 \end{frame}
 
-\begin{frame}{Double Categorical Systems Theory for Explainable
-Autonomous AI}
-\protect\phantomsection\label{double-categorical-systems-theory-for-explainable-autonomous-ai}
-Recent work on Double Categorical Systems Theory (DCST) aims to
-``utilise Double Categorical Systems Theory as a mathematical framework
-to facilitate collaboration in co-designing an explainable and auditable
-model of an autonomous AI system's deployment environment.'' DCST
-extends ordinary category theory with a second dimension of morphisms
-(2-morphisms), allowing simultaneous modeling of:
+\begin{frame}{DCST: Two-Dimensional Morphisms Model Both Sequential
+Interaction and Hierarchical Nesting}
+\protect\phantomsection\label{dcst-two-dimensional-morphisms-model-both-sequential-interaction-and-hierarchical-nesting}
+Recent foundational work on Double Categorical Systems Theory (DCST)
+formalizes open and interacting dynamical systems using double
+categories {[}@myers2023double{]}. DCST extends ordinary category theory
+with a second dimension of morphisms (2-morphisms), allowing
+simultaneous modeling of:
 
 \begin{enumerate}
 \tightlist
@@ -335,8 +358,8 @@ algebraic framework---precisely the unification that DisCoCirc achieves
 pragmatically.
 \end{frame}
 
-\begin{frame}{Toward Categorical Communication Standards for AI Agents}
-\protect\phantomsection\label{toward-categorical-communication-standards-for-ai-agents}
+\begin{frame}{Five Properties of a Categorical Protocol}
+\protect\phantomsection\label{five-properties-of-a-categorical-protocol}
 The synthesis of these developments suggests a research program:
 developing \textbf{categorical communication protocols} that combine the
 engineering robustness of existing standards (A2A, MCP, ACP) with the
@@ -355,9 +378,10 @@ would:
   interpretable audit trails
 \item
   \textbf{Transfer across implementations}: Topos-theoretic bridges
-  (\autoref{sec:topos-theory}) would ensure that a protocol verified in
-  one categorical formalization automatically satisfies correctness
-  conditions in any Morita-equivalent formulation
+  (\autoref{sec:topos-theory}) would carry \textbf{topos-level}
+  correctness conditions from one categorical formalization to any
+  Morita-equivalent formulation, so that shared invariants need not be
+  re-verified separately
 \item
   \textbf{Scale via enrichment}: Distributional proximity measures
   (\autoref{sec:enriched-categories}) would enable graceful degradation
@@ -375,9 +399,11 @@ communication protocol defines a category \(\mathcal{P}\) where objects
 are agent states annotated with case roles and morphisms are typed
 message exchanges:
 
-\[\text{Request}(q, \text{NOM} \to \text{INS}): \text{User}_{\text{NOM}} \to \text{Model}_{\text{INS}}\]
-\[\text{ToolCall}(t, \text{INS} \to \text{ACC}): \text{Model}_{\text{INS}} \to \text{Tool}_{\text{ACC}}\]
-\[\text{Result}(r, \text{ACC} \to \text{DAT}): \text{Tool}_{\text{ACC}} \to \text{Output}_{\text{DAT}}\]
+\begin{align}
+\text{Request}(q,\; \text{NOM} \to \text{INS}) &: \text{User}_{\text{NOM}} \to \text{Model}_{\text{INS}} \label{eq:protocol-request} \\
+\text{ToolCall}(t,\; \text{INS} \to \text{ACC}) &: \text{Model}_{\text{INS}} \to \text{Tool}_{\text{ACC}} \label{eq:protocol-toolcall} \\
+\text{Result}(r,\; \text{ACC} \to \text{DAT}) &: \text{Tool}_{\text{ACC}} \to \text{Output}_{\text{DAT}} \label{eq:protocol-result}
+\end{align}
 
 Protocol correctness reduces to verifying that the composition
 \(\text{Result} \circ \text{ToolCall} \circ \text{Request}\) is a

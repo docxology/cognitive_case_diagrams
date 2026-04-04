@@ -169,6 +169,10 @@ class EnrichedCategory:
 
         Returns column sums of Z^{-1}, representing the "importance"
         of each role in the category.
+
+        Raises:
+            numpy.linalg.LinAlgError: If the proximity matrix is singular
+                (i.e., roles are not linearly independent).
         """
         z_inv = np.linalg.inv(self.proximity_matrix)
         return np.sum(z_inv, axis=0)
@@ -177,6 +181,10 @@ class EnrichedCategory:
         """Compute the coweighting vector v where vZ = 1.
 
         Returns row sums of Z^{-1}.
+
+        Raises:
+            numpy.linalg.LinAlgError: If the proximity matrix is singular
+                (i.e., roles are not linearly independent).
         """
         z_inv = np.linalg.inv(self.proximity_matrix)
         return np.sum(z_inv, axis=1)

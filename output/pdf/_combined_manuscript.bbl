@@ -1,9 +1,16 @@
-\begin{thebibliography}{82}
+\begin{thebibliography}{93}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{A2A Project}(2025)]{google2025a2a}
+{A2A Project}.
+\newblock Agent2agent protocol ({A2A}).
+\newblock \url{https://github.com/a2aproject/A2A}, 2025.
+\newblock Open protocol for agent-to-agent communication; 146 contributors, 10
+  releases.
 
 \bibitem[Akg{\"u}l et~al.(2026)Akg{\"u}l, Baykal, Hau{\ss}mann, {\c{C}}elikok,
   and Kandemir]{akgul2026distributional}
@@ -28,20 +35,20 @@ Abdullah Akg{\"u}l, Gulcin Baykal, Manuel Hau{\ss}mann, Mustafa~Mert
 \newblock Standard for connecting AI systems with external tools and data
   sources.
 
-\bibitem[{ARLAS Team}(2025)]{arlas2025adversarial}
-{ARLAS Team}.
-\newblock Adversarial reinforcement learning for {LLM} agent safety.
-\newblock In \emph{OpenReview preprint}, 2025.
-\newblock URL \url{https://openreview.net/pdf?id=tguzk54PbV}.
-\newblock Co-evolves attacker and defender LLM agents via RL; demonstrates
-  indirect prompt injection as role manipulation in multi-turn tool-use
-  scenarios.
-
 \bibitem[Asudeh and Giorgolo(2020)]{asudeh2020graded}
 Ash Asudeh and Gianluca Giorgolo.
 \newblock A monadic semantics for evidentials.
 \newblock \emph{Proceedings of SALT}, 30, 2020.
 \newblock \doi{10.3765/salt.v30i0.4843}.
+
+\bibitem[Authors(2025)]{arlas2025adversarial}
+Anonymous Authors.
+\newblock Adversarial reinforcement learning for large language model agent
+  safety.
+\newblock \emph{arXiv preprint arXiv:2510.05442}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2510.05442}.
+\newblock Introduces the ARLAS framework, co-evolving attacker and defender LLM
+  agents via RL to demonstrate indirect prompt injection as role manipulation.
 
 \bibitem[Baroni and Lenci(2010)]{baroni2010distributional}
 Marco Baroni and Alessandro Lenci.
@@ -86,16 +93,18 @@ Filippo Bonchi, Fabio Gadducci, Aleks Kissinger, Pawe{\l} Soboci{\'n}ski, and
   Fabio Zanasi.
 \newblock String diagram rewrite theory {I}: Rewriting with {F}robenius
   structure.
-\newblock In \emph{Journal of the ACM}, volume~69, pages 1--58, 2022.
+\newblock \emph{Journal of the ACM}, 69\penalty0 (2):\penalty0 1--58, 2022.
 \newblock \doi{10.1145/3502719}.
 \newblock String diagram rewriting modulo Frobenius as double-pushout
   hypergraph rewriting; foundational for diagram simplification.
 
-\bibitem[Bradley(2020)]{bradley2020entropy}
+\bibitem[Bradley(2021)]{bradley2021entropy}
 Tai-Danae Bradley.
-\newblock \emph{Entropy as a Topological Operad Derivation}.
-\newblock PhD thesis, CUNY Graduate Center, 2020.
+\newblock Entropy as a topological operad derivation.
+\newblock \emph{Entropy}, 23\penalty0 (9):\penalty0 1195, 2021.
+\newblock \doi{10.3390/e23091195}.
 \newblock URL \url{https://arxiv.org/abs/2107.09581}.
+\newblock Published in Entropy 2021; associated with CUNY Graduate Center work.
 
 \bibitem[Bradley(2024)]{bradley2024ipam}
 Tai-Danae Bradley.
@@ -126,6 +135,17 @@ Anne Broadbent and Christian Schaffner.
 \newblock Quantum cryptographic primitives beyond QKD including secure
   computation and authentication.
 
+\bibitem[Capucci et~al.(2021)Capucci, Gavranovi{\'{c}}, Hedges, and
+  Rischel]{capucci2021towards}
+Matteo Capucci, Bruno Gavranovi{\'{c}}, Jules Hedges, and Eigil~Fjeldgren
+  Rischel.
+\newblock Towards foundations of categorical cybernetics.
+\newblock \emph{Electronic Proceedings in Theoretical Computer Science},
+  333:\penalty0 235--248, 2021.
+\newblock \doi{10.4204/EPTCS.333.16}.
+\newblock Foundational introduction to parametrised optics and categorical
+  cybernetics for modelling controlled processes.
+
 \bibitem[Caramello(2016)]{caramello2016bridges}
 Olivia Caramello.
 \newblock The theory of topos-theoretic `bridges': a conceptual introduction.
@@ -147,10 +167,11 @@ Olivia Caramello.
 \newblock URL
   \url{https://www.oliviacaramello.com/Talks/SyntacticLearningViaToposTheory.pdf}.
 
-\bibitem[Claassen(2025)]{claassen2025alignment}
-S.~A. Claassen.
-\newblock Explanations in the typology of grammatical relations and alignment.
-\newblock \emph{Radboud University Theoretical Studies}, 2025.
+\bibitem[Claassen(2019)]{claassen2019alignment}
+Simon~A. Claassen.
+\newblock Explanations in the typology of grammatical relations and alignment
+  systems.
+\newblock \emph{RU:TS Student Linguistics Journal}, 2019.
 \newblock URL
   \url{https://ruts-journal.ruhosting.nl/wp-content/uploads/2025/01/S.A.-Claassen-Typology-of-gramatical-relations-Explanations-in-the-typology-of-grammatical-relations-and-alignment-systems-1.pdf}.
 
@@ -208,12 +229,12 @@ Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova.
 
 \bibitem[Donnarumma et~al.(2023)Donnarumma, Frosolone, and
   Pezzulo]{donnarumma2023integrating}
-Francesco Donnarumma, Giovanni Frosolone, and Giovanni Pezzulo.
-\newblock Integrating large language models and active inference.
-\newblock Presented at the 5th International Workshop on Active Inference (IWAI
-  2023), 2023.
-\newblock Integration of LLM architectures with active inference for linguistic
-  processing.
+Francesco Donnarumma, Mirco Frosolone, and Giovanni Pezzulo.
+\newblock Integrating large language models and active inference to understand
+  eye movements in reading and dyslexia, 2023.
+\newblock URL \url{https://arxiv.org/abs/2308.04941}.
+\newblock Hierarchical active inference with BERT for modelling reading,
+  saccades, and dyslexia via maladaptive priors.
 
 \bibitem[Dowty(1991)]{dowty1991thematic}
 David~R. Dowty.
@@ -261,8 +282,8 @@ Chris Fields, James~F. Glazebrook, and Antonino Marcian\`{o}.
 \bibitem[Fields et~al.(2025)Fields, Glazebrook, and
   Marcian\`{o}]{fields2025amplituhedra}
 Chris Fields, James~F. Glazebrook, and Antonino Marcian\`{o}.
-\newblock Amplituhedra for generic quantum processes from topological quantum
-  neural networks, 2025.
+\newblock Universal quantum computation in topological quantum neural networks
+  and amplituhedron representation, 2025.
 \newblock TQNNs as universal quantum computers via
   Reshetikhin--Turaev/Turaev--Viro invariants and amplituhedra.
 
@@ -342,18 +363,19 @@ Bruno Gavranovi{\'c}.
 \newblock PhD thesis, University of Strathclyde, 2024.
 \newblock URL \url{https://arxiv.org/abs/2403.13001}.
 
+\bibitem[Gavranovi{\'{c}} et~al.(2024)Gavranovi{\'{c}}, Lessard, Dudzik, von
+  Glehn, Ara{\'{u}}jo, and Veli{\v{c}}kovi{\'{c}}]{gavranovic2024categorical}
+Bruno Gavranovi{\'{c}}, Paul Lessard, Andrew Dudzik, Tamara von Glehn,
+  Jo{\~{a}}o G.~M. Ara{\'{u}}jo, and Petar Veli{\v{c}}kovi{\'{c}}.
+\newblock Position: Categorical deep learning is an algebraic theory of all
+  architectures, 2024.
+
 \bibitem[Giardino(2017)]{giardino2017diagrammatic}
 Valeria Giardino.
 \newblock Diagrammatic reasoning in mathematics.
 \newblock \emph{Springer Handbook of Model-Based Science}, pages 499--522,
   2017.
 \newblock \doi{10.1007/978-3-319-30526-4_22}.
-
-\bibitem[{Google}(2025)]{google2025a2a}
-{Google}.
-\newblock Agent2agent protocol ({A2A}).
-\newblock \url{https://google.github.io/A2A/}, 2025.
-\newblock Open protocol for agent-to-agent communication via HTTP/JSON-RPC.
 
 \bibitem[Grefenstette and Sadrzadeh(2015)]{grefenstette2015concrete}
 Edward Grefenstette and Mehrnoosh Sadrzadeh.
@@ -431,22 +453,6 @@ Dimitri Kartsaklis, Ian Fan, Richie Yeung, Anna Pearson, Robin Lorenz, Alexis
 \newblock \emph{arXiv preprint arXiv:2111.13154}, 2021.
 \newblock URL \url{https://arxiv.org/abs/2111.13154}.
 
-\bibitem[Kartsaklis et~al.(2025)Kartsaklis, Lorenz, Meichanetzidis, Pearson,
-  and Coecke]{lambeq2025genii}
-Dimitri Kartsaklis, Robin Lorenz, Konstantinos Meichanetzidis, Anna Pearson,
-  and Bob Coecke.
-\newblock lambeq {G}en {II}: Scalable compositional models for discourse-level
-  {NLP}.
-\newblock Cambridge Quantum / Quantinuum Technical Report, 2025.
-\newblock lambeq Gen II release with full DisCoCirc support; discourse-level
-  quantum circuits compiled from multi-sentence text.
-
-\bibitem[Khatri et~al.(2025)]{khatri2025quantum}
-Sumeet Khatri et~al.
-\newblock Quantum semantic communication: Sheaf-theoretic foundations, 2025.
-\newblock Quantum sheaves for multi-agent semantic networks; cohomological
-  obstructions to semantic alignment.
-
 \bibitem[Kissinger and van~de Wetering(2020)]{kissinger2020zx}
 Aleks Kissinger and John van~de Wetering.
 \newblock Reducing {T}-count with the {ZX}-calculus.
@@ -454,6 +460,24 @@ Aleks Kissinger and John van~de Wetering.
 \newblock \doi{10.22331/q-2020-06-04-279}.
 \newblock Graph-theoretic ZX simplification with generalised flow for
   deterministic circuit extraction.
+
+\bibitem[Krawchuk et~al.(2025{\natexlab{a}})Krawchuk, Khatri, Ortega, and
+  Kartsaklis]{krawchuk2025paramqnlp}
+Colin Krawchuk, Nikhil Khatri, Neil~John Ortega, and Dimitri Kartsaklis.
+\newblock Efficient generation of parameterised quantum circuits from large
+  texts, 2025{\natexlab{a}}.
+\newblock Uses DisCoCirc string diagrams to generate discourse-level quantum
+  circuits via tree-like pregroup diagrams; part of lambeq Gen II.
+
+\bibitem[Krawchuk et~al.(2025{\natexlab{b}})Krawchuk, Khatri, Ortega, and
+  Kartsaklis]{lambeq2025genii}
+Colin Krawchuk, Nikhil Khatri, Neil~John Ortega, and Dimitri Kartsaklis.
+\newblock lambeq {G}en {II}: Scalable compositional models for discourse-level
+  {NLP}.
+\newblock Quantinuum / Cambridge Quantum, 2025{\natexlab{b}}.
+\newblock URL \url{https://arxiv.org/abs/2505.13208}.
+\newblock lambeq Gen II release with full DisCoCirc support; described in
+  arXiv:2505.13208.
 
 \bibitem[Lambek(1958)]{lambek1958mathematics}
 Joachim Lambek.
@@ -468,7 +492,7 @@ Joachim Lambek.
 \bibitem[Lambek(2004)]{lambek2004fine}
 Joachim Lambek.
 \newblock The categorial fine-structure of natural language.
-\newblock In \emph{Proofs and Programs}. 2004.
+\newblock In \emph{Proofs and Programs}. CWI and University of Amsterdam, 2004.
 \newblock URL
   \url{https://archive.illc.uva.nl/lgc/translation/papers/Lambek.NEW.pdf}.
 
@@ -495,6 +519,34 @@ Alessandro Lenci.
 \newblock Authoritative survey linking distributional semantics to cognitive
   and computational models.
 
+\bibitem[Letcher et~al.(2024)Letcher, Woerner, and Zoufal]{letcher2024tight}
+Alistair Letcher, Stefan Woerner, and Christa Zoufal.
+\newblock Tight and efficient gradient bounds for parameterized quantum
+  circuits.
+\newblock \emph{Quantum}, 8:\penalty0 1484, 2024.
+\newblock \doi{10.22331/q-2024-09-25-1484}.
+\newblock Assumption-free gradient lower bounds; no barren plateau for local
+  observables.
+
+\bibitem[Li and Futrell(2023)]{li2023decomposition}
+Jiaxuan Li and Richard Futrell.
+\newblock A decomposition of surprisal tracks the {N400} and {P600} brain
+  potentials.
+\newblock In \emph{Proceedings of the Society for Computation in Linguistics
+  (SCiL 2023)}, 2023.
+\newblock URL
+  \url{https://sites.socsci.uci.edu/~rfutrell/papers/li2023decomposition.pdf}.
+\newblock Decomposes surprisal into heuristic surprise (N400) and discrepancy
+  signal (P600), empirically validated on ERP data.
+
+\bibitem[Li and Futrell(2024)]{li2024shallow}
+Jiaxuan Li and Richard Futrell.
+\newblock Decomposition of surprisal: Unified computational model of {ERP}
+  components in language processing, 2024.
+\newblock URL \url{https://arxiv.org/abs/2409.06803}.
+\newblock Generalizes 2023 SCiL result: shallow surprisal tracks N400, deep
+  surprisal tracks P600.
+
 \bibitem[Lorenz et~al.(2023)Lorenz, Pearson, Meichanetzidis, Kartsaklis, and
   Coecke]{lorenz2023lambeq}
 Robin Lorenz, Anna Pearson, Konstantinos Meichanetzidis, Dimitri Kartsaklis,
@@ -502,6 +554,14 @@ Robin Lorenz, Anna Pearson, Konstantinos Meichanetzidis, Dimitri Kartsaklis,
 \newblock lambeq: An efficient high-level python library for quantum {NLP}.
 \newblock \emph{arXiv preprint arXiv:2310.05033}, 2023.
 \newblock URL \url{https://arxiv.org/abs/2310.05033}.
+
+\bibitem[Maele et~al.(2026)]{maele2026schema}
+V.~Maele et~al.
+\newblock Schema-based active inference supports rapid generalization of
+  experience and frontal cortical signatures of schemas, 2026.
+\newblock Schema-based hierarchical active inference (S-HAI) bridges predictive
+  processing with schemas as top-level abstract relations, yielding rapid
+  generalization via grounding likelihoods in dual-POMDPs.
 
 \bibitem[Manders(2008)]{manders2008euclidean}
 Kenneth Manders.
@@ -515,6 +575,27 @@ Konstantinos Meichanetzidis, Stefano Gogioso, Giovanni de~Felice, Nicol{\`o}
 \newblock Grammar-aware question-answering on quantum computers.
 \newblock \emph{arXiv preprint arXiv:2005.04147}, 2020.
 \newblock URL \url{https://arxiv.org/abs/2005.04147}.
+
+\bibitem[Mel’{\v{c}}uk(1981)]{melcuk1981meaning}
+Igor~A. Mel’{\v{c}}uk.
+\newblock Meaning-text models: A recent trend in soviet linguistics.
+\newblock \emph{Annual Review of Anthropology}, 10:\penalty0 27--62, 1981.
+\newblock \doi{10.1146/annurev.an.10.100181.000331}.
+
+\bibitem[Mel’{\v{c}}uk(1988)]{melcuk1988dependency}
+Igor~A. Mel’{\v{c}}uk.
+\newblock \emph{Dependency syntax: Theory and practice}.
+\newblock SUNY Press, Albany, NY, 1988.
+\newblock ISBN 9780887064500.
+
+\bibitem[Meyer and Lewis(2020)]{meyer2020modelling}
+Fran{\c{c}}ois Meyer and Martha Lewis.
+\newblock Modelling lexical ambiguity with density matrices.
+\newblock \emph{Proceedings of the 24th Conference on Computational Natural
+  Language Learning (CoNLL)}, pages 276--290, 2020.
+\newblock \doi{10.18653/v1/2020.conll-1.21}.
+\newblock Introduces density matrices (mixed quantum states) within DisCoCat to
+  structurally model lexical ambiguity and entailment.
 
 \bibitem[Mikolov et~al.(2013)Mikolov, Chen, Corrado, and
   Dean]{mikolov2013efficient}
@@ -531,6 +612,15 @@ Richard Montague.
 \newblock The proper treatment of quantification in ordinary {E}nglish.
 \newblock In Jaakko Hintikka, Julius Moravcsik, and Patrick Suppes, editors,
   \emph{Approaches to Natural Language}, pages 221--242. Reidel, 1973.
+
+\bibitem[Myers(2023)]{myers2023double}
+David~Jaz Myers.
+\newblock Double categories of open dynamical systems.
+\newblock \emph{Electronic Proceedings in Theoretical Computer Science},
+  380:\penalty0 319--336, 2023.
+\newblock \doi{10.4204/EPTCS.380.20}.
+\newblock Formalizes open and interacting dynamical systems using Double
+  Categorical Systems Theory (DCST).
 
 \bibitem[Pennington et~al.(2014)Pennington, Socher, and
   Manning]{pennington2014glove}
@@ -564,21 +654,34 @@ Stefano Pirandola, Ulrik~L. Andersen, Leonardo Banchi, Mario Berta, Darius
 \newblock Comprehensive review of QKD protocols, security proofs, and
   implementations.
 
-\bibitem[Polinsky and Preminger(2015)]{polinsky2015case}
+\bibitem[Polinsky and Preminger(2014)]{polinsky2015case}
 Maria Polinsky and Omer Preminger.
 \newblock Case and grammatical relations.
-\newblock In Tibor Kiss and Artemis Alexiadou, editors, \emph{Syntax -- Theory
-  and Analysis: An International Handbook}. De Gruyter Mouton, 2015.
+\newblock In Andrew Carnie, Dan Siddiqi, and Yosuke Sato, editors, \emph{The
+  Routledge Handbook of Syntax}. Routledge, 2014.
 \newblock URL
   \url{https://omer.lingsite.org/files/Polinsky-and-Preminger-Case-and-Grammatical-Relations.pdf}.
+\newblock Routledge 2014; citation key retains ``2015'' from prior drafts and
+  secondary citations.
 
-\bibitem[{QuantumNLP Consortium}(2026)]{quantumcognitive2026frontiers}
-{QuantumNLP Consortium}.
-\newblock Quantum-cognitive frameworks for dynamic meaning: Integrating
-  {DisCoCat} with density matrices.
-\newblock \emph{Frontiers in Psychology}, 17, 2026.
-\newblock Integrates DisCoCat and DisCoCirc with density matrices for modeling
-  dynamic meaning in text, treating semantic states as mixed quantum states.
+\bibitem[{Quantinuum}(2025)]{quantinuum2025genii}
+{Quantinuum}.
+\newblock lambeq {G}en {II}: Quantum-enhanced interpretable and scalable
+  text-based {NLP}.
+\newblock
+  \url{https://www.quantinuum.com/blog/lambeq-gen-ii-a-quantum-enhanced-interpretable-and-scalable-text-based-nlp-software-package},
+  2025.
+\newblock Official release (May 22, 2025) with DisCoCircReader for
+  discourse-level quantum circuits from full texts.
+
+\bibitem[Rad et~al.(2024)Rad, Setiawan, Babbush, et~al.]{rad2024trainability}
+Alireza Rad, Felippe Setiawan, Ryan Babbush, et~al.
+\newblock Trainability enhancement of parameterized quantum circuits via
+  reduced-domain parameter initialization.
+\newblock \emph{Physical Review Applied}, 22:\penalty0 054005, 2024.
+\newblock \doi{10.1103/PhysRevApplied.22.054005}.
+\newblock Reduced-domain initialization suppresses barren plateaus; DOI
+  paywalled but journal record exists.
 
 \bibitem[Radford et~al.(2018)Radford, Narasimhan, Salimans, and
   Sutskever]{radford2018improving}
@@ -589,22 +692,6 @@ Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever.
   \url{https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf}.
 \newblock GPT-1: autoregressive generative pre-training for contextualized
   language representations.
-
-\bibitem[Sherborne et~al.(2025)]{sherborne2025paramqnlp}
-Tom Sherborne et~al.
-\newblock Efficient generation of parameterised quantum circuits from large
-  language models, 2025.
-\newblock Uses DisCoCirc string diagrams to generate discourse-level quantum
-  circuits; composes sentence diagrams via coreference resolution for scalable
-  QNLP.
-
-\bibitem[Shiebler et~al.(2024)Shiebler, Gavranovi{\'c}, and
-  Wilson]{shiebler2024categorical}
-Dan Shiebler, Bruno Gavranovi{\'c}, and Paul Wilson.
-\newblock Categorical deep learning is an algebraic theory of all
-  architectures.
-\newblock In \emph{Proceedings of the 41st International Conference on Machine
-  Learning (ICML)}, 2024.
 
 \bibitem[Shimojima(1996)]{shimojima1996reasoning}
 Atsushi Shimojima.
@@ -635,6 +722,13 @@ Julio Song.
 \newblock
   \url{https://blog.juliosong.com/linguistics/mathematics/category-theory-notes-3/},
   2022{\natexlab{b}}.
+
+\bibitem[Thomas and Chen(2026)]{thomas2025quantum}
+Christo~Kurisummoottil Thomas and Mingzhe Chen.
+\newblock Fundamental limits of quantum semantic communication via sheaf
+  cohomology, 2026.
+\newblock arXiv:2601.10958 (2026); quantum sheaves for multi-agent semantic
+  networks; entanglement-assisted capacity exceeds classical.
 
 \bibitem[Turney and Pantel(2010)]{turney2010frequency}
 Peter~D. Turney and Patrick Pantel.
@@ -673,5 +767,12 @@ Grace Wu.
 \newblock PhD thesis, University at Buffalo, SUNY, 2024.
 \newblock URL
   \url{https://arts-sciences.buffalo.edu/content/dam/arts-sciences/linguistics/AlumniDissertations/Wu\%20dissertation.pdf}.
+
+\bibitem[{\v{Z}}olkovskij and Mel’{\v{c}}uk(1965)]{zolkovskij1965possible}
+Aleksandr~K. {\v{Z}}olkovskij and Igor~A. Mel’{\v{c}}uk.
+\newblock O vozmo{\v{z}}nom metode i instrumentax semanti{\v{c}}eskogo sinteza
+  (on a possible method and instruments for semantic synthesis).
+\newblock \emph{Nau{\v{c}}no-texi{\v{c}}eskaja informacija}, 5:\penalty0
+  23--28, 1965.
 
 \end{thebibliography}

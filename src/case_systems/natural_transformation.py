@@ -15,9 +15,10 @@ References:
 """
 
 import logging
+import math
 from dataclasses import dataclass, field
 
-from .case_category import CaseRole, Morphism, CaseCategory
+from .case_category import CaseRole, Morphism
 from .functor import AlignmentFunctor
 
 logger = logging.getLogger(__name__)
@@ -139,6 +140,84 @@ class NaturalTransformation:
     def image_roles(self) -> set[CaseRole]:
         """Return the set of all target images in the components."""
         return {comp.target_image for comp in self.components.values()}
+
+    def naturality_holds(self, *, rel_tol: float = 1e-9, abs_tol: float = 1e-9) -> bool:
+        """Check the naturality square for morphisms in the source functor's category.
+
+        For each morphism ``f: A → B`` in ``source_functor.source.morphisms`` such that
+        ``A`` and ``B`` lie in ``source_functor.object_map``, verify
+
+            G(f) ∘ α_A = α_B ∘ F(f)
+
+        using ``target_functor.target.compose`` (same convention as ``CaseCategory.compose``:
+        ``compose(first, second)`` yields ``second ∘ first``).
+
+        Requires a **complete** component assignment (``is_complete()``). Labels on composed
+        morphisms are not compared; source, target, and weight must match within tolerance.
+
+        Args:
+            rel_tol: Relative tolerance for weight comparison.
+            abs_tol: Absolute tolerance for weight comparison.
+
+        Returns:
+            True if all relevant squares commute; False if incomplete or any square fails.
+        """
+        if not self.is_complete():
+            logger.warning(
+                "naturality_holds: %s is incomplete — returning False",
+                self.name,
+            )
+            return False
+
+        tgt = self.target_functor.target
+        om = self.source_functor.object_map
+
+        for f in self.source_functor.source.morphisms:
+            if f.source not in om or f.target not in om:
+                continue
+            if f.source not in self.components or f.target not in self.components:
+                continue
+
+            ff = self.source_functor.map_morphism(f)
+            gf = self.target_functor.map_morphism(f)
+            alpha_a = self.components[f.source].as_morphism()
+            alpha_b = self.components[f.target].as_morphism()
+
+            # G(f) ∘ α_A  ==  compose(α_A, Gf)
+            left = tgt.compose(alpha_a, gf)
+            # α_B ∘ F(f)  ==  compose(Ff, α_B)
+            right = tgt.compose(ff, alpha_b)
+
+            if left.source != right.source or left.target != right.target:
+                logger.warning(
+                    "Naturality fails for %s: endpoints %s→%s vs %s→%s",
+                    f,
+                    left.source.name,
+                    left.target.name,
+                    right.source.name,
+                    right.target.name,
+                )
+                return False
+            if not math.isclose(left.weight, right.weight, rel_tol=rel_tol, abs_tol=abs_tol):
+                logger.warning(
+                    "Naturality fails for %s: weights %s vs %s",
+                    f,
+                    left.weight,
+                    right.weight,
+                )
+                return False
+
+        logger.debug("Naturality holds for %s (all checked morphisms)", self.name)
+        return True
+
+    def verify_naturality(
+        self,
+        *,
+        rel_tol: float = 1e-9,
+        abs_tol: float = 1e-9,
+    ) -> bool:
+        """Alias for :meth:`naturality_holds` (API compatibility)."""
+        return self.naturality_holds(rel_tol=rel_tol, abs_tol=abs_tol)
 
 
 @dataclass

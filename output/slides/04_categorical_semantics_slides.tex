@@ -104,64 +104,66 @@
 
 \begin{document}
 
-\section{Categorical Semantics: DisCoCat and Compositional
-Flow}\label{sec:categorical-semantics}
+\section{DisCoCat: Composing Word Vectors According to Pregroup Type
+Derivations}\label{sec:categorical-semantics}
 
-\begin{frame}{Two Traditions of Meaning: Formal and Distributional}
-\protect\phantomsection\label{two-traditions-of-meaning-formal-and-distributional}
-The study of linguistic meaning has long been divided between two
-traditions with complementary strengths and weaknesses:
+\begin{frame}{The Formalism--Distribution Impasse and Why Montague
+Cannot Meet Harris}
+\protect\phantomsection\label{the-formalismdistribution-impasse-and-why-montague-cannot-meet-harris}
+The study of linguistic meaning has historically been fractured between
+two traditions offering complementary strengths and weaknesses:
 
 \begin{enumerate}
 \item
   \textbf{Formal semantics}, following Montague
-  {[}-@montague1973proper{]}, assigns meaning compositionally: the
-  meaning of a complex expression is a function of the meanings of its
-  parts and the way they are syntactically combined. This tradition
-  excels at capturing logical structure (quantification, negation,
-  modality) but struggles with lexical meaning---it typically treats
-  content words as unanalyzed primitives.
+  {[}-@montague1973proper{]}, strictly models meaning compositionally:
+  the algebraic meaning of any complex expression functions as a direct
+  product of its parts and their syntactic combination. This tradition
+  excels at capturing rigid logical structure (quantification, negation,
+  modality) but severely struggles with fluid lexical meaning, typically
+  treating content words as opaque, unanalyzed primitives.
 \item
-  \textbf{Distributional semantics} assigns meaning empirically: a
-  word's meaning is characterized by its distribution across contexts,
-  typically encoded as a vector in a high-dimensional space. The
-  distributional hypothesis---``You shall know a word by the company it
-  keeps'' {[}@firth1957papers{]}---traces to J.R. Firth's contextual
-  theory of meaning and, independently, to Zellig Harris's
-  {[}-@harris1954distributional{]} algebraic analysis of distributional
-  structure, which demonstrated that linguistic elements occurring in
-  similar environments share semantic properties. This tradition
-  captures graded similarity and analogy but lacks compositional
-  structure---the meaning of ``dog bites man'' and ``man bites dog'' may
-  receive identical vector representations.
+  \textbf{Distributional semantics} models meaning empirically: a word's
+  meaning organically emerges from its distribution across contexts,
+  typically encoded computationally as a dense vector in
+  high-dimensional space. This distributional hypothesis---famously
+  summarized as ``You shall know a word by the company it keeps''
+  {[}@firth1957papers{]}---traces directly to J.R. Firth and Zellig
+  Harris {[}-@harris1954distributional{]}, whose algebraic analysis
+  proved that linguistic elements occurring in similar environments
+  inherently share semantic properties. While this tradition beautifully
+  captures graded similarity and geometric analogy, it lacks rigorous
+  compositional structure. Under pure distribution, ``dog bites man''
+  and ``man bites dog'' collapse into identical vector representations.
 \end{enumerate}
 
-The tension between these two traditions is one of the deepest in the
-science of language. Turney and Pantel's {[}-@turney2010frequency{]}
-comprehensive survey of vector space models showed that distributional
-methods capture remarkably fine-grained semantic
-distinctions---synonymy, antonymy, hypernymy, analogy---but only at the
-word level. Baroni and Lenci {[}-@baroni2010distributional{]} developed
-a tensor-based \emph{Distributional Memory} framework that partially
-addresses compositionality by structuring co-occurrence data as a
-three-way tensor over (word, relation, word) triples, but without a
+This theoretical tension represents one of the deepest impasses in
+modern cognitive science. Turney and Pantel's
+{[}-@turney2010frequency{]} comprehensive survey of vector space models
+proved that distributional methods smoothly capture highly fine-grained
+semantic distinctions---synonymy, antonymy, hypernymy, analogy---but
+strictly isolate these victories to the isolated word level. Baroni and
+Lenci {[}-@baroni2010distributional{]} built a tensor-based
+\emph{Distributional Memory} framework partially addressing this
+compositionality by structuring co-occurrence data into a three-way
+tensor over (word, relation, word) triples, yet this approach lacked a
 principled type-logical backbone. Lenci {[}-@lenci2018distributional{]}
-surveys the modern landscape and identifies the central open problem:
-how to reconcile the \emph{algebraic compositionality} of formal
-semantics with the \emph{empirical grounding} of distributional models.
+thoroughly surveyed this modern landscape and formally identified the
+central open problem: discovering exactly how to fuse the
+\emph{algebraic compositionality} of formal semantics with the powerful
+\emph{empirical grounding} of distributional vector models.
 
 The \textbf{DisCoCat} (Distributional Compositional Categorical)
-framework {[}@coecke2010mathematical{]} resolves this tension by using
-category theory to compose distributional meanings according to
-syntactic structure---achieving, for the first time, a framework that is
-simultaneously \emph{compositional} (from categorial grammar),
-\emph{distributional} (from corpus-derived vector spaces), and
-\emph{algebraically principled} (from monoidal category theory).
+framework {[}@coecke2010mathematical{]} resolves this long-standing
+tension. It deploys category theory to compose distributional meanings
+directly according to syntactic structure, yielding a semantic framework
+that is simultaneously \emph{compositional} (via categorial grammar),
+\emph{distributional} (via corpus-derived vector spaces), and
+\emph{algebraically principled} (via rigid monoidal category theory).
 \end{frame}
 
-\begin{frame}{From Static Embeddings to Contextual Representations: LLMs
-as Distributional Models}
-\protect\phantomsection\label{from-static-embeddings-to-contextual-representations-llms-as-distributional-models}
+\begin{frame}{Word2Vec → BERT → GPT}
+\protect\phantomsection\label{word2vec-bert-gpt}
 The distributional programme has undergone a dramatic computational
 intensification in the era of large language models (LLMs). The
 trajectory from classical co-occurrence matrices through static word
@@ -171,52 +173,59 @@ embeddings to contextual transformers can be understood as a progressive
 \begin{enumerate}
 \item
   \textbf{Static embeddings}: Mikolov et al.'s
-  {[}-@mikolov2013efficient{]} Word2Vec (skip-gram and CBOW
-  architectures) demonstrated that prediction-based training on local
-  context windows produces word vectors exhibiting striking algebraic
-  regularity---the famous ``king \(-\) man \(+\) woman \(\approx\)
-  queen'' analogy. Pennington et al.'s {[}-@pennington2014glove{]} GloVe
-  incorporated global co-occurrence statistics via log-bilinear
-  regression, yielding vectors whose inner products approximate
-  pointwise mutual information. Both models instantiate the
-  distributional hypothesis in its classical Firthian form: meaning is
-  determined by context of use, encoded as geometric position in a
-  learned vector space.
+  {[}-@mikolov2013efficient{]} Word2Vec (skip-gram and CBOW)
+  demonstrated that targeted prediction-based training on local context
+  windows naturally generates word vectors exhibiting striking algebraic
+  regularity---yielding the famous ``king \(-\) man \(+\) woman
+  \(\\approx\) queen'' geometric analogy. Pennington et al.'s
+  {[}-@pennington2014glove{]} GloVe successfully incorporated global
+  co-occurrence statistics via log-bilinear regression, yielding dense
+  vectors whose inner products cleanly approximate underlying pointwise
+  mutual information. Both models instantiate the distributional
+  hypothesis in its classical Firthian form: contextual use strictly
+  determines meaning, permanently encoding it as geometric position
+  within a learned vector space.
 \item
   \textbf{Contextual embeddings}: BERT {[}@devlin2019bert{]} and GPT
-  {[}@radford2018improving{]} move beyond static type-level
-  representations to \emph{token-level} contextualized embeddings, where
-  the same word receives different vectors in different contexts. In the
-  terms of the formal/distributional dichotomy, this is a critical
-  advance: contextualized embeddings partially capture
-  \emph{compositional} structure by conditioning word representations on
-  their full sentential environment, resolving polysemy and
-  constructional effects that static embeddings conflate.
+  {[}@radford2018improving{]} dramatically push beyond static type-level
+  representations into dynamic \emph{token-level} contextualized
+  embeddings, where the identical word dynamically receives entirely
+  different coordinate vectors in varying contexts. In terms of the
+  formal vs.~distributional dichotomy, this jump represents a critical
+  advance: contextualized embeddings successfully (though implicitly)
+  capture \emph{compositional} structure by continuously conditioning
+  word representations upon their full sentential environment. This
+  addresses polysemy and complex constructional effects that static
+  embeddings routinely conflate.
 \item
   \textbf{Transformer architecture}: The transformer
-  {[}@vaswani2017attention{]} implements distributional composition
-  through multi-head self-attention, where each attention head computes
-  a weighted combination of input token representations. The attention
-  weights \(\alpha_{ij} = \text{softmax}(Q_i K_j^T / \sqrt{d_k})\) are
-  analogous to the enriched hom-values of
-  \autoref{sec:enriched-categories}: they encode the \emph{degree of
-  contextual relevance} between tokens \(i\) and \(j\) in a given
-  representational subspace---a graded, learned distributional relation.
+  {[}@vaswani2017attention{]} explicitly implements distributional
+  composition via its heavily parallelized multi-head self-attention
+  mechanism, where each distinct attention head actively computes a
+  statistically weighted combination of all given input token
+  representations. The precise numerical attention weights
+  \(\\alpha_{ij} = \\text{softmax}(Q_i K_j^T / \\sqrt{d_k})\) operate
+  entirely analogously to the formal enriched hom-values detailed in
+  \textbackslash autoref\{sec:enriched-categories\}: they
+  algorithmically encode the continuous \emph{degree of contextual
+  relevance} between tokens \(i\) and \(j\) within a specifically tuned
+  representational subspace---yielding a graded, deeply learned
+  distributional mapping.
 \end{enumerate}
 
-The connection to our categorical framework is direct: \textbf{DisCoCat
-is the algebraic formalization of what LLMs do empirically.} Where a
-transformer computes sentence representations by attending to
-syntactically and semantically relevant tokens through learned weight
-matrices, DisCoCat composes word vectors through type-logical
-derivations in a compact closed category. The functor
-\(F: \mathbf{Preg} \to \mathbf{FVect}\) that defines DisCoCat is, in
-this light, the \emph{principled version} of the composition that
-attention mechanisms learn from data. This perspective is confirmed by
-Gavranović's {[}-@gavranovic2024thesis{]} categorical deep learning
-programme, which shows that attention heads can be understood as
-parameterized optics---categorical constructions that compose
-functorially, just as DisCoCat derivations do.
+The mapping back to our categorical framework is direct:
+\textbf{DisCoCat supplies the algebraic formalization of what modern
+LLMs learn empirically.} A transformer builds sentence representations
+by attending to syntactically and semantically relevant tokens through
+learned weight matrices. DisCoCat achieves the same goal by composing
+word vectors through type-logical derivations within a compact closed
+category. The central functor \(F: \mathbf{Preg} \to \mathbf{FVect}\)
+defining DisCoCat is therefore the \emph{principled} version of the
+composition that neural attention learns from data. Gavranović's
+{[}-@gavranovic2024thesis{]} categorical learning programme confirms
+this perspective rigorously, proving that neural attention heads operate
+as parameterized optics---categorical constructions composing
+functorially, mirroring DisCoCat derivations.
 
 For case theory specifically, the transformer analogy is illuminating:
 each attention head in a transformer can be understood as learning a
@@ -230,15 +239,19 @@ to the role-specific representational subspaces that different attention
 heads learn to inhabit.
 \end{frame}
 
-\begin{frame}{The DisCoCat Compositional Framework}
-\protect\phantomsection\label{the-discocat-compositional-framework}
-\begin{block}{The Key Insight: Shared Compact Closed Structure}
-\protect\phantomsection\label{the-key-insight-shared-compact-closed-structure}
+\begin{frame}{The Meaning Functor
+\(F: \mathbf{Preg} \to \mathbf{FVect}\)}
+\protect\phantomsection\label{sec:discocat-meaning-functor}
+\begin{block}{Pregroups and Vector Spaces Share a Category}
+\protect\phantomsection\label{pregroups-and-vector-spaces-share-a-category}
 DisCoCat's central observation is that pregroup grammars and vector
 spaces share a common abstract structure: both are \textbf{compact
 closed categories}. This means there exists a \emph{meaning functor}:
 
-\[F: \mathbf{Preg} \to \mathbf{FVect} \] \{\#eq:eq-4-1\}
+\begin{equation}
+F: \mathbf{Preg} \to \mathbf{FVect}
+\label{eq:eq-4-1}
+\end{equation}
 
 from the pregroup grammar category (where objects are types and
 morphisms are grammatical reductions) to the category of
@@ -262,14 +275,17 @@ Under this functor:
 \end{itemize}
 \end{block}
 
-\begin{block}{Computing Compositional Sentence Meaning}
-\protect\phantomsection\label{computing-compositional-sentence-meaning}
+\begin{block}{Tensoring, Then Contracting: How ``Alice Chases Bob''
+Becomes a Vector}
+\protect\phantomsection\label{tensoring-then-contracting-how-alice-chases-bob-becomes-a-vector}
 The compositional meaning of a sentence is computed by tensoring the
 word meanings and then contracting the result along the indices
 determined by the syntactic derivation. For ``Alice chases Bob'':
 
-\[\overrightarrow{\text{Alice chases Bob}} = (\overrightarrow{\text{Alice}} \otimes \overleftrightarrow{\text{chases}} \otimes \overrightarrow{\text{Bob}}) \circ (\varepsilon_N \otimes 1_S \otimes \varepsilon_N) \]
-\{\#eq:eq-4-2\}
+\begin{equation}
+\overrightarrow{\text{Alice chases Bob}} = (\overrightarrow{\text{Alice}} \otimes \overleftrightarrow{\text{chases}} \otimes \overrightarrow{\text{Bob}}) \circ (\varepsilon_N \otimes 1_S \otimes \varepsilon_N)
+\label{eq:eq-4-2}
+\end{equation}
 
 where \(\varepsilon_N: N \otimes N \to \mathbb{R}\) is the compact
 closure map (inner product). This computation has a direct diagrammatic
@@ -277,8 +293,8 @@ representation as a string diagram---the same Joyal--Street
 {[}@joyalstreet1991geometry{]} formalism that governs the syntax.
 \end{block}
 
-\begin{block}{Empirical Validation and Disambiguation}
-\protect\phantomsection\label{empirical-validation-and-disambiguation}
+\begin{block}{DisCoCat Resolves ``Dog Bites Man'' vs ``Man Bites Dog''}
+\protect\phantomsection\label{discocat-resolves-dog-bites-man-vs-man-bites-dog}
 Grefenstette and Sadrzadeh {[}-@grefenstette2015concrete{]} demonstrated
 that DisCoCat models can outperform purely distributional baselines on
 disambiguation and sentence similarity tasks. The key advantage is that
@@ -309,25 +325,28 @@ composes multiple Cup contractions for multi-argument verbs.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio,alt={The compositional semantics of ``Alice chases Bob'' under the DisCoCat meaning functor F: \textbackslash mathbf\{Preg\} \textbackslash to \textbackslash mathbf\{FVect\}. The syntactic diagram (left of the functor) assigns pregroup types---n for nouns, n\^{}r \textbackslash otimes s \textbackslash otimes n\^{}l for the transitive verb---while F maps these to vector spaces: n \textbackslash mapsto N (noun space), s \textbackslash mapsto S (sentence space), and the verb's type to a tensor \textbackslash overleftrightarrow\{\textbackslash text\{chases\}\} \textbackslash in N \textbackslash otimes S \textbackslash otimes N. The Cup contractions become inner products \textbackslash varepsilon\_N: N \textbackslash otimes N \textbackslash to \textbackslash mathbb\{R\}, computing the sentence vector \textbackslash overrightarrow\{\textbackslash text\{Alice chases Bob\}\} \textbackslash in S by contracting the word tensors along syntactically determined indices.}]{../figures/discopy_composition.png}}
-\caption{The compositional semantics of ``Alice chases Bob'' under the
-DisCoCat meaning functor \(F: \mathbf{Preg} \to \mathbf{FVect}\). The
-syntactic diagram (left of the functor) assigns pregroup types---\(n\)
-for nouns, \(n^r \otimes s \otimes n^l\) for the transitive verb---while
-\(F\) maps these to vector spaces: \(n \mapsto N\) (noun space),
-\(s \mapsto S\) (sentence space), and the verb's type to a tensor
+\pandocbounded{\includegraphics[keepaspectratio,alt={Cup contractions compute sentence meaning by contracting word tensors along syntactically determined indices. The DisCoCat meaning functor F: \textbackslash mathbf\{Preg\} \textbackslash to \textbackslash mathbf\{FVect\} applied to ``Alice chases Bob.'' Left panel: pre-contraction tensor product n \textbackslash otimes (n\^{}r \textbackslash otimes s \textbackslash otimes n\^{}l) \textbackslash otimes n, showing three Word boxes with pregroup types. Right panel: fully contracted diagram where two Cup contractions (\textbackslash varepsilon: n\^{}r \textbackslash otimes n \textbackslash to 1 and \textbackslash varepsilon: n\^{}l \textbackslash otimes n \textbackslash to 1) reduce the five-wire product to sentence wire s. Under F, noun types map to N, the sentence type to S, and the verb's type to \textbackslash overleftrightarrow\{\textbackslash text\{chases\}\} \textbackslash in N \textbackslash otimes S \textbackslash otimes N. The Cup contractions become inner products \textbackslash varepsilon\_N: N \textbackslash otimes N \textbackslash to \textbackslash mathbb\{R\}, computing \textbackslash overrightarrow\{\textbackslash text\{Alice chases Bob\}\} \textbackslash in S.}]{../figures/discopy_composition.png}}
+\caption{Cup contractions compute sentence meaning by contracting word
+tensors along syntactically determined indices. The DisCoCat meaning
+functor \(F: \mathbf{Preg} \to \mathbf{FVect}\) applied to ``Alice
+chases Bob.'' \textbf{Left panel}: pre-contraction tensor product
+\(n \otimes (n^r \otimes s \otimes n^l) \otimes n\), showing three Word
+boxes with pregroup types. \textbf{Right panel}: fully contracted
+diagram where two Cup contractions (\(\varepsilon: n^r \otimes n \to 1\)
+and \(\varepsilon: n^l \otimes n \to 1\)) reduce the five-wire product
+to sentence wire \(s\). Under \(F\), noun types map to \(N\), the
+sentence type to \(S\), and the verb's type to
 \(\overleftrightarrow{\text{chases}} \in N \otimes S \otimes N\). The
 Cup contractions become inner products
-\(\varepsilon_N: N \otimes N \to \mathbb{R}\), computing the sentence
-vector \(\overrightarrow{\text{Alice chases Bob}} \in S\) by contracting
-the word tensors along syntactically determined
-indices.}\label{fig:discopy-discocat}
+\(\varepsilon_N: N \otimes N \to \mathbb{R}\), computing
+\(\overrightarrow{\text{Alice chases Bob}} \in S\).}\label{fig:discopy-discocat}
 \end{figure}
 \end{block}
 \end{frame}
 
-\begin{frame}{Case Enrichment in the DisCoCat Framework}
-\protect\phantomsection\label{case-enrichment-in-the-discocat-framework}
+\begin{frame}{Case-Typed Noun Spaces and Alignment as Natural
+Transformation}
+\protect\phantomsection\label{case-typed-noun-spaces-and-alignment-as-natural-transformation}
 The present contribution lies in showing how case marking enriches the
 DisCoCat framework with explicit role structure. In a case-marked
 DisCoCat model:
@@ -359,22 +378,19 @@ DisCoCat model:
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio,alt={A 20-word DisCoPy pregroup grammar. This diagrammatic transparency exemplifies Shimojima's {[}-@shimojima1996reasoning{]} free-ride inference: by inspecting the diagram, one can immediately see that passivization preserves the verb's inherent argument structure while rearranging the surface realization---a fact that requires multiple inference steps to establish in a linear notation. Three dense noun phrases (with 4, 4, and 8 chained adjective modifiers respectively) reduce into the ditransitive verb's type n\^{}r \textbackslash otimes s \textbackslash otimes n\^{}l \textbackslash otimes n\^{}l via 4 Cup contractions, mapping 20 lexical items into the unified sentence type s. The resulting complexity score ({[}@eq:eq-4-4{]} in ) substantially exceeds that of simple transitive sentences, confirming the monotonic relationship between argument structure and derivational depth.}]{output/figures/discopy_ditransitive.png}}
-\caption{A 20-word DisCoPy pregroup grammar. This diagrammatic
-transparency exemplifies Shimojima's {[}-@shimojima1996reasoning{]}
-free-ride inference: by inspecting the diagram, one can immediately see
-that passivization preserves the verb's inherent argument structure
-while rearranging the surface realization---a fact that requires
-multiple inference steps to establish in a linear notation. Three dense
-noun phrases (with 4, 4, and 8 chained adjective modifiers respectively)
-reduce into the ditransitive verb's type
-\(n^r \otimes s \otimes n^l \otimes n^l\) via 4 Cup contractions,
-mapping 20 lexical items into the unified sentence type \(s\). The
-resulting complexity score ({[}@eq:eq-4-4{]} in
-\autoref{sec:compact-closure-discourse}) substantially exceeds that of
-simple transitive sentences, confirming the monotonic relationship
-between argument structure and derivational
-depth.}\label{fig:discopy-ditransitive}
+\pandocbounded{\includegraphics[keepaspectratio,alt={Ditransitive valency exceeds transitive complexity, confirming the monotonic complexity--valency relationship. DisCoPy pregroup grammar for ``Alice gives Bob a book'': four Word boxes with types n (Alice), n\^{}r \textbackslash otimes s \textbackslash otimes n\^{}l \textbackslash otimes n\^{}l (gives), n (Bob), and n (a book). Three Cup contractions resolve subject--verb, indirect-object, and direct-object links, reducing the eight-wire product to sentence type s. This exemplifies Shimojima's {[}-@shimojima1996reasoning{]} free-ride inference: the diagram simultaneously shows argument structure, valency, and compositional flow. The complexity score ( in ) exceeds that of simple transitive sentences.}]{output/figures/discopy_ditransitive.png}}
+\caption{Ditransitive valency exceeds transitive complexity, confirming
+the monotonic complexity--valency relationship. DisCoPy pregroup grammar
+for ``Alice gives Bob a book'': four Word boxes with types \(n\)
+(Alice), \(n^r \otimes s \otimes n^l \otimes n^l\) (gives), \(n\) (Bob),
+and \(n\) (a book). Three Cup contractions resolve subject--verb,
+indirect-object, and direct-object links, reducing the eight-wire
+product to sentence type \(s\). This exemplifies Shimojima's
+{[}-@shimojima1996reasoning{]} free-ride inference: the diagram
+simultaneously shows argument structure, valency, and compositional
+flow. The complexity score (\autoref{eq:eq-4-4} in
+\autoref{sec:compact-closure-complexity}) exceeds that of simple
+transitive sentences.}\label{fig:discopy-ditransitive}
 \end{figure}
 
 The following sections extend this model to discourse and quantum

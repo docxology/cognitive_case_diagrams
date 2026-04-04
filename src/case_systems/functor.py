@@ -10,6 +10,7 @@ References:
 """
 
 import logging
+import math
 from dataclasses import dataclass, field
 
 from .case_category import (
@@ -79,6 +80,7 @@ class AlignmentFunctor:
             source=mapped_source,
             target=mapped_target,
             label=f"F({morphism.label})",
+            weight=morphism.weight,
         )
 
     def preserves_identity(self, role: CaseRole) -> bool:
@@ -115,14 +117,28 @@ class AlignmentFunctor:
         mapped_then_composed = self.target.compose(
             self.map_morphism(f), self.map_morphism(g)
         )
-        preserves = (
+        struct_ok = (
             composed_then_mapped.source == mapped_then_composed.source
             and composed_then_mapped.target == mapped_then_composed.target
         )
+        weight_ok = math.isclose(
+            composed_then_mapped.weight,
+            mapped_then_composed.weight,
+            rel_tol=1e-9,
+            abs_tol=1e-9,
+        )
+        preserves = struct_ok and weight_ok
         if not preserves:
             logger.warning(
-                "Composition not preserved for (%s, %s) in functor %s",
-                f, g, self.name,
+                "Composition not preserved for (%s, %s) in functor %s "
+                "(struct_ok=%s weight_ok=%s weights %s vs %s)",
+                f,
+                g,
+                self.name,
+                struct_ok,
+                weight_ok,
+                composed_then_mapped.weight,
+                mapped_then_composed.weight,
             )
         return preserves
 

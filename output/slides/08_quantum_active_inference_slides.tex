@@ -74,29 +74,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{longtable,booktabs,array}
-\newcounter{none} % for unnumbered tables
-\usepackage{calc} % for calculating minipage widths
-\usepackage{caption}
-% Make caption package work with longtable
-\makeatletter
-\def\fnum@table{\tablename~\thetable}
-\makeatother
-\usepackage{graphicx}
-\makeatletter
-\newsavebox\pandoc@box
-\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
-  \sbox\pandoc@box{#1}%
-  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
-  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
-  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
-  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
-  \else\usebox{\pandoc@box}%
-  \fi%
-}
-% Set default figure placement to htbp
-\def\fps@figure{htbp}
-\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -112,8 +89,7 @@
 
 \begin{document}
 
-\begin{frame}{Quantum Active Inference: Topological Semantic
-Communication}
+\begin{frame}{TQNNs and ZX-Calculus}
 \protect\phantomsection\label{sec:quantum-active-inference}
 The preceding sections have established that categorical string
 diagrams---from DisCoCat's pregroup derivations
@@ -129,18 +105,17 @@ diagrams also underlies quantum circuits, TQFT cobordisms, and quantum
 information flow---making active inference on case-marked relational
 structure a quantum topological computation.
 
-\begin{block}{Topological Quantum Neural Networks: Spin-Network
-Representations}
-\protect\phantomsection\label{topological-quantum-neural-networks-spin-network-representations}
-\begin{block}{From Quantum Neural Networks to TQFT}
-\protect\phantomsection\label{from-quantum-neural-networks-to-tqft}
-Marcianò, Fields, and Glazebrook demonstrate that quantum neural
-networks (QNNs) admit a topological reformulation via spin-networks
-{[}@fields2022tqnn{]}. In their analysis, a QNN layer or connectivity
-pattern is represented as a graph whose edges carry representation
-labels (spins) and whose vertices carry intertwiners---precisely the
-graphical data of a spin-network in a 3-dimensional topological quantum
-field theory:
+\begin{block}{QNNs as Spin-Networks}
+\protect\phantomsection\label{qnns-as-spin-networks}
+\begin{block}{TQFT as the Forward Pass: Reshetikhin--Turaev Invariants
+Compute Network Amplitudes}
+\protect\phantomsection\label{tqft-as-the-forward-pass-reshetikhinturaev-invariants-compute-network-amplitudes}
+Marcianò, Fields, and Glazebrook show that quantum neural networks
+(QNNs) admit a topological reformulation using spin-networks
+{[}@fields2022tqnn{]}. Any QNN layer can be represented as a graph whose
+edges carry representation labels (spins) and whose vertices carry
+intertwiners---precisely the data defining a spin-network in a
+3-dimensional topological quantum field theory (TQFT):
 
 \begin{quote}
 ``Quantum Neural Networks (QNNs) can be mapped onto spin-networks, with
@@ -149,21 +124,20 @@ carried out on the side of Topological Quantum Field Theory (TQFT).''
 {[}@fields2022tqnn{]}
 \end{quote}
 
-This reformulation has three important structural consequences. First,
-the neural architecture becomes a topological diagram (spin-network /
-ribbon graph) whose evaluation by a TQFT functor gives a quantum
-process; the edges and nodes of the graph encode how quantum information
-flows and transforms. Second, the TQFT evaluation functorially assigns
-to boundary Hilbert spaces (inputs/outputs) linear maps obtained from
-topological invariants (Reshetikhin--Turaev, Turaev--Viro), playing the
-role of the network's forward pass: amplitudes ``flow'' through the
-topological diagram. Third, the topological control structure encodes
-information flow through the network's wiring topology rather than
-through any fixed geometric embedding {[}@fields2023tensor{]}.
+This reformulation has three structural consequences. First, the network
+becomes a topological diagram---spin-network or ribbon graph---evaluated
+by a continuous TQFT functor; edges encode information flow and nodes
+encode transformation. Second, the TQFT evaluation assigns boundary
+Hilbert spaces to the diagram via the Reshetikhin--Turaev and
+Turaev--Viro invariants, playing the role of the neural forward pass:
+quantum amplitudes propagate through the topological structure. Third,
+information flow is encoded in the topology of the wiring rather than in
+any fixed geometric embedding, giving the architecture inherent
+robustness to continuous deformation {[}@fields2023tensor{]}.
 \end{block}
 
-\begin{block}{Universal Quantum Computation via TQNNs}
-\protect\phantomsection\label{universal-quantum-computation-via-tqnns}
+\begin{block}{TQNNs Are Universal}
+\protect\phantomsection\label{tqnns-are-universal}
 Fields and collaborators further demonstrate that TQNNs are universal
 quantum computers by identifying the Reshetikhin--Turaev invariant of a
 TQNN with a Turaev--Viro quantum error-correcting code:
@@ -181,8 +155,8 @@ amplituhedra---a deep connection between quantum computation, scattering
 amplitudes, and topological combinatorics.
 \end{block}
 
-\begin{block}{Quantum Reference Frames and Holographic Screens}
-\protect\phantomsection\label{quantum-reference-frames-and-holographic-screens}
+\begin{block}{QRFs Select the Measurement Basis}
+\protect\phantomsection\label{qrfs-select-the-measurement-basis}
 Fields and Glazebrook's work on quantum reference frames (QRFs) and
 holographic screens provides additional algebraic structure
 {[}@fields2021qrf{]}. A holographic screen---the information boundary
@@ -201,12 +175,13 @@ for a quantum measurement on a holographic screen.
 \end{block}
 \end{block}
 
-\begin{block}{The ZX-Calculus: Categorical Quantum Circuit Diagrams}
-\protect\phantomsection\label{the-zx-calculus-categorical-quantum-circuit-diagrams}
+\begin{block}{ZX-Calculus: Topological String Diagrams Where Graph
+Rewrites Are Quantum Proofs}
+\protect\phantomsection\label{zx-calculus-topological-string-diagrams-where-graph-rewrites-are-quantum-proofs}
 \begin{block}{String Diagrams for Quantum Processes}
 \protect\phantomsection\label{string-diagrams-for-quantum-processes}
-The ZX-calculus provides a categorical, diagrammatic language in which
-quantum circuits are drawn as string diagrams in a symmetric monoidal
+The powerful ZX-calculus provides a diagrammatic language for quantum
+circuits, representing them as string diagrams in a symmetric monoidal
 category of finite-dimensional Hilbert spaces and linear maps
 {[}@kissinger2020zx{]}:
 
@@ -217,8 +192,7 @@ can be considered a diagrammatically complete generalization of the
 usual circuit representation.'' {[}@coeckekissinger2017{]}
 \end{quote}
 
-Several structural features are critical for the connection to
-case-theoretic diagrams:
+Three structural features connect ZX to case-theoretic diagrams:
 
 \begin{itemize}
 \tightlist
@@ -226,27 +200,24 @@ case-theoretic diagrams:
   \textbf{Diagrams as morphisms}: ZX-diagrams are string diagrams in a
   \(\dagger\)-compact closed category. Wires represent objects (qubits),
   spiders and boxes represent morphisms, and composition/tensor product
-  correspond to vertical/horizontal gluing. No metric geometry
-  enters---only the topology of connections. ZX is therefore already a
-  \emph{topological} representation of quantum processes.
+  correspond to vertical/horizontal concatenation. Only topology
+  matters, not geometry.
 \item
-  \textbf{Circuit extraction via generalized flow}: Kissinger and van de
-  Wetering demonstrate that quantum circuits can be mapped into
-  ZX-diagrams, subjected to purely graph-theoretic (topological)
-  transformations, and then extracted as optimized circuits. They prove
-  that ``the underlying graph of our simplified ZX-diagram always has a
-  graph-theoretic property called generalised flow, which in turn yields
-  a deterministic circuit extraction procedure'' {[}@kissinger2020zx{]}.
+  \textbf{Deterministic circuit extraction via generalized flow}:
+  Kissinger and van de Wetering show that quantum circuits map to
+  ZX-diagrams, undergo graph-theoretic rewriting, and extract as
+  optimized circuits---with topological abstraction preserving the
+  invariants needed for optimization {[}@kissinger2020zx{]}.
 \item
-  \textbf{Category-theoretic semantics}: The semantics of a ZX-diagram
-  are determined entirely by how components are wired
-  together---precisely the compositional principle underlying DisCoCat
-  and the case categories of \autoref{sec:case-systems}.
+  \textbf{Category-theoretic semantics}: A ZX-diagram's semantics are
+  determined entirely by how components are wired---the same
+  compositional principle underlying DisCoCat and the case categories of
+  \autoref{sec:case-systems}.
 \end{itemize}
 \end{block}
 
-\begin{block}{From DisCoCat to ZX: A Shared Categorical Architecture}
-\protect\phantomsection\label{from-discocat-to-zx-a-shared-categorical-architecture}
+\begin{block}{Cups Are Spiders}
+\protect\phantomsection\label{cups-are-spiders}
 The structural parallel between pregroup grammar diagrams and
 ZX-diagrams is not accidental. Both are instances of the same
 mathematical object: morphisms in a compact closed monoidal category
@@ -281,8 +252,8 @@ connection already exploited by the lambeq quantum NLP pipeline
 \end{block}
 \end{block}
 
-\begin{block}{TQNN-DisCoCat Alignment: Ribbon and Tensor Diagrams}
-\protect\phantomsection\label{tqnn-discocat-alignment-ribbon-and-tensor-diagrams}
+\begin{block}{One Diagram, Three Interpretations}
+\protect\phantomsection\label{one-diagram-three-interpretations}
 \begin{block}{Common Language: Ribbon and Tensor Diagrams}
 \protect\phantomsection\label{common-language-ribbon-and-tensor-diagrams}
 Both ZX-diagrams and TQNNs are topological string diagrams evaluated by
@@ -320,8 +291,8 @@ processing steps, while internal spiders encode unitary/non-unitary
 channels that realize synaptic transformations.
 \end{block}
 
-\begin{block}{Neural Flow as Generalized Flow}
-\protect\phantomsection\label{neural-flow-as-generalized-flow}
+\begin{block}{Generalized Flow Guarantees Causal Order}
+\protect\phantomsection\label{generalized-flow-guarantees-causal-order}
 The \emph{generalized flow} condition used to guarantee deterministic
 circuit extraction from ZX-diagrams is a graph-theoretic constraint that
 ensures a well-defined causal ordering of operations
@@ -342,256 +313,6 @@ A topological quantum flow neural network can therefore be regarded as a
 ZX-style circuit where the graphical calculus is enriched to a 3D TQFT
 skein theory, but the \emph{abstract type} of object---a topological
 string diagram with functorial semantics---remains the same.
-\end{block}
-\end{block}
-
-\begin{block}{Distributional Semantics: Topological Quantum Flow}
-\protect\phantomsection\label{distributional-semantics-topological-quantum-flow}
-\begin{block}{Meaning Spaces as Hilbert Spaces}
-\protect\phantomsection\label{meaning-spaces-as-hilbert-spaces}
-To connect TQNNs and ZX circuits to \emph{distributional semantics}, one
-reinterprets the amplitudes and correlations in these diagrams as
-semantic quantities. Recent work on quantum semantic communication
-provides the theoretical bridge, modeling ``meaning spaces'' as Hilbert
-spaces at nodes of a graph with channels as completely positive
-trace-preserving (CPTP) maps along edges {[}@khatri2025quantum{]}:
-
-\begin{quote}
-``Multi-agent semantic networks are modeled as quantum sheaves, where
-agents' meaning spaces are Hilbert spaces connected by quantum
-channels.'' {[}@khatri2025quantum{]}
-\end{quote}
-
-A \emph{quantum semantic sheaf} over a communication graph \(G=(V,E)\)
-is defined as a triple \((H,F,\rho)\) where each vertex \(v\) carries a
-finite-dimensional Hilbert space \(H_v\), edges carry CPTP maps \(F_e\),
-and each vertex has a local density operator \(\rho_v\) encoding its
-``current semantic state.'' This is precisely a distributional-semantics
-picture: meanings are modeled as vectors/density operators in
-high-dimensional spaces, with co-occurrence and context encoded in how
-these spaces are functorially related across the network.
-
-\textbf{Case assignment as quantum measurement.} The connection to case
-systems becomes concrete when we model case assignment as a
-\emph{quantum measurement} on the semantic state. Define a set of POVM
-elements \(\{E_{\text{NOM}}, E_{\text{ACC}}, E_{\text{DAT}}, \ldots\}\)
-with \(\sum_c E_c = I\), where each \(E_c\) projects onto the subspace
-of semantic states consistent with case role \(c\). The probability of
-assigning case \(c\) to a noun phrase in semantic state \(\rho\) is:
-
-\[P(c \mid \rho) = \text{Tr}(E_c \rho) \] \{\#eq:eq-8-1\}
-
-\begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio,alt={Quantum POVM case probabilities: (a) NOM/ACC projectors in a crisp case system showing non-overlapping probability density; (b) Graded case assignment in a proto-role system showing overlapping POVM elements and the resulting interference pattern in the semantic belief space. The probability P(c \textbackslash mid \textbackslash rho) quantifies the agent's confidence in a given case assignment, providing a physical grounding for the distributional weights of . Measurement in a rotated basis (different QRF) corresponds to a different alignment system (e.g., transition from ACC to ERG).}]{../figures/quantum_povm_probabilities.png}}
-\caption{Quantum POVM case probabilities: (a) NOM/ACC projectors in a
-crisp case system showing non-overlapping probability density; (b)
-Graded case assignment in a proto-role system showing overlapping POVM
-elements and the resulting interference pattern in the semantic belief
-space. The probability \(P(c \mid \rho)\) quantifies the agent's
-confidence in a given case assignment, providing a physical grounding
-for the distributional weights of \autoref{sec:enriched-categories}.
-Measurement in a rotated basis (different QRF) corresponds to a
-different alignment system (e.g., transition from ACC to
-ERG).}\label{fig:quantum-povm}
-\end{figure}
-
-For crisp case systems (NOM/ACC), the POVM elements are orthogonal
-projectors (\(E_c E_{c'} = \delta_{cc'} E_c\)), yielding deterministic
-case assignment. For graded proto-roles (Dowty's
-{[}-@dowty1991thematic{]} agent/patient continuum), the POVM elements
-overlap, yielding probabilistic case assignment---precisely the quantum
-generalization of the \([0,1]\)-enrichment from
-\autoref{sec:enriched-categories}. The enriched hom-value
-\(\mathcal{C}(v, c)\) is identified with \(P(c \mid \rho_v)\), grounding
-the abstract enrichment in physical measurement theory. Fluid-S
-alignment (\autoref{sec:case-systems}) then corresponds to a
-context-dependent POVM: the measurement basis rotates depending on the
-volition feature \(\theta\), so the same noun phrase has different case
-probabilities depending on whether the agent is construing the action as
-volitional or not.
-
-\begin{figure}
-\centering
-\pandocbounded{\includegraphics[keepaspectratio,alt={Active Inference belief trajectories during case-role disambiguation. The agent starts with a uniform prior over possible case frames (NOM-ACC vs.~ERG-ABS). As categorical evidence (sensory input) is sampled from the TQNN evaluated diagram, the variational free energy for the incorrect frame rises, while the posterior belief in the correct frame converges to certainty. This visualization demonstrates the dynamic minimization of surprisal governed by the diagrammatic structure of the generative model.}]{../figures/active_inference_belief.png}}
-\caption{Active Inference belief trajectories during case-role
-disambiguation. The agent starts with a uniform prior over possible case
-frames (NOM-ACC vs.~ERG-ABS). As categorical evidence (sensory input) is
-sampled from the TQNN evaluated diagram, the variational free energy for
-the incorrect frame rises, while the posterior belief in the correct
-frame converges to certainty. This visualization demonstrates the
-dynamic minimization of surprisal governed by the diagrammatic structure
-of the generative model.}\label{fig:active-inference-belief}
-\end{figure}
-\end{block}
-
-\begin{block}{Grafting Distributional Semantics onto the TQNN/ZX
-Architecture}
-\protect\phantomsection\label{grafting-distributional-semantics-onto-the-tqnnzx-architecture}
-When this sheaf-theoretic semantics is grafted onto the TQNN/ZX
-architecture, three structural correspondences emerge:
-
-\begin{enumerate}
-\item
-  \textbf{Edges as semantic feature channels}: In a TQNN or ZX-diagram,
-  each wire carries not merely an abstract qubit but a semantic Hilbert
-  space \(H_v\) associated with a context, concept, or agent. Amplitudes
-  or density matrices on that wire encode a distribution over semantic
-  features---exactly as word vectors encode distributional meaning in
-  classical compositional distributional semantics.
-\item
-  \textbf{Nodes as compositional operations}: Spiders/gates in ZX or
-  intertwiners in TQNNs become \emph{semantic composition maps}: they
-  take distributed meanings on input wires and produce new distributed
-  meanings on output wires, analogous to how DisCoCat composes word
-  meanings into phrase/sentence meanings via multilinear maps.
-\item
-  \textbf{Topological wiring as contextual structure}: The topology of
-  the diagram---the way wires and nodes are connected---encodes which
-  semantic spaces interact and in what causal/structural pattern. This
-  is the semantic analogue of syntactic structure in distributional
-  semantics, realized as a topological quantum circuit.
-\end{enumerate}
-
-In this reading, a topological quantum flow neural network becomes a
-\emph{distributional semantic machine}: a functor that sends a
-topological diagram (graph of contexts and interactions) to a family of
-Hilbert spaces and maps where vectors/densities represent distributed
-meanings and their probabilistic transformations.
-\end{block}
-\end{block}
-
-\begin{block}{Semantic Transfer: Sheaf-Theoretic Functorial Flow}
-\protect\phantomsection\label{semantic-transfer-sheaf-theoretic-functorial-flow}
-\begin{block}{Sheaf Cohomology and Semantic Alignment}
-\protect\phantomsection\label{sheaf-cohomology-and-semantic-alignment}
-The sheaf-based framework proves that semantic alignment between agents
-is governed by cohomology classes of the quantum semantic sheaf;
-contextuality and entanglement act as resources that remove obstructions
-to alignment {[}@khatri2025quantum{]}:
-
-\begin{quote}
-``We derive semantic channel capacity when sender and receiver share
-prior entanglement, proving it strictly exceeds classical capacity. The
-quantum advantage grows as channel noise increases---precisely when
-semantic communication most benefits over bit-level transmission.''
-{[}@khatri2025quantum{]}
-\end{quote}
-
-Two further results from this framework are particularly relevant:
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Contextuality as a semantic resource}: ``Quantum contextuality
-  reduces cohomological obstructions to semantic alignment. Contextual
-  correlations act as `pre-shared semantic resolution,' establishing
-  contextuality as a resource for semantic communication''
-  {[}@khatri2025quantum{]}.
-\item
-  \textbf{Discord as integrated semantic information}: ``Quantum discord
-  equals integrated semantic information, linking quantum correlations
-  to irreducible semantic content and connecting our framework to
-  integrated information theory'' {[}@khatri2025quantum{]}.
-\end{itemize}
-
-These results establish that the topology of the semantic sheaf (and its
-cohomology) constrains how probabilistic semantic information can be
-transferred; quantum features (entanglement, contextuality, discord)
-change these constraints in well-defined ways.
-\end{block}
-
-\begin{block}{Topological Circuit as Semantic Sheaf Skeleton}
-\protect\phantomsection\label{topological-circuit-as-semantic-sheaf-skeleton}
-A TQNN/ZX circuit implementing a quantum communication or computation
-protocol is itself a diagram over which one can define a sheaf of
-semantic spaces and channels. The underlying graph of the TQNN/ZX
-diagram serves as the base graph \(G=(V,E)\) of the semantic sheaf:
-vertices inherit meaning spaces \(H_v\), edges inherit CPTP maps
-\(F_e\), and the TQFT/ZX functor gives the global linear map
-representing the protocol. Distributional semantics as diagram
-evaluation then becomes literal: passing an initial semantic state
-(distribution over meanings) through the TQNN/ZX diagram yields an
-output state whose components encode the posterior semantic
-distributions at boundary wires.
-
-ZX rewrite rules, which change the internal topology of the diagram
-while preserving its overall semantics as a linear map, correspond to
-alternative factorizations of the same semantic
-transformation---different internal ``flow architectures'' for realizing
-the same semantic map.
-\end{block}
-\end{block}
-
-\begin{block}{Case Assignment: Active Inference and Quantum Measurement}
-\protect\phantomsection\label{case-assignment-active-inference-and-quantum-measurement}
-\begin{block}{Case Assignment as Quantum Measurement}
-\protect\phantomsection\label{case-assignment-as-quantum-measurement}
-The active inference model of case reasoning
-(\autoref{sec:cognitive-integration}) acquires a new dimension in this
-quantum topological setting. Case assignment---the cognitive process of
-determining \emph{who does what to whom}---can be modeled as a quantum
-measurement process on a holographic screen, with the following
-correspondences:
-
-{\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Classical Case Assignment
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Quantum Topological Model
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-Case role (NOM, ACC, \ldots) & Pointer state selected by QRF \\
-Case frame (alignment system) & Quantum reference frame \\
-Relational structure of event & Spin-network topology \\
-Free-energy minimization & TQFT evaluation of diagram \\
-Prediction-error (P600/N400) & Symmetry-breaking on holographic
-screen \\
-\bottomrule\noalign{}
-\end{longtable}
-}
-\end{block}
-
-\begin{block}{From Predictive Processing to Topological Flow}
-\protect\phantomsection\label{from-predictive-processing-to-topological-flow}
-In the predictive processing account, a cognitive agent maintains a
-generative model that predicts the relational structure of incoming
-linguistic material. When this model is realized as a TQNN, prediction
-becomes evaluation of the topological diagram; prediction error becomes
-the discrepancy between the predicted TQFT evaluation and the observed
-data; and belief updating becomes modification of the spin-network's
-edge labels (representation labels) and vertex intertwiners.
-
-The topological character of this computation confers significant
-advantages for active inference on case structure: topological
-invariants are robust to continuous deformation, so the generative
-model's predictions are stable under small perturbations of the
-input---a desirable property for language understanding in noisy
-environments.
-\end{block}
-
-\begin{block}{Quantum Advantage in Semantic Communication}
-\protect\phantomsection\label{quantum-advantage-in-semantic-communication}
-The sheaf-theoretic results of Khatri et al. {[}-@khatri2025quantum{]}
-suggest that quantum features provide genuine advantages for semantic
-communication---not merely computational speedup, but qualitative
-enhancements in semantic alignment. If case-marked relational structure
-is communicated between agents via quantum channels, entanglement
-provides additional semantic capacity, contextuality removes alignment
-obstructions, and discord captures irreducible semantic content. These
-are not abstract possibilities but operational consequences of the
-mathematical framework developed across this review. Recent work by
-Sherborne et al. {[}-@sherborne2025paramqnlp{]} demonstrates this
-concretely: DisCoCirc string diagrams that represent discourse-level
-semantics (including case role assignments across sentences) can be
-\emph{automatically} compiled into parameterized quantum circuits,
-closing the loop from linguistic case structure through categorical
-formalism to quantum computation.
 \end{block}
 \end{block}
 \end{frame}

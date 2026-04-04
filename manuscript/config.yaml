@@ -2,9 +2,9 @@
 # Category-theoretic approaches to linguistic case systems
 
 paper:
-  title: "A Cognitive Case for Diagrams: Category-Theoretic Approaches to Linguistic Case Systems in Total Cognitive Scenario Understanding"
+  title: "Compositional Approaches to Linguistic Case for Cognitive Modeling"
   subtitle: ""
-  version: "2.0"
+  version: "2.3"
   date: ""
 
 authors:
@@ -53,3 +53,21 @@ testing:
   max_test_failures: 0
   max_infra_test_failures: 0
   max_project_test_failures: 0
+
+# Manuscript Variable Injection
+# Variables below are auto-computed by src/generate_manuscript_metrics.py
+# and injected into manuscript/*.md via scripts/05_inject_variables.py.
+# In manuscript files, use ${variable_name} syntax.
+#
+# Available variables:
+#   ${total_test_count}     - Total pytest-collected test count
+#   ${total_test_files}     - Number of test_*.py files
+#   ${daif_modules}         - Number of .py modules in src/daif/
+#   ${daif_symbols}         - Number of public symbols in daif.__all__
+#   ${daif_tests}           - Test count in test_daif*.py files
+#   ${daif_test_files}      - Number of test_daif*.py files
+#   ${daif_modules_word}    - English word for daif_modules (e.g. "seven")
+#   ${total_test_files_word} - English word for total_test_files
+#
+# To inject: python scripts/05_inject_variables.py
+# The render pipeline auto-detects output/manuscript/ for injection.

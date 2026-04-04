@@ -1,1 +1,1 @@
-\beamer@sectionintoc {1}{Categorical Semantics: DisCoCat and Compositional Flow}{1}{0}{1}
+\beamer@sectionintoc {1}{DisCoCat: Composing Word Vectors According to Pregroup Type Derivations}{1}{0}{1}

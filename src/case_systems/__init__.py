@@ -1,15 +1,16 @@
 """Case systems subpackage — §2 of the manuscript.
 
 Formalizes linguistic case systems as categories:
-    - case_category: CaseRole, Morphism, CaseCategory, alignment functions
-    - functor: AlignmentFunctor between case categories
-    - natural_transformation: NaturalTransformation between alignment functors
-    - fluid_s: FluidSFunctor for context-dependent Fluid-S alignment
+    - case_category: CaseRole, Morphism, CaseCategory; ``compose`` multiplies morphism weights
+    - functor: AlignmentFunctor between case categories; ``preserves_composition`` checks weights
+    - natural_transformation: ComponentMorphism, NaturalTransformation; ``naturality_holds`` /
+      ``verify_naturality`` for the naturality square (complete components required)
+    - fluid_s: FluidSFunctor for context-dependent Fluid-S alignment (``map_object``, ``split_probability``, …)
 """
 
 from .case_category import (
     CaseRole, Morphism, CaseCategory,
-    standard_case_category, minimal_case_category,
+    standard_case_category, minimal_case_category, introductory_case_category,
     accusative_alignment, ergative_alignment, tripartite_alignment,
     active_stative_alignment,
 )
@@ -31,7 +32,7 @@ from .fluid_s import (
 
 __all__ = [
     "CaseRole", "Morphism", "CaseCategory",
-    "standard_case_category", "minimal_case_category",
+    "standard_case_category", "minimal_case_category", "introductory_case_category",
     "accusative_alignment", "ergative_alignment", "tripartite_alignment",
     "active_stative_alignment",
     "AlignmentFunctor", "accusative_to_ergative_functor", "tripartite_functor",

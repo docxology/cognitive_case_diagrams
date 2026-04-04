@@ -1,85 +1,118 @@
-\frametitle{Categorical Magnitude as a Complexity Invariant}
-\protect\phantomsection\label{categorical-magnitude-as-a-complexity-invariant}
-A key invariant of enriched categories is their \textbf{magnitude}---a
-numerical quantity that captures the ``effective size'' of the category,
-discounting for overlap between objects.
+\frametitle{Enriching Over \(([0,1],\cdot ,1)\)}
+\protect\phantomsection\label{enriching-over-01cdot1}
+\begin{block}{Hom-Values as Graded Distributional Proximity: Four
+Linguistic Interpretations}
+\protect\phantomsection\label{hom-values-as-graded-distributional-proximity-four-linguistic-interpretations}
+A category \(\mathcal{C}\) enriched over the unit interval
+\(([0,1], \cdot, 1)\) assigns to every pair of objects \(A, B\) a
+\emph{hom-value} \(\mathcal{C}(A, B) \in [0,1]\) satisfying:
 
-For an enriched category with \(n\) objects, let \(Z\) be the
-\(n \times n\) matrix with \(Z_{ij} = \mathcal{C}(i, j)\). The magnitude
-is:
+\begin{align}
+\mathcal{C}(A, A) &= 1 \quad \text{(Identity)} \label{eq:eq-5-1} \\
+\mathcal{C}(A, C) &\geq \mathcal{C}(A, B) \cdot \mathcal{C}(B, C) \quad \text{(Composition)} \label{eq:eq-5-2}
+\end{align}
 
-\[|\mathcal{C}| = \sum_{i,j} (Z^{-1})_{ij} \] \{\#eq:eq-5-3\}
+The identity axiom physically dictates that every distinct linguistic
+expression remains perfectly and maximally related to itself. The
+composition inequality imposes a strict logical boundary, demanding that
+distributional relatedness inherently composes sub-multiplicatively: if
+expression \(A\) proves 80\% related to \(B\), and \(B\) remains 70\%
+related to \(C\), the overarching algebraic structure formally
+guarantees that \(A\) must be at least \(0.8 \times 0.7 = 56\%\) related
+to \(C\).
+\end{block}
 
-when \(Z\) is invertible. Magnitude has deep connections to information
-theory:
+\begin{block}{Conditional Probability, Proto-Role Strength, Cosine
+Similarity}
+\protect\phantomsection\label{conditional-probability-proto-role-strength-cosine-similarity}
+Bradley et al. {[}-@fritz2021enriched{]} originally interpret these
+numerical hom-values strictly as empirical \emph{conditional
+probabilities} measured within a massive distributional model:
+\(\mathcal{C}(A, B) = P(\text{context} \mid A \text{ and } B \text{ co-occur})\).
+Within our customized case-theoretic application, we actively broaden
+this interpretation to capture deep grammatical phenomena:
 
-\begin{itemize}
-\tightlist
-\item
-  For a \emph{discrete} category (no non-trivial relationships),
-  \(|\mathcal{C}| = n\) (the number of objects)
-\item
-  For a highly connected category, \(|\mathcal{C}| < n\) (objects are
-  ``redundant'')
-\item
-  Magnitude connects to the diversity measures studied in ecology
-  (species diversity), graph theory (effective graph resistance), and
-  information geometry (Fisher information)
-\end{itemize}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Hom-value interpretation
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Domain
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Example
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+Conditional probability & Corpus statistics & P(ACC role \textbar{}
+transitive verb context) \\
+Proto-role strength & Semantic typology & Degree of Proto-Agent
+satisfaction \\
+Distributional similarity & Vector semantics & Cosine similarity of
+case-role embeddings \\
+Morphological predictability & Morpholexicology & Reliability of
+case-marking paradigm \\
+\bottomrule\noalign{}
+\end{longtable}
+}
+\end{block}
 
-\textbf{Worked example.} Consider the minimal 3-case category with
-objects \(\{S, A, P\}\) and hom-values \(\mathcal{C}(S,A) = 0.85\) (S
-and A share agentive contexts), \(\mathcal{C}(A,P) = 0.70\) (transitive
-co-occurrence), \(\mathcal{C}(S,P) = 0.40\) (weak S--P overlap). The
-similarity matrix \(Z\) is:
+\begin{block}{When Composition Inequality Fails}
+\protect\phantomsection\label{when-composition-inequality-fails}
+Our \texttt{EnrichedCategory} class implements this structure directly.
+The constructor takes a list of \texttt{CaseRole} objects and a NumPy
+proximity matrix encoding hom-values:
 
-\[Z = \begin{pmatrix} 1.00 & 0.85 & 0.40 \\ 0.85 & 1.00 & 0.70 \\ 0.40 & 0.70 & 1.00 \end{pmatrix}, \quad Z^{-1} \approx \begin{pmatrix} 2.45 & -1.35 & 0.55 \\ -1.35 & 3.00 & -1.80 \\ 0.55 & -1.80 & 2.65 \end{pmatrix} \]
-\{\#eq:eq-5-4\}
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ src.enriched\_cat.enriched }\ImportTok{import}\NormalTok{ EnrichedCategory}
+\ImportTok{from}\NormalTok{ src.case\_systems.case\_category }\ImportTok{import}\NormalTok{ CaseRole}
+\ImportTok{import}\NormalTok{ numpy }\ImportTok{as}\NormalTok{ np}
 
-The magnitude is
-\(|\mathcal{C}| = \sum_{i,j} (Z^{-1})_{ij} \approx 2.45 - 1.35 + 0.55 - 1.35 + 3.00 - 1.80 + 0.55 - 1.80 + 2.65 \approx 2.90\)---less
-than the cardinality 3 of the role inventory. The deficit
-\(3 - 2.90 = 0.10\) is small because these three core arguments are
-relatively independent (the S--P overlap of 0.40 is the main source of
-redundancy). By contrast, an accusative alignment---which merges S and A
-into a single NOM role---would yield a 2-object category with magnitude
-exactly 2.0, and the deficit \(3 - 2.0 = 1.0\) quantifies the
-information lost by neutralization.
+\NormalTok{roles }\OperatorTok{=}\NormalTok{ [CaseRole.NOM, CaseRole.ACC, CaseRole.DAT]}
+\NormalTok{proximity }\OperatorTok{=}\NormalTok{ np.array([}
+\NormalTok{    [}\FloatTok{1.00}\NormalTok{, }\FloatTok{0.85}\NormalTok{, }\FloatTok{0.30}\NormalTok{],  }\CommentTok{\# NOM: high with ACC, low with DAT}
+\NormalTok{    [}\FloatTok{0.85}\NormalTok{, }\FloatTok{1.00}\NormalTok{, }\FloatTok{0.45}\NormalTok{],  }\CommentTok{\# ACC: high with NOM, moderate with DAT}
+\NormalTok{    [}\FloatTok{0.30}\NormalTok{, }\FloatTok{0.45}\NormalTok{, }\FloatTok{1.00}\NormalTok{],  }\CommentTok{\# DAT: low with NOM, moderate with ACC}
+\NormalTok{])}
+\NormalTok{cat }\OperatorTok{=}\NormalTok{ EnrichedCategory(}
+\NormalTok{    name}\OperatorTok{=}\StringTok{"English Case Proximity"}\NormalTok{,}
+\NormalTok{    roles}\OperatorTok{=}\NormalTok{roles,}
+\NormalTok{    proximity\_matrix}\OperatorTok{=}\NormalTok{proximity,}
+\NormalTok{)}
 
-\textbf{Scaling to full categories.} Our \texttt{EnrichedCategory}
-implementation computes magnitude for any case category. For the
-standard 8-case English category with empirically calibrated
-distributional proximity values, the magnitude is approximately
-5.2---the deficit \(8 - 5.2 = 2.8\) reflects distributional overlap: NOM
-and ACC share transitive contexts, DAT and ACC overlap in double-object
-constructions, and the peripheral cases (VOC, ABL) are relatively
-independent. This magnitude differential provides a quantitative
-formalization of Silverstein's {[}-@silverstein1976hierarchy{]} case
-hierarchy: languages with more alignment-based neutralization (lower
-magnitude) have less relational discriminability, while richer case
-inventories (higher magnitude) make finer-grained relational
-distinctions.
+\CommentTok{\# Verify composition inequality: 0.30 \textgreater{}= 0.85 * 0.45 = 0.3825?}
+\CommentTok{\# This fails! English NOM{-}DAT is too distant relative to the chain.}
+\ControlFlowTok{assert} \KeywordTok{not}\NormalTok{ cat.check\_composition\_inequality(CaseRole.NOM, CaseRole.ACC, CaseRole.DAT)}
+\end{Highlighting}
+\end{Shaded}
 
-Bradley {[}-@bradley2020entropy{]} establishes a foundational link
-between categorical magnitude and information entropy through
-topological operad derivations. Her result shows that Shannon entropy
-can be characterized as the unique derivation of a certain topological
-operad---a categorical structure that also governs the composition of
-enriched categories. This provides a deep theoretical justification for
-using magnitude as a measure of linguistic complexity: the magnitude of
-a case category quantifies how much ``information'' the case system
-encodes about relational structure.
+The composition inequality violation here is linguistically meaningful:
+it tells us that the NOM→ACC→DAT chain overestimates the direct NOM→DAT
+relatedness, reflecting the typological fact that subject--recipient
+identity (e.g., in benefactive constructions) is more restricted than
+the product of agent--patient and patient--recipient proximities.
+\autoref{fig:enriched-heatmap} shows the distributional relations
+between case roles as a categorical relation graph.
 
-Leinster and Shulman {[}-@leinster2021magnitude{]} further develop
-\textbf{magnitude homology}, which categorifies magnitude from a scalar
-invariant to a graded homological invariant---detecting not just the
-``effective number'' of objects but the higher-dimensional ``holes'' in
-the distributional landscape. For case categories, magnitude homology
-can distinguish between two systems with the same magnitude but
-different topological structure: a category where NOM--ACC--DAT form a
-tight cluster and all other cases are isolated looks identical in
-magnitude to one where the clustering is evenly distributed, but their
-magnitude homology groups differ, revealing that the former has a
-1-dimensional ``hole'' (a missing transitive link) that the latter
-fills. This finer invariant provides a richer classification of case
-systems than magnitude alone.
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio,alt={Core and peripheral argument complexes emerge from enriched distributional hom-values. Relation graph visualizing \textbackslash mathcal\{C\}(A,B) \textbackslash in {[}0,1{]} among all eight case roles. Strong relations (solid edges) cluster into two groups: the core argument complex (NOM--ACC--DAT, linked by transitive and transfer morphisms) and the peripheral complex (LOC--INS--ABL, linked by spatial and instrumental relations). GEN bridges both via possessive modification. Weak relations (dashed edges) connect VOC---its peripheral isolation reflects the pragmatic rather than syntactic function of direct address. These hom-values yield the similarity matrix Z () and categorical magnitude of . Generated programmatically from the EnrichedCategory class.}]{output/figures/enriched_hom_matrix.png}}
+\caption{Core and peripheral argument complexes emerge from enriched
+distributional hom-values. Relation graph visualizing
+\(\mathcal{C}(A,B) \in [0,1]\) among all eight case roles. Strong
+relations (solid edges) cluster into two groups: the \textbf{core
+argument complex} (NOM--ACC--DAT, linked by transitive and transfer
+morphisms) and the \textbf{peripheral complex} (LOC--INS--ABL, linked by
+spatial and instrumental relations). GEN bridges both via possessive
+modification. Weak relations (dashed edges) connect VOC---its peripheral
+isolation reflects the pragmatic rather than syntactic function of
+direct address. These hom-values yield the similarity matrix \(Z\)
+(\autoref{eq:eq-5-4}) and categorical magnitude of
+\autoref{sec:enriched-categories}. Generated programmatically from the
+\protect\texttt{EnrichedCategory} class.}\label{fig:enriched-heatmap}
+\end{figure}
+\end{block}

@@ -91,6 +91,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -154,7 +155,6 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -169,39 +169,32 @@
       vertical-align: middle;
     }
   </style>
-  <script defer=""
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
-  type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:cognitive-integration">Cognitive Integration: Active
-Inference and Diagrammatic Reasoning</h1>
-<h2 id="the-missing-layer-a-dynamic-process-theory-of-cognition">The
-Missing Layer: A Dynamic Process Theory of Cognition</h2>
-<p>The preceding sections have developed a rich mathematical
-infrastructure for analyzing case systems—categorical, type-logical,
-distributional, enriched, and topos-theoretic. But these frameworks are
-<em>static</em>: they describe the structure of case without explaining
-how a cognitive agent <em>uses</em> that structure in real-time language
-understanding and production. What is needed is a <em>process
-theory</em> that explains how case-marked relational structure is
-deployed in the dynamic, embodied, context-sensitive activity of making
-sense of the world.</p>
+<h1 id="sec:cognitive-integration">Active Inference as a Process Theory
+of Case</h1>
+<h2 id="static-categories-are-not-enough">Static Categories Are Not
+Enough</h2>
+<p>The preceding sections constructed a mathematical infrastructure for
+analyzing case systems—categorical, type-logical, distributional,
+enriched, and topos-theoretic. Yet these frameworks remain
+<em>static</em>: they describe the structure of case grammar without
+explaining how a cognitive agent <em>deploys</em> that structure during
+real-time comprehension and production. Bridging this gap requires a
+dynamic <em>process theory</em> of case-marked relational reasoning.</p>
 <p>Active inference <span class="citation"
 data-cites="friston2017active">[@friston2017active]</span> provides
-exactly this layer.</p>
-<h2
-id="active-inference-as-a-process-theory-of-language-understanding">Active
-Inference as a Process Theory of Language Understanding</h2>
-<h3 id="the-free-energy-principle-and-surprise-minimization">The Free
-Energy Principle and Surprise Minimization</h3>
-<p>Active inference is the process theory derived from the free energy
-principle (FEP): every self-organizing system maintains itself by
-minimizing the surprisal (negative log-probability) of its sensory
-observations under a <em>generative model</em> of its environment <span
-class="citation"
-data-cites="friston2010free">[-@friston2010free]</span>. The system does
-this through two complementary strategies:</p>
+exactly this missing dynamic computational layer.</p>
+<h2 id="surprise-minimization-as-case-parsing">Surprise Minimization as
+Case Parsing</h2>
+<h3 id="free-energy-bounds-surprisal">Free Energy Bounds Surprisal</h3>
+<p>Active inference is the primary process theory derived from the free
+energy principle (FEP): every self-organizing system maintains its
+structural integrity by minimizing the surprisal (negative
+log-probability) of its sensory observations under an internal
+<em>generative model</em> of its environment <span class="citation"
+data-cites="friston2010free">[-@friston2010free]</span>. The system
+executes this minimization through two complementary strategies:</p>
 <ol type="1">
 <li><strong>Perceptual inference</strong>: Update internal beliefs to
 better predict current observations (reduce prediction error)</li>
@@ -212,11 +205,11 @@ error)</li>
 <p>Recent extensions of active inference to linguistics and cognitive
 science have modeled language comprehension and production as forms of
 sequential Bayesian inference. As Donnarumma, Frosolone, and Pezzulo
-(2023) note in their integration of large language models and active
-inference, “linguistic processing [is] inference over a hierarchical
-generative model, facilitating predictions and inferences at various
-levels of granularity, from syllables to sentences” <span
-class="citation"
+(2023) demonstrate in their integration of large language models and
+active inference for modelling eye movements in reading, linguistic
+processing constitutes “inference over a hierarchical generative model,
+facilitating predictions and inferences at various levels of
+granularity, from syllables to sentences” <span class="citation"
 data-cites="donnarumma2023integrating">[-@donnarumma2023integrating]</span>.
 Similarly, Friston et al. (2021) have demonstrated how communication
 emerges between synthetic subjects: “linguistic outcomes (specifically,
@@ -225,19 +218,56 @@ beliefs” via “high-order interactions among abstract (discrete) states
 in deep (hierarchical) models” <span class="citation"
 data-cites="friston2021understanding friston2020generative">[-@friston2021understanding;
 -@friston2020generative]</span>.</p>
-<p>Both strategies minimize the same quantity—variational free
-energy—and both are driven by a single generative model that encodes the
-system’s expectations about the structure of its world.</p>
+<p>Both strategies minimize the same mathematical quantity—variational
+free energy—and both draw from a single generative model encoding the
+system’s prior expectations about the relational structure of its
+world.</p>
+<p>Critically, recent neurolinguistic evidence directly supports this
+prediction-error account. Li and Futrell <span class="citation"
+data-cites="li2023decomposition li2024shallow">[-@li2023decomposition;
+-@li2024shallow]</span> decompose surprisal into two orthogonal
+components: <em>heuristic surprise</em> (“shallow surprisal”), which
+tracks the N400 brain potential and reflects lexical-associative
+prediction error, and a <em>discrepancy signal</em> (“deep surprisal”),
+which tracks the P600 and reflects structural reanalysis when the true
+parse diverges from the initially inferred structure. This decomposition
+maps directly onto our enriched case framework: the N400 corresponds to
+distributional prediction error <em>within</em> a case-role subspace
+(semantic mismatch), while the P600 corresponds to structural prediction
+error <em>between</em> case-diagram topologies (morphosyntactic
+reanalysis requiring a change in the generative model’s case
+assignments). The formal equations in (–) instantiate exactly this dual
+decomposition.</p>
 <h4 id="generative-models-of-relational-structure">Generative Models of
 Relational Structure</h4>
-<p>Language understanding on this view is <em>active inference over
-relational structure</em>: the listener maintains a generative model of
-who-does-what-to-whom, and each incoming word provides evidence that
-updates this model. Case marking provides crucial evidence—a nominative
-suffix strongly predicts that the marked NP is the agent, reducing
+<p>Under this paradigm, language understanding manifests as <em>active
+inference over relational structure</em>: the listener maintains a
+generative model anticipating who-does-what-to-whom, and each incoming
+word supplies evidence that updates this model. Morphological case
+marking provides high-precision evidence—for example, a nominative
+suffix predicts that the noun phrase functions as the agent, reducing
 uncertainty about the relational structure of the unfolding event.</p>
-<h3 id="predictive-processing-of-case">Predictive Processing of
-Case</h3>
+<h4 id="s-hai-the-case-diagram-as-the-abstract-schema-level">S-HAI: The
+Case Diagram as the Abstract “Schema” Level</h4>
+<p>These relational generative models find their formal articulation in
+recent advances such as <strong>Schema-Based Hierarchical Active
+Inference (S-HAI)</strong> <span class="citation"
+data-cites="maele2026schema">[@maele2026schema]</span>. Unifying
+predictive processing with schema theory, S-HAI employs a dual-level
+POMDP structure to model rapid generalization across environments. In
+the linguistic domain, the “Level 2” model encodes abstract, hidden
+relational goals—which corresponds exactly to the <em>case diagram
+structure</em> we describe here. The “Level 1” model encodes concrete
+sensorimotor navigation—for linguistics, this maps to the sequential
+parsing of surface word forms.</p>
+<p>Just as S-HAI explains sudden “zero-shot” behavioral remapping in
+novel environments by preserving the high-level schema mapping while
+updating the “grounding likelihoods” to new observables, a case frame
+enables an agent to rapidly generalize the relational structure of a
+complex sentence regardless of novel vocabulary pairings. The abstract
+string diagram is the schema; case inflection is the grounding
+likelihood.</p>
+<h3 id="five-step-generative-loop">Five-Step Generative Loop</h3>
 <p>The process unfolds as follows:</p>
 <ol type="1">
 <li><strong>Prior</strong>: The listener has a prior belief about the
@@ -256,438 +286,48 @@ and case markers that minimize expected free energy—choosing expressions
 that are informative, contextually appropriate, and syntactically
 well-formed</li>
 </ol>
-<h3 id="connection-to-barwise-and-perrys-situation-semantics">Connection
-to Barwise and Perry’s Situation Semantics</h3>
-<p>This active inference perspective connects directly to the
-<strong>situation semantics</strong> of Barwise and Perry <span
+<h3 id="case-diagrams-as-instantiated-situations">Case Diagrams as
+Instantiated Situations</h3>
+<p>This dynamic active inference perspective connects naturally to
+<strong>situation semantics</strong> (Barwise and Perry <span
 class="citation"
-data-cites="barwise1983situations">[-@barwise1983situations]</span>,
-which conceptualized meaning as structured
-<em>situations</em>—collections of typed entities, properties, and
-relations individuated by spatial and temporal location. In our
-framework:</p>
-<ul>
-<li>A <strong>situation</strong> corresponds to an instantiated case
-diagram: a specific assignment of entities to case roles, with
-particular morphisms activated</li>
-<li>The <strong>situation type</strong> corresponds to the case category
-itself: the abstract pattern of roles and relations that the situation
-instantiates</li>
-<li><strong>Information flow</strong> between situations corresponds to
-functorial mappings between case categories</li>
-</ul>
-<p>Active inference adds the dynamic component: the agent moves through
-a sequence of situations, updating its case diagram in real time and
-using the diagram to predict which situation will come next.</p>
-<h2
-id="distributional-active-inference-convergence-of-two-distributional-traditions">Distributional
-Active Inference: Convergence of Two Distributional Traditions</h2>
-<p>A remarkable convergence has recently emerged between
-<em>distributional semantics</em> in linguistics and <em>distributional
-reinforcement learning</em> in machine learning, mediated by active
-inference. Akgül et al. <span class="citation"
-data-cites="akgul2026distributional">[-@akgul2026distributional]</span>
-introduce <strong>Distributional Active Inference (DAIF)</strong>, which
-integrates active inference into the distributional RL framework of
-Bellemare, Dabney, and Munos <span class="citation"
-data-cites="bellemare2017distributional">[-@bellemare2017distributional]</span>.
-Where classical RL optimizes <em>expected</em> returns (scalar values),
-distributional RL models the <em>full distribution</em> of returns—a
-shift from point estimates to distributional representations that
-parallels the shift from symbolic to distributional semantics in
-linguistics.</p>
-<p>The formal architecture of DAIF proceeds through three stages: (1)
-reconstructing active inference via variational Bayesian inference on a
-controlled Markov process, expressing priors through Pearl’s
-do-calculus; (2) defining a <em>push-forward</em> operation on
-representation paths that maps latent-space trajectories to return
-distributions; and (3) deriving a temporal-difference quantile-matching
-algorithm that implements active inference without requiring explicit
-transition dynamics modeling. The resulting “push-forward RL” template
-achieves active inference’s sample-efficiency advantages within a
-model-free computational architecture:</p>
-<p><span class="math display">\[\mathbb{E}\left[\sum_{t=0}^{\infty}
-\gamma^t R(x_t, a_t) \mid x_0, a_0\right] =
-\int_{\mathcal{S}^{\mathbb{N}_+}} R \circ f \, d(\mathbf{S}_{\#}
-\mathbb{P}_{x_0, a_0}^{P_\pi}) \]</span> {#eq:eq-7-1}</p>
-<p>where <span class="math inline">\(\mathbf{S}_{\#}\)</span> denotes
-the push-forward measure on representation paths and <span
-class="math inline">\(f: \mathcal{S} \to \mathcal{X}\)</span> is the
-stochastic decoder.</p>
-<p>The terminological collision between “distributional” in
-distributional semantics and “distributional” in distributional RL is
-not mere homonymy—it reflects a deep structural parallel. In both
-domains, the core move is the same: <strong>replacing scalar summaries
-with full distributional representations.</strong> In linguistics, this
-means replacing symbolic word identities with probability distributions
-over contexts (Firth’s <span class="citation"
-data-cites="firth1957papers">[-@firth1957papers]</span> company-keeping
-principle). In RL, it means replacing expected-value estimates with full
-return distributions. In active inference, it means replacing point
-estimates of world states with variational posterior distributions. The
-enriched-categorical framework of provides the unifying abstraction: all
-three are instances of <span
-class="math inline">\([0,1]\)</span>-enriched categories where
-hom-values encode distributional proximity rather than discrete
-identity.</p>
-<p>For case-theoretic reasoning, DAIF suggests a computational
-architecture in which case assignment operates distributional-ly at
-every level: the agent maintains not a single case diagram but a
-<em>distribution over case diagrams</em>, weighted by their posterior
-probability given the observed linguistic evidence. Each incoming word
-updates this distribution via variational message passing, and the
-agent’s production choices minimize expected free energy across the full
-distribution of possible relational structures—not merely the most
-likely one. This distributional perspective on case assignment aligns
-naturally with the graded proto-role structure of Dowty <span
-class="citation"
-data-cites="dowty1991thematic">[-@dowty1991thematic]</span>: a noun
-phrase is not categorically “agent” or “patient” but distributes
-probability mass across case roles, with the distribution sharpening as
-more evidence accumulates.</p>
-<h2 id="cerebrum-the-computational-architecture">CEREBRUM: The
-Computational Architecture</h2>
-<h3 id="architecture-and-design-principles">Architecture and Design
-Principles</h3>
-<p>The <strong>CEREBRUM</strong> framework <span class="citation"
-data-cites="friedman2024cerebrum cerebrum2024github">[@friedman2024cerebrum;
-@cerebrum2024github]</span>—Case-Enabled Reasoning Engine with Bayesian
-Representations for Unified Modeling—provides a computational
-architecture that implements the categorical case framework within an
-active inference engine. CEREBRUM instantiates the view of Vasil et al.
-<span class="citation"
-data-cites="vasil2020world">[-@vasil2020world]</span> that human
-communication is itself active inference: a process of jointly
-constructing and refining generative models of shared relational
-structure.</p>
-<p>CEREBRUM’s key design principles:</p>
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Principle</th>
-<th style="text-align: left;">Implementation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Cases as functional
-roles</strong></td>
-<td style="text-align: left;">Model components carry case markings that
-determine their computational role in the inference cycle</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Morphisms as message
-passing</strong></td>
-<td style="text-align: left;">Grammatical relations are implemented as
-message-passing channels between components</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Enriched weights as
-precision</strong></td>
-<td style="text-align: left;">The <span
-class="math inline">\([0,1]\)</span> weights on morphisms correspond to
-precision parameters in the variational inference scheme</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Alignment as model
-selection</strong></td>
-<td style="text-align: left;">Different alignment types correspond to
-different generative model architectures, selected by Bayesian model
-comparison</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Diagrams as generative
-models</strong></td>
-<td style="text-align: left;">Commutative diagrams serve as the
-structural specification of the generative model</td>
-</tr>
-</tbody>
-</table>
-<h3 id="case-roles-as-functional-specializations-in-cerebrum">Case Roles
-as Functional Specializations in CEREBRUM</h3>
-<p>CEREBRUM deploys the eight traditional cases as functional
-specializations:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Case</th>
-<th style="text-align: left;">CEREBRUM Function</th>
-<th style="text-align: left;">Active Inference Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">NOM</td>
-<td style="text-align: left;">Primary driver / agent</td>
-<td style="text-align: left;">Source of action policies</td>
-</tr>
-<tr>
-<td style="text-align: left;">ACC</td>
-<td style="text-align: left;">Primary target / patient</td>
-<td style="text-align: left;">Object of predictions</td>
-</tr>
-<tr>
-<td style="text-align: left;">GEN</td>
-<td style="text-align: left;">Source / possessor</td>
-<td style="text-align: left;">Provider of priors</td>
-</tr>
-<tr>
-<td style="text-align: left;">DAT</td>
-<td style="text-align: left;">Recipient / goal</td>
-<td style="text-align: left;">Target of information transfer</td>
-</tr>
-<tr>
-<td style="text-align: left;">INS</td>
-<td style="text-align: left;">Instrument / means</td>
-<td style="text-align: left;">Tool for state transformation</td>
-</tr>
-<tr>
-<td style="text-align: left;">LOC</td>
-<td style="text-align: left;">Context / environment</td>
-<td style="text-align: left;">Markov blanket boundary</td>
-</tr>
-<tr>
-<td style="text-align: left;">ABL</td>
-<td style="text-align: left;">Origin / cause</td>
-<td style="text-align: left;">Source of causal influence</td>
-</tr>
-<tr>
-<td style="text-align: left;">VOC</td>
-<td style="text-align: left;">Addressee</td>
-<td style="text-align: left;">Pragmatic pointer</td>
-</tr>
-</tbody>
-</table>
-<h2
-id="diagrammatic-reasoning-as-a-cognitive-process-theory">Diagrammatic
-Reasoning as a Cognitive Process Theory</h2>
-<h3 id="diagrams-as-the-format-of-generative-models">Diagrams as the
-Format of Generative Models</h3>
-<p>The claim from can now be strengthened: commutative diagrams are not
-merely convenient representations of case structure—they are the
-<em>format</em> in which cognitive agents maintain their generative
-models of relational structure.</p>
-<p>This claim is supported by converging evidence:</p>
-<ol type="1">
-<li><p><strong>Computational advantage</strong> (Larkin &amp; Simon,
-<span class="citation"
-data-cites="larkin1987diagram">[-@larkin1987diagram]</span>): Diagrams
-enable search, recognition, and inference operations that are
-computationally prohibitive in sentential format. A commutative case
-diagram allows the agent to verify consistency (does the direct path
-equal the composed path?) by simple spatial inspection.</p></li>
-<li><p><strong>Free ride inferences</strong> (Shimojima, <span
-class="citation"
-data-cites="shimojima1996reasoning">[-@shimojima1996reasoning]</span>):
-Properties of the diagram that are perceptually available but would
-require explicit computation in a sentential format. In a case diagram,
-transitivity of grammatical relations is <em>visible</em>—the existence
-of a path from NOM to DAT through ACC is spatially apparent.</p></li>
-<li><p><strong>Hybrid reasoning</strong> (Giardino, <span
-class="citation"
-data-cites="giardino2017diagrammatic">[-@giardino2017diagrammatic]</span>):
-Mathematical diagrams engage a mode of reasoning that combines
-perceptual pattern recognition with background theoretical knowledge.
-Case diagrams similarly engage both the perceptual system (spatial
-layout) and linguistic knowledge (case constraints, verb
-valency).</p></li>
-<li><p><strong>Peirce’s existential graphs</strong>: Peirce’s graphical
-logic system demonstrated that first-order logic can be conducted
-entirely diagrammatically, without algebraic symbols. Our case diagrams
-extend this tradition: the relational structure of a sentence is
-represented graphically, and inference proceeds by diagram manipulation
-(adding/removing nodes, composing morphisms).</p></li>
-</ol>
-<h3
-id="predictive-processing-and-diagrammatic-belief-updating">Predictive
-Processing and Diagrammatic Belief Updating</h3>
-<p>The predictive processing framework—of which active inference is the
-most developed version—provides a natural account of how diagrammatic
-representations are used cognitively:</p>
-<ol type="1">
-<li><p><strong>Top-down predictions</strong>: The current case diagram
-generates predictions about expected sensory input (e.g., “a
-nominative-marked NP should appear because the transitive verb requires
-an agent”)</p></li>
-<li><p><strong>Bottom-up prediction errors</strong>: Incoming words that
-violate the diagrammatic predictions generate prediction errors (e.g.,
-an unexpected case marker triggers a P600 event-related potential in the
-brain)</p></li>
-<li><p><strong>Belief updating</strong>: The diagram is updated to
-accommodate the prediction error, potentially restructuring the
-assignment of entities to case roles (garden-path reanalysis)</p></li>
-<li><p><strong>Precision weighting</strong>: The enriched weights on
-morphisms serve as <em>precision parameters</em> that control the
-relative influence of prior expectations and incoming evidence. A
-high-weight morphism generates strong predictions that are costly to
-override; a low-weight morphism generates weak predictions that are
-easily overridden.</p></li>
-</ol>
-<h3
-id="electrophysiological-predictions-case-violations-as-prediction-error">Electrophysiological
-Predictions: Case Violations as Prediction Error</h3>
-<p>The predictive processing account generates quantitative, falsifiable
-predictions about neural responses to case-marking violations. In the
-active inference framework, a case-assignment violation triggers a
-<em>prediction error</em> whose amplitude scales with the precision of
-the violated expectation—which is precisely the enriched hom-value of
-the violated morphism:</p>
-<p><span class="math display">\[\text{PE}(f) \propto \pi_f \cdot
-|\mu_{\text{predicted}} - \mu_{\text{observed}}|\]</span></p>
-<p>where <span class="math inline">\(\pi_f = \mathcal{C}(A,B)\)</span>
-is the enriched weight (precision) of the morphism <span
-class="math inline">\(f: A \to B\)</span> and <span
-class="math inline">\(\mu\)</span> are the expected vs. observed case
-features. This yields three concrete electrophysiological
-predictions:</p>
-<ol type="1">
-<li><p><strong>P600 amplitude scales with morphism weight</strong>: A
-case violation on a high-weight morphism (NOM→ACC in a transitive
-clause, <span class="math inline">\(w = 0.9\)</span>) should elicit a
-larger P600 than a violation on a low-weight morphism (NOM→INS in an
-experiencer construction, <span class="math inline">\(w = 0.4\)</span>).
-The ratio of P600 amplitudes should approximate the ratio of enriched
-weights.</p></li>
-<li><p><strong>N400 reflects distributional expectation</strong>:
-Semantic case violations—where the case-marked NP satisfies the
-morphological case but not the distributional proto-role requirements
-(e.g., an inanimate NOM in an agentive construction)—should elicit N400
-effects proportional to the <em>magnitude deficit</em> of the violated
-enriched category ().</p></li>
-<li><p><strong>Garden-path reanalysis costs track magnitude</strong>:
-The processing cost of reanalyzing a garden-path sentence’s case
-structure should correlate with the <em>change in categorical
-magnitude</em> between the initial and revised case diagrams, since
-magnitude quantifies how much relational information the agent’s
-generative model encodes.</p></li>
-</ol>
-<h2
-id="total-cognitive-scenario-understanding-the-integrated-framework">Total
-Cognitive Scenario Understanding: The Integrated Framework</h2>
-<p>The full picture emerges when we combine all five pillars within the
-active inference framework:</p>
-<ol type="1">
-<li><strong>Case categories</strong> () provide the <em>objects and
-morphisms</em> of the generative model—the vocabulary of roles and
-relations</li>
-<li><strong>Categorial grammar</strong> () provides the <em>composition
-rules</em>—how roles combine to form structured derivations</li>
-<li><strong>DisCoCat/DisCoCirc</strong> () provides the <em>semantic
-functor</em>—mapping syntactic structure to distributional meaning</li>
-<li><strong>Enriched structure</strong> () provides the <em>precision
-parameters</em>—graded weights that control inference</li>
-<li><strong>Topos-theoretic bridges</strong> () provide <em>transfer
-theorems</em>—ensuring consistency across formalizations</li>
-</ol>
-<p>The active inference agent uses this combined structure as a single,
-integrated generative model. Each scenario it encounters—a sentence
-heard, a scene observed, an action planned—is interpreted by
-instantiating a case diagram from structure (1), parsing the input using
-rules (2), computing meaning via the semantic functor (3), weighting
-confidence using enriched structure (4), and transferring results across
-representational formats using bridge techniques (5).</p>
-<p>This is <em>total cognitive scenario understanding</em>: the agent
-doesn’t just parse a sentence or assign case labels—it constructs a
-complete, internally consistent, generic, strongly typed, dynamically
-updating model of the relational structure of the situation, and uses
-that model to predict, explain, and act.</p>
-<h2 id="computational-verification-and-results">Computational
-Verification and Results</h2>
-<p>The framework developed in this paper is not merely theoretical—it is
-computationally verified through a comprehensive implementation and test
-suite that exercises every categorical construction discussed above.</p>
-<h3 id="system-architecture-and-implementation">System Architecture and
-Implementation</h3>
-<h3 id="implementation-architecture-and-categorical-core">Implementation
-Architecture and Categorical Core</h3>
-<p>The categorical core (<code>CaseCategory</code>,
-<code>EnrichedCategory</code>, <code>AlignmentFunctor</code>,
-<code>NaturalTransformation</code>) is implemented in Python with
-set-based object tracking and list-based morphism storage, enforcing
-categorical axioms at construction time. Five additional modules extend
-the core: <code>FluidSFunctor</code> (context-dependent alignment
-parameterized by volition), <code>CaseDiagramBelief</code> and active
-inference computations (variational free energy, prediction error,
-belief updating), <code>CasePOVM</code> and quantum case assignment
-(POVM-based probability via <span class="citation"
-data-cites="eq:eq-8-1">[@eq:eq-8-1]</span>),
-<code>DitransitiveSentence</code> (three-argument verb support), and
-<code>CaseFrameValidator</code> (cognitive security via type-violation
-detection). The visualization layer produces all 15+ manuscript figures
-programmatically, ensuring exact correspondence between formal claims
-and visual evidence. The DisCoPy integration library (version 1.2.2)
-provides an independent validation path: pregroup types
-(<code>Ty</code>), lexical entries (<code>Word</code>), cup contractions
-(<code>Cup</code>), cap expansions (<code>Cap</code>), type permutations
-(<code>Swap</code>), normal form computation
-(<code>normal_form()</code>), and circuit depth analysis
-(<code>depth()</code>) are exercised against the same categorical
-structures described in and .</p>
-<h3 id="automated-test-suite-and-verification">Automated Test Suite and
-Verification</h3>
-<p>The implementation is validated by <strong>261 automated
-tests</strong> across 15 test files with <strong>≥90% code
-coverage</strong> (enforced in the build configuration). Every test uses
-real mathematical computations—no mocks or fakes:</p>
-<ul>
-<li><strong>Categorical axiom tests</strong>: Identity morphism
-existence, composition associativity, weight invariants,
-<code>is_well_formed()</code> full axiom check</li>
-<li><strong>Enriched category tests</strong>: Hom-value constraints,
-composition inequality, categorical magnitude, magnitude deficit, full
-composition check, role clustering</li>
-<li><strong>Diagram type tests</strong>: Pregroup diagrams validated for
-<code>dom == Ty()</code> and <code>cod == s</code>, correct box counts,
-diagram equality</li>
-<li><strong>Metrics tests</strong>: Normal form preservation, depth
-computation with graceful fallback for pregroup diagrams</li>
-<li><strong>Natural transformation tests</strong> (16 tests): Component
-morphism construction, naturality condition verification for
-accusative-to-ergative functors, identity transformation generation,
-vertical composition of transformations, completeness checking over all
-domain objects</li>
-<li><strong>Complexity metrics tests</strong> (17 tests): DisCoPy
-box/cup/cap counting on transitive/ditransitive diagrams, normal form
-computation and snake equation verification, syntactic complexity
-scoring with configurable weights, cross-diagram comparison
-utilities</li>
-<li><strong>Topos theory tests</strong> (18 tests): Geometric theory
-construction from standard and minimal case categories, classifying
-topos invariant computation, Morita equivalence verification (positive
-and negative cases), bridge transfer between equivalent theories with
-transfer-blocking for non-equivalent theories, enriched theory
-construction</li>
-<li><strong>Fluid-S tests</strong> (22 tests): Volitional/non-volitional
-mapping, probability splits, Bats language examples, kernel computation,
-enriched weight scaling</li>
-<li><strong>Active inference tests</strong> (24 tests): Belief
-construction and entropy, variational free energy, Bayesian belief
-update, prediction error scaling (P600 prediction), magnitude-based
-garden-path reanalysis cost</li>
-<li><strong>Quantum case tests</strong> (20 tests): Crisp POVM
-orthogonal projectors, graded proto-role POVM, Fluid-S basis rotation,
-density matrix creation, <span class="citation"
-data-cites="eq:eq-8-1">[@eq:eq-8-1]</span> P(c|ρ) = Tr(E_c ρ)
-verification</li>
-<li><strong>Cognitive security tests</strong> (18 tests): Type-violation
-detection, case frame validation, injection score computation,
-magnitude-based topological robustness, composition inequality as
-security boundary</li>
-<li><strong>Ditransitive tests</strong> (12 tests): Three-argument
-sentence creation, NOM/ACC/DAT case assignment, DisCoPy diagram with 3
-cups, complexity comparison with transitive</li>
-<li><strong>Visualization tests</strong> (4 tests): Complexity
-comparison bar chart rendering, normal form comparison chart, radar
-chart generation—all producing valid PNG output files</li>
-</ul>
-<p>This computational verification demonstrates that the
-category-theoretic framework is not just a mathematical convenience but
-a <em>working computational architecture</em>—the categorical
-abstractions compile, execute, and produce verifiable results, bridging
-the gap between formal theory and implemented system.</p>
+data-cites="barwise1983situations">[-@barwise1983situations]</span>),
+which treats linguistic meaning as structured situations—specific
+configurations of individuals, relations typed by arity, and
+spatiotemporal locations, grounded in an ecological realism where
+meanings are recurring relational patterns that organisms attune to.
+Translated into our categorical framework, a <strong>situation</strong>
+is an instantiated case diagram: a specific assignment of entities to
+roles with particular morphisms activated; the <strong>situation
+type</strong> is the structural case category itself, the abstract
+pattern that any particular situation instantiates; and
+<strong>information flow</strong> between situations is a functorial
+mapping between case categories. Where classical situation semantics
+left the dynamics implicit, active inference supplies the computational
+engine: the agent moves through situations in real time, updating its
+case diagram with each incoming word and using the updated diagram to
+predict which situation will arise next.</p>
+<h3 id="belief-dynamics-over-competing-case-frames">Belief Dynamics Over
+Competing Case Frames</h3>
+<p> shows a minimal <strong>scalar-belief</strong> simulation: the agent
+holds a <code>CaseDiagramBelief</code> over alternative alignment frames
+(NOM–ACC vs. ERG–ABS). As syntactic evidence arrives, variational free
+energy for the inconsistent frame rises and the posterior concentrates
+on the frame that fits the generative model—the same discrete update
+loop that extends to full return distributions in DAIF. Generated
+programmatically from
+<code>src/visualization/active_inference_plots.plot_belief_distribution()</code>.</p>
+<figure id="fig:active-inference-belief">
+<img src="output/figures/active_inference_belief.png"
+alt="Variational free energy drives convergence to the correct case frame during belief updating. The agent starts with a uniform prior over possible case frames (NOM-ACC vs. ERG-ABS). As categorical evidence is sampled from a TQNN-evaluated diagram, free energy for the incorrect frame rises while the posterior for the correct frame converges to certainty. This demonstrates dynamic surprisal minimization governed by the diagrammatic structure of the generative model." />
+<figcaption aria-hidden="true">Variational free energy drives
+convergence to the correct case frame during belief updating. The agent
+starts with a uniform prior over possible case frames (NOM-ACC
+vs. ERG-ABS). As categorical evidence is sampled from a TQNN-evaluated
+diagram, free energy for the incorrect frame rises while the posterior
+for the correct frame converges to certainty. This demonstrates dynamic
+surprisal minimization governed by the diagrammatic structure of the
+generative model.</figcaption>
+</figure>
 </body>
 </html>

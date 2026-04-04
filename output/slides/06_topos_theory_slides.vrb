@@ -1,10 +1,11 @@
-\frametitle{Computational Implementation of Topos-Theoretic Bridges}
-\protect\phantomsection\label{computational-implementation-of-topos-theoretic-bridges}
-The topos-theoretic constructions developed above are not merely
-abstract formalism---they are computationally implemented in our
-\texttt{topos} module, which provides working Python implementations of
-geometric theories, classifying toposes, Morita equivalence checking,
-and bridge transfer.
+\frametitle{Python Implementation: build\_typological\_theory(), check\_morita\_equivalence(), bridge\_transfer()---All Working}
+\protect\phantomsection\label{python-implementation-build_typological_theory-check_morita_equivalence-bridge_transferall-working}
+The topos-theoretic narrative above is paired with a \texttt{topos}
+Python module that implements \textbf{finite geometric theories}
+extracted from \texttt{CaseCategory}, \textbf{invariant-profile
+comparison} (\texttt{check\_morita\_equivalence}), and \textbf{guarded
+bridge transfer} when profiles match---not a full classifying-topos
+construction inside the runtime.
 
 \begin{block}{Geometric Theories from Case Categories}
 \protect\phantomsection\label{geometric-theories-from-case-categories}
@@ -25,15 +26,15 @@ geometric theory \(\mathbb{T}_{\text{typ}}\) from a
 \end{itemize}
 
 For the standard 8-case category, this yields a theory with 8 sorts and
-approximately 15 function symbols. The mineral 3-case category produces
+approximately 15 function symbols. The minimal 3-case category produces
 a theory with 3 sorts and 5 function symbols. Our
 \texttt{build\_enriched\_theory()} function further annotates the
 geometric theory with \([0,1]\)-valued hom weights from the enriched
 structure of \autoref{sec:enriched-categories}.
 \end{block}
 
-\begin{block}{Classifying Toposes and Morita Equivalence Verification}
-\protect\phantomsection\label{classifying-toposes-and-morita-equivalence-verification}
+\begin{block}{Classifying Toposes: The Logical Shape of a Theory}
+\protect\phantomsection\label{classifying-toposes-the-logical-shape-of-a-theory-1}
 The \texttt{ClassifyingTopos} class computes topological
 invariants---number of sorts, function arity distribution, and axiom
 count---that characterize the ``logical shape'' of a theory. Two

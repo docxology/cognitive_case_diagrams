@@ -117,12 +117,14 @@ class CaseCategory:
             raise ValueError(
                 f"Role {role.name} not in category {self.name}"
             ) from None
-        return Morphism(source=role, target=role, label="id")
+        return Morphism(source=role, target=role, label="id", weight=1.0)
 
     def compose(self, f: Morphism, g: Morphism) -> Morphism:
         """Compose two morphisms: g ∘ f.
 
         Requires f.target == g.source (standard categorical composition).
+        Enriched weights multiply: ``w(g ∘ f) = w(f) · w(g)`` (manuscript §2,
+        multiplicative composition over ``[0,1]``).
 
         Args:
             f: First morphism (applied first).
@@ -139,14 +141,12 @@ class CaseCategory:
                 f"Cannot compose: {f.target.name} != {g.source.name}"
             ) from None
         composed_label = f"{g.label} ∘ {f.label}"
-        result = Morphism(source=f.source, target=g.target, label=composed_label)
+        w = f.weight * g.weight
+        result = Morphism(
+            source=f.source, target=g.target, label=composed_label, weight=w
+        )
         logger.debug("Composed %s and %s -> %s", f, g, result)
         return result
-
-    @property
-    def roles(self) -> set:
-        """Alias for objects — returns the set of case roles."""
-        return self.objects
 
     def get_morphisms_from(self, role: CaseRole) -> list[Morphism]:
         """Return all morphisms originating from a given role."""
@@ -266,6 +266,37 @@ def minimal_case_category() -> CaseCategory:
     cat.add_morphism(Morphism(CaseRole.NOM, CaseRole.INS, "uses"))
     cat.add_morphism(Morphism(CaseRole.INS, CaseRole.ACC, "applied_to"))
     logger.info("Created minimal transitive case category")
+    return cat
+
+
+def introductory_case_category() -> CaseCategory:
+    """Case category for the introduction figure (fig:case-minimal).
+
+    Extends the minimal NOM--INS--ACC transitive triangle with VOC so that
+    structurally prohibited morphisms (e.g. VOC→NOM) can be drawn alongside
+    licensed edges. Weights on the triangle match the manuscript: legs with
+    w=0.9 and w=0.7 compose multiplicatively to 0.63 (see §2 enriched
+    composition). Theory code should keep using ``minimal_case_category()``.
+
+    Returns:
+        Category with objects NOM, ACC, INS, VOC and four licensed morphisms.
+    """
+    cat = CaseCategory(name="IntroductoryFigure")
+    for role in [CaseRole.NOM, CaseRole.ACC, CaseRole.INS, CaseRole.VOC]:
+        cat.add_role(role)
+    cat.add_morphism(
+        Morphism(CaseRole.NOM, CaseRole.ACC, "acts_on", weight=0.63)
+    )
+    cat.add_morphism(
+        Morphism(CaseRole.NOM, CaseRole.INS, "uses", weight=0.9)
+    )
+    cat.add_morphism(
+        Morphism(CaseRole.INS, CaseRole.ACC, "applied_to", weight=0.7)
+    )
+    cat.add_morphism(
+        Morphism(CaseRole.NOM, CaseRole.VOC, "addresses", weight=0.85)
+    )
+    logger.info("Created introductory case category for manuscript figure")
     return cat
 
 

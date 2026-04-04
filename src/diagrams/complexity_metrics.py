@@ -65,7 +65,7 @@ def count_boxes(diagram: "Diagram") -> int:
     Returns:
         Total number of boxes.
     """
-    if not DISCOPY_AVAILABLE:
+    if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required for box counting")
     return len(diagram.boxes)
 
@@ -82,7 +82,7 @@ def count_words(diagram: "Diagram") -> int:
     Returns:
         Number of Word/Box entries (excluding Cup/Cap).
     """
-    if not DISCOPY_AVAILABLE:
+    if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required for word counting")
     return sum(
         1 for box in diagram.boxes
@@ -99,7 +99,7 @@ def count_cups(diagram: "Diagram") -> int:
     Returns:
         Number of Cup instances.
     """
-    if not DISCOPY_AVAILABLE:
+    if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required for cup counting")
     return sum(1 for box in diagram.boxes if isinstance(box, Cup))
 
@@ -113,7 +113,7 @@ def count_caps(diagram: "Diagram") -> int:
     Returns:
         Number of Cap instances.
     """
-    if not DISCOPY_AVAILABLE:
+    if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required for cap counting")
     return sum(1 for box in diagram.boxes if isinstance(box, Cap))
 
@@ -130,7 +130,7 @@ def compute_normal_form(diagram: "Diagram") -> "Diagram":
     Returns:
         The diagram in normal form.
     """
-    if not DISCOPY_AVAILABLE:
+    if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required for normal form computation")
     return diagram.normal_form()
 
@@ -144,7 +144,7 @@ def is_in_normal_form(diagram: "Diagram") -> bool:
     Returns:
         True if diagram equals its normal form.
     """
-    if not DISCOPY_AVAILABLE:
+    if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required")
     nf = diagram.normal_form()
     return diagram == nf
@@ -162,7 +162,7 @@ def diagrams_equal(d1: "Diagram", d2: "Diagram") -> bool:
     Returns:
         True if diagrams have equal normal forms.
     """
-    if not DISCOPY_AVAILABLE:
+    if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required")
     return d1.normal_form() == d2.normal_form()
 
@@ -177,7 +177,7 @@ def analyze_diagram(diagram: "Diagram", name: str = "") -> DiagramMetrics:
     Returns:
         DiagramMetrics with all fields populated.
     """
-    if not DISCOPY_AVAILABLE:
+    if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required for diagram analysis")
 
     nf = diagram.normal_form()
@@ -218,7 +218,7 @@ def syntactic_complexity_score(diagram: "Diagram") -> float:
     Returns:
         Floating-point complexity score.
     """
-    if not DISCOPY_AVAILABLE:
+    if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required")
     words = count_words(diagram)
     cups = count_cups(diagram)

@@ -15,7 +15,14 @@ import numpy as np
 
 from ..case_systems.case_category import CaseRole
 from ..diagrams.string_diagram import Sentence, Discourse
-from .styles import CASE_COLORS, FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_LABEL, DEFAULT_FIGSIZE, WIDE_FIGSIZE, FIGURE_DPI
+from .styles import (
+    CASE_COLORS, FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_LABEL,
+    DEFAULT_FIGSIZE, WIDE_FIGSIZE, FIGURE_DPI,
+    COLOR_EDGE, COLOR_TEXT, COLOR_NEUTRAL, COLOR_WIRE,
+    COLOR_ENTITY_WIRE, COLOR_ENTITY_BORDER,
+    MARKER_SIZE, LINE_WIDTH_EDGE,
+    mathtext_safe_arrows,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -45,15 +52,15 @@ def render_discocat_sentence(
     for i, box in enumerate(boxes):
         x = x_positions[i]
         color = CASE_COLORS.get(
-            sentence.case_assignments.get(box.name, CaseRole.NOM).name, "#6B7280"
+            sentence.case_assignments.get(box.name, CaseRole.NOM).name, COLOR_NEUTRAL
         )
 
         # Box rectangle
         rect = mpatches.FancyBboxPatch(
             (x - 0.35, 0.3), 0.7, 0.4,
             boxstyle="round,pad=0.05",
-            facecolor=color, edgecolor="#1F2937",
-            linewidth=2, alpha=0.9,
+            facecolor=color, edgecolor=COLOR_EDGE,
+            linewidth=LINE_WIDTH_EDGE, alpha=0.9,
         )
         ax.add_patch(rect)
         ax.text(
@@ -67,7 +74,7 @@ def render_discocat_sentence(
         for wire in box.cod:
             ax.plot(
                 [x, x], [0.7, 1.2],
-                color="#374151", linewidth=2, solid_capstyle="round",
+                color=COLOR_TEXT, linewidth=LINE_WIDTH_EDGE, solid_capstyle="round",
             )
             type_label = wire.wire_type.name
             if wire.case_role:
@@ -75,7 +82,7 @@ def render_discocat_sentence(
             ax.text(
                 x, 1.25, type_label,
                 ha="center", va="bottom",
-                fontsize=FONT_SIZE_FLOOR - 4, color="#374151",
+                fontsize=FONT_SIZE_FLOOR - 4, color=COLOR_TEXT,
             )
 
     # Draw cup connections for transitive verbs
@@ -95,13 +102,13 @@ def render_discocat_sentence(
                     ax.plot(
                         [noun_x, noun_x, verb_x, verb_x],
                         [0.3, mid_y, mid_y, 0.3],
-                        color="#6B7280", linewidth=1.5,
+                        color=COLOR_NEUTRAL, linewidth=1.5,
                         linestyle="--", solid_capstyle="round",
                     )
                 except StopIteration:
                     pass
 
-    display_title = title or f'DisCoCat: "{sentence.text}"'
+    display_title = mathtext_safe_arrows(title or f'DisCoCat: "{sentence.text}"')
     ax.set_title(display_title, fontsize=FONT_SIZE_TITLE, fontweight="bold", pad=20)
     ax.set_xlim(-0.5, n_boxes)
     ax.set_ylim(-0.8, 1.6)
@@ -150,13 +157,13 @@ def render_discourse_diagram(
         x = x_entity[entity]
         ax.plot(
             [x, x], [0, (n_sentences + 1) * 2],
-            color="#D1D5DB", linewidth=3, zorder=0,
+            color=COLOR_WIRE, linewidth=3, zorder=0,
         )
         ax.text(
             x, (n_sentences + 1) * 2 + 0.3, entity,
             ha="center", va="bottom",
             fontsize=FONT_SIZE_LABEL, fontweight="bold",
-            color="#1F2937",
+            color=COLOR_EDGE,
         )
 
     # Draw sentence boxes
@@ -178,8 +185,8 @@ def render_discourse_diagram(
             rect = mpatches.FancyBboxPatch(
                 (x_min, y - 0.4), x_max - x_min, 0.8,
                 boxstyle="round,pad=0.1",
-                facecolor="#3B82F6", edgecolor="#1E40AF",
-                linewidth=2, alpha=0.85,
+                facecolor=COLOR_ENTITY_WIRE, edgecolor=COLOR_ENTITY_BORDER,
+                linewidth=LINE_WIDTH_EDGE, alpha=0.85,
             )
             ax.add_patch(rect)
             ax.text(
@@ -192,8 +199,8 @@ def render_discourse_diagram(
         # Draw case role labels at wire intersections
         for entity, role in sentence.case_assignments.items():
             x = x_entity[entity]
-            color = CASE_COLORS.get(role.name, "#6B7280")
-            ax.plot(x, y, "o", color=color, markersize=12, zorder=5)
+            color = CASE_COLORS.get(role.name, COLOR_NEUTRAL)
+            ax.plot(x, y, "o", color=color, markersize=MARKER_SIZE, zorder=5)
             ax.text(
                 x, y - 0.6, role.name,
                 ha="center", va="top",
@@ -201,7 +208,7 @@ def render_discourse_diagram(
                 color=color,
             )
 
-    display_title = title or "DisCoCirc Discourse Diagram"
+    display_title = mathtext_safe_arrows(title or "DisCoCirc Discourse Diagram")
     ax.set_title(display_title, fontsize=FONT_SIZE_TITLE, fontweight="bold", pad=20)
     ax.set_xlim(-1, n_entities * 2)
     ax.set_ylim(-0.5, (n_sentences + 2) * 2)

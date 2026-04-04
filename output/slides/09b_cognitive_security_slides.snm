@@ -1,8 +1,9 @@
-\beamer@slide {quantum-cryptographic-communications-and-semantic-security}{2}
-\beamer@slide {quantum-key-distribution-for-relational-semantics}{2}
-\beamer@slide {semantic-cryptography-encrypting-meaning-structures}{2}
-\beamer@slide {cognitive-security-protecting-relational-reasoning}{3}
-\beamer@slide {prompt-injection-as-adversarial-case-frame-manipulation}{4}
-\beamer@slide {fig:security-violations}{4}
-\beamer@slide {case-theoretic-firewalls-for-multi-agent-communication}{5}
-\beamer@slide {epistemic-case-security-in-multi-agent-systems}{6}
+\beamer@slide {injection-promotes-acc-to-nom}{2}
+\beamer@slide {eq:eq-9-1}{2}
+\beamer@slide {fig:security-violations}{2}
+\beamer@slide {four-defenses-against-prompt-injection}{3}
+\beamer@slide {the-attack-surface-of-an-active-inference-agent}{4}
+\beamer@slide {quantum-key-distribution-semantic-channels-and-functorial-encryption}{5}
+\beamer@slide {quantum-key-distribution-for-relational-semantics}{5}
+\beamer@slide {functorial-encryption-and-diagram-obfuscation-encrypting-compositional-meaning-itself}{5}
+\beamer@slide {three-epistemic-attack-vectors-and-categorical-defenses}{6}

@@ -13,7 +13,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from ..enriched_cat.enriched import EnrichedCategory
-from .styles import FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_ANNOTATION, DEFAULT_FIGSIZE, FIGURE_DPI
+from .styles import (
+    FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_ANNOTATION,
+    DEFAULT_FIGSIZE, FIGURE_DPI, HEATMAP_TEXT_PIVOT,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +69,7 @@ def render_enriched_heatmap(
     for i in range(n):
         for j in range(n):
             value = enriched.proximity_matrix[i, j]
-            color = "white" if value > 0.6 else "black"
+            color = "white" if value > HEATMAP_TEXT_PIVOT else "black"
             fontweight = "bold" if i == j else "normal"
             ax.text(
                 j, i, f"{value:.2f}",

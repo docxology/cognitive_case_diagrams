@@ -31,22 +31,22 @@
 \contentsline {subsection}{\numberline {6.2}Lambek's Residuation Law: Consuming and Producing Types in Linear Order}{19}{subsection.6.2}%
 \contentsline {subsubsection}{\numberline {6.2.1}Pregroups Unlock Compact Closure: The Bridge to DisCoCat String Diagrams}{19}{subsubsection.6.2.1}%
 \contentsline {subsection}{\numberline {6.3}Cups, Caps, and Joyal--Street: How Wires Prove Grammaticality}{19}{subsection.6.3}%
-\contentsline {section}{\numberline {7}Case Subscripts, Passivization, and the Curry--Howard Proof}{24}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Syntactic Derivation as Proof, Case Assignment as Type Inference}{24}{subsection.7.1}%
+\contentsline {section}{\numberline {7}Case Subscripts, Passivization, and the Curry--Howard Proof}{23}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Syntactic Derivation as Proof, Case Assignment as Type Inference}{23}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}Song's Monadic Roots}{24}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Passivization Is a Swap: Voice Alternation as Topological Wire Crossing}{25}{subsection.7.3}%
-\contentsline {section}{\numberline {8}DisCoCat: Composing Word Vectors According to Pregroup Type Derivations}{26}{section.8}%
-\contentsline {subsection}{\numberline {8.1}The Formalism--Distribution Impasse and Why Montague Cannot Meet Harris}{26}{subsection.8.1}%
+\contentsline {subsection}{\numberline {7.3}Passivization Is a Swap: Voice Alternation as Topological Wire Crossing}{24}{subsection.7.3}%
+\contentsline {section}{\numberline {8}DisCoCat: Composing Word Vectors According to Pregroup Type Derivations}{25}{section.8}%
+\contentsline {subsection}{\numberline {8.1}The Formalism--Distribution Impasse and Why Montague Cannot Meet Harris}{25}{subsection.8.1}%
 \contentsline {subsection}{\numberline {8.2}Word2Vec → BERT → GPT}{26}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}The Meaning Functor \(F: \mathbf {Preg} \to \mathbf {FVect}\)}{27}{subsection.8.3}%
-\contentsline {subsubsection}{\numberline {8.3.1}Pregroups and Vector Spaces Share a Category}{27}{subsubsection.8.3.1}%
+\contentsline {subsection}{\numberline {8.3}The Meaning Functor \(F: \mathbf {Preg} \to \mathbf {FVect}\)}{26}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}Pregroups and Vector Spaces Share a Category}{26}{subsubsection.8.3.1}%
 \contentsline {subsubsection}{\numberline {8.3.2}Tensoring, Then Contracting: How ``Alice Chases Bob'' Becomes a Vector}{27}{subsubsection.8.3.2}%
 \contentsline {subsubsection}{\numberline {8.3.3}DisCoCat Resolves ``Dog Bites Man'' vs ``Man Bites Dog''}{27}{subsubsection.8.3.3}%
 \contentsline {subsection}{\numberline {8.4}Case-Typed Noun Spaces and Alignment as Natural Transformation}{28}{subsection.8.4}%
 \contentsline {section}{\numberline {9}Compact Closure and Diagram Complexity: Snake Equation and Valency Metrics}{29}{section.9}%
 \contentsline {subsection}{\numberline {9.1}The Snake Equation Powers Every Pregroup Contraction}{29}{subsection.9.1}%
 \contentsline {subsubsection}{\numberline {9.1.1}The Snake Equation (Zigzag Identity)}{29}{subsubsection.9.1.1}%
-\contentsline {subsubsection}{\numberline {9.1.2}Four Metrics Quantify Derivational Complexity}{30}{subsubsection.9.1.2}%
+\contentsline {subsubsection}{\numberline {9.1.2}Four Metrics Quantify Derivational Complexity}{29}{subsubsection.9.1.2}%
 \contentsline {section}{\numberline {10}Beyond the Sentence: State Wires Accumulate Semantic History Across Discourse}{31}{section.10}%
 \contentsline {subsection}{\numberline {10.1}DisCoCirc State Wires Resolve Coreference and Role Shifts}{31}{subsection.10.1}%
 \contentsline {subsection}{\numberline {10.2}Alice's Trajectory NOM→ACC→NOM}{31}{subsection.10.2}%

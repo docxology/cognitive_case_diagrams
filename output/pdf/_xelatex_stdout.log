@@ -125,22 +125,22 @@ Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
 Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
 Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
 [22] [23] [24] [25] [26] [27] [28]
-Underfull \hbox (badness 1314) in paragraph at lines 1873--1876
+Underfull \hbox (badness 1314) in paragraph at lines 1879--1882
 \TU/lmr/m/n/10 The algebraic properties of pregroup diagrams support quantitati
 ve analysis of derivational complexity. Our
 [29] [30]
-Underfull \hbox (badness 10000) in paragraph at lines 2037--2037
+Underfull \hbox (badness 10000) in paragraph at lines 2043--2043
 []\TU/lmr/m/n/10 Figure 16: []Wire colour directly encodes dynamic case-role tr
 ansitions across sentence bound-
 
-Underfull \hbox (badness 7064) in paragraph at lines 2037--2037
+Underfull \hbox (badness 7064) in paragraph at lines 2043--2043
 \TU/lmr/m/n/10 aries. Native matplotlib DisCoCirc diagram for “Alice chases Bob
 . Bob runs.” generated via
 [31] [32] [33] [34]
 Missing character: There is no ∣ (U+2223) in font [lmroman10-regular]:mapping=t
 ex-text;!
 [35] [36] [37] [38] [39] [40] [41] [42] [43] [44]
-Underfull \hbox (badness 1127) in paragraph at lines 3045--3054
+Underfull \hbox (badness 1127) in paragraph at lines 3051--3060
 [][]\TU/lmr/m/n/10 Figure 20[][][] shows a minimal \TU/lmr/bx/n/10 scalar-belie
 f \TU/lmr/m/n/10 simulation: the agent holds a \TU/lmtt/m/n/10 CaseDiagramBelie
 f \TU/lmr/m/n/10 over alternative
@@ -156,10 +156,10 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.4676 INS in \(
+l.4682 INS in \(
                 \text{Mor}(\mathcal{C}_{\text{protocol}})\), the diagram is
 
-Overfull \hbox (746.55762pt too wide) in paragraph at lines 4669--4680
+Overfull \hbox (746.55762pt too wide) in paragraph at lines 4675--4686
 [][][][][][][][][][][][][][][][][][] [][][][][][][][][][][][][][][][][][][][][]
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] [][][][][][][][]
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] [][][][]
@@ -171,26 +171,22 @@ Overfull \hbox (746.55762pt too wide) in paragraph at lines 4669--4680
 Missing character: There is no ≥ (U+2265) in font [lmroman10-bold]:mapping=tex-
 text;!
 [72] [73] [74] [75]
-Underfull \hbox (badness 1400) in paragraph at lines 5485--5485
+Underfull \hbox (badness 1400) in paragraph at lines 5491--5491
 \TU/lmr/m/n/10 Red=ACC, Violet=DAT, Purple=ERG, Teal=ABS, Dark=V). \TU/lmr/bx/n
 /10 Bottom of each panel\TU/lmr/m/n/10 : categorical pregroup
 
-Underfull \hbox (badness 1237) in paragraph at lines 5485--5485
+Underfull \hbox (badness 1237) in paragraph at lines 5491--5491
 \TU/lmr/m/n/10 type formula showing Cup contractions that collapse argument wir
 es to sentence type $[]$. Panels 1–4 cover
 
-Underfull \hbox (badness 1048) in paragraph at lines 5485--5485
+Underfull \hbox (badness 1048) in paragraph at lines 5491--5491
 \TU/lmr/m/n/10 factive; Panels 7–8 demonstrate relative-clause embedding and ca
 usative complex predicates. Cup count and
 [76] [77] [78] [79] [80] [81] [82] [83] [84] [85] [86] [87] [88] [89] [90]
 [91] [92] [93]
-Underfull \hbox (badness 3343) in paragraph at lines 6278--6282
+Underfull \hbox (badness 3343) in paragraph at lines 6287--6291
 []\TU/lmr/bx/n/10 Categorical axiom tests\TU/lmr/m/n/10 : Identity morphism exi
 stence, composition associativity, weight invariants,
-
-Underfull \hbox (badness 3229) in paragraph at lines 6293--6299
-[]\TU/lmr/bx/n/10 Natural transformation tests \TU/lmr/m/n/10 (20 tests): Compo
-nent morphism construction, \TU/lmtt/m/n/10 naturality_holds \TU/lmr/m/n/10 /
 Missing character: There is no ∣ (U+2223) in font [lmroman10-regular]:mapping=t
 ex-text;!
 Missing character: There is no ρ (U+03C1) in font [lmroman10-regular]:mapping=t
@@ -198,11 +194,11 @@ ex-text;!
 Missing character: There is no ρ (U+03C1) in font [lmroman10-regular]:mapping=t
 ex-text;!
 
-Underfull \hbox (badness 6741) in paragraph at lines 6354--6358
-[]\TU/lmtt/m/n/10 test_daif_quantile.py \TU/lmr/m/n/10 (21 tests): QR-DQN quant
-ile Huber loss, IQN risk distortion (neu-
-[94] (./_combined_manuscript.bbl [95] [96] [97] [98]) [99]
+Overfull \hbox (22.02803pt too wide) in paragraph at lines 6362--6366
+[]\TU/lmtt/m/n/10 test_daif_quantile.py\TU/lmr/m/n/10 : QR-DQN quantile Huber l
+oss, IQN risk distortion (neutral/optimistic/pessimistic/CVaR),
+[94] (./_combined_manuscript.bbl [95] [96] [97] [98] [99]) [100]
 (./_combined_manuscript.aux) )
 (see the transcript file for additional information)
-Output written on _combined_manuscript.pdf (99 pages).
+Output written on _combined_manuscript.pdf (100 pages).
 Transcript written on _combined_manuscript.log.

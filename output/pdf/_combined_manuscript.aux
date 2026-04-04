@@ -3,9 +3,17 @@
 \providecommand*\HyPL@Entry[1]{}
 \bibstyle{plainnat}
 \HyPL@Entry{0<</S/D>>}
+\citation{coecke2010mathematical,defelice2022discocirc}
+\citation{kak1987paninian}
+\citation{jakobson1958morphologic}
+\citation{fillmore1968case}
+\citation{dowty1991thematic}
+\citation{li2023decomposition,li2024shallow}
+\citation{cognitive_case_diagrams2026code}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Abstract}{5}{section.1}\protected@file@percent }
 \newlabel{abstract}{{1}{5}{Abstract}{section.1}{}}
 \citation{fillmore1968case}
+\citation{melcuk1988dependency}
 \citation{polinsky2015case}
 \citation{blake2001grammatical}
 \citation{haspelmath2009universality}
@@ -164,12 +172,16 @@
 \newlabel{fig:multilingual-isomorphism}{{8}{21}{Type-logical structure is invariant under surface word-order permutation. Pregroup derivations for ``SUBJ chases OBJ'' across three typologically diverse languages: English (SVO), Latin (inflected, free order), and Japanese (agglutinative, SOV). Each renders an identical type reduction \(n \otimes (n^r \otimes s \otimes n^l) \otimes n \to s\), confirming the central claim of categorial grammar: syntactic universals reside in the type algebra, not in linear word order}{figure.8}{}}
 \citation{shimojima1996reasoning}
 \citation{asudeh2020graded}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Direct DisCoPy machine output confirms pregroup type reduction to sentence wire \(s\). Three Word boxes carry types \(n\) (Alice), \(n^r \otimes s \otimes n^l\) (chases), and \(n\) (Bob). Two Cup contractions \(\mitvarepsilon \colon  n^r \otimes n \to 1\) and \(\mitvarepsilon \colon  n^l \otimes n \to 1\) cancel adjoint pairs, reducing the five-wire tensor product to the single sentence wire \(s\). Unlike the schematic progression in \autoref {fig:string-diagram}, this is the \emph  {direct computational output} confirming \texttt {diagram.cod\ ==\ s}. By the Curry--Howard correspondence, this diagram simultaneously constitutes a syntactic derivation, a proof of well-typedness, and (under the meaning functor of \autoref {sec:categorical-semantics}) a compositional semantic computation. Our extension decorates \(n\)-typed wires with functorial states \(S: \mathbf {Ent} \to \mathbf {Case}\), tracking role assignments across discourse boundaries via \textbf  {DisCoCirc entity wires}.}}{23}{figure.9}\protected@file@percent }
-\newlabel{fig:discopy-transitive}{{9}{23}{Direct DisCoPy machine output confirms pregroup type reduction to sentence wire \(s\). Three Word boxes carry types \(n\) (Alice), \(n^r \otimes s \otimes n^l\) (chases), and \(n\) (Bob). Two Cup contractions \(\varepsilon \colon n^r \otimes n \to 1\) and \(\varepsilon \colon n^l \otimes n \to 1\) cancel adjoint pairs, reducing the five-wire tensor product to the single sentence wire \(s\). Unlike the schematic progression in \autoref {fig:string-diagram}, this is the \emph {direct computational output} confirming \protect \texttt {diagram.cod\ ==\ s}. By the Curry--Howard correspondence, this diagram simultaneously constitutes a syntactic derivation, a proof of well-typedness, and (under the meaning functor of \autoref {sec:categorical-semantics}) a compositional semantic computation. Our extension decorates \(n\)-typed wires with functorial states \(S: \mathbf {Ent} \to \mathbf {Case}\), tracking role assignments across discourse boundaries via \textbf {DisCoCirc entity wires}}{figure.9}{}}
 \gdef \LT@v {\LT@entry 
     {1}{174.29427pt}\LT@entry 
     {1}{180.29427pt}\LT@entry 
     {1}{174.29427pt}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Direct DisCoPy machine output confirms pregroup type reduction to sentence wire \(s\). Nine Word boxes carry complex noun-phrase types (e.g., \(n \otimes n^l\) for adjectives mapping an adjacent noun to a modified noun) and core verb types (\(n^r \otimes s \otimes n^l\) for the transitive ``intercepts''). Eight Cup contractions sequentially resolve the argument scopes from the deepest noun phrases outward, ultimately canceling all local adjoint pairs and reducing the extended initial tensor product to the single sentence wire \(s\). Unlike the schematic progression in \textbackslash autoref\{fig:string-diagram\}, this is the \emph  {direct computational output} of a multi-word discourse component, strictly confirming \texttt {diagram.cod\ ==\ s}. By the Curry--Howard correspondence, this diagram simultaneously constitutes a syntactic derivation, a proof of well-typedness, and (under the meaning functor of \textbackslash autoref\{sec:categorical-semantics\}) a compositional semantic computation. Our extension decorates \(n\)-typed wires with functorial states \(S: \mathbf {Ent} \to \mathbf {Case}\), tracking role assignments across discourse boundaries via \textbf  {DisCoCirc entity wires}.}}{23}{figure.9}\protected@file@percent }
+\newlabel{fig:discopy-transitive}{{9}{23}{Direct DisCoPy machine output confirms pregroup type reduction to sentence wire \(s\). Nine Word boxes carry complex noun-phrase types (e.g., \(n \otimes n^l\) for adjectives mapping an adjacent noun to a modified noun) and core verb types (\(n^r \otimes s \otimes n^l\) for the transitive ``intercepts''). Eight Cup contractions sequentially resolve the argument scopes from the deepest noun phrases outward, ultimately canceling all local adjoint pairs and reducing the extended initial tensor product to the single sentence wire \(s\). Unlike the schematic progression in \textbackslash autoref\{fig:string-diagram\}, this is the \emph {direct computational output} of a multi-word discourse component, strictly confirming \protect \texttt {diagram.cod\ ==\ s}. By the Curry--Howard correspondence, this diagram simultaneously constitutes a syntactic derivation, a proof of well-typedness, and (under the meaning functor of \textbackslash autoref\{sec:categorical-semantics\}) a compositional semantic computation. Our extension decorates \(n\)-typed wires with functorial states \(S: \mathbf {Ent} \to \mathbf {Case}\), tracking role assignments across discourse boundaries via \textbf {DisCoCirc entity wires}}{figure.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Case Subscripts, Passivization, and the Curry--Howard Proof}{23}{section.7}\protected@file@percent }
+\newlabel{sec:case-type-logic}{{7}{23}{Case Subscripts, Passivization, and the Curry--Howard Proof}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Syntactic Derivation as Proof, Case Assignment as Type Inference}{23}{subsection.7.1}\protected@file@percent }
+\newlabel{syntactic-derivation-as-proof-case-assignment-as-type-inference}{{7.1}{23}{Syntactic Derivation as Proof, Case Assignment as Type Inference}{subsection.7.1}{}}
 \gdef \LT@vi {\LT@entry 
     {1}{174.29427pt}\LT@entry 
     {1}{180.29427pt}\LT@entry 
@@ -177,19 +189,13 @@
 \citation{song2022act}
 \citation{song2022blog}
 \citation{asudeh2020graded}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Case Subscripts, Passivization, and the Curry--Howard Proof}{24}{section.7}\protected@file@percent }
-\newlabel{sec:case-type-logic}{{7}{24}{Case Subscripts, Passivization, and the Curry--Howard Proof}{section.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Syntactic Derivation as Proof, Case Assignment as Type Inference}{24}{subsection.7.1}\protected@file@percent }
-\newlabel{syntactic-derivation-as-proof-case-assignment-as-type-inference}{{7.1}{24}{Syntactic Derivation as Proof, Case Assignment as Type Inference}{subsection.7.1}{}}
+\citation{shimojima1996reasoning}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Song's Monadic Roots}{24}{subsection.7.2}\protected@file@percent }
 \newlabel{songs-monadic-roots}{{7.2}{24}{Song's Monadic Roots}{subsection.7.2}{}}
-\citation{shimojima1996reasoning}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Passivization Is a Swap: Voice Alternation as Topological Wire Crossing}{25}{subsection.7.3}\protected@file@percent }
-\newlabel{passivization-is-a-swap-voice-alternation-as-topological-wire-crossing}{{7.3}{25}{Passivization Is a Swap: Voice Alternation as Topological Wire Crossing}{subsection.7.3}{}}
-\newlabel{eq:eq-3-3}{{7}{25}{Passivization Is a Swap: Voice Alternation as Topological Wire Crossing}{equation.7}{}}
-\newlabel{eq:eq-3-4}{{8}{25}{Passivization Is a Swap: Voice Alternation as Topological Wire Crossing}{equation.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Passivization is a topological change in wire connectivity, not a lexical substitution. The passive construction "Bob is-chased" rendered by DisCoPy shows that voice alternation removes one Cup contraction relative to the active form, lowering the syntactic complexity score of \autoref {eq:eq-4-4} (defined in \autoref {sec:compact-closure-complexity}). The structural difference between active and passive voice is thus captured entirely by diagram topology.}}{25}{figure.10}\protected@file@percent }
-\newlabel{fig:discopy-passive}{{10}{25}{Passivization is a topological change in wire connectivity, not a lexical substitution. The passive construction "Bob is-chased" rendered by DisCoPy shows that voice alternation removes one Cup contraction relative to the active form, lowering the syntactic complexity score of \autoref {eq:eq-4-4} (defined in \autoref {sec:compact-closure-complexity}). The structural difference between active and passive voice is thus captured entirely by diagram topology}{figure.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Passivization Is a Swap: Voice Alternation as Topological Wire Crossing}{24}{subsection.7.3}\protected@file@percent }
+\newlabel{passivization-is-a-swap-voice-alternation-as-topological-wire-crossing}{{7.3}{24}{Passivization Is a Swap: Voice Alternation as Topological Wire Crossing}{subsection.7.3}{}}
+\newlabel{eq:eq-3-3}{{7}{24}{Passivization Is a Swap: Voice Alternation as Topological Wire Crossing}{equation.7}{}}
+\newlabel{eq:eq-3-4}{{8}{24}{Passivization Is a Swap: Voice Alternation as Topological Wire Crossing}{equation.8}{}}
 \citation{montague1973proper}
 \citation{firth1957papers}
 \citation{harris1954distributional}
@@ -197,39 +203,41 @@
 \citation{baroni2010distributional}
 \citation{lenci2018distributional}
 \citation{coecke2010mathematical}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Passivization is a topological change in wire connectivity, not a lexical substitution. The passive construction "Bob is-chased" rendered by DisCoPy shows that voice alternation removes one Cup contraction relative to the active form, lowering the syntactic complexity score of \autoref {eq:eq-4-4} (defined in \autoref {sec:compact-closure-complexity}). The structural difference between active and passive voice is thus captured entirely by diagram topology.}}{25}{figure.10}\protected@file@percent }
+\newlabel{fig:discopy-passive}{{10}{25}{Passivization is a topological change in wire connectivity, not a lexical substitution. The passive construction "Bob is-chased" rendered by DisCoPy shows that voice alternation removes one Cup contraction relative to the active form, lowering the syntactic complexity score of \autoref {eq:eq-4-4} (defined in \autoref {sec:compact-closure-complexity}). The structural difference between active and passive voice is thus captured entirely by diagram topology}{figure.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}DisCoCat: Composing Word Vectors According to Pregroup Type Derivations}{25}{section.8}\protected@file@percent }
+\newlabel{sec:categorical-semantics}{{8}{25}{DisCoCat: Composing Word Vectors According to Pregroup Type Derivations}{section.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}The Formalism--Distribution Impasse and Why Montague Cannot Meet Harris}{25}{subsection.8.1}\protected@file@percent }
+\newlabel{the-formalismdistribution-impasse-and-why-montague-cannot-meet-harris}{{8.1}{25}{The Formalism--Distribution Impasse and Why Montague Cannot Meet Harris}{subsection.8.1}{}}
 \citation{mikolov2013efficient}
 \citation{pennington2014glove}
 \citation{devlin2019bert}
 \citation{radford2018improving}
 \citation{vaswani2017attention}
-\@writefile{toc}{\contentsline {section}{\numberline {8}DisCoCat: Composing Word Vectors According to Pregroup Type Derivations}{26}{section.8}\protected@file@percent }
-\newlabel{sec:categorical-semantics}{{8}{26}{DisCoCat: Composing Word Vectors According to Pregroup Type Derivations}{section.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}The Formalism--Distribution Impasse and Why Montague Cannot Meet Harris}{26}{subsection.8.1}\protected@file@percent }
-\newlabel{the-formalismdistribution-impasse-and-why-montague-cannot-meet-harris}{{8.1}{26}{The Formalism--Distribution Impasse and Why Montague Cannot Meet Harris}{subsection.8.1}{}}
+\citation{gavranovic2024thesis}
 \@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Word2Vec → BERT → GPT}{26}{subsection.8.2}\protected@file@percent }
 \newlabel{word2vec-bert-gpt}{{8.2}{26}{Word2Vec → BERT → GPT}{subsection.8.2}{}}
-\citation{gavranovic2024thesis}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}The Meaning Functor \(F: \mathbf {Preg} \to \mathbf {FVect}\)}{26}{subsection.8.3}\protected@file@percent }
+\newlabel{sec:discocat-meaning-functor}{{8.3}{26}{\texorpdfstring {The Meaning Functor \(F: \mathbf {Preg} \to \mathbf {FVect}\)}{The Meaning Functor F: \textbackslash mathbf\{Preg\} \textbackslash to \textbackslash mathbf\{FVect\}}}{subsection.8.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.3.1}Pregroups and Vector Spaces Share a Category}{26}{subsubsection.8.3.1}\protected@file@percent }
+\newlabel{pregroups-and-vector-spaces-share-a-category}{{8.3.1}{26}{Pregroups and Vector Spaces Share a Category}{subsubsection.8.3.1}{}}
+\newlabel{eq:eq-4-1}{{9}{26}{Pregroups and Vector Spaces Share a Category}{equation.9}{}}
 \citation{joyalstreet1991geometry}
 \citation{grefenstette2015concrete}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}The Meaning Functor \(F: \mathbf {Preg} \to \mathbf {FVect}\)}{27}{subsection.8.3}\protected@file@percent }
-\newlabel{sec:discocat-meaning-functor}{{8.3}{27}{\texorpdfstring {The Meaning Functor \(F: \mathbf {Preg} \to \mathbf {FVect}\)}{The Meaning Functor F: \textbackslash mathbf\{Preg\} \textbackslash to \textbackslash mathbf\{FVect\}}}{subsection.8.3}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.3.1}Pregroups and Vector Spaces Share a Category}{27}{subsubsection.8.3.1}\protected@file@percent }
-\newlabel{pregroups-and-vector-spaces-share-a-category}{{8.3.1}{27}{Pregroups and Vector Spaces Share a Category}{subsubsection.8.3.1}{}}
-\newlabel{eq:eq-4-1}{{9}{27}{Pregroups and Vector Spaces Share a Category}{equation.9}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {8.3.2}Tensoring, Then Contracting: How ``Alice Chases Bob'' Becomes a Vector}{27}{subsubsection.8.3.2}\protected@file@percent }
 \newlabel{tensoring-then-contracting-how-alice-chases-bob-becomes-a-vector}{{8.3.2}{27}{Tensoring, Then Contracting: How ``Alice Chases Bob'' Becomes a Vector}{subsubsection.8.3.2}{}}
 \newlabel{eq:eq-4-2}{{10}{27}{Tensoring, Then Contracting: How ``Alice Chases Bob'' Becomes a Vector}{equation.10}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {8.3.3}DisCoCat Resolves ``Dog Bites Man'' vs ``Man Bites Dog''}{27}{subsubsection.8.3.3}\protected@file@percent }
 \newlabel{discocat-resolves-dog-bites-man-vs-man-bites-dog}{{8.3.3}{27}{DisCoCat Resolves ``Dog Bites Man'' vs ``Man Bites Dog''}{subsubsection.8.3.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Cup contractions compute sentence meaning by contracting word tensors along syntactically determined indices. The DisCoCat meaning functor \(F: \mathbf {Preg} \to \mathbf {FVect}\) applied to ``Alice chases Bob.'' \textbf  {Left panel}: pre-contraction tensor product \(n \otimes (n^r \otimes s \otimes n^l) \otimes n\), showing three Word boxes with pregroup types. \textbf  {Right panel}: fully contracted diagram where two Cup contractions (\(\mitvarepsilon : n^r \otimes n \to 1\) and \(\mitvarepsilon : n^l \otimes n \to 1\)) reduce the five-wire product to sentence wire \(s\). Under \(F\), noun types map to \(N\), the sentence type to \(S\), and the verb's type to \(\overleftrightarrow {\text  {chases}} \in N \otimes S \otimes N\). The Cup contractions become inner products \(\mitvarepsilon _N: N \otimes N \to \symbb {R}\), computing \(\overrightarrow {\text  {Alice chases Bob}} \in S\).}}{27}{figure.11}\protected@file@percent }
+\newlabel{fig:discopy-discocat}{{11}{27}{Cup contractions compute sentence meaning by contracting word tensors along syntactically determined indices. The DisCoCat meaning functor \(F: \mathbf {Preg} \to \mathbf {FVect}\) applied to ``Alice chases Bob.'' \textbf {Left panel}: pre-contraction tensor product \(n \otimes (n^r \otimes s \otimes n^l) \otimes n\), showing three Word boxes with pregroup types. \textbf {Right panel}: fully contracted diagram where two Cup contractions (\(\varepsilon : n^r \otimes n \to 1\) and \(\varepsilon : n^l \otimes n \to 1\)) reduce the five-wire product to sentence wire \(s\). Under \(F\), noun types map to \(N\), the sentence type to \(S\), and the verb's type to \(\overleftrightarrow {\text {chases}} \in N \otimes S \otimes N\). The Cup contractions become inner products \(\varepsilon _N: N \otimes N \to \mathbb {R}\), computing \(\overrightarrow {\text {Alice chases Bob}} \in S\)}{figure.11}{}}
 \citation{shimojima1996reasoning}
 \citation{shimojima1996reasoning}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Cup contractions compute sentence meaning by contracting word tensors along syntactically determined indices. The DisCoCat meaning functor \(F: \mathbf {Preg} \to \mathbf {FVect}\) applied to ``Alice chases Bob.'' \textbf  {Left panel}: pre-contraction tensor product \(n \otimes (n^r \otimes s \otimes n^l) \otimes n\), showing three Word boxes with pregroup types. \textbf  {Right panel}: fully contracted diagram where two Cup contractions (\(\mitvarepsilon : n^r \otimes n \to 1\) and \(\mitvarepsilon : n^l \otimes n \to 1\)) reduce the five-wire product to sentence wire \(s\). Under \(F\), noun types map to \(N\), the sentence type to \(S\), and the verb's type to \(\overleftrightarrow {\text  {chases}} \in N \otimes S \otimes N\). The Cup contractions become inner products \(\mitvarepsilon _N: N \otimes N \to \symbb {R}\), computing \(\overrightarrow {\text  {Alice chases Bob}} \in S\).}}{28}{figure.11}\protected@file@percent }
-\newlabel{fig:discopy-discocat}{{11}{28}{Cup contractions compute sentence meaning by contracting word tensors along syntactically determined indices. The DisCoCat meaning functor \(F: \mathbf {Preg} \to \mathbf {FVect}\) applied to ``Alice chases Bob.'' \textbf {Left panel}: pre-contraction tensor product \(n \otimes (n^r \otimes s \otimes n^l) \otimes n\), showing three Word boxes with pregroup types. \textbf {Right panel}: fully contracted diagram where two Cup contractions (\(\varepsilon : n^r \otimes n \to 1\) and \(\varepsilon : n^l \otimes n \to 1\)) reduce the five-wire product to sentence wire \(s\). Under \(F\), noun types map to \(N\), the sentence type to \(S\), and the verb's type to \(\overleftrightarrow {\text {chases}} \in N \otimes S \otimes N\). The Cup contractions become inner products \(\varepsilon _N: N \otimes N \to \mathbb {R}\), computing \(\overrightarrow {\text {Alice chases Bob}} \in S\)}{figure.11}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Case-Typed Noun Spaces and Alignment as Natural Transformation}{28}{subsection.8.4}\protected@file@percent }
 \newlabel{case-typed-noun-spaces-and-alignment-as-natural-transformation}{{8.4}{28}{Case-Typed Noun Spaces and Alignment as Natural Transformation}{subsection.8.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Ditransitive valency exceeds transitive complexity, confirming the monotonic complexity--valency relationship. DisCoPy pregroup grammar for ``Alice gives Bob a book'': four Word boxes with types \(n\) (Alice), \(n^r \otimes s \otimes n^l \otimes n^l\) (gives), \(n\) (Bob), and \(n\) (a book). Three Cup contractions resolve subject--verb, indirect-object, and direct-object links, reducing the eight-wire product to sentence type \(s\). This exemplifies Shimojima's \citeyearpar  {shimojima1996reasoning} free-ride inference: the diagram simultaneously shows argument structure, valency, and compositional flow. The complexity score (\autoref {eq:eq-4-4} in \autoref {sec:compact-closure-complexity}) exceeds that of simple transitive sentences.}}{28}{figure.12}\protected@file@percent }
+\newlabel{fig:discopy-ditransitive}{{12}{28}{Ditransitive valency exceeds transitive complexity, confirming the monotonic complexity--valency relationship. DisCoPy pregroup grammar for ``Alice gives Bob a book'': four Word boxes with types \(n\) (Alice), \(n^r \otimes s \otimes n^l \otimes n^l\) (gives), \(n\) (Bob), and \(n\) (a book). Three Cup contractions resolve subject--verb, indirect-object, and direct-object links, reducing the eight-wire product to sentence type \(s\). This exemplifies Shimojima's \citeyearpar {shimojima1996reasoning} free-ride inference: the diagram simultaneously shows argument structure, valency, and compositional flow. The complexity score (\autoref {eq:eq-4-4} in \autoref {sec:compact-closure-complexity}) exceeds that of simple transitive sentences}{figure.12}{}}
 \citation{shimojima1996reasoning}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Ditransitive valency exceeds transitive complexity, confirming the monotonic complexity--valency relationship. DisCoPy pregroup grammar for ``Alice gives Bob a book'': four Word boxes with types \(n\) (Alice), \(n^r \otimes s \otimes n^l \otimes n^l\) (gives), \(n\) (Bob), and \(n\) (a book). Three Cup contractions resolve subject--verb, indirect-object, and direct-object links, reducing the eight-wire product to sentence type \(s\). This exemplifies Shimojima's \citeyearpar  {shimojima1996reasoning} free-ride inference: the diagram simultaneously shows argument structure, valency, and compositional flow. The complexity score (\autoref {eq:eq-4-4} in \autoref {sec:compact-closure-complexity}) exceeds that of simple transitive sentences.}}{29}{figure.12}\protected@file@percent }
-\newlabel{fig:discopy-ditransitive}{{12}{29}{Ditransitive valency exceeds transitive complexity, confirming the monotonic complexity--valency relationship. DisCoPy pregroup grammar for ``Alice gives Bob a book'': four Word boxes with types \(n\) (Alice), \(n^r \otimes s \otimes n^l \otimes n^l\) (gives), \(n\) (Bob), and \(n\) (a book). Three Cup contractions resolve subject--verb, indirect-object, and direct-object links, reducing the eight-wire product to sentence type \(s\). This exemplifies Shimojima's \citeyearpar {shimojima1996reasoning} free-ride inference: the diagram simultaneously shows argument structure, valency, and compositional flow. The complexity score (\autoref {eq:eq-4-4} in \autoref {sec:compact-closure-complexity}) exceeds that of simple transitive sentences}{figure.12}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {9}Compact Closure and Diagram Complexity: Snake Equation and Valency Metrics}{29}{section.9}\protected@file@percent }
 \newlabel{sec:compact-closure-complexity}{{9}{29}{Compact Closure and Diagram Complexity: Snake Equation and Valency Metrics}{section.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {9.1}The Snake Equation Powers Every Pregroup Contraction}{29}{subsection.9.1}\protected@file@percent }
@@ -237,24 +245,24 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {9.1.1}The Snake Equation (Zigzag Identity)}{29}{subsubsection.9.1.1}\protected@file@percent }
 \newlabel{the-snake-equation-zigzag-identity}{{9.1.1}{29}{The Snake Equation (Zigzag Identity)}{subsubsection.9.1.1}{}}
 \newlabel{eq:eq-4-3}{{11}{29}{The Snake Equation (Zigzag Identity)}{equation.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces The snake equation is the algebraic engine powering every pregroup type reduction. The compact closure axiom (\autoref {eq:eq-4-3}) rendered by DisCoPy: \textbf  {left panel} shows the zigzag \((\mitvarepsilon _n \otimes 1_n) \circ (1_n \otimes \miteta _n)\) where a Cup \(\mitvarepsilon {}\) composed with a Cap \(\miteta {}\) forms a snake; \textbf  {right panel} shows the identity wire \(1_n\) it equals. Verified computationally via \texttt {diagram.normal\_form()\ ==\ Id(Ty(\textquotesingle {}x\textquotesingle {}))}. Each pregroup contraction (noun canceling with verb argument) is an instance of \(\mitvarepsilon {}\); the snake equation guarantees that cup-cap pair insertions and removals leave derivations invariant (cf.~\autoref {sec:categorial-grammar}).}}{30}{figure.13}\protected@file@percent }
-\newlabel{fig:discopy-snake}{{13}{30}{The snake equation is the algebraic engine powering every pregroup type reduction. The compact closure axiom (\autoref {eq:eq-4-3}) rendered by DisCoPy: \textbf {left panel} shows the zigzag \((\varepsilon _n \otimes 1_n) \circ (1_n \otimes \eta _n)\) where a Cup \(\varepsilon {}\) composed with a Cap \(\eta {}\) forms a snake; \textbf {right panel} shows the identity wire \(1_n\) it equals. Verified computationally via \protect \texttt {diagram.normal\_form()\ ==\ Id(Ty(\textquotesingle {}x\textquotesingle {}))}. Each pregroup contraction (noun canceling with verb argument) is an instance of \(\varepsilon {}\); the snake equation guarantees that cup-cap pair insertions and removals leave derivations invariant (cf.~\autoref {sec:categorial-grammar})}{figure.13}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.1.2}Four Metrics Quantify Derivational Complexity}{30}{subsubsection.9.1.2}\protected@file@percent }
-\newlabel{four-metrics-quantify-derivational-complexity}{{9.1.2}{30}{Four Metrics Quantify Derivational Complexity}{subsubsection.9.1.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces The snake equation is the algebraic engine powering every pregroup type reduction. The compact closure axiom (\autoref {eq:eq-4-3}) rendered by DisCoPy: \textbf  {left panel} shows the zigzag \((\mitvarepsilon _n \otimes 1_n) \circ (1_n \otimes \miteta _n)\) where a Cup \(\mitvarepsilon {}\) composed with a Cap \(\miteta {}\) forms a snake; \textbf  {right panel} shows the identity wire \(1_n\) it equals. Verified computationally via \texttt {diagram.normal\_form()\ ==\ Id(Ty(\textquotesingle {}x\textquotesingle {}))}. Each pregroup contraction (noun canceling with verb argument) is an instance of \(\mitvarepsilon {}\); the snake equation guarantees that cup-cap pair insertions and removals leave derivations invariant (cf.~\autoref {sec:categorial-grammar}).}}{29}{figure.13}\protected@file@percent }
+\newlabel{fig:discopy-snake}{{13}{29}{The snake equation is the algebraic engine powering every pregroup type reduction. The compact closure axiom (\autoref {eq:eq-4-3}) rendered by DisCoPy: \textbf {left panel} shows the zigzag \((\varepsilon _n \otimes 1_n) \circ (1_n \otimes \eta _n)\) where a Cup \(\varepsilon {}\) composed with a Cap \(\eta {}\) forms a snake; \textbf {right panel} shows the identity wire \(1_n\) it equals. Verified computationally via \protect \texttt {diagram.normal\_form()\ ==\ Id(Ty(\textquotesingle {}x\textquotesingle {}))}. Each pregroup contraction (noun canceling with verb argument) is an instance of \(\varepsilon {}\); the snake equation guarantees that cup-cap pair insertions and removals leave derivations invariant (cf.~\autoref {sec:categorial-grammar})}{figure.13}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.1.2}Four Metrics Quantify Derivational Complexity}{29}{subsubsection.9.1.2}\protected@file@percent }
+\newlabel{four-metrics-quantify-derivational-complexity}{{9.1.2}{29}{Four Metrics Quantify Derivational Complexity}{subsubsection.9.1.2}{}}
 \newlabel{eq:eq-4-4}{{12}{30}{Four Metrics Quantify Derivational Complexity}{equation.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Argument-structure complexity maps monotonically onto diagram topology. Complexity metrics (\autoref {eq:eq-4-4}) plotted across ten sentence types of increasing valency: from intransitive ``Alice runs'' (2 boxes, 1 cup) through transitive (3 boxes, 2 cups), ditransitive (4 boxes, 3 cups), and adjunct-stacked constructions up to ``fast Alice gave Bob book quickly'' (8 boxes, 4 cups). Cup count \(|D|_{\text  {cup}}\) increases monotonically with verb valency and adjunct stacking, confirming that argument-structure complexity is a topological invariant of the diagram. Actual sentences are overlaid in the plot; cup count is computable from the DisCoPy diagram via \texttt {len({[}b\ for\ b\ in\ diagram.boxes\ if\ isinstance(b,\ Cup){]})}.}}{30}{figure.14}\protected@file@percent }
+\newlabel{fig:complexity-comparison}{{14}{30}{Argument-structure complexity maps monotonically onto diagram topology. Complexity metrics (\autoref {eq:eq-4-4}) plotted across ten sentence types of increasing valency: from intransitive ``Alice runs'' (2 boxes, 1 cup) through transitive (3 boxes, 2 cups), ditransitive (4 boxes, 3 cups), and adjunct-stacked constructions up to ``fast Alice gave Bob book quickly'' (8 boxes, 4 cups). Cup count \(|D|_{\text {cup}}\) increases monotonically with verb valency and adjunct stacking, confirming that argument-structure complexity is a topological invariant of the diagram. Actual sentences are overlaid in the plot; cup count is computable from the DisCoPy diagram via \protect \texttt {len({[}b\ for\ b\ in\ diagram.boxes\ if\ isinstance(b,\ Cup){]})}}{figure.14}{}}
 \citation{defelice2020discourse}
 \citation{defelice2022discocirc}
 \citation{duneau2021parsing}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Argument-structure complexity maps monotonically onto diagram topology. Complexity metrics (\autoref {eq:eq-4-4}) plotted across ten sentence types of increasing valency: from intransitive ``Alice runs'' (2 boxes, 1 cup) through transitive (3 boxes, 2 cups), ditransitive (4 boxes, 3 cups), and adjunct-stacked constructions up to ``fast Alice gave Bob book quickly'' (8 boxes, 4 cups). Cup count \(|D|_{\text  {cup}}\) increases monotonically with verb valency and adjunct stacking, confirming that argument-structure complexity is a topological invariant of the diagram. Actual sentences are overlaid in the plot; cup count is computable from the DisCoPy diagram via \texttt {len({[}b\ for\ b\ in\ diagram.boxes\ if\ isinstance(b,\ Cup){]})}.}}{31}{figure.14}\protected@file@percent }
-\newlabel{fig:complexity-comparison}{{14}{31}{Argument-structure complexity maps monotonically onto diagram topology. Complexity metrics (\autoref {eq:eq-4-4}) plotted across ten sentence types of increasing valency: from intransitive ``Alice runs'' (2 boxes, 1 cup) through transitive (3 boxes, 2 cups), ditransitive (4 boxes, 3 cups), and adjunct-stacked constructions up to ``fast Alice gave Bob book quickly'' (8 boxes, 4 cups). Cup count \(|D|_{\text {cup}}\) increases monotonically with verb valency and adjunct stacking, confirming that argument-structure complexity is a topological invariant of the diagram. Actual sentences are overlaid in the plot; cup count is computable from the DisCoPy diagram via \protect \texttt {len({[}b\ for\ b\ in\ diagram.boxes\ if\ isinstance(b,\ Cup){]})}}{figure.14}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {10}Beyond the Sentence: State Wires Accumulate Semantic History Across Discourse}{31}{section.10}\protected@file@percent }
 \newlabel{sec:discocirc-discourse}{{10}{31}{Beyond the Sentence: State Wires Accumulate Semantic History Across Discourse}{section.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {10.1}DisCoCirc State Wires Resolve Coreference and Role Shifts}{31}{subsection.10.1}\protected@file@percent }
 \newlabel{discocirc-state-wires-resolve-coreference-and-role-shifts}{{10.1}{31}{DisCoCirc State Wires Resolve Coreference and Role Shifts}{subsection.10.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Entity persistence across sentence boundaries enables case role tracking. A DisCoCirc-style discourse diagram for ``Alice chases Bob. Bob runs.'' generated via DisCoPy's pregroup grammar. \textbf  {Sentence 1}: three Word boxes contract Alice (\(n\)) and Bob (\(n\)) into the transitive verb ``chases'' (\(n^r \otimes s \otimes n^l\)), producing sentence type \(s\). \textbf  {Sentence 2}: Bob (\(n\)) contracts into the intransitive ``runs'' (\(n^r \otimes s\)), producing a second \(s\). The full discourse type is \(s \otimes s\), encoding inter-sentential coherence. In a full DisCoCirc implementation, Bob's shared entity wire would carry accumulated semantic state across the sentence boundary---the foundation for dynamic case role tracking in \autoref {fig:three-sentence-discourse}.}}{31}{figure.15}\protected@file@percent }
+\newlabel{fig:discourse}{{15}{31}{Entity persistence across sentence boundaries enables case role tracking. A DisCoCirc-style discourse diagram for ``Alice chases Bob. Bob runs.'' generated via DisCoPy's pregroup grammar. \textbf {Sentence 1}: three Word boxes contract Alice (\(n\)) and Bob (\(n\)) into the transitive verb ``chases'' (\(n^r \otimes s \otimes n^l\)), producing sentence type \(s\). \textbf {Sentence 2}: Bob (\(n\)) contracts into the intransitive ``runs'' (\(n^r \otimes s\)), producing a second \(s\). The full discourse type is \(s \otimes s\), encoding inter-sentential coherence. In a full DisCoCirc implementation, Bob's shared entity wire would carry accumulated semantic state across the sentence boundary---the foundation for dynamic case role tracking in \autoref {fig:three-sentence-discourse}}{figure.15}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {10.2}Alice's Trajectory NOM→ACC→NOM}{31}{subsection.10.2}\protected@file@percent }
 \newlabel{alices-trajectory-nomaccnom}{{10.2}{31}{Alice's Trajectory NOM→ACC→NOM}{subsection.10.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Entity persistence across sentence boundaries enables case role tracking. A DisCoCirc-style discourse diagram for ``Alice chases Bob. Bob runs.'' generated via DisCoPy's pregroup grammar. \textbf  {Sentence 1}: three Word boxes contract Alice (\(n\)) and Bob (\(n\)) into the transitive verb ``chases'' (\(n^r \otimes s \otimes n^l\)), producing sentence type \(s\). \textbf  {Sentence 2}: Bob (\(n\)) contracts into the intransitive ``runs'' (\(n^r \otimes s\)), producing a second \(s\). The full discourse type is \(s \otimes s\), encoding inter-sentential coherence. In a full DisCoCirc implementation, Bob's shared entity wire would carry accumulated semantic state across the sentence boundary---the foundation for dynamic case role tracking in \autoref {fig:three-sentence-discourse}.}}{32}{figure.15}\protected@file@percent }
-\newlabel{fig:discourse}{{15}{32}{Entity persistence across sentence boundaries enables case role tracking. A DisCoCirc-style discourse diagram for ``Alice chases Bob. Bob runs.'' generated via DisCoPy's pregroup grammar. \textbf {Sentence 1}: three Word boxes contract Alice (\(n\)) and Bob (\(n\)) into the transitive verb ``chases'' (\(n^r \otimes s \otimes n^l\)), producing sentence type \(s\). \textbf {Sentence 2}: Bob (\(n\)) contracts into the intransitive ``runs'' (\(n^r \otimes s\)), producing a second \(s\). The full discourse type is \(s \otimes s\), encoding inter-sentential coherence. In a full DisCoCirc implementation, Bob's shared entity wire would carry accumulated semantic state across the sentence boundary---the foundation for dynamic case role tracking in \autoref {fig:three-sentence-discourse}}{figure.15}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Wire colour directly encodes dynamic case-role transitions across sentence boundaries. Native matplotlib DisCoCirc diagram for ``Alice chases Bob. Bob runs.'' generated via \texttt {src.visualization.string\_diagrams.render\_discocirc\_discourse()}, cross-validating \autoref {fig:discourse} without library dependency. \textbf  {Vertical wires} (grey) are persistent entity wires for Alice and Bob. At each sentence boundary, a coloured disc marks Bob's case role: \textbf  {red} (ACC) in sentence 1 (chased object), \textbf  {blue} (NOM) in sentence 2 (running agent). The ACC \(\to \) NOM transition is read directly from wire colour at successive levels. This confirms that our native string-diagram module correctly resolves entity identity and tracks role reassignment using \texttt {src.diagrams.string\_diagram.Discourse} data structures.}}{32}{figure.16}\protected@file@percent }
 \newlabel{fig:native-discourse}{{16}{32}{Wire colour directly encodes dynamic case-role transitions across sentence boundaries. Native matplotlib DisCoCirc diagram for ``Alice chases Bob. Bob runs.'' generated via \protect \texttt {src.visualization.string\_diagrams.render\_discocirc\_discourse()}, cross-validating \autoref {fig:discourse} without library dependency. \textbf {Vertical wires} (grey) are persistent entity wires for Alice and Bob. At each sentence boundary, a coloured disc marks Bob's case role: \textbf {red} (ACC) in sentence 1 (chased object), \textbf {blue} (NOM) in sentence 2 (running agent). The ACC \(\to \) NOM transition is read directly from wire colour at successive levels. This confirms that our native string-diagram module correctly resolves entity identity and tracks role reassignment using \protect \texttt {src.diagrams.string\_diagram.Discourse} data structures}{figure.16}{}}
 \citation{lambeq2025genii}
@@ -263,11 +271,11 @@
 \citation{lorenz2023lambeq}
 \citation{kartsaklis2021functorial}
 \citation{lambeq2025genii,quantinuum2025genii}
+\citation{meyer2020modelling}
 \@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Dynamic case role reversal tracks entity identity across three-sentence discourse. DisCoPy rendering of ``Alice chases Bob. Bob fears Alice. She smiles.'' \textbf  {Sentence 1}: Alice NOM, Bob ACC. \textbf  {Sentence 2}: Bob NOM, Alice ACC---a complete agent--patient reversal. \textbf  {Sentence 3}: anaphoric ``She'' resolves to Alice, who returns to NOM. Alice's trajectory NOM\(\to \)ACC\(\to \)NOM is tracked by the triple tensor \(s \otimes s \otimes s\). In a full DisCoCirc implementation, Alice's entity wire carries accumulated semantic state---``She'' in sentence 3 inherits the enriched state of an Alice who has both chased and been feared. This dynamic case assignment across discourse boundaries is what lambeq Gen II \citep  {lambeq2025genii} compiles into parameterized quantum circuits.}}{33}{figure.17}\protected@file@percent }
 \newlabel{fig:three-sentence-discourse}{{17}{33}{Dynamic case role reversal tracks entity identity across three-sentence discourse. DisCoPy rendering of ``Alice chases Bob. Bob fears Alice. She smiles.'' \textbf {Sentence 1}: Alice NOM, Bob ACC. \textbf {Sentence 2}: Bob NOM, Alice ACC---a complete agent--patient reversal. \textbf {Sentence 3}: anaphoric ``She'' resolves to Alice, who returns to NOM. Alice's trajectory NOM\(\to \)ACC\(\to \)NOM is tracked by the triple tensor \(s \otimes s \otimes s\). In a full DisCoCirc implementation, Alice's entity wire carries accumulated semantic state---``She'' in sentence 3 inherits the enriched state of an Alice who has both chased and been feared. This dynamic case assignment across discourse boundaries is what lambeq Gen II \citep {lambeq2025genii} compiles into parameterized quantum circuits}{figure.17}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {10.3}lambeq Gen II Compiles DisCoCirc Discourse Diagrams}{33}{subsection.10.3}\protected@file@percent }
 \newlabel{lambeq-gen-ii-compiles-discocirc-discourse-diagrams}{{10.3}{33}{lambeq Gen II Compiles DisCoCirc Discourse Diagrams}{subsection.10.3}{}}
-\citation{meyer2020modelling}
 \citation{bonchi2022rewriting}
 \citation{dehuybrecht2024subcategorizing}
 \citation{song2022act}
@@ -806,69 +814,70 @@
 \bibcite{defelice2022discocirc}{{26}{2022}{{de~Felice et~al.}}{{de~Felice, Meichanetzidis, and Coecke}}}
 \bibcite{dehuybrecht2024subcategorizing}{{27}{2024}{{de~Huybrecht}}{{}}}
 \bibcite{devlin2019bert}{{28}{2019}{{Devlin et~al.}}{{Devlin, Chang, Lee, and Toutanova}}}
-\bibcite{donnarumma2023integrating}{{29}{2023}{{Donnarumma et~al.}}{{Donnarumma, Frosolone, and Pezzulo}}}
-\bibcite{dowty1991thematic}{{30}{1991}{{Dowty}}{{}}}
-\bibcite{duneau2021parsing}{{31}{2021}{{Duneau}}{{}}}
-\bibcite{fields2021qrf}{{32}{2021}{{Fields and Glazebrook}}{{}}}
-\bibcite{fields2022tqnn}{{33}{2022}{{Fields et~al.}}{{Fields, Glazebrook, and Marcian\`{o}}}}
-\bibcite{fields2023tensor}{{34}{2023}{{Fields et~al.}}{{Fields, Glazebrook, and Marcian\`{o}}}}
-\bibcite{fields2025amplituhedra}{{35}{2025}{{Fields et~al.}}{{Fields, Glazebrook, and Marcian\`{o}}}}
-\bibcite{fillmore1968case}{{36}{1968}{{Fillmore}}{{}}}
-\bibcite{firth1957papers}{{37}{1957}{{Firth}}{{}}}
-\bibcite{cerebrum2024github}{{38}{2024}{{Friedman and {Active Inference Institute}}}{{}}}
-\bibcite{friedman2024cerebrum}{{39}{2024}{{Friedman}}{{}}}
-\bibcite{friston2010free}{{40}{2010}{{Friston}}{{}}}
-\bibcite{friston2017active}{{41}{2017}{{Friston et~al.}}{{Friston, FitzGerald, Rigoli, Schwartenbeck, and Pezzulo}}}
-\bibcite{friston2020generative}{{42}{2020}{{Friston et~al.}}{{Friston, Parr, Yufik, Sajid, Price, and Holmes}}}
-\bibcite{friston2021understanding}{{43}{2021}{{Friston et~al.}}{{Friston, Da~Costa, Sajid, Heins, Ueltzhöffer, Pavliotis, and Parr}}}
-\bibcite{gavranovic2024thesis}{{44}{2024}{{Gavranovi{\'c}}}{{}}}
-\bibcite{gavranovic2024categorical}{{45}{2024}{{Gavranovi{\'{c}} et~al.}}{{Gavranovi{\'{c}}, Lessard, Dudzik, von Glehn, Ara{\'{u}}jo, and Veli{\v {c}}kovi{\'{c}}}}}
-\bibcite{giardino2017diagrammatic}{{46}{2017}{{Giardino}}{{}}}
-\bibcite{grefenstette2015concrete}{{47}{2015}{{Grefenstette and Sadrzadeh}}{{}}}
-\bibcite{harris1954distributional}{{48}{1954}{{Harris}}{{}}}
-\bibcite{haspelmath2009universality}{{49}{2009}{{Haspelmath}}{{}}}
-\bibcite{hjelmslev1935categorie}{{50}{1935}{{Hjelmslev}}{{}}}
-\bibcite{jakobson1958morphologic}{{51}{1958}{{Jakobson}}{{}}}
-\bibcite{jha2021sanskrit}{{52}{2021}{{Jha}}{{}}}
-\bibcite{joyalstreet1991geometry}{{53}{1991}{{Joyal and Street}}{{}}}
-\bibcite{kak1987paninian}{{54}{1987}{{Kak}}{{}}}
-\bibcite{kartsaklis2021functorial}{{55}{2021}{{Kartsaklis et~al.}}{{Kartsaklis, Fan, Yeung, Pearson, Lorenz, Toumi, de~Felice, Meichanetzidis, Clark, and Coecke}}}
-\bibcite{kissinger2020zx}{{56}{2020}{{Kissinger and van~de Wetering}}{{}}}
-\bibcite{krawchuk2025paramqnlp}{{57}{2025{a}}{{Krawchuk et~al.}}{{Krawchuk, Khatri, Ortega, and Kartsaklis}}}
-\bibcite{lambeq2025genii}{{58}{2025{b}}{{Krawchuk et~al.}}{{Krawchuk, Khatri, Ortega, and Kartsaklis}}}
-\bibcite{lambek1958mathematics}{{59}{1958}{{Lambek}}{{}}}
-\bibcite{lambek2004fine}{{60}{2004}{{Lambek}}{{}}}
-\bibcite{larkin1987diagram}{{61}{1987}{{Larkin and Simon}}{{}}}
-\bibcite{leinster2021magnitude}{{62}{2021}{{Leinster and Shulman}}{{}}}
-\bibcite{lenci2018distributional}{{63}{2018}{{Lenci}}{{}}}
-\bibcite{letcher2024tight}{{64}{2024}{{Letcher et~al.}}{{Letcher, Woerner, and Zoufal}}}
-\bibcite{li2023decomposition}{{65}{2023}{{Li and Futrell}}{{}}}
-\bibcite{li2024shallow}{{66}{2024}{{Li and Futrell}}{{}}}
-\bibcite{lorenz2023lambeq}{{67}{2023}{{Lorenz et~al.}}{{Lorenz, Pearson, Meichanetzidis, Kartsaklis, and Coecke}}}
-\bibcite{maele2026schema}{{68}{2026}{{Maele et~al.}}{{}}}
-\bibcite{manders2008euclidean}{{69}{2008}{{Manders}}{{}}}
-\bibcite{meichanetzidis2020qnlp}{{70}{2020}{{Meichanetzidis et~al.}}{{Meichanetzidis, Gogioso, de~Felice, Chiappori, Toumi, and Coecke}}}
-\bibcite{melcuk1981meaning}{{71}{1981}{{Mel’{\v {c}}uk}}{{}}}
-\bibcite{melcuk1988dependency}{{72}{1988}{{Mel’{\v {c}}uk}}{{}}}
-\bibcite{meyer2020modelling}{{73}{2020}{{Meyer and Lewis}}{{}}}
-\bibcite{mikolov2013efficient}{{74}{2013}{{Mikolov et~al.}}{{Mikolov, Chen, Corrado, and Dean}}}
-\bibcite{montague1973proper}{{75}{1973}{{Montague}}{{}}}
-\bibcite{myers2023double}{{76}{2023}{{Myers}}{{}}}
-\bibcite{pennington2014glove}{{77}{2014}{{Pennington et~al.}}{{Pennington, Socher, and Manning}}}
-\bibcite{phillips2024lot}{{78}{2024}{{Phillips}}{{}}}
-\bibcite{pirandola2020qkd}{{79}{2020}{{Pirandola et~al.}}{{Pirandola, Andersen, Banchi, Berta, Bunandar, Colbeck, Englund, Gehring, Lupo, Ottaviani, Pereira, Razavi, Shamsul~Shaari, Tomamichel, Usenko, Vallone, Villoresi, and Wallden}}}
-\bibcite{polinsky2015case}{{80}{2014}{{Polinsky and Preminger}}{{}}}
-\bibcite{quantinuum2025genii}{{81}{2025}{{Quantinuum}}{{}}}
-\bibcite{rad2024trainability}{{82}{2024}{{Rad et~al.}}{{Rad, Setiawan, Babbush, et~al.}}}
-\bibcite{radford2018improving}{{83}{2018}{{Radford et~al.}}{{Radford, Narasimhan, Salimans, and Sutskever}}}
-\bibcite{shimojima1996reasoning}{{84}{1996}{{Shimojima}}{{}}}
-\bibcite{silverstein1976hierarchy}{{85}{1976}{{Silverstein}}{{}}}
-\bibcite{song2022act}{{86}{2022{a}}{{Song}}{{}}}
-\bibcite{song2022blog}{{87}{2022{b}}{{Song}}{{}}}
-\bibcite{thomas2025quantum}{{88}{2026}{{Thomas and Chen}}{{}}}
-\bibcite{turney2010frequency}{{89}{2010}{{Turney and Pantel}}{{}}}
-\bibcite{vasil2020world}{{90}{2020}{{Vasil et~al.}}{{Vasil, Badcock, Constant, Friston, and Ramstead}}}
-\bibcite{vaswani2017attention}{{91}{2017}{{Vaswani et~al.}}{{Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, and Polosukhin}}}
-\bibcite{wu2024amis}{{92}{2024}{{Wu}}{{}}}
-\bibcite{zolkovskij1965possible}{{93}{1965}{{{\v {Z}}olkovskij and Mel’{\v {c}}uk}}{{}}}
-\gdef \@abspage@last{99}
+\bibcite{cognitive_case_diagrams2026code}{{29}{2026}{{docxology}}{{}}}
+\bibcite{donnarumma2023integrating}{{30}{2023}{{Donnarumma et~al.}}{{Donnarumma, Frosolone, and Pezzulo}}}
+\bibcite{dowty1991thematic}{{31}{1991}{{Dowty}}{{}}}
+\bibcite{duneau2021parsing}{{32}{2021}{{Duneau}}{{}}}
+\bibcite{fields2021qrf}{{33}{2021}{{Fields and Glazebrook}}{{}}}
+\bibcite{fields2022tqnn}{{34}{2022}{{Fields et~al.}}{{Fields, Glazebrook, and Marcian\`{o}}}}
+\bibcite{fields2023tensor}{{35}{2023}{{Fields et~al.}}{{Fields, Glazebrook, and Marcian\`{o}}}}
+\bibcite{fields2025amplituhedra}{{36}{2025}{{Fields et~al.}}{{Fields, Glazebrook, and Marcian\`{o}}}}
+\bibcite{fillmore1968case}{{37}{1968}{{Fillmore}}{{}}}
+\bibcite{firth1957papers}{{38}{1957}{{Firth}}{{}}}
+\bibcite{cerebrum2024github}{{39}{2024}{{Friedman and {Active Inference Institute}}}{{}}}
+\bibcite{friedman2024cerebrum}{{40}{2024}{{Friedman}}{{}}}
+\bibcite{friston2010free}{{41}{2010}{{Friston}}{{}}}
+\bibcite{friston2017active}{{42}{2017}{{Friston et~al.}}{{Friston, FitzGerald, Rigoli, Schwartenbeck, and Pezzulo}}}
+\bibcite{friston2020generative}{{43}{2020}{{Friston et~al.}}{{Friston, Parr, Yufik, Sajid, Price, and Holmes}}}
+\bibcite{friston2021understanding}{{44}{2021}{{Friston et~al.}}{{Friston, Da~Costa, Sajid, Heins, Ueltzhöffer, Pavliotis, and Parr}}}
+\bibcite{gavranovic2024thesis}{{45}{2024}{{Gavranovi{\'c}}}{{}}}
+\bibcite{gavranovic2024categorical}{{46}{2024}{{Gavranovi{\'{c}} et~al.}}{{Gavranovi{\'{c}}, Lessard, Dudzik, von Glehn, Ara{\'{u}}jo, and Veli{\v {c}}kovi{\'{c}}}}}
+\bibcite{giardino2017diagrammatic}{{47}{2017}{{Giardino}}{{}}}
+\bibcite{grefenstette2015concrete}{{48}{2015}{{Grefenstette and Sadrzadeh}}{{}}}
+\bibcite{harris1954distributional}{{49}{1954}{{Harris}}{{}}}
+\bibcite{haspelmath2009universality}{{50}{2009}{{Haspelmath}}{{}}}
+\bibcite{hjelmslev1935categorie}{{51}{1935}{{Hjelmslev}}{{}}}
+\bibcite{jakobson1958morphologic}{{52}{1958}{{Jakobson}}{{}}}
+\bibcite{jha2021sanskrit}{{53}{2021}{{Jha}}{{}}}
+\bibcite{joyalstreet1991geometry}{{54}{1991}{{Joyal and Street}}{{}}}
+\bibcite{kak1987paninian}{{55}{1987}{{Kak}}{{}}}
+\bibcite{kartsaklis2021functorial}{{56}{2021}{{Kartsaklis et~al.}}{{Kartsaklis, Fan, Yeung, Pearson, Lorenz, Toumi, de~Felice, Meichanetzidis, Clark, and Coecke}}}
+\bibcite{kissinger2020zx}{{57}{2020}{{Kissinger and van~de Wetering}}{{}}}
+\bibcite{krawchuk2025paramqnlp}{{58}{2025{a}}{{Krawchuk et~al.}}{{Krawchuk, Khatri, Ortega, and Kartsaklis}}}
+\bibcite{lambeq2025genii}{{59}{2025{b}}{{Krawchuk et~al.}}{{Krawchuk, Khatri, Ortega, and Kartsaklis}}}
+\bibcite{lambek1958mathematics}{{60}{1958}{{Lambek}}{{}}}
+\bibcite{lambek2004fine}{{61}{2004}{{Lambek}}{{}}}
+\bibcite{larkin1987diagram}{{62}{1987}{{Larkin and Simon}}{{}}}
+\bibcite{leinster2021magnitude}{{63}{2021}{{Leinster and Shulman}}{{}}}
+\bibcite{lenci2018distributional}{{64}{2018}{{Lenci}}{{}}}
+\bibcite{letcher2024tight}{{65}{2024}{{Letcher et~al.}}{{Letcher, Woerner, and Zoufal}}}
+\bibcite{li2023decomposition}{{66}{2023}{{Li and Futrell}}{{}}}
+\bibcite{li2024shallow}{{67}{2024}{{Li and Futrell}}{{}}}
+\bibcite{lorenz2023lambeq}{{68}{2023}{{Lorenz et~al.}}{{Lorenz, Pearson, Meichanetzidis, Kartsaklis, and Coecke}}}
+\bibcite{maele2026schema}{{69}{2026}{{Maele et~al.}}{{}}}
+\bibcite{manders2008euclidean}{{70}{2008}{{Manders}}{{}}}
+\bibcite{meichanetzidis2020qnlp}{{71}{2020}{{Meichanetzidis et~al.}}{{Meichanetzidis, Gogioso, de~Felice, Chiappori, Toumi, and Coecke}}}
+\bibcite{melcuk1981meaning}{{72}{1981}{{Mel’{\v {c}}uk}}{{}}}
+\bibcite{melcuk1988dependency}{{73}{1988}{{Mel’{\v {c}}uk}}{{}}}
+\bibcite{meyer2020modelling}{{74}{2020}{{Meyer and Lewis}}{{}}}
+\bibcite{mikolov2013efficient}{{75}{2013}{{Mikolov et~al.}}{{Mikolov, Chen, Corrado, and Dean}}}
+\bibcite{montague1973proper}{{76}{1973}{{Montague}}{{}}}
+\bibcite{myers2023double}{{77}{2023}{{Myers}}{{}}}
+\bibcite{pennington2014glove}{{78}{2014}{{Pennington et~al.}}{{Pennington, Socher, and Manning}}}
+\bibcite{phillips2024lot}{{79}{2024}{{Phillips}}{{}}}
+\bibcite{pirandola2020qkd}{{80}{2020}{{Pirandola et~al.}}{{Pirandola, Andersen, Banchi, Berta, Bunandar, Colbeck, Englund, Gehring, Lupo, Ottaviani, Pereira, Razavi, Shamsul~Shaari, Tomamichel, Usenko, Vallone, Villoresi, and Wallden}}}
+\bibcite{polinsky2015case}{{81}{2014}{{Polinsky and Preminger}}{{}}}
+\bibcite{quantinuum2025genii}{{82}{2025}{{Quantinuum}}{{}}}
+\bibcite{rad2024trainability}{{83}{2024}{{Rad et~al.}}{{Rad, Setiawan, Babbush, et~al.}}}
+\bibcite{radford2018improving}{{84}{2018}{{Radford et~al.}}{{Radford, Narasimhan, Salimans, and Sutskever}}}
+\bibcite{shimojima1996reasoning}{{85}{1996}{{Shimojima}}{{}}}
+\bibcite{silverstein1976hierarchy}{{86}{1976}{{Silverstein}}{{}}}
+\bibcite{song2022act}{{87}{2022{a}}{{Song}}{{}}}
+\bibcite{song2022blog}{{88}{2022{b}}{{Song}}{{}}}
+\bibcite{thomas2025quantum}{{89}{2026}{{Thomas and Chen}}{{}}}
+\bibcite{turney2010frequency}{{90}{2010}{{Turney and Pantel}}{{}}}
+\bibcite{vasil2020world}{{91}{2020}{{Vasil et~al.}}{{Vasil, Badcock, Constant, Friston, and Ramstead}}}
+\bibcite{vaswani2017attention}{{92}{2017}{{Vaswani et~al.}}{{Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, and Polosukhin}}}
+\bibcite{wu2024amis}{{93}{2024}{{Wu}}{{}}}
+\bibcite{zolkovskij1965possible}{{94}{1965}{{{\v {Z}}olkovskij and Mel’{\v {c}}uk}}{{}}}
+\gdef \@abspage@last{100}

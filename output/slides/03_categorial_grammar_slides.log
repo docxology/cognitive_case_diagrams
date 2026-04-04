@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  4 APR 2026 12:39
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  4 APR 2026 13:12
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1617,18 +1617,9 @@ ern Roman (RS)
 File: ../figures/discopy_transitive.png Graphic file (type bmp)
 <../figures/discopy_transitive.png>
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 158.
-
-
-LaTeX Warning: Reference `sec:categorical-semantics' on page 4 undefined on inp
-ut line 158.
-
-
-LaTeX Warning: Reference `sec:categorical-semantics' on page 4 undefined on inp
-ut line 158.
-
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 161.
 )
-Overfull \vbox (1910.85269pt too high) detected at line 385
+Overfull \vbox (1889.87862pt too high) detected at line 388
  []
 
 [4
@@ -1658,11 +1649,11 @@ LaTeX Warning: There were undefined references.
 Here is how much of TeX's memory you used:
  30007 strings out of 468168
  606819 string characters out of 5432815
- 1190261 words of memory out of 5000000
+ 1191261 words of memory out of 5000000
  58165 multiletter control sequences out of 15000+600000
  634246 words of font info for 101 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,11n,123p,1316b,691s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,11n,123p,1515b,662s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on /Users/4d/Documents/GitHub/template/projects/cognitive_case_d
 iagrams/output/slides/03_categorial_grammar_slides.pdf (4 pages).

@@ -1,4 +1,4 @@
-\begin{thebibliography}{93}
+\begin{thebibliography}{94}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -226,6 +226,13 @@ Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova.
 \newblock \emph{Proceedings of NAACL-HLT}, pages 4171--4186, 2019.
 \newblock URL \url{https://arxiv.org/abs/1810.04805}.
 \newblock Bidirectional contextualized embeddings via masked language modeling.
+
+\bibitem[{docxology}(2026)]{cognitive_case_diagrams2026code}
+{docxology}.
+\newblock Cognitive case diagrams: implementation and test suite.
+\newblock \url{https://github.com/docxology/cognitive_case_diagrams}, 2026.
+\newblock Open-source Python package accompanying the manuscript; accessed
+  2026-04-04.
 
 \bibitem[Donnarumma et~al.(2023)Donnarumma, Frosolone, and
   Pezzulo]{donnarumma2023integrating}

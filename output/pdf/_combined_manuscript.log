@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  4 APR 2026 12:40
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  4 APR 2026 13:13
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1192,11 +1192,11 @@ File: ../figures/case_category_minimal.png Graphic file (type bmp)
 <../figures/case_category_minimal.png>
  [6] [7] [8] [9]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 509.
+(Font)              scaled to size 9.0pt on input line 512.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.00082pt on input line 509.
+(Font)              scaled to size 9.00082pt on input line 512.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.99904pt on input line 509.
+(Font)              scaled to size 8.99904pt on input line 512.
 
 Missing character: There is no ≥ (U+2265) in font [lmroman9-regular]:mapping=te
 x-text;!
@@ -1221,7 +1221,7 @@ File: ../figures/discopy_multilingual.png Graphic file (type bmp)
 <../figures/discopy_multilingual.png>
  [19] [20] [21]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 1243.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 1246.
 
 Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
 Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
@@ -1229,19 +1229,20 @@ Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
 Missing character: There is no ⊗ (U+2297) in font [lmmono10-italic]:!
 File: ../figures/discopy_transitive.png Graphic file (type bmp)
 <../figures/discopy_transitive.png>
-[22] [23] [24]
+[22] [23]
 File: ../figures/discopy_passive.png Graphic file (type bmp)
 <../figures/discopy_passive.png>
- [25] [26] [27]
+ [24] [25] [26]
 File: ../figures/discopy_composition.png Graphic file (type bmp)
 <../figures/discopy_composition.png>
+ [27]
 File: ../figures/discopy_ditransitive.png Graphic file (type bmp)
 <../figures/discopy_ditransitive.png>
  [28]
 File: ../figures/discopy_snake.png Graphic file (type bmp)
 <../figures/discopy_snake.png>
 
-Underfull \hbox (badness 1314) in paragraph at lines 1873--1876
+Underfull \hbox (badness 1314) in paragraph at lines 1879--1882
 \TU/lmr/m/n/10 The algebraic properties of pregroup diagrams support quantitati
 ve analysis of derivational complexity. Our
  []
@@ -1255,13 +1256,13 @@ File: ../figures/discopy_discocirc_discourse.png Graphic file (type bmp)
 File: ../figures/discourse_string_diagram.png Graphic file (type bmp)
 <../figures/discourse_string_diagram.png>
 
-Underfull \hbox (badness 10000) in paragraph at lines 2037--2037
+Underfull \hbox (badness 10000) in paragraph at lines 2043--2043
 []\TU/lmr/m/n/10 Figure 16: []Wire colour directly encodes dynamic case-role tr
 ansitions across sentence bound-
  []
 
 
-Underfull \hbox (badness 7064) in paragraph at lines 2037--2037
+Underfull \hbox (badness 7064) in paragraph at lines 2043--2043
 \TU/lmr/m/n/10 aries. Native matplotlib DisCoCirc diagram for “Alice chases Bob
 . Bob runs.” generated via
  []
@@ -1271,11 +1272,11 @@ File: ../figures/discopy_three_sentence_discourse.png Graphic file (type bmp)
 <../figures/discopy_three_sentence_discourse.png>
  [33] [34]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 14.4pt on input line 2230.
+(Font)              scaled to size 14.4pt on input line 2236.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 14.4013pt on input line 2230.
+(Font)              scaled to size 14.4013pt on input line 2236.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 14.39845pt on input line 2230.
+(Font)              scaled to size 14.39845pt on input line 2236.
 
 Missing character: There is no ∣ (U+2223) in font [lmroman10-regular]:mapping=t
 ex-text;!
@@ -1286,7 +1287,7 @@ File: ../figures/enriched_hom_matrix.png Graphic file (type bmp)
 File: ../figures/functor_alignment.png Graphic file (type bmp)
 <../figures/functor_alignment.png>
  [41] [42] [43] [44]
-Underfull \hbox (badness 1127) in paragraph at lines 3045--3054
+Underfull \hbox (badness 1127) in paragraph at lines 3051--3060
 [][]\TU/lmr/m/n/10 Figure 20[][][] shows a minimal \TU/lmr/bx/n/10 scalar-belie
 f \TU/lmr/m/n/10 simulation: the agent holds a \TU/lmtt/m/n/10 CaseDiagramBelie
 f \TU/lmr/m/n/10 over alternative
@@ -1320,14 +1321,14 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.4676 INS in \(
+l.4682 INS in \(
                 \text{Mor}(\mathcal{C}_{\text{protocol}})\), the diagram is
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-Overfull \hbox (746.55762pt too wide) in paragraph at lines 4669--4680
+Overfull \hbox (746.55762pt too wide) in paragraph at lines 4675--4686
 [][][][][][][][][][][][][][][][][][] [][][][][][][][][][][][][][][][][][][][][]
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] [][][][][][][][]
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] [][][][]
@@ -1346,19 +1347,19 @@ text;!
 File: ../figures/syntactic_case_panel.png Graphic file (type bmp)
 <../figures/syntactic_case_panel.png>
 
-Underfull \hbox (badness 1400) in paragraph at lines 5485--5485
+Underfull \hbox (badness 1400) in paragraph at lines 5491--5491
 \TU/lmr/m/n/10 Red=ACC, Violet=DAT, Purple=ERG, Teal=ABS, Dark=V). \TU/lmr/bx/n
 /10 Bottom of each panel\TU/lmr/m/n/10 : categorical pregroup
  []
 
 
-Underfull \hbox (badness 1237) in paragraph at lines 5485--5485
+Underfull \hbox (badness 1237) in paragraph at lines 5491--5491
 \TU/lmr/m/n/10 type formula showing Cup contractions that collapse argument wir
 es to sentence type $[]$. Panels 1–4 cover
  []
 
 
-Underfull \hbox (badness 1048) in paragraph at lines 5485--5485
+Underfull \hbox (badness 1048) in paragraph at lines 5491--5491
 \TU/lmr/m/n/10 factive; Panels 7–8 demonstrate relative-clause embedding and ca
 usative complex predicates. Cup count and
  []
@@ -1391,15 +1392,9 @@ ignored: Infinite glue shrinkage found in box being s
 plit
 [91]
 ignored: Infinite glue shrinkage found in box being split [92] [93]
-Underfull \hbox (badness 3343) in paragraph at lines 6278--6282
+Underfull \hbox (badness 3343) in paragraph at lines 6287--6291
 []\TU/lmr/bx/n/10 Categorical axiom tests\TU/lmr/m/n/10 : Identity morphism exi
 stence, composition associativity, weight invariants,
- []
-
-
-Underfull \hbox (badness 3229) in paragraph at lines 6293--6299
-[]\TU/lmr/bx/n/10 Natural transformation tests \TU/lmr/m/n/10 (20 tests): Compo
-nent morphism construction, \TU/lmtt/m/n/10 naturality_holds \TU/lmr/m/n/10 /
  []
 
 Missing character: There is no ∣ (U+2223) in font [lmroman10-regular]:mapping=t
@@ -1409,14 +1404,14 @@ ex-text;!
 Missing character: There is no ρ (U+03C1) in font [lmroman10-regular]:mapping=t
 ex-text;!
 
-Underfull \hbox (badness 6741) in paragraph at lines 6354--6358
-[]\TU/lmtt/m/n/10 test_daif_quantile.py \TU/lmr/m/n/10 (21 tests): QR-DQN quant
-ile Huber loss, IQN risk distortion (neu-
+Overfull \hbox (22.02803pt too wide) in paragraph at lines 6362--6366
+[]\TU/lmtt/m/n/10 test_daif_quantile.py\TU/lmr/m/n/10 : QR-DQN quantile Huber l
+oss, IQN risk distortion (neutral/optimistic/pessimistic/CVaR),
  []
 
 [94] (./_combined_manuscript.bbl [95
 
-] [96] [97] [98]) [99]
+] [96] [97] [98] [99]) [100]
 (./_combined_manuscript.aux)
  ***********
 LaTeX2e <2025-11-01>
@@ -1424,12 +1419,12 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 21473 strings out of 468168
- 400075 string characters out of 5432815
- 1036391 words of memory out of 5000000
- 49865 multiletter control sequences out of 15000+600000
+ 21476 strings out of 468168
+ 400192 string characters out of 5432815
+ 1035681 words of memory out of 5000000
+ 49868 multiletter control sequences out of 15000+600000
  636750 words of font info for 122 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,11n,114p,1358b,710s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,11n,114p,1412b,712s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _combined_manuscript.pdf (99 pages).
+Output written on _combined_manuscript.pdf (100 pages).

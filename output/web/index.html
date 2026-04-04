@@ -1174,30 +1174,40 @@ ergative-absolutive, active-stative, tripartite, and fluid-S) are
 captured as structure-preserving functors between these categories.
 Within this framework, sentence structure becomes a compact-closed
 string diagram—computable via DisCoCat and, at the discourse level,
-DisCoCirc—that functions not merely as descriptive notation but as an
-executable witness of grammaticality grounded in situated reasoning.
-Historically, the analysis traces from Pāṇini’s <em>kāraka</em> theory
-through Jakobson’s feature matrices and Fillmore’s deep cases to Dowty’s
-graded proto-roles, showing how morphosyntactic inflection supplies the
-structural skeleton for relational differentiation in natural and
-designed languages.</p>
+DisCoCirc <span class="citation"
+data-cites="coecke2010mathematical defelice2022discocirc">[@coecke2010mathematical;
+@defelice2022discocirc]</span>—that functions not merely as descriptive
+notation but as an executable witness of grammaticality grounded in
+situated reasoning. Historically, the analysis traces from Pāṇinian
+<em>kāraka</em> theory <span class="citation"
+data-cites="kak1987paninian">[@kak1987paninian]</span> through
+Jakobson’s feature matrices <span class="citation"
+data-cites="jakobson1958morphologic">[@jakobson1958morphologic]</span>
+and Fillmore’s deep cases <span class="citation"
+data-cites="fillmore1968case">[@fillmore1968case]</span> to Dowty’s
+graded proto-roles <span class="citation"
+data-cites="dowty1991thematic">[@dowty1991thematic]</span>, showing how
+morphosyntactic inflection supplies the structural skeleton for
+relational differentiation in natural and designed languages.</p>
 <p>Equipping case categories with proto-role satisfaction yields
 quantitative complexity measures with psycholinguistic interpretations;
 combined with active inference, the framework <em>predicts</em>
 electrophysiological signatures (P600/N400) whose amplitudes scale with
 enriched morphism precision in the idealized models of the
-cognitive-integration and DAIF sections below. For artificial agents,
-the same typing discipline <em>suggests</em> treating certain
-prompt-injection patterns as failed derivations—illicit case-role
-reassignment—when interaction graphs are explicitly stratified by role;
-compositional multi-agent protocols are <em>outlined</em> under
-NOM–ACC–INS-style constraints in the categorical-AI section. The
-cognitive case diagram thus integrates linguistic structure, logic,
-embodied cognition, and machine intelligence in one computationally
-tractable diagrammatic language. <strong>Code and tests:</strong>
-open-source implementation with automated test suite: <a
-href="https://github.com/docxology/cognitive_case_diagrams">cognitive_case_diagrams
-repository</a>.</p>
+cognitive-integration and DAIF sections below, in line with
+surprisal-decomposition accounts <span class="citation"
+data-cites="li2023decomposition li2024shallow">[@li2023decomposition;
+@li2024shallow]</span>. For artificial agents, the same typing
+discipline <em>suggests</em> treating certain prompt-injection patterns
+as failed derivations—illicit case-role reassignment—when interaction
+graphs are explicitly stratified by role; compositional multi-agent
+protocols are <em>outlined</em> under NOM–ACC–INS-style constraints in
+the categorical-AI section. The cognitive case diagram thus integrates
+linguistic structure, logic, embodied cognition, and machine
+intelligence in one computationally tractable diagrammatic language.
+<strong>Code and tests:</strong> open-source implementation with
+automated test suite <span class="citation"
+data-cites="cognitive_case_diagrams2026code">[@cognitive_case_diagrams2026code]</span>.</p>
 <hr />
 <h1 data-number="2" id="sec:introduction"><span
 class="header-section-number">2</span> Introduction: Case Diagrams and
@@ -1230,10 +1240,11 @@ from root actions), through Jakobson’s structuralist feature matrices
 and Fillmore’s <span class="citation"
 data-cites="fillmore1968case">[-@fillmore1968case]</span> establishment
 of a universal inventory of <em>deep cases</em> (Agent, Patient,
-Instrument), to Mel’čuk’s Meaning-Text Theory, which formally treats
-cases as relational networks mapping surface form to deep semantic
-structure. Modern typological work by Polinsky and Preminger <span
-class="citation"
+Instrument), to Mel’čuk’s Meaning-Text Theory <span class="citation"
+data-cites="melcuk1988dependency">[-@melcuk1988dependency]</span>, which
+formally treats cases as relational networks mapping surface form to
+deep semantic structure. Modern typological work by Polinsky and
+Preminger <span class="citation"
 data-cites="polinsky2015case">[-@polinsky2015case]</span>, Blake <span
 class="citation"
 data-cites="blake2001grammatical">[-@blake2001grammatical]</span>, and
@@ -2415,26 +2426,29 @@ level grants greater representational nuance while demanding higher
 computational complexity.</p>
 <figure id="fig:discopy-transitive">
 <img src="output/figures/discopy_transitive.png"
-alt="Direct DisCoPy machine output confirms pregroup type reduction to sentence wire s. Three Word boxes carry types n (Alice), n^r \otimes s \otimes n^l (chases), and n (Bob). Two Cup contractions \varepsilon\colon n^r \otimes n \to 1 and \varepsilon\colon n^l \otimes n \to 1 cancel adjoint pairs, reducing the five-wire tensor product to the single sentence wire s. Unlike the schematic progression in , this is the direct computational output confirming diagram.cod == s. By the Curry–Howard correspondence, this diagram simultaneously constitutes a syntactic derivation, a proof of well-typedness, and (under the meaning functor of ) a compositional semantic computation. Our extension decorates n-typed wires with functorial states S: \mathbf{Ent} \to \mathbf{Case}, tracking role assignments across discourse boundaries via DisCoCirc entity wires." />
+alt="Direct DisCoPy machine output confirms pregroup type reduction to sentence wire s. Nine Word boxes carry complex noun-phrase types (e.g., n \otimes n^l for adjectives mapping an adjacent noun to a modified noun) and core verb types (n^r \otimes s \otimes n^l for the transitive “intercepts”). Eight Cup contractions sequentially resolve the argument scopes from the deepest noun phrases outward, ultimately canceling all local adjoint pairs and reducing the extended initial tensor product to the single sentence wire s. Unlike the schematic progression in \autoref{fig:string-diagram}, this is the direct computational output of a multi-word discourse component, strictly confirming diagram.cod == s. By the Curry–Howard correspondence, this diagram simultaneously constitutes a syntactic derivation, a proof of well-typedness, and (under the meaning functor of \autoref{sec:categorical-semantics}) a compositional semantic computation. Our extension decorates n-typed wires with functorial states S: \mathbf{Ent} \to \mathbf{Case}, tracking role assignments across discourse boundaries via DisCoCirc entity wires." />
 <figcaption aria-hidden="true">Direct DisCoPy machine output confirms
 pregroup type reduction to sentence wire <span
-class="math inline">\(s\)</span>. Three Word boxes carry types <span
-class="math inline">\(n\)</span> (Alice), <span
-class="math inline">\(n^r \otimes s \otimes n^l\)</span> (chases), and
-<span class="math inline">\(n\)</span> (Bob). Two Cup contractions <span
-class="math inline">\(\varepsilon\colon n^r \otimes n \to 1\)</span> and
-<span class="math inline">\(\varepsilon\colon n^l \otimes n \to
-1\)</span> cancel adjoint pairs, reducing the five-wire tensor product
-to the single sentence wire <span class="math inline">\(s\)</span>.
-Unlike the schematic progression in , this is the <em>direct
-computational output</em> confirming <code>diagram.cod == s</code>. By
-the Curry–Howard correspondence, this diagram simultaneously constitutes
-a syntactic derivation, a proof of well-typedness, and (under the
-meaning functor of ) a compositional semantic computation. Our extension
-decorates <span class="math inline">\(n\)</span>-typed wires with
-functorial states <span class="math inline">\(S: \mathbf{Ent} \to
-\mathbf{Case}\)</span>, tracking role assignments across discourse
-boundaries via <strong>DisCoCirc entity wires</strong>.</figcaption>
+class="math inline">\(s\)</span>. Nine Word boxes carry complex
+noun-phrase types (e.g., <span class="math inline">\(n \otimes
+n^l\)</span> for adjectives mapping an adjacent noun to a modified noun)
+and core verb types (<span class="math inline">\(n^r \otimes s \otimes
+n^l\)</span> for the transitive “intercepts”). Eight Cup contractions
+sequentially resolve the argument scopes from the deepest noun phrases
+outward, ultimately canceling all local adjoint pairs and reducing the
+extended initial tensor product to the single sentence wire <span
+class="math inline">\(s\)</span>. Unlike the schematic progression in
+\autoref{fig:string-diagram}, this is the <em>direct computational
+output</em> of a multi-word discourse component, strictly confirming
+<code>diagram.cod == s</code>. By the Curry–Howard correspondence, this
+diagram simultaneously constitutes a syntactic derivation, a proof of
+well-typedness, and (under the meaning functor of
+\autoref{sec:categorical-semantics}) a compositional semantic
+computation. Our extension decorates <span
+class="math inline">\(n\)</span>-typed wires with functorial states
+<span class="math inline">\(S: \mathbf{Ent} \to \mathbf{Case}\)</span>,
+tracking role assignments across discourse boundaries via
+<strong>DisCoCirc entity wires</strong>.</figcaption>
 </figure>
 <hr />
 <h1 data-number="7" id="sec:case-type-logic"><span
@@ -7995,7 +8009,7 @@ circuit: default lambeq PQC ansatz for noun and verb boxes</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: left;">Strongly entangling layer PQC ansatz used
 for discourse-level lambeq Gen II circuits</td>
-<td style="text-align: center;">§4b</td>
+<td style="text-align: center;">§4c</td>
 </tr>
 <tr>
 <td style="text-align: left;">Pointer state</td>
@@ -8625,8 +8639,12 @@ class="math inline">\(H[Z]\)</span></td>
 <h1 data-number="24" id="sec:test-suite-inventory"><span
 class="header-section-number">24</span> Appendix C: Automated Test Suite
 Inventory</h1>
-<p>This appendix lists the test categories behind the counts reported in
-. Every test uses real mathematical computations—no mocks or fakes.</p>
+<p>This appendix summarizes the <strong>categories</strong> of tests
+behind the counts in . Aggregate figures are injected at build time
+(<strong>804</strong> tests, <strong>47</strong> files; see
+<code>src/generate_manuscript_metrics.py</code> and
+<code>output/metrics.json</code>). Every test uses real mathematical
+computations—no mocks or fakes.</p>
 <ul>
 <li><strong>Categorical axiom tests</strong>: Identity morphism
 existence, composition associativity, weight invariants,
@@ -8639,70 +8657,73 @@ composition check, role clustering</li>
 diagram equality</li>
 <li><strong>Metrics tests</strong>: Normal form preservation, depth
 computation with graceful fallback for pregroup diagrams</li>
-<li><strong>Natural transformation tests</strong> (20 tests): Component
-morphism construction, <code>naturality_holds</code> /
+<li><strong>Natural transformation tests</strong>: Component morphism
+construction, <code>naturality_holds</code> /
 <code>verify_naturality</code> on identity and incomplete maps, identity
 transformation generation, vertical composition of transformations,
-completeness checking over all domain objects</li>
-<li><strong>Complexity metrics tests</strong> (17 tests): DisCoPy
-box/cup/cap counting on transitive/ditransitive diagrams, normal form
-computation and snake equation verification, syntactic complexity
-scoring with configurable weights, cross-diagram comparison
-utilities</li>
-<li><strong>Topos theory tests</strong> (18 tests): Geometric theory
-construction from standard and minimal case categories, classifying
-topos invariant computation, Morita equivalence verification (positive
-and negative cases), bridge transfer between equivalent theories with
+completeness checking over domain objects</li>
+<li><strong>Complexity metrics tests</strong>: DisCoPy box/cup/cap
+counting on transitive/ditransitive diagrams, normal form computation
+and snake equation verification, syntactic complexity scoring with
+configurable weights, cross-diagram comparison utilities</li>
+<li><strong>Topos theory tests</strong>: Geometric theory construction
+from standard and minimal case categories, classifying topos invariant
+computation, Morita equivalence verification (positive and negative
+cases), bridge transfer between equivalent theories with
 transfer-blocking for non-equivalent theories, enriched theory
 construction</li>
-<li><strong>Fluid-S tests</strong> (22 tests): Volitional/non-volitional
-mapping, probability splits, Bats language examples, kernel computation,
-enriched weight scaling</li>
-<li><strong>Active inference tests</strong> (107 tests across 7 test
-files): Belief construction and entropy, KL divergence (Gibbs’
-inequality, asymmetry), variational free energy, Bayesian belief update
-with zero-likelihood edge case, sequential multi-word belief update
-(five-step generative loop with entropy convergence), prediction error
-scaling including P600 ERP prediction with boundary weights, expected
-free energy decomposition (epistemic vs pragmatic), magnitude-based
-garden-path reanalysis cost with symmetry, N400 semantic violation proxy
-(includes integration tests in
+<li><strong>Fluid-S tests</strong>: Volitional/non-volitional mapping,
+probability splits, Bats language examples, kernel computation, enriched
+weight scaling</li>
+<li><strong>Active inference tests</strong>
+(<code>tests/test_cognitive_*.py</code>): Belief construction and
+entropy, KL divergence (Gibbs’ inequality, asymmetry), variational free
+energy, Bayesian belief update with zero-likelihood edge case,
+sequential multi-word belief update (five-step generative loop with
+entropy convergence), prediction error scaling including P600 ERP
+prediction with boundary weights, expected free energy decomposition
+(epistemic vs pragmatic), magnitude-based garden-path reanalysis cost
+with symmetry, N400 semantic violation proxy (including
 <code>test_cognitive_integration.py</code>)</li>
-<li><strong>Quantum case tests</strong> (20 tests): Crisp POVM
-orthogonal projectors, graded proto-role POVM, Fluid-S basis rotation,
-density matrix creation, (in ) P(c|ρ) = Tr(E_c ρ) verification</li>
-<li><strong>Cognitive security tests</strong> (18 tests): Type-violation
-detection, case frame validation, injection score computation,
-magnitude-based topological robustness, composition inequality as
-security boundary</li>
-<li><strong>Ditransitive tests</strong> (12 tests): Three-argument
-sentence creation, NOM/ACC/DAT case assignment, DisCoPy diagram with 3
-cups, complexity comparison with transitive</li>
-<li><strong>Visualization tests</strong> (4 tests): Complexity
-comparison bar chart rendering, normal form comparison chart, radar
-chart generation—all producing valid PNG output files</li>
+<li><strong>Quantum case tests</strong>: Crisp POVM orthogonal
+projectors, graded proto-role POVM, Fluid-S basis rotation, density
+matrix creation, (in ) P(c|ρ) = Tr(E_c ρ) verification</li>
+<li><strong>Cognitive security tests</strong>: Type-violation detection,
+case frame validation, injection score computation, magnitude-based
+topological robustness, composition inequality as security boundary</li>
+<li><strong>Ditransitive tests</strong>: Three-argument sentence
+creation, NOM/ACC/DAT case assignment, DisCoPy diagram with three cups,
+complexity comparison with transitive</li>
+<li><strong>Visualization tests</strong>
+(<code>tests/test_visualization_*.py</code>): Category graphs, enriched
+heatmaps, functor panels, string and DisCoPy diagrams, complexity and
+DAIF plots, quantum and security plots, Fluid-S landscapes, syntactic
+panels—PNG output and structural checks where applicable</li>
 <li><strong>DAIF subpackage tests</strong> (161 tests across 7 test
-files with 100% pass rate):
+files):
 <ul>
-<li><code>test_daif_core.py</code> (24 tests): Distributional Bellman
-operator, push-forward return, C51 categorical projection</li>
-<li><code>test_daif_quantile.py</code> (21 tests): QR-DQN quantile Huber
-loss, IQN risk distortion (neutral/optimistic/pessimistic/CVaR),
-Wasserstein distances <span class="math inline">\(W_1\)</span>/<span
+<li><code>test_daif_core.py</code>: Distributional Bellman operator,
+push-forward return, C51 categorical projection</li>
+<li><code>test_daif_quantile.py</code>: QR-DQN quantile Huber loss, IQN
+risk distortion (neutral/optimistic/pessimistic/CVaR), Wasserstein
+distances <span class="math inline">\(W_1\)</span>/<span
 class="math inline">\(W_2\)</span></li>
-<li><code>test_daif_inference.py</code> (25 tests):
+<li><code>test_daif_inference.py</code>:
 <code>distributional_case_assignment()</code> posterior convergence,
 variational message passing, Bethe free energy, expected information
 gain</li>
-<li><code>test_daif_prediction.py</code> (27 tests): DPE
-precision-weighting, N400/P600 amplitude from return distributions, full
+<li><code>test_daif_prediction.py</code>: DPE precision-weighting,
+N400/P600 amplitude from return distributions, full
 <code>ERPProfile</code> waveform generation and peak latency</li>
-<li><code>test_daif_policy.py</code> (19 tests): <code>G_policy()</code>
-EFE + risk term, Boltzmann policy temperature scaling, distributional
-epistemic value</li>
-<li><code>test_daif_metrics.py</code> (24 tests): Convergence
-diagnostics (monotonicity, reduction percentage), distributional KL
-divergence, quantile calibration error, return entropy</li>
+<li><code>test_daif_policy.py</code>: <code>G_policy()</code> EFE + risk
+term, Boltzmann policy temperature scaling, distributional epistemic
+value</li>
+<li><code>test_daif_metrics.py</code>: Convergence diagnostics
+(monotonicity, relative reduction), distributional KL divergence,
+quantile calibration error, return entropy</li>
+<li><code>test_daif_types.py</code>: <code>DistributionalReturn</code>
+helpers, <code>DAIFResult</code> / <code>ERPProfile</code> properties
+(with integration coverage of re-exported DAIF entrypoints)</li>
 </ul></li>
 </ul>
 </body>

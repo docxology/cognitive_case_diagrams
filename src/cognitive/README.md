@@ -1,4 +1,4 @@
-# cognitive/ — §7a: Active Inference
+# cognitive/ — §7: Active Inference as a Process Theory
 
 Scalar-belief active inference: variational free energy, belief updating, and prediction-error proxies. **Distributional** inference (return distributions, quantile TD, DAIF) lives in [`../daif/`](../daif/).
 

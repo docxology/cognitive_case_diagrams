@@ -13,6 +13,7 @@ Example: "Alice gave Bob a book"
 
 import logging
 from dataclasses import dataclass, field
+from typing import Any
 
 from ..case_systems.case_category import CaseRole
 from .string_diagram import AtomicType, Wire, Box, Sentence, N, S
@@ -126,7 +127,7 @@ def create_discopy_ditransitive(
     verb: str,
     indirect_object: str,
     direct_object: str,
-):
+) -> Any:
     """Create a DisCoPy ditransitive diagram.
 
     Type structure:

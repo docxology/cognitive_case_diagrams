@@ -1,4 +1,4 @@
-"""Cognitive security subpackage — §9b of the manuscript.
+"""Cognitive security subpackage — manuscript §9b (`09b_cognitive_security.md`).
 
 Type-violation detection and injection scoring:
     - cognitive_security: CaseFrameValidator, TypeViolation, robustness

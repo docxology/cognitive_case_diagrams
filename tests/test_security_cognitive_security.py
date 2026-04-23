@@ -100,14 +100,14 @@ class TestInjectionScore:
         score = injection_score(violations)
         assert score == pytest.approx(0.9)
 
-    def test_multiple_violations_average(self) -> None:
-        """Multiple violations produce average severity."""
+    def test_multiple_violations_max(self) -> None:
+        """Multiple violations return the maximum severity (most critical wins)."""
         violations = [
             TypeViolation(CaseRole.NOM, CaseRole.ACC, "test", 0.6, ""),
             TypeViolation(CaseRole.ACC, CaseRole.DAT, "test", 0.4, ""),
         ]
         score = injection_score(violations)
-        assert score == pytest.approx(0.5)
+        assert score == pytest.approx(0.6)
 
     def test_score_capped_at_one(self) -> None:
         """Score is capped at 1.0."""

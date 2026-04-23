@@ -1,0 +1,1 @@
+\beamer@sectionintoc {1}{Topological Quantum Neural Networks and ZX-Calculus: From Spin-Networks to Categorical Case Diagrams}{1}{0}{1}

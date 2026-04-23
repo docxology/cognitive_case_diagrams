@@ -11,6 +11,7 @@ References:
     Yedidia et al. (2001) — Bethe Free Energy & Loopy Belief Propagation
     Akgül et al. (2026) — Distributional Active Inference
 """
+from __future__ import annotations
 
 import logging
 from typing import Optional
@@ -66,6 +67,10 @@ def distributional_case_assignment(
         raise ValueError(f"Likelihoods ({len(likelihoods)}) must match roles ({n})")
 
     if transition_matrix is None:
+        logger.warning(
+            "transition_matrix is None — using identity (no transition dynamics). "
+            "Pass an explicit matrix to model temporal case-role dynamics."
+        )
         T = np.eye(n)
     else:
         T = np.asarray(transition_matrix, dtype=np.float64)
@@ -76,6 +81,9 @@ def distributional_case_assignment(
 
     current = prior
     fe_trajectory: list[float] = []
+    kl_trajectory: list[float] = []       # D_KL(q_posterior || q_pushed) per iteration
+    loglik_trajectory: list[float] = []   # E_q[log p(o|s)] per iteration
+    signed_deltas: list[float] = []  # signed ΔF for oscillation detection
     convergence_iter = n_iterations
 
     # Reward proxy: log-likelihood as reward signal
@@ -88,9 +96,10 @@ def distributional_case_assignment(
         q_pushed = T.T @ q
         total_pushed = q_pushed.sum()
         if total_pushed <= 0:
-            logger.warning("Push-forward degenerate at iteration %d", iteration)
-            break
-        q_pushed = q_pushed / total_pushed
+            logger.warning("Push-forward degenerate at iteration %d; using uniform fallback", iteration)
+            q_pushed = np.full(n, 1.0 / n)
+        else:
+            q_pushed = q_pushed / total_pushed
 
         # Step 2: Bayesian update q(s) ∝ p(o|s) · q_pushed(s)
         unnorm = likelihoods * q_pushed
@@ -100,17 +109,48 @@ def distributional_case_assignment(
             break
         posterior = unnorm / total
 
-        # Step 3: Variational free energy
+        # Step 3: Variational free energy with explicit KL / data-fit decomposition.
+        # F = KL(q_posterior || q_pushed) − E_q[log p(o|s)]
         safe_log_prior = np.where(q_pushed > 0, np.log(q_pushed), -100.0)
         fe = variational_free_energy(posterior, safe_log_lik, safe_log_prior)
+        kl_term = float(kl_divergence(posterior, q_pushed))
+        expected_loglik = float(np.sum(posterior * safe_log_lik))
         fe_trajectory.append(fe)
+        kl_trajectory.append(kl_term)
+        loglik_trajectory.append(expected_loglik)
 
-        # Step 4: Convergence check
+        # Step 4: Convergence & stability checks
         if len(fe_trajectory) > 1:
-            delta_fe = abs(fe_trajectory[-1] - fe_trajectory[-2])
-            if delta_fe < convergence_threshold:
+            signed_delta = fe_trajectory[-1] - fe_trajectory[-2]
+            abs_delta = abs(signed_delta)
+            signed_deltas.append(signed_delta)
+            if len(signed_deltas) > 3:
+                signed_deltas.pop(0)
+
+            # Oscillation detection: 3 consecutive alternating-sign deltas
+            if len(signed_deltas) == 3:
+                signs = [d > 0 for d in signed_deltas]
+                if signs[0] != signs[1] and signs[1] != signs[2]:
+                    logger.warning(
+                        "DAIF: oscillation detected at iteration %d "
+                        "(ΔF history: %s); halting without convergence",
+                        iteration, [f"{d:.2e}" for d in signed_deltas],
+                    )
+                    break
+
+            # Backtracking guard: FE increased (inference is diverging)
+            if signed_delta > 0:
+                logger.warning(
+                    "DAIF: free energy increased at iteration %d "
+                    "(ΔF=+%.2e); halting — inference may have diverged",
+                    iteration, signed_delta,
+                )
+                break
+
+            # Normal convergence
+            if abs_delta < convergence_threshold:
                 convergence_iter = iteration
-                logger.info("DAIF converged at iteration %d (ΔF=%.2e)", iteration, delta_fe)
+                logger.info("DAIF converged at iteration %d (ΔF=%.2e)", iteration, abs_delta)
                 break
 
         current = CaseDiagramBelief(
@@ -132,6 +172,11 @@ def distributional_case_assignment(
     var_z = max(0.0, float(q_final @ z_vec ** 2) - mean_z ** 2)
     sorted_idx = np.argsort(z_vec)
     cum = np.cumsum(q_final[sorted_idx])
+    cum = np.maximum.accumulate(cum)
+    if cum[-1] > 0:
+        cum = cum / cum[-1]
+    else:
+        cum = np.linspace(0, 1, n)
     quantile_vals = np.interp(tau_levels, cum, z_vec[sorted_idx])
 
     ret_dist = DistributionalReturn(
@@ -144,6 +189,9 @@ def distributional_case_assignment(
         "n_iterations_run": len(fe_trajectory),
         "final_entropy": float(current.entropy()),
         "most_likely_role": current.most_likely_role().name,
+        # Per-iteration decomposition F = KL − E_q[log p(o|s)] (Eq. 7-2)
+        "kl_trajectory": list(kl_trajectory),
+        "loglik_trajectory": list(loglik_trajectory),
     }
 
     return DAIFResult(
@@ -161,25 +209,32 @@ def variational_message_passing(
     likelihood_precision: np.ndarray,
     n_iterations: int = 16,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Structured variational inference via precision-weighted message passing.
+    """Categorical variational message passing over discrete case roles (Eq. 7c-vmp).
 
-    Implements the VMP update equations for a Gaussian factor graph:
+    Implements the discrete VMP update from manuscript §7c:
 
-        μ_posterior = (Λ_prior + Λ_likelihood)⁻¹ (Λ_prior μ_prior + Λ_likelihood o)
-        Λ_posterior = Λ_prior + Λ_likelihood
+        q^{t+1}(c_k) ∝ q^{t}(c_k) · exp(w_k · o_k)
 
-    For the distributional case: each role carries a precision parameter
-    (from the enriched category hom-values), and messages are weighted
-    accordingly across n_iterations of damped belief propagation.
+    where w_k is the likelihood weight (enriched hom-value acting as precision)
+    for role k, o_k is the
+    observed evidence for role k, and the precision-weighted product
+    encodes the expected log-likelihood message. The posterior is
+    normalised after each sweep. Convergence is declared when
+    ``||q^{t+1} - q^{t}||₁ < 10⁻⁶``.
+
+    The posterior precision is returned as ``Λ_posterior = Λ_prior + Λ_lik``
+    for downstream use (e.g., P600 computation).
 
     Args:
-        observations: Observed evidence vector, shape (n,).
+        observations: Observed evidence vector (e.g., morphological likelihood),
+            shape (n,). Values should be non-negative.
         prior_precision: Prior precision Λ_prior, shape (n,) or scalar.
         likelihood_precision: Likelihood precision Λ_lik, shape (n,) or scalar.
-        n_iterations: Number of message-passing sweeps.
+        n_iterations: Maximum number of message-passing sweeps.
 
     Returns:
-        Tuple (posterior_mean, posterior_precision) both shape (n,).
+        Tuple (posterior_probs, posterior_precision) both shape (n,).
+        posterior_probs sums to 1.0.
 
     Raises:
         ValueError: On non-positive precisions or shape mismatch.
@@ -195,28 +250,33 @@ def variational_message_passing(
     if np.any(ll <= 0):
         raise ValueError("likelihood_precision must be positive")
 
-    # Prior mean: uniform (zero-centred normalised)
-    mu_prior = np.zeros(n)
+    # Posterior precision: sum of prior and likelihood precisions
+    lambda_post = lp + ll
 
-    # Damped VMP: initialise at prior
-    mu = mu_prior.copy()
-    lambda_post = lp.copy()
+    # Initialise q as uniform distribution (uninformative prior)
+    q = np.full(n, 1.0 / n)
 
-    for _ in range(n_iterations):
-        # Posterior precision: sum of precisions
-        lambda_post = lp + ll
-        # Posterior mean: precision-weighted average
-        mu = (lp * mu_prior + ll * o) / lambda_post
+    # Fixed message from single observation factor (constant w.r.t. q)
+    log_message = ll * o
+    for iteration in range(n_iterations):
+        # Categorical VMP fixed-point: q ∝ prior · exp(incoming message)
+        # Prior is uniform so log(prior) cancels in normalisation.
+        log_unnorm = log_message
+        # Numerically stable softmax normalisation
+        log_unnorm = log_unnorm - log_unnorm.max()
+        q_new = np.exp(log_unnorm)
+        q_new = q_new / q_new.sum()
 
-        # Convert to probability by softmax (for distributional interpretation)
-        mu_soft = np.exp(mu - mu.max())
-        mu = mu_soft / mu_soft.sum()
+        # Convergence check: L1 norm
+        delta = float(np.sum(np.abs(q_new - q)))
+        q = q_new
+        if delta < 1e-6:
+            logger.debug("VMP converged at iteration %d (Δ=%.2e)", iteration, delta)
+            break
 
-        # Update prior mean for next sweep (damped: 0.8 old + 0.2 new)
-        mu_prior = 0.8 * mu_prior + 0.2 * mu
-
-    logger.debug("VMP converged: mean=%.3f±%.3f", mu.mean(), mu.std())
-    return mu, lambda_post
+    logger.debug("VMP posterior: max=%.3f, entropy=%.3f", q.max(),
+                 float(-np.sum(q[q > 0] * np.log(q[q > 0]))))
+    return q, lambda_post
 
 
 def bethe_free_energy(
@@ -224,21 +284,27 @@ def bethe_free_energy(
     factor_beliefs: list[np.ndarray],
     adjacency: np.ndarray,
 ) -> float:
-    """Bethe approximation of the variational free energy over a belief network.
+    """Bethe approximation of the variational free energy (Eq. 7c-bethe).
 
     The Bethe free energy decomposes the global variational FE into local
     factor and variable contributions (Yedidia et al. 2001):
 
-        F_Bethe = Σ_α E_b_α[log b_α/f_α] − Σ_i (d_i − 1) E_b_i[log b_i]
+        F_Bethe = Σ_α E_{b_α}[log b_α - log f_α] − Σ_i (d_i − 1) H(b_i)
 
-    where b_α are factor beliefs, f_α are factor potentials approximated
-    by the observation likelihoods, b_i are variable (role) beliefs,
-    and d_i is the degree of variable i in the factor graph.
+    where b_α are factor beliefs, f_α are factor potentials, b_i are
+    variable (role) marginals, d_i is the degree of variable i in the
+    factor graph, and H(b_i) = -Σ b_i log b_i is the entropy.
+
+    Each factor belief must have the same length as the variable beliefs
+    (one entry per case role). If a factor involves only a subset of
+    variables, the adjacency matrix encodes this — but the belief array
+    is still defined over all n roles (marginalised appropriately by
+    the caller).
 
     Args:
         belief: CaseDiagramBelief — the variable (role) marginals b_i.
-        factor_beliefs: List of factor belief arrays, each shape (n_i,).
-            Each array is a probability distribution over the factor's scope.
+        factor_beliefs: List of factor belief arrays, each shape (n,).
+            Each array is a probability distribution over case roles.
         adjacency: Binary adjacency matrix (n_vars × n_factors), shape (n,m).
             adjacency[i,j] = 1 if variable i participates in factor j.
 
@@ -260,24 +326,29 @@ def bethe_free_energy(
     # Variable degrees: d_i = number of factors variable i participates in
     degrees = adjacency.sum(axis=1)  # shape (n,)
 
-    # Variable entropy contribution: -(d_i - 1) * H(b_i)
-    h_vars = float(np.sum(b_vars * np.log(b_vars + 1e-300)))  # -H
-    var_contrib = float(np.sum((degrees - 1) * b_vars * np.log(b_vars + 1e-300)))
+    # Variable entropy: H(b_i) = -Σ b_i log b_i
+    safe_log_b = np.log(b_vars)
+    var_entropy = float(-np.sum(b_vars * safe_log_b))  # H(b)
 
-    # Factor contribution: KL(b_α || f_α) for each factor
+    # Variable contribution: Σ_i (d_i - 1) * H(b_i)
+    # Since b_vars is a single shared distribution, H(b_i) = var_entropy for all i.
+    var_contrib = float(np.sum(degrees - 1)) * var_entropy if n > 0 else 0.0
+
+    # Factor contribution: Σ_α E_{b_α}[log b_α - log f_α] = KL(b_α || f_α)
     factor_contrib = 0.0
     for alpha, fb in enumerate(factor_beliefs):
         fb_arr = np.asarray(fb, dtype=np.float64)
-        # Marginalise down from full factor belief to matching size
-        n_alpha = min(n, len(fb_arr))
-        fb_marg = fb_arr[:n_alpha]
-        b_marg = b_vars[:n_alpha]
-        # Normalise both
-        fb_marg = fb_marg / fb_marg.sum() if fb_marg.sum() > 0 else np.full(n_alpha, 1.0 / n_alpha)
-        b_marg = b_marg / b_marg.sum()
-        # KL(b||f)
-        safe_log = np.where(fb_marg > 0, np.log(fb_marg), -100.0)
-        kl = float(np.sum(b_marg * (np.log(b_marg + 1e-300) - safe_log)))
+        # Pad or truncate to match n roles, then normalise
+        if len(fb_arr) < n:
+            fb_padded = np.full(n, 1e-300)
+            fb_padded[:len(fb_arr)] = fb_arr
+            fb_arr = fb_padded
+        elif len(fb_arr) > n:
+            fb_arr = fb_arr[:n]
+        fb_norm = fb_arr / fb_arr.sum() if fb_arr.sum() > 0 else np.full(n, 1.0 / n)
+        b_norm = b_vars / b_vars.sum()
+        # KL(b || f_α)
+        kl = float(np.sum(b_norm * (np.log(b_norm + 1e-300) - np.log(fb_norm + 1e-300))))
         factor_contrib += kl
 
     bethe_fe = factor_contrib - var_contrib
@@ -292,9 +363,9 @@ def expected_information_gain(
 ) -> np.ndarray:
     """Epistemic value: expected information gain for each candidate observation.
 
-    Computes the expected KL divergence between predicted posterior and current
-    prior for each candidate observation — this is the epistemic value (EIG) of
-    making that observation:
+    Implements Eq. 7c-eig from the manuscript. Computes the expected KL
+    divergence between predicted posterior and current prior for each candidate
+    observation — the epistemic value (EIG) of making that observation:
 
         EIG(o*) = E_q[KL(q(s|o*) || q(s))]
                 = Σ_s q(s|o*) log(q(s|o*)/q(s)) · q(s,o*)

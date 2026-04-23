@@ -1,4 +1,4 @@
-# case_systems/ — §2: Case Theory
+# case_systems/ — §2: Case Systems and Categories
 
 Categorical formalization of linguistic case systems: case roles as objects, grammatical relations as morphisms, alignment as functors.
 
@@ -16,10 +16,11 @@ from src.case_systems.natural_transformation import NaturalTransformation
 | Object | Module | Purpose |
 |--------|--------|---------|
 | `CaseRole` | `case_category` | 12-member enum: NOM/ACC/.../ERG/ABS/S/A/P |
-| `CaseCategory` | `case_category` | Category with `compose()`, `identity()`, `is_well_formed()` |
+| `CaseCategory` | `case_category` | Category with `compose()` and DAIF `assess_daif_surprisal()` (prompt-security type-checking lives in `src.security.cognitive_security.CaseFrameValidator`) |
 | `Morphism` | `case_category` | Frozen dataclass: `source`, `target`, `label`, `weight` |
 | `AlignmentFunctor` | `functor` | Cross-linguistic case mapping functor |
-| `NaturalTransformation` | `natural_transformation` | Between functors; `naturality_holds()` / `verify_naturality()` check §2 squares on `source.source.morphisms` |
+| `MonoidalFunctor` | `functor` | Secures topological prompt injections via fibrational preservation testing |
+| `NaturalTransformation` | `natural_transformation` | Between functors; `naturality_holds()` / `verify_naturality()` check §2b naturality squares |
 | `FluidSFunctor` | `fluid_s` | Context-dependent Fluid-S with `split_probability()` |
 
 ## Factory Functions

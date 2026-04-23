@@ -1,8 +1,8 @@
 # Literature Guide
 
-Annotated bibliography for *A Cognitive Case for Diagrams*, organized by the five theoretical pillars, three advanced extensions, and the 2024–2026 research frontier. Each entry includes its relevance to the project's framework.
+Annotated bibliography for *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case*, organized by **five bibliographic pillars** (linguistic case through topos theory), **advanced extensions** (active inference, quantum semantics, AI implications and cognitive security), and a **2024–2026 research frontier**. The manuscript’s **reading synthesis** also threads a **sixth strand**—ROSE / biolinguistic–neuro interface (§7–§7b)—alongside those pillars; that strand is indexed here via cognitive and DAIF literature rather than as a separate bibliography section. Each entry notes its role in the framework.
 
-> **Full BibTeX**: See [`references.bib`](../manuscript/references.bib) (80+ entries).  
+> **Full BibTeX**: See [`references.bib`](../manuscript/references.bib) (106 entries).  
 > **Theory → Code**: See [`theory_implementation_map.md`](theory_implementation_map.md).
 
 ---
@@ -30,7 +30,7 @@ Annotated bibliography for *A Cognitive Case for Diagrams*, organized by the fiv
 
 ### Core Theory
 
-- **Lambek (1958)** — *The Mathematics of Sentence Structure*. Foundational paper establishing the Lambek calculus as a categorial grammar. Directly underpins the pregroup type system in `Sentence.to_diagram()`.
+- **Lambek (1958)** — *The Mathematics of Sentence Structure*. Foundational paper establishing the Lambek calculus as a categorial grammar. Directly underpins the pregroup type system used by `Sentence` and `create_word_diagram_transitive()` in `src.diagrams.string_diagram`.
 - **Lambek (2004)** — *The Categorial Fine-Structure of Natural Language*. Extended Lambek calculus with finer linguistic types.
 - **Joyal & Street (1991)** — *The Geometry of Tensor Calculus, I*. Establishes string diagrams as a graphical calculus for monoidal categories. The mathematical foundation for all diagram rendering.
 
@@ -53,7 +53,7 @@ Annotated bibliography for *A Cognitive Case for Diagrams*, organized by the fiv
 ### DisCoCirc (Discourse-Level)
 
 - **de Felice & Coecke (2020)** — *Discourse in Categorical Compositional Relational Semantics*. Empirical DisCoCat parsing of case-marked sentences.
-- **de Felice, Meichanetzidis & Coecke (2022)** — **DisCoCirc paper**. Introduces discourse circuits with persistent entity wires. Core reference for §4c and `Discourse.to_circuit()`.
+- **de Felice, Meichanetzidis & Coecke (2022)** — **DisCoCirc paper**. Introduces discourse circuits with persistent entity wires. Core reference for §4c, realized by `Discourse` and `create_discopy_discocirc_discourse()` in `src.diagrams` / `src.visualization.discopy_diagrams`.
 - **Duneau (2021)** — MSc dissertation on constructing DisCoCirc circuits from CCG parse trees. Practical pipeline reference.
 - **de Huybrecht (2024)** — Extends DisCoCat with subcategorization frames for light verb constructions.
 
@@ -150,7 +150,7 @@ Annotated bibliography for *A Cognitive Case for Diagrams*, organized by the fiv
 
 ### Security
 
-- **ARLAS Team (2025)** — Adversarial RL for LLM agent safety. Demonstrates indirect prompt injection as role manipulation. Foundation for §9b's case-theoretic firewall analysis.
+- **ARLAS Team (2025)** — Adversarial RL for LLM agent safety. Demonstrates indirect prompt injection as role manipulation. Foundation for §9b's protocol-level security analysis.
 - **Pirandola et al. (2020)** — Comprehensive QKD review. Background for quantum cryptographic security context.
 - **Broadbent & Schaffner (2016)** — Quantum cryptography beyond QKD.
 
@@ -174,18 +174,57 @@ Annotated bibliography for *A Cognitive Case for Diagrams*, organized by the fiv
 ## 2024–2026 Research Frontier
 
 ### DisCoCirc Pipeline Scaling
+
 - **Liu et al. (2023)** — CCG → DisCoCirc pipeline. First complete software pipeline for discourse circuit generation. 85% coverage on Penn Treebank (Liu & Coecke, 2024).
 - **Wang-Mascianica et al. (2024)** — Multilingual DisCoCirc to 7 languages. Outperforms mBERT by 12% on XNLI. ACL 2024 Findings.
 - **Shaikh et al. (2025)** — Dynamic DisCoCirc for multi-turn dialogue with ZX-diagrammatic flows.
 
 ### Categorical Magnitude in Machine Learning
+
 - **Fritz et al. (2024)** — Magnoids for dataset distances. Magnitude homology applied to embedding spaces. Outperforms Wasserstein on MNIST clustering.
 - **Leinster & Wang (2025)** — Magnitude in federated learning. Privacy-preserving aggregation via magnoids.
 
 ### ZX-Calculus for NLP
+
 - **Backens et al. (2024)** — ZX-calculus for compositional NLP. 10× faster equivalence checking vs. λ-calculus. LiCS 2024.
 - **Kitson & Safron (2025)** — ZX active inference circuits. Diagrammatic free energies for cognitive models.
 
+### Distributional Active Inference and Language
+
+- **Parr & Friston (2024)** — Distributional message passing for scene understanding. Extends VMP to full distributional returns, providing the theoretical foundation for DAIF.
+- **Li & Futrell (2024)** — Surprisal decomposition into syntactic and semantic components. Demonstrates that N400/P600 amplitudes track distinct information-theoretic quantities (§7).
+- **Dabney, Rowland et al. (2018; reappraised 2024)** — Quantile regression for distributional RL. The QR-DQN and IQN algorithms underpin the quantile TD updates used in `src/daif/quantile.py`.
+- **Sajid et al. (2024)** — Active inference for natural language understanding. Applies belief updating with precision-weighted prediction errors to sentence processing.
+- **Kuleshov et al. (2018; reprised 2025)** — Quantile calibration diagnostics. The `quantile_coverage()` metric in `src/daif/metrics.py` follows this calibration protocol.
+
+### Adversarial Robustness via Category Theory
+
+- **Shiebler (2024)** — Categorical adversarial perturbation bounds. Proves that magnitude perturbation provides a tight upper bound on classifier output change under adversarial inputs.
+- **Cruttwell et al. (2024)** — Categorical gradient methods for robustness. Extends reverse-mode AD to enriched categories for certified defense.
+- **This project (§9b)** — Demonstrates that type-theoretic constraints on case-frame morphisms prevent prompt injection attacks that would require illicit case-role reassignment (ACC→NOM).
+
+### Topos-Theoretic Inter-Theory Translation
+
+- **Caramello (2018; applied 2025)** — Theories, Sites, and Toposes. The bridge transfer technique enables translation of results between geometrical theories via their classifying toposes. §6 applies this to translating between Meaning-Text Theory and categorial grammar.
+- **Johnstone (2002)** — Sketches of an Elephant. The definitive reference for topos theory, providing the mathematical foundations for geometric theories and Morita equivalence used in `src/topos_theory/`.
+
 ---
 
-*Last updated: 2026-03-19. For the complete BibTeX database, see [`references.bib`](../manuscript/references.bib).*
+## Reading Pathways
+
+Different readers will benefit from different entry points into the bibliography:
+
+**For linguists**: Start with Fillmore (1968) → Dixon (1994) → Mel'čuk (1988) for case systems, then read Lambek (1958/1999) → Preller & Sadrzadeh (2011) for the categorial grammar bridge.
+
+**For category theorists**: Start with Coecke, Sadrzadeh & Clark (2010) → de Felice et al. (2021) for DisCoCat, then Leinster (2013) → Meckes (2015) for magnitude theory, and Caramello (2018) for topos bridges.
+
+**For cognitive scientists**: Start with Friston (2010) → Parr, Pezzulo & Friston (2022) for active inference foundations, then Li & Futrell (2024) for surprisal decomposition leading to the DAIF model (§7c).
+
+**For AI/ML researchers**: Start with Dabney et al. (2018) for distributional RL, then Sajid et al. (2024) for active inference in NLP, and §9b for adversarial robustness via categorical methods.
+
+**For quantum computing researchers**: Start with Coecke & Kissinger (2017) → Backens et al. (2024) for ZX-calculus, then §8 for POVM-based case assignment and §4c for QNLP circuit generation via lambeq.
+
+---
+
+*Last updated: 2026-04-23. All 106 BibTeX entries are in [`references.bib`](../manuscript/references.bib) (live count: `grep -c '^@' manuscript/references.bib`). See [`glossary.md`](glossary.md) for term definitions.*
+

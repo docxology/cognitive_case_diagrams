@@ -18,6 +18,7 @@ Key components:
 
 All computations use real methods — no mocks.
 """
+from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
@@ -75,7 +76,7 @@ class CaseFrameValidator:
         """
         self.category = category or standard_case_category()
         self.enriched = enriched
-        self._valid_morphism_pairs = set()
+        self._valid_morphism_pairs: set[tuple[CaseRole, CaseRole]] = set()
         self._build_valid_pairs()
         logger.info(
             "CaseFrameValidator initialized: %d valid morphism pairs",
@@ -92,8 +93,8 @@ class CaseFrameValidator:
 
     def validate_assignment(
         self,
-        assignments: dict,
-    ) -> list:
+        assignments: dict[str, CaseRole],
+    ) -> list[TypeViolation]:
         """Validate a case frame assignment.
 
         Args:
@@ -182,7 +183,7 @@ def detect_type_violation(
 
 
 def injection_score(
-    violations: list,
+    violations: list[TypeViolation],
 ) -> float:
     """Compute aggregate injection severity score.
 
@@ -198,11 +199,12 @@ def injection_score(
     if not violations:
         return 0.0
 
-    # Weighted average of severities, capped at 1.0
+    # Max severity drives the score; mean is accumulated for context.
+    # Using max prevents a single critical violation from being diluted.
     severities = [v.severity for v in violations]
-    score = min(1.0, sum(severities) / len(severities))
+    score = max(severities)
     logger.info("Injection score: %.3f from %d violations", score, len(violations))
-    return score
+    return float(score)
 
 
 def topological_robustness(
@@ -238,7 +240,7 @@ def topological_robustness(
 
 def semantic_integrity_check(
     enriched: EnrichedCategory,
-) -> list:
+) -> list[tuple[CaseRole, CaseRole, CaseRole]]:
     """Validate enriched composition inequality as a security boundary.
 
     Checks C(A,C) ≥ C(A,B) · C(B,C) for all triples.

@@ -1,4 +1,4 @@
-"""Cognitive integration subpackage — §7a of the manuscript (scalar active inference).
+"""Cognitive integration subpackage — §7 of the manuscript (scalar active inference).
 
 Active inference computations for case-theoretic reasoning, organized
 into focused modules:

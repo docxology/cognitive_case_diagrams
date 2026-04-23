@@ -20,6 +20,20 @@ _SRC_PATH = _PROJECT_ROOT / "src"
 if str(_SRC_PATH) not in sys.path:
     sys.path.insert(0, str(_SRC_PATH))
 
+
+def pytest_configure(config):
+    """Ensure this project root is first on ``sys.path``.
+
+    Repo-level ``conftest.py`` prepends the template root so ``import scripts``
+    would otherwise resolve to ``<repo>/scripts/`` instead of this project's
+    ``scripts/`` (e.g. ``generate_category_unpacking_figures``). Nested
+    ``pytest_configure`` runs after parents, so prepending here wins.
+    """
+    root = str(_PROJECT_ROOT.resolve())
+    if root in sys.path:
+        sys.path.remove(root)
+    sys.path.insert(0, root)
+
 import matplotlib
 matplotlib.use("Agg")
 
@@ -65,8 +79,26 @@ try:
 except KeyError:
     pass
 
+import random as _random
+
+import numpy as _np
 import pytest
 import matplotlib.pyplot as plt
+
+
+@pytest.fixture(autouse=True)
+def _deterministic_seed():
+    """Seed the global RNGs before every test for bit-for-bit reproducibility.
+
+    Stochastic test paths (DAIF sampling, quantile networks, distributional
+    inference) must be reproducible across runs and across CI environments.
+    A function-scope autouse fixture is the smallest hammer that guarantees
+    every test starts from the same RNG state without each individual test
+    having to remember to seed itself.
+    """
+    _random.seed(42)
+    _np.random.seed(42)
+    yield
 
 
 @pytest.fixture(autouse=True)

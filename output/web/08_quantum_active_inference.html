@@ -174,18 +174,50 @@
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:quantum-active-inference">TQNNs and ZX-Calculus</h1>
-<p>The preceding sections have established that categorical string
-diagrams—from DisCoCat’s pregroup derivations () through enriched
-hom-values () to topos-theoretic transfer ()—provide a unified
-diagrammatic language for case-theoretic reasoning. This section extends
-the framework into its natural quantum generalization: topological
+<h1 id="sec:quantum-active-inference">Topological Quantum Neural
+Networks and ZX-Calculus: From Spin-Networks to Categorical Case
+Diagrams</h1>
+<p><strong>Where we are in the argument.</strong> The preceding sections
+have established that categorical string diagrams—from DisCoCat’s
+pregroup derivations () through enriched hom-values () to
+topos-theoretic transfer ()—provide a unified diagrammatic language for
+case-theoretic reasoning (<strong>theoretical synthesis</strong>). This
+section extends the framework with a literature bridge to topological
 quantum neural networks (TQNNs), the ZX-calculus, and sheaf-theoretic
-quantum semantic communication. The central observation is that the same
-monoidal-categorical architecture that underlies DisCoCat string
-diagrams also underlies quantum circuits, TQFT cobordisms, and quantum
-information flow—making active inference on case-marked relational
-structure a quantum topological computation.</p>
+quantum semantic communication (<strong>theoretical bridge to prior
+art</strong>).</p>
+<p>The <code>src/quantum/quantum_case.py</code> module implements a
+concrete POVM-based measurement model for case roles (tested in the
+project suite; see ). The broader TQNN, ZX-rewrite, and lambeq
+compilation claims remain literature connections and proposed extensions
+rather than full local implementations. The central observation is that
+the same monoidal-categorical architecture underlies both classical
+DisCoCat diagrams and quantum processes.</p>
+<p><strong>Position relative to prior work.</strong> Each ingredient we
+draw on has independent prior art. TQNNs as spin-network computations
+are due to Fields, Marcianò, and collaborators <span class="citation"
+data-cites="fields2022tqnn fields2025amplituhedra">[@fields2022tqnn;
+@fields2025amplituhedra]</span>; the ZX-calculus and its
+circuit-extraction theory are due to Kissinger, van de Wetering, Coecke,
+and the Picturing-Quantum-Processes school <span class="citation"
+data-cites="kissinger2020zx coeckekissinger2017">[@kissinger2020zx;
+@coeckekissinger2017]</span>; and quantum natural language processing on
+present-day hardware has been demonstrated by the lambeq pipeline <span
+class="citation"
+data-cites="lorenz2021lambeq">[@lorenz2021lambeq]</span> and the
+Quantinuum quantum-NLP programme. What is <em>new</em> in this section
+is none of those constructions individually; rather it is the
+<strong>identification</strong> that the <em>same</em>
+monoidal-functorial scaffolding can carry a <em>case-theoretic</em>
+payload — in particular, that the POVM family <span
+class="math inline">\(\{E_c\}\)</span> of can be read both as a
+Born-rule case-assignment device and as the pointer-basis selected by a
+quantum reference frame in a TQNN — and the consequent claim that case
+assignment, ZX-rewrite verification, and DAIF-style distributional
+inference () are three views of one diagrammatic process. This is a
+<em>bridge</em> result, not a hardware claim: nothing in this section
+asserts that fault-tolerant quantum hardware is required, and the
+distributional pipeline runs entirely on classical numerics.</p>
 <h2 id="qnns-as-spin-networks">QNNs as Spin-Networks</h2>
 <h3
 id="tqft-as-the-forward-pass-reshetikhinturaev-invariants-compute-network-amplitudes">TQFT
@@ -253,7 +285,7 @@ id="zx-calculus-topological-string-diagrams-where-graph-rewrites-are-quantum-pro
 Topological String Diagrams Where Graph Rewrites Are Quantum Proofs</h2>
 <h3 id="string-diagrams-for-quantum-processes">String Diagrams for
 Quantum Processes</h3>
-<p>The powerful ZX-calculus provides a diagrammatic language for quantum
+<p>The ZX-calculus provides a diagrammatic language for quantum
 circuits, representing them as string diagrams in a symmetric monoidal
 category of finite-dimensional Hilbert spaces and linear maps <span
 class="citation"
@@ -284,7 +316,10 @@ semantics are determined entirely by how components are wired—the same
 compositional principle underlying DisCoCat and the case categories of
 .</li>
 </ul>
-<h3 id="cups-are-spiders">Cups Are Spiders</h3>
+<h3
+id="pregroup-cups-and-zx-spiders-are-instances-of-the-same-compact-closed-morphism">Pregroup
+Cups and ZX Spiders Are Instances of the Same Compact-Closed
+Morphism</h3>
 <p>The structural parallel between pregroup grammar diagrams and
 ZX-diagrams is not accidental. Both are instances of the same
 mathematical object: morphisms in a compact closed monoidal category
@@ -312,11 +347,13 @@ in ZX.</li>
 principle, be compiled into ZX circuits and executed on quantum
 hardware—a connection already exploited by the lambeq quantum NLP
 pipeline <span class="citation"
-data-cites="lorenz2023lambeq">[@lorenz2023lambeq]</span>.</p>
-<h2 id="one-diagram-three-interpretations">One Diagram, Three
-Interpretations</h2>
-<h3 id="common-language-ribbon-and-tensor-diagrams">Common Language:
-Ribbon and Tensor Diagrams</h3>
+data-cites="lorenz2021lambeq">[@lorenz2021lambeq]</span>.</p>
+<h2
+id="one-diagram-three-interpretations-tqnn-zx-and-discocat-share-a-monoidal-functor">One
+Diagram, Three Interpretations: TQNN, ZX, and DisCoCat Share a Monoidal
+Functor</h2>
+<h3 id="a-common-language-of-ribbon-and-tensor-diagrams">A Common
+Language of Ribbon and Tensor Diagrams</h3>
 <p>Both ZX-diagrams and TQNNs are topological string diagrams evaluated
 by monoidal functors into the category of Hilbert spaces and linear
 maps. The alignment becomes explicit when stated precisely:</p>

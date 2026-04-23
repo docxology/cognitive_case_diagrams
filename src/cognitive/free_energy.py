@@ -57,13 +57,19 @@ def variational_free_energy(
     log_likelihood: np.ndarray,
     log_prior: np.ndarray,
 ) -> float:
-    """Compute variational free energy F = E_q[log q - log p].
+    """Compute variational free energy.
 
-    F = ∑_i q_i (log q_i - log p(o|s_i) - log p(s_i))
-      = KL(q || p) - E_q[log p(o|s)]
+    The implementation computes the expectation form
 
-    This is the quantity minimized by perceptual inference in
-    active inference (manuscript §7).
+        F = ∑_i q_i (log q_i − log p(o|s_i) − log p(s_i))
+          = E_q[log q] − E_q[log p(o|s)] − E_q[log p(s)]
+          = KL(q || p(s)) − E_q[log p(o|s)]
+
+    where the KL term is taken against the *prior* p(s) (not the joint).
+    This is the quantity minimized by perceptual inference in active
+    inference; minimizing F simultaneously pulls q toward the prior and
+    maximizes the expected log-likelihood of the observation
+    (manuscript §7, Eq. 7-2).
 
     Args:
         q: Variational posterior distribution (must sum to 1).

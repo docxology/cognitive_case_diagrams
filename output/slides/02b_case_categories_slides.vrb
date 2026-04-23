@@ -1,5 +1,5 @@
-\frametitle{Alignment Shifts as Natural Transformations: Grammar Agreement as Functor Commutativity}
-\protect\phantomsection\label{alignment-shifts-as-natural-transformations-grammar-agreement-as-functor-commutativity}
+\frametitle{Alignment Shifts as Natural Transformations: Functor Commutativity Encodes Grammar Agreement}
+\protect\phantomsection\label{alignment-shifts-as-natural-transformations-functor-commutativity-encodes-grammar-agreement}
 Having established that alignment systems are functors
 \(F, G: \mathcal{U} \to \mathcal{L}\) from a universal case category to
 language-specific categories, a natural question arises: \emph{how do

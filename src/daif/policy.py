@@ -13,6 +13,7 @@ References:
     Parr & Friston (2019) — Generalised free energy and active inference
     Akgül et al. (2026) — Distributional Active Inference
 """
+from __future__ import annotations
 
 import logging
 
@@ -33,29 +34,49 @@ def G_policy(
     gamma: float = 1.0,
     risk_sensitivity: float = 0.0,
 ) -> float:
-    """Expected free energy G(π) under distributional beliefs.
+    """Expected free energy G(π) under distributional beliefs (manuscript Eq. 7c-g).
 
-    Computes the expected free energy for a policy under the current belief:
+    Implements the four-term decomposition
 
-        G(π) = E_q[−log p(o|s)]          (ambiguity / epistemic uncertainty)
-             − E_q[H(p(s|o))]            (epistemic value / information gain)
-             − γ · E_q[log p(o)]         (pragmatic / goal-directed value)
-             + β · Var_Z[G]               (risk-sensitive variance penalty)
+        G(π) = A − E − γ · P + β · R
 
-    where Var_Z is the variance of the return distribution (non-zero only if
-    return_dist is provided and risk_sensitivity β > 0).
+    where each term is taken in expectation under the current belief q(s):
+
+        A (ambiguity)      = −E_q[log p(o|s,π)]            ≥ 0
+        E (epistemic)      =  E_q[H[p(s|o)]]               ≥ 0
+        P (pragmatic)      =  E_q[v(s,π)]                  (goal utility)
+        R (risk)           =  Var_Z[R(π)]                  ≥ 0
+
+    Each term is signed so that *minimising* G simultaneously minimises
+    ambiguity, maximises expected information gain, maximises expected
+    pragmatic utility, and penalises high-variance return distributions.
+
+    Setting v(s,π) = log p(o_goal | s,π) and risk_sensitivity = 0 collapses
+    this to the canonical three-term Friston-et-al. form
+    G(π) = −E_q[log p(o|s,π)] + D_KL(q(s|π) ‖ p(s)), so this four-term
+    decomposition is a conservative generalisation rather than a departure.
 
     Args:
         belief: Current belief q(s) over case roles.
-        log_likelihood: log p(o|s) for each role, shape (n,).
-        epistemic_value: Expected information gain per role H(p(s|o)), shape (n,).
-        pragmatic_value: Goal-directed value log p(o) per role, shape (n,).
-        return_dist: Optional DistributionalReturn for risk-sensitive modulation.
-        gamma: Pragmatic weighting γ > 0.
-        risk_sensitivity: β ≥ 0. Penalises variance in return distribution.
+        log_likelihood: log p(o|s,π) for each role, shape (n,); **nats**.
+        epistemic_value: Per-state information gain H[p(s|o)], shape (n,); **nats**.
+        pragmatic_value: Per-state goal utility v(s,π), shape (n,); **nats**.
+            The canonical choice is v(s,π) = log p(o_goal | s,π). If you pass a
+            dimensionless utility instead of a log-probability, the result G(π)
+            will not be in nats and the contraction bounds on G will no longer
+            hold — scale γ appropriately or convert to log-probability first.
+        return_dist: Optional DistributionalReturn; variance used for risk term.
+            Note: `variance` has units of (return)²; if returns are measured in
+            nats, the risk term β·Var[Z] contributes (nats)² to G, which is
+            dimensionally inhomogeneous with the other terms. Treat β as a
+            reciprocal-return scale to restore units, or equivalently keep β·Var[Z]
+            as a convention-level risk surcharge interpretable on the scale
+            fixed by the application.
+        gamma: Pragmatic gain γ > 0 (default 1.0); dimensionless.
+        risk_sensitivity: β ≥ 0 (default 0; set > 0 to activate risk term).
 
     Returns:
-        G(π) scalar (lower is better — policies minimising G are preferred).
+        G(π) scalar — lower is the preferred policy.
 
     Raises:
         ValueError: On shape mismatch or invalid parameters.
@@ -173,10 +194,13 @@ def distributional_epistemic_value(
     if reference_variance <= 0:
         raise ValueError(f"reference_variance must be positive, got {reference_variance}")
 
+    # Cap for degenerate (point-mass) distributions: log(0) → -∞, capped at -10
+    _DEGENERATE_EV_CAP = -10.0
+
     var_z = return_dist.variance
     if var_z <= 0:
-        # Degenerate (point mass): maximally certain, epistemic value = -∞ (cap)
-        ev = -10.0
+        # Degenerate (point mass): maximally certain, epistemic value capped
+        ev = _DEGENERATE_EV_CAP
     else:
         ev = 0.5 * float(np.log(var_z / reference_variance))
 

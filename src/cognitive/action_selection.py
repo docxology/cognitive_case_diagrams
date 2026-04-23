@@ -20,20 +20,31 @@ def expected_free_energy(
 ) -> float:
     """Compute expected free energy for action selection.
 
-    G(π) = E_q[−log p(o|s)] − E_q[H[p(s|o)]] + γ · pragmatic
+    Active-inference convention (reward-as-utility form):
 
-    In production, the speaker selects words and case markers that
-    minimize expected free energy.
+        G(π) = E_q[−log p(o|s)] − E_q[H[p(s|o)]] − γ · E_q[pragmatic_value]
+             = ambiguity − epistemic_value − γ · pragmatic_value
+
+    All three terms are signed so that *minimizing* G simultaneously
+    minimizes ambiguity, maximizes expected information gain, and
+    maximizes expected pragmatic utility (reward). This matches the
+    reward/utility convention used in `src.daif.policy.G_policy` and
+    is equivalent to the surprise form in manuscript Eq. (7c-g)
+    after substituting pragmatic_value = log p(o_goal).
 
     Args:
-        q: Current belief distribution.
-        log_likelihood: Log-likelihoods for each state.
-        epistemic_value: Information gain for each state.
-        pragmatic_value: Pragmatic utility for each state.
-        gamma: Weighting of pragmatic vs epistemic value.
+        q: Current belief distribution over case roles, shape (n,).
+        log_likelihood: Log-likelihoods log p(o|s_i), shape (n,); **nats**.
+        epistemic_value: Per-state information gain H[p(s|o)], shape (n,); **nats**.
+        pragmatic_value: Per-state pragmatic utility / reward, shape (n,); **nats**.
+            The canonical choice is log p(o_goal | s). If you supply a
+            dimensionless utility instead, G is not in nats and comparison
+            to other (nats-valued) quantities is meaningful only up to an
+            implicit scale factor.
+        gamma: Dimensionless weight of pragmatic vs epistemic term (default 1.0).
 
     Returns:
-        Expected free energy (lower is more preferred action).
+        Expected free energy (lower is the preferred action).
     """
     q = np.asarray(q, dtype=np.float64)
     log_likelihood = np.asarray(log_likelihood, dtype=np.float64)

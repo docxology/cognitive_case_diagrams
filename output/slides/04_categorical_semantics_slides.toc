@@ -1,1 +1,1 @@
-\beamer@sectionintoc {1}{DisCoCat: Composing Word Vectors According to Pregroup Type Derivations}{1}{0}{1}
+\beamer@sectionintoc {1}{Categorical Distributional Semantics (DisCoCat): Composing Vector Spaces via Type Derivations}{1}{0}{1}

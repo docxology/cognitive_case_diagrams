@@ -24,7 +24,8 @@ import sys
 from pathlib import Path
 
 import matplotlib
-matplotlib.use("Agg")
+if not matplotlib.is_interactive():
+    matplotlib.use("Agg")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -34,25 +35,6 @@ logger = logging.getLogger("generate_category_figures")
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "output" / "figures"
-
-# Intro figure (fig:case-minimal): triangle layout + morphism symbols on edges.
-CASE_MINIMAL_NODE_POSITIONS: dict[str, tuple[float, float]] = {
-    "NOM": (0.0, 1.0),
-    "INS": (0.92, -0.52),
-    "ACC": (-0.92, -0.52),
-    "VOC": (-0.98, 0.48),
-}
-CASE_MINIMAL_EDGE_LABEL_PREFIX: dict[tuple[str, str], str] = {
-    ("NOM", "INS"): "f: ",
-    ("INS", "ACC"): "g: ",
-    ("NOM", "ACC"): "h=g\u2218f: ",  # ∘ → \circ via mathtext_safe_arrows
-}
-CASE_MINIMAL_LICENSED_CONNECTIONSTYLE: dict[tuple[str, str], str] = {
-    ("NOM", "INS"): "arc3,rad=0.05",
-    ("INS", "ACC"): "arc3,rad=0.05",
-    ("NOM", "ACC"): "arc3,rad=-0.28",
-    ("NOM", "VOC"): "arc3,rad=0.12",
-}
 
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -77,6 +59,11 @@ def run(out: Path) -> list[Path]:
         render_case_category,
         render_alignment_comparison,
         render_composition_triangle,
+    )
+    from src.visualization.category_diagrams_config import (
+        CASE_MINIMAL_EDGE_LABEL_PREFIX,
+        CASE_MINIMAL_LICENSED_CONNECTIONSTYLE,
+        CASE_MINIMAL_NODE_POSITIONS,
     )
     from src.visualization.functor_diagrams import render_functor_diagram
     from src.visualization.styles import mathtext_safe_arrows

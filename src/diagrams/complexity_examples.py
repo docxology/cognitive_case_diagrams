@@ -17,6 +17,7 @@ References:
     Grefenstette & Sadrzadeh (2011) — Experimental support for vector-space
         compositional semantics
 """
+from __future__ import annotations
 
 import logging
 from typing import TYPE_CHECKING
@@ -27,7 +28,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-def build_complexity_examples() -> list[tuple[str, object]]:
+def build_complexity_examples() -> list[tuple[str, object]]:  # pragma: no cover
     """Build the 10 canonical complexity example sentences as DisCoPy diagrams.
 
     Returns a list of ``(label, diagram)`` tuples ordered from least to most

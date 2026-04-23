@@ -1,6 +1,6 @@
 # Extension Guide
 
-How to add new modules, figures, manuscript sections, and tests to *A Cognitive Case for Diagrams*.
+How to add new modules, figures, manuscript sections, and tests to *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* ([`../manuscript/config.yaml`](../manuscript/config.yaml) `paper.title`).
 
 > **Prerequisites**: Read [`architecture_overview.md`](architecture_overview.md) for the package dependency graph.  
 > **Glossary**: See [`glossary.md`](glossary.md) for term definitions.
@@ -17,7 +17,7 @@ graph LR
     S3["§3–4b Grammar"] --> DG["src/diagrams/"]
     S5["§5 Enriched"] --> EC["src/enriched_cat/"]
     S6["§6 Topos"] --> TT["src/topos_theory/"]
-    S7a["§7a Active Inf."] --> CG["src/cognitive/"]
+    S7["§7 Active Inf."] --> CG["src/cognitive/"]
     S7c["§7c DAIF"] --> DA["src/daif/"]
     S8["§8 Quantum"] --> QM["src/quantum/"]
     S9b["§9b Security"] --> SC["src/security/"]
@@ -32,7 +32,7 @@ Imports must follow the DAG shown in [`architecture_overview.md`](architecture_o
 | `case_systems` | *(no internal deps)* | anything in `src/` |
 | `diagrams` | `case_systems` | `cognitive`, `daif`, `quantum`, `security` |
 | `enriched_cat` | `case_systems` | `diagrams`, `cognitive`, `quantum` |
-| `topos_theory` | `case_systems` | anything else in `src/` |
+| `topos_theory` | `case_systems`, `enriched_cat` | `diagrams`, `cognitive`, `daif`, `quantum`, `security` |
 | `cognitive` | `case_systems`, `enriched_cat` | `diagrams`, `quantum`, `security` |
 | `daif` | `cognitive`, `enriched_cat`, `case_systems` | `diagrams`, `quantum`, `security` |
 | `quantum` | `case_systems` | anything else except `case_systems` |
@@ -390,9 +390,7 @@ render_my_figure(data, output_path=figures_dir / "my_figure.png")
 
 ### 4. Reference in Manuscript
 
-```markdown
-![Caption describing what the figure shows and why it matters.](output/figures/my_figure.png){#fig:my-figure}
-```
+Add a standard Markdown image in the target manuscript section: alt text in square brackets, a parenthesized path to the PNG (relative to the manuscript file, often under `output/figures/`), and a Pandoc id suffix `{#fig:stable-id}`. The combined PDF pipeline resolves figures from the project’s `output/figures/` tree; use the same path style as existing sections in `manuscript/*.md` (this guide omits a literal `![]()` line so the docs tree does not reference a non-existent example PNG).
 
 ### 5. Add to `docs/manuscript_figure_index.md`
 
@@ -529,4 +527,4 @@ When adding any new module, figure, or section, ensure:
 
 ---
 
-*Last updated: 2026-03-19. For full API signatures, see [`api_reference.md`](api_reference.md).*
+*Last updated: 2026-04-22. For full API signatures, see [`api_reference.md`](api_reference.md).*

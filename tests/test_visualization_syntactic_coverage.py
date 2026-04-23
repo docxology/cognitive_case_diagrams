@@ -162,7 +162,7 @@ class TestRenderSyntacticPanel:
             "desc": "d",
             "arcs": [],
         }])
-        assert result == Path("syntactic_case_panel.png")
+        assert result == "syntactic_case_panel.png"
         # Clean up
         Path("syntactic_case_panel.png").unlink(missing_ok=True)
 

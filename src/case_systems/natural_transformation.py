@@ -13,6 +13,7 @@ References:
     Mac Lane (1971) — Categories for the Working Mathematician
     Caramello (2016) — Theories, Sites, Toposes
 """
+from __future__ import annotations
 
 import logging
 import math
@@ -160,7 +161,9 @@ class NaturalTransformation:
             abs_tol: Absolute tolerance for weight comparison.
 
         Returns:
-            True if all relevant squares commute; False if incomplete or any square fails.
+            True if all relevant squares commute. Returns False (not raises) when
+            the transformation is incomplete — naturality is only meaningful on a
+            complete component assignment, so incomplete ⟹ False by convention.
         """
         if not self.is_complete():
             logger.warning(
@@ -174,8 +177,11 @@ class NaturalTransformation:
 
         for f in self.source_functor.source.morphisms:
             if f.source not in om or f.target not in om:
-                continue
-            if f.source not in self.components or f.target not in self.components:
+                # Partial morphism: functor not defined on one or both endpoints;
+                # naturality condition is vacuous for these, so skip silently.
+                logger.debug(
+                    "Skipping morphism %s: endpoint(s) outside object_map", f
+                )
                 continue
 
             ff = self.source_functor.map_morphism(f)

@@ -174,8 +174,16 @@
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:categorical-semantics">DisCoCat: Composing Word Vectors
-According to Pregroup Type Derivations</h1>
+<h1 id="sec:categorical-semantics">Categorical Distributional Semantics
+(DisCoCat): Composing Vector Spaces via Type Derivations</h1>
+<p><strong>Where we are in the argument.</strong> – gave the framework a
+<em>syntactic</em> apparatus: pregroup derivations with case-typed
+wires. This chapter supplies the matching <em>semantic</em> one — the
+Coecke–Sadrzadeh–Clark meaning functor <span class="math inline">\(F
+\colon \mathbf{Preg} \to \mathbf{FinHilb}\)</span> that sends each word
+to a tensor in a vector space and each pregroup contraction to an
+inner-product composition, so the same syntactic diagram simultaneously
+proves well-typedness <em>and</em> computes the composed meaning.</p>
 <h2
 id="the-formalismdistribution-impasse-and-why-montague-cannot-meet-harris">The
 Formalism–Distribution Impasse and Why Montague Cannot Meet Harris</h2>
@@ -210,12 +218,11 @@ representations.</p></li>
 </ol>
 <p>This theoretical tension represents one of the deepest impasses in
 modern cognitive science. Turney and Pantel’s <span class="citation"
-data-cites="turney2010frequency">[-@turney2010frequency]</span>
-comprehensive survey of vector space models proved that distributional
-methods smoothly capture highly fine-grained semantic
-distinctions—synonymy, antonymy, hypernymy, analogy—but strictly isolate
-these victories to the isolated word level. Baroni and Lenci <span
-class="citation"
+data-cites="turney2010frequency">[-@turney2010frequency]</span> survey
+of vector space models proved that distributional methods capture
+fine-grained semantic distinctions—synonymy, antonymy, hypernymy,
+analogy—but isolate these victories to the word level. Baroni and Lenci
+<span class="citation"
 data-cites="baroni2010distributional">[-@baroni2010distributional]</span>
 built a tensor-based <em>Distributional Memory</em> framework partially
 addressing this compositionality by structuring co-occurrence data into
@@ -223,10 +230,9 @@ a three-way tensor over (word, relation, word) triples, yet this
 approach lacked a principled type-logical backbone. Lenci <span
 class="citation"
 data-cites="lenci2018distributional">[-@lenci2018distributional]</span>
-thoroughly surveyed this modern landscape and formally identified the
-central open problem: discovering exactly how to fuse the <em>algebraic
-compositionality</em> of formal semantics with the powerful
-<em>empirical grounding</em> of distributional vector models.</p>
+surveyed this landscape and identified the central open problem: how to
+fuse the <em>algebraic compositionality</em> of formal semantics with
+the <em>empirical grounding</em> of distributional vector models.</p>
 <p>The <strong>DisCoCat</strong> (Distributional Compositional
 Categorical) framework <span class="citation"
 data-cites="coecke2010mathematical">[@coecke2010mathematical]</span>
@@ -236,7 +242,10 @@ structure, yielding a semantic framework that is simultaneously
 <em>compositional</em> (via categorial grammar), <em>distributional</em>
 (via corpus-derived vector spaces), and <em>algebraically
 principled</em> (via rigid monoidal category theory).</p>
-<h2 id="word2vec-bert-gpt">Word2Vec → BERT → GPT</h2>
+<h2
+id="from-word2vec-to-transformer-attention-discocat-as-the-algebraic-formalization-of-distributional-semantics">From
+Word2Vec to Transformer Attention: DisCoCat as the Algebraic
+Formalization of Distributional Semantics</h2>
 <p>The distributional programme has undergone a dramatic computational
 intensification in the era of large language models (LLMs). The
 trajectory from classical co-occurrence matrices through static word
@@ -277,18 +286,15 @@ conflate.</p></li>
 <li><p><strong>Transformer architecture</strong>: The transformer <span
 class="citation"
 data-cites="vaswani2017attention">[@vaswani2017attention]</span>
-explicitly implements distributional composition via its heavily
-parallelized multi-head self-attention mechanism, where each distinct
-attention head actively computes a statistically weighted combination of
-all given input token representations. The precise numerical attention
-weights <span class="math inline">\(\\alpha_{ij} = \\text{softmax}(Q_i
-K_j^T / \\sqrt{d_k})\)</span> operate entirely analogously to the formal
-enriched hom-values detailed in \autoref{sec:enriched-categories}: they
-algorithmically encode the continuous <em>degree of contextual
-relevance</em> between tokens <span class="math inline">\(i\)</span> and
-<span class="math inline">\(j\)</span> within a specifically tuned
-representational subspace—yielding a graded, deeply learned
-distributional mapping.</p></li>
+implements distributional composition via multi-head self-attention,
+where each head computes a weighted combination of input token
+representations. The attention weights <span
+class="math inline">\(\alpha_{ij} = \mathrm{softmax}(Q_i K_j^T /
+\sqrt{d_k})\)</span> operate analogously to the enriched hom-values
+detailed in : they encode the <em>degree of contextual relevance</em>
+between tokens <span class="math inline">\(i\)</span> and <span
+class="math inline">\(j\)</span> within a tuned representational
+subspace—yielding a graded, learned distributional mapping.</p></li>
 </ol>
 <p>The mapping back to our categorical framework is direct:
 <strong>DisCoCat supplies the algebraic formalization of what modern
@@ -378,7 +384,7 @@ different roles to the nouns.</p>
 DisCoCat provides the “algebraic formalization” of transformer-based
 LLMs can be made precise. In a transformer’s self-attention mechanism,
 the query–key inner product <span
-class="math inline">\(\text{softmax}(QK^\top / \sqrt{d})V\)</span>
+class="math inline">\(\mathrm{softmax}(QK^\top / \sqrt{d})V\)</span>
 selects which word vectors interact—effectively implementing a
 <em>soft</em> version of the Cup contraction. The pregroup Cup <span
 class="math inline">\(\varepsilon: n^r \otimes n \to I\)</span>
@@ -396,7 +402,7 @@ corresponds to the tensor product of <span
 class="math inline">\(h\)</span> independent enriched contraction maps,
 each attending to a different substring of the relational
 structure—analogous to how DisCoCat composes multiple Cup contractions
-for multi-argument verbs.</p>
+for multi-argument verbs ().</p>
 <figure id="fig:discopy-discocat">
 <img src="output/figures/discopy_composition.png"
 alt="Cup contractions compute sentence meaning by contracting word tensors along syntactically determined indices. The DisCoCat meaning functor F: \mathbf{Preg} \to \mathbf{FVect} applied to “Alice chases Bob.” Left panel: pre-contraction tensor product n \otimes (n^r \otimes s \otimes n^l) \otimes n, showing three Word boxes with pregroup types. Right panel: fully contracted diagram where two Cup contractions (\varepsilon: n^r \otimes n \to 1 and \varepsilon: n^l \otimes n \to 1) reduce the five-wire product to sentence wire s. Under F, noun types map to N, the sentence type to S, and the verb’s type to \overleftrightarrow{\text{chases}} \in N \otimes S \otimes N. The Cup contractions become inner products \varepsilon_N: N \otimes N \to \mathbb{R}, computing \overrightarrow{\text{Alice chases Bob}} \in S." />
@@ -444,32 +450,32 @@ Cross-linguistic alignment differences correspond to different meaning
 functors. However, we go further by modeling case alignment as
 <strong>natural transformations</strong> between functors. An
 accusative-language transformation <span
-class="math inline">\(\eta_{\text{acc}}: \mathcal{I} \to
+class="math inline">\(\nu_{\text{acc}}: \mathcal{I} \to
 F_{\text{acc}}\)</span> identifies S and A arguments; an ergative
-transformation <span class="math inline">\(\eta_{\text{erg}}\)</span>
-identifies S and P. This categorification allows us to model “grammar”
-as the requirement that these transformations commute with the DisCoCirc
-entity wires, ensuring role persistence across sentences.</p></li>
+transformation <span class="math inline">\(\nu_{\text{erg}}\)</span>
+identifies S and P. (We write <span class="math inline">\(\nu\)</span>
+here so <span class="math inline">\(\eta{}\)</span> remains reserved for
+the compact-closure <strong>cap</strong> in pregroup diagrams.) This
+categorification allows us to model “grammar” as the requirement that
+these transformations commute with the DisCoCirc entity wires, ensuring
+role persistence across sentences.</p></li>
 </ol>
 <figure id="fig:discopy-ditransitive">
 <img src="output/figures/discopy_ditransitive.png"
-alt="Ditransitive valency exceeds transitive complexity, confirming the monotonic complexity–valency relationship. DisCoPy pregroup grammar for “Alice gives Bob a book”: four Word boxes with types n (Alice), n^r \otimes s \otimes n^l \otimes n^l (gives), n (Bob), and n (a book). Three Cup contractions resolve subject–verb, indirect-object, and direct-object links, reducing the eight-wire product to sentence type s. This exemplifies Shimojima’s [-@shimojima1996reasoning] free-ride inference: the diagram simultaneously shows argument structure, valency, and compositional flow. The complexity score ( in ) exceeds that of simple transitive sentences." />
-<figcaption aria-hidden="true">Ditransitive valency exceeds transitive
-complexity, confirming the monotonic complexity–valency relationship.
-DisCoPy pregroup grammar for “Alice gives Bob a book”: four Word boxes
-with types <span class="math inline">\(n\)</span> (Alice), <span
-class="math inline">\(n^r \otimes s \otimes n^l \otimes n^l\)</span>
-(gives), <span class="math inline">\(n\)</span> (Bob), and <span
-class="math inline">\(n\)</span> (a book). Three Cup contractions
-resolve subject–verb, indirect-object, and direct-object links, reducing
-the eight-wire product to sentence type <span
-class="math inline">\(s\)</span>. This exemplifies Shimojima’s <span
+alt="Ditransitive pregroup diagram for “Alice gives Bob a book”: four word boxes (Alice, gives, Bob, book) with three Cup contractions reducing the five-argument tensor to sentence type s, exhibiting higher valency (\kappa(D)) than a transitive clause. Generated by render_discopy_ditransitive() in src/visualization/discopy_diagrams.py." />
+<figcaption aria-hidden="true">Ditransitive pregroup diagram for “Alice
+gives Bob a book”: four word boxes (Alice, gives, Bob, book) with three
+Cup contractions reducing the five-argument tensor to sentence type
+<span class="math inline">\(s\)</span>, exhibiting higher valency (<span
+class="math inline">\(\kappa(D)\)</span>) than a transitive clause.
+Generated by <code>render_discopy_ditransitive()</code> in
+<code>src/visualization/discopy_diagrams.py</code>.</figcaption>
+</figure>
+<p>The monotonic complexity–valency relationship ( in ) is visible in
+the cup count of ; the diagram also exemplifies Shimojima’s <span
 class="citation"
 data-cites="shimojima1996reasoning">[-@shimojima1996reasoning]</span>
-free-ride inference: the diagram simultaneously shows argument
-structure, valency, and compositional flow. The complexity score ( in )
-exceeds that of simple transitive sentences.</figcaption>
-</figure>
+free-ride inference over argument structure and compositional flow.</p>
 <p>The following sections extend this model to discourse and quantum
 computation.</p>
 </body>

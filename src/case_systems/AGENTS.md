@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `case_systems` subpackage implements **§2** of the manuscript: the categorical formalization of linguistic case systems. Case roles become category-theoretic objects, grammatical relations become morphisms, and cross-linguistic alignment systems become functors.
+The `case_systems` subpackage implements **§2** and **§2b** of the manuscript: the categorical formalization of linguistic case systems. Case roles become category-theoretic objects, grammatical relations become morphisms, and cross-linguistic alignment systems become functors.
 
 ## Module Inventory
 
@@ -12,10 +12,10 @@ Per-file line coverage changes with edits; the source of truth is:
 
 | Module | Key Exports | Manuscript |
 |--------|-------------|-----------|
-| `case_category.py` | `CaseRole`, `Morphism`, `CaseCategory`, factory functions | §2.3–§2.5 |
-| `functor.py` | `AlignmentFunctor` | §2.6 |
-| `natural_transformation.py` | `ComponentMorphism`, `NaturalTransformation`, `IdentityNaturalTransformation`, `compose_transformations`, `naturality_holds` / `verify_naturality` | §2.7 |
-| `fluid_s.py` | `FluidSFunctor` (`map_object`, `map_morphism`, `split_probability`, …), `VolitionContext`, `bats_fluid_s()`, `fluid_s_enriched_weight()` | §2.8 |
+| `case_category.py` | `CaseRole`, `Morphism`, `CaseCategory`, factory functions | §2, §2b |
+| `functor.py` | `AlignmentFunctor` | §2b |
+| `natural_transformation.py` | `ComponentMorphism`, `NaturalTransformation`, `IdentityNaturalTransformation`, `compose_transformations`, `naturality_holds` / `verify_naturality` | §2b |
+| `fluid_s.py` | `FluidSFunctor` (`map_object`, `map_morphism`, `split_probability`, …), `VolitionContext`, `bats_fluid_s()`, `fluid_s_enriched_weight()` | §2b |
 
 ## `case_category.py`
 
@@ -46,11 +46,9 @@ A category where:
 | `add_role(role)` | — | Add object to category |
 | `add_morphism(m)` | — | Add morphism (validates source/target) |
 | `compose(f, g)` | `Morphism` | Categorical composition g ∘ f; enriched weight ``w(g∘f)=w(f)·w(g)`` |
-| `identity(role)` | `Morphism` | Identity morphism for role |
+| `assess_daif_surprisal(obs, pred)` | `dict` | Extracts DAIF simulated N400 (heuristic) and P600 (structural) prediction errors |
 | `associativity_holds()` | `bool` | Verify associativity for all composable triples |
 | `is_well_formed()` | `bool` | Full categorical axiom check |
-| `get_morphisms_from(role)` | `list[Morphism]` | All morphisms out of a role |
-| `get_morphisms_to(role)` | `list[Morphism]` | All morphisms into a role |
 
 ### Factory Functions
 
@@ -58,15 +56,26 @@ A category where:
 |----------|---------|-------------|
 | `standard_case_category()` | `CaseCategory` | Standard 8-case system with 8 canonical morphisms |
 | `minimal_case_category()` | `CaseCategory` | Minimal 3-role transitive: NOM, ACC, INS |
-| `introductory_case_category()` | `CaseCategory` | Intro figure (`fig:case-minimal`): NOM, ACC, INS, VOC + weighted triangle and `addresses`; PNG layout and `f`/`g`/`h=g∘f` edge prefixes live in `scripts/generate_category_figures.py` (`CASE_MINIMAL_*`) |
-| `accusative_alignment()` | `dict[CaseRole, CaseRole]` | {S,A} → NOM; P → ACC |
-| `ergative_alignment()` | `dict[CaseRole, CaseRole]` | {S,P} → ABS; A → ERG |
-| `tripartite_alignment()` | `dict[CaseRole, CaseRole]` | S → ABS, A → ERG, P → ACC (injective) |
+| `introductory_case_category()` | `CaseCategory` | Intro figure (`fig:case-minimal`) configuration |
+| `accusative_alignment()` | `dict` | {S,A} → NOM; P → ACC |
+| `ergative_alignment()` | `dict` | {S,P} → ABS; A → ERG |
+| `tripartite_alignment()` | `dict` | S → ABS, A → ERG, P → ACC (injective) |
 | `active_stative_alignment()` | `dict` | Split-S: active and stative contexts |
 
-## `functor.py` — `AlignmentFunctor`
+## `functor.py` — `AlignmentFunctor` & `MonoidalFunctor`
 
 Maps between case categories (e.g., from Universal Case to Language-Specific Case), encoding cross-linguistic alignment as a functor:
+
+```python
+functor = AlignmentFunctor(name="F", source=source_cat, target=target_cat, object_map={...})
+```
+
+**Functor laws**:
+1. Identity preservation: `F(id_A) = id_{F(A)}`
+2. Composition preservation: `F(g ∘ f) = F(g) ∘ F(f)`
+
+### Tensor preservation (`MonoidalFunctor`)
+`MonoidalFunctor` implements **specification-level** checks that tensor structure is preserved under the alignment map—so illicit merges of distinct case roles (the categorical signature of prompt-injection patterns in [`09b_cognitive_security.md`](../../manuscript/09b_cognitive_security.md)) can be flagged in a protocol story. It is **not** a guarantee on production LLM APIs; see `preserves_tensor()` in `functor.py` and empirical motivation (e.g. ARLAS 2025) in §9b.
 
 ```python
 functor = AlignmentFunctor(name="F", source=source_cat, target=target_cat, object_map={...})
@@ -94,7 +103,7 @@ composed = compose_transformations(eta, mu)
 
 ## `fluid_s.py` — `FluidSFunctor`
 
-Implements Fluid-S alignment (manuscript §2.8): a context-dependent functor parameterized by volitional construal probability `p ∈ [0,1]`.
+Implements Fluid-S alignment (manuscript §2b): a context-dependent functor parameterized by volitional construal probability `p ∈ [0,1]`.
 
 The Bats (Nakh-Daghestanian) language example:
 - `fall (volitional)` → `S_ERG`: ERG marking

@@ -3,6 +3,7 @@
 Generates publication-quality visualizations comparing syntactic
 complexity across different sentence types and structures.
 """
+from __future__ import annotations
 
 import logging
 

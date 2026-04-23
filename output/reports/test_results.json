@@ -1,65 +1,65 @@
 {
-  "timestamp": "2026-04-04T13:12:04.972627",
+  "timestamp": "2026-04-23T11:35:38.110476",
   "infrastructure": {},
   "project": {
-    "passed": 804,
+    "passed": 1197,
     "failed": 0,
     "skipped": 0,
-    "total": 804,
-    "warnings": 10,
+    "total": 1197,
+    "warnings": 2,
     "exit_code": 0,
-    "discovery_count": 804,
+    "discovery_count": 1197,
     "collection_errors": 0,
     "execution_phases": {
-      "setup": 36.44,
-      "collection": 36.44,
-      "execution": 36.44
+      "setup": 65.84,
+      "collection": 65.84,
+      "execution": 65.84
     },
     "test_categories": {},
-    "coverage_percent": 95.51407077180274,
+    "coverage_percent": 95.55156144686588,
     "failed_tests": []
   },
   "summary": {
-    "total_passed": 804,
+    "total_passed": 1197,
     "total_failed": 0,
     "total_skipped": 0,
-    "total_tests": 804,
+    "total_tests": 1197,
     "all_passed": true,
-    "project_coverage": 95.51407077180274
+    "project_coverage": 95.55156144686588
   },
   "coverage_details": {
     "project": {
-      "overall_coverage": 96.33436108256252,
-      "total_executed": 2812,
-      "total_missing": 87,
-      "total_excluded": 20,
-      "total_lines": 2919,
+      "overall_coverage": 96.31476863397063,
+      "total_executed": 3476,
+      "total_missing": 107,
+      "total_excluded": 26,
+      "total_lines": 3609,
       "file_coverage": {
         "projects/cognitive_case_diagrams/src/case_systems/case_category.py": {
-          "coverage_percent": 94.20289855072464,
-          "executed_lines": 130,
-          "missing_lines": 8,
+          "coverage_percent": 93.5064935064935,
+          "executed_lines": 144,
+          "missing_lines": 10,
           "excluded_lines": 0,
-          "total_lines": 138
+          "total_lines": 154
         },
         "projects/cognitive_case_diagrams/src/case_systems/fluid_s.py": {
-          "coverage_percent": 98.48484848484848,
-          "executed_lines": 65,
-          "missing_lines": 1,
+          "coverage_percent": 100.0,
+          "executed_lines": 66,
+          "missing_lines": 0,
           "excluded_lines": 0,
           "total_lines": 66
         },
         "projects/cognitive_case_diagrams/src/case_systems/functor.py": {
-          "coverage_percent": 96.82539682539682,
-          "executed_lines": 61,
+          "coverage_percent": 97.6470588235294,
+          "executed_lines": 83,
           "missing_lines": 2,
           "excluded_lines": 0,
-          "total_lines": 63
+          "total_lines": 85
         },
         "projects/cognitive_case_diagrams/src/case_systems/natural_transformation.py": {
-          "coverage_percent": 90.21739130434783,
-          "executed_lines": 83,
-          "missing_lines": 9,
+          "coverage_percent": 92.3913043478261,
+          "executed_lines": 85,
+          "missing_lines": 7,
           "excluded_lines": 0,
           "total_lines": 92
         },
@@ -72,17 +72,24 @@
         },
         "projects/cognitive_case_diagrams/src/cognitive/belief.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 30,
+          "executed_lines": 31,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 30
+          "total_lines": 31
         },
         "projects/cognitive_case_diagrams/src/cognitive/belief_updating.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 28,
+          "executed_lines": 29,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 28
+          "total_lines": 29
+        },
+        "projects/cognitive_case_diagrams/src/cognitive/figure_data.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 59,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 59
         },
         "projects/cognitive_case_diagrams/src/cognitive/free_energy.py": {
           "coverage_percent": 100.0,
@@ -100,52 +107,52 @@
         },
         "projects/cognitive_case_diagrams/src/cognitive/reanalysis.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 15,
+          "executed_lines": 13,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 15
+          "total_lines": 13
         },
         "projects/cognitive_case_diagrams/src/daif/core.py": {
-          "coverage_percent": 95.55555555555556,
-          "executed_lines": 86,
+          "coverage_percent": 96.0,
+          "executed_lines": 96,
           "missing_lines": 4,
           "excluded_lines": 0,
-          "total_lines": 90
+          "total_lines": 100
         },
         "projects/cognitive_case_diagrams/src/daif/inference.py": {
-          "coverage_percent": 94.53125,
-          "executed_lines": 121,
-          "missing_lines": 7,
+          "coverage_percent": 91.875,
+          "executed_lines": 147,
+          "missing_lines": 13,
           "excluded_lines": 0,
-          "total_lines": 128
+          "total_lines": 160
         },
         "projects/cognitive_case_diagrams/src/daif/metrics.py": {
-          "coverage_percent": 97.05882352941177,
-          "executed_lines": 66,
+          "coverage_percent": 97.26027397260275,
+          "executed_lines": 71,
           "missing_lines": 2,
           "excluded_lines": 0,
-          "total_lines": 68
+          "total_lines": 73
         },
         "projects/cognitive_case_diagrams/src/daif/policy.py": {
-          "coverage_percent": 98.0392156862745,
-          "executed_lines": 50,
+          "coverage_percent": 98.11320754716981,
+          "executed_lines": 52,
           "missing_lines": 1,
           "excluded_lines": 0,
-          "total_lines": 51
+          "total_lines": 53
         },
         "projects/cognitive_case_diagrams/src/daif/prediction.py": {
-          "coverage_percent": 98.30508474576271,
-          "executed_lines": 58,
-          "missing_lines": 1,
+          "coverage_percent": 95.77464788732394,
+          "executed_lines": 68,
+          "missing_lines": 3,
           "excluded_lines": 0,
-          "total_lines": 59
+          "total_lines": 71
         },
         "projects/cognitive_case_diagrams/src/daif/quantile.py": {
-          "coverage_percent": 94.52054794520548,
-          "executed_lines": 69,
+          "coverage_percent": 95.0,
+          "executed_lines": 76,
           "missing_lines": 4,
           "excluded_lines": 0,
-          "total_lines": 73
+          "total_lines": 80
         },
         "projects/cognitive_case_diagrams/src/daif/types.py": {
           "coverage_percent": 100.0,
@@ -154,75 +161,75 @@
           "excluded_lines": 0,
           "total_lines": 65
         },
-        "projects/cognitive_case_diagrams/src/diagrams/complexity_examples.py": {
-          "coverage_percent": 98.80952380952381,
-          "executed_lines": 83,
-          "missing_lines": 1,
-          "excluded_lines": 0,
-          "total_lines": 84
-        },
         "projects/cognitive_case_diagrams/src/diagrams/complexity_metrics.py": {
-          "coverage_percent": 71.23287671232876,
-          "executed_lines": 52,
-          "missing_lines": 3,
-          "excluded_lines": 18,
-          "total_lines": 73
+          "coverage_percent": 73.87387387387388,
+          "executed_lines": 82,
+          "missing_lines": 5,
+          "excluded_lines": 24,
+          "total_lines": 111
         },
         "projects/cognitive_case_diagrams/src/diagrams/ditransitive.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 57,
+          "executed_lines": 58,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 57
+          "total_lines": 58
         },
         "projects/cognitive_case_diagrams/src/diagrams/string_diagram.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 210,
+          "executed_lines": 272,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 210
+          "total_lines": 272
         },
         "projects/cognitive_case_diagrams/src/enriched_cat/enriched.py": {
-          "coverage_percent": 95.87628865979381,
-          "executed_lines": 93,
-          "missing_lines": 4,
+          "coverage_percent": 97.19626168224299,
+          "executed_lines": 104,
+          "missing_lines": 3,
           "excluded_lines": 0,
-          "total_lines": 97
+          "total_lines": 107
         },
         "projects/cognitive_case_diagrams/src/generate_manuscript_metrics.py": {
-          "coverage_percent": 73.03370786516854,
-          "executed_lines": 65,
-          "missing_lines": 22,
+          "coverage_percent": 83.43949044585987,
+          "executed_lines": 131,
+          "missing_lines": 24,
           "excluded_lines": 2,
-          "total_lines": 89
+          "total_lines": 157
         },
-        "projects/cognitive_case_diagrams/src/quantum/quantum_case.py": {
-          "coverage_percent": 98.9247311827957,
-          "executed_lines": 92,
-          "missing_lines": 1,
-          "excluded_lines": 0,
-          "total_lines": 93
-        },
-        "projects/cognitive_case_diagrams/src/security/cognitive_security.py": {
-          "coverage_percent": 97.2972972972973,
-          "executed_lines": 72,
-          "missing_lines": 2,
-          "excluded_lines": 0,
-          "total_lines": 74
-        },
-        "projects/cognitive_case_diagrams/src/topos_theory/topos.py": {
-          "coverage_percent": 98.98989898989899,
-          "executed_lines": 98,
-          "missing_lines": 1,
-          "excluded_lines": 0,
-          "total_lines": 99
-        },
-        "projects/cognitive_case_diagrams/src/visualization/active_inference_plots.py": {
+        "projects/cognitive_case_diagrams/src/quantum/figure_data.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 27,
+          "executed_lines": 18,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 27
+          "total_lines": 18
+        },
+        "projects/cognitive_case_diagrams/src/quantum/quantum_case.py": {
+          "coverage_percent": 98.93617021276596,
+          "executed_lines": 93,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 94
+        },
+        "projects/cognitive_case_diagrams/src/security/cognitive_security.py": {
+          "coverage_percent": 98.66666666666667,
+          "executed_lines": 74,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 75
+        },
+        "projects/cognitive_case_diagrams/src/topos_theory/topos.py": {
+          "coverage_percent": 99.0,
+          "executed_lines": 99,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 100
+        },
+        "projects/cognitive_case_diagrams/src/visualization/active_inference_plots.py": {
+          "coverage_percent": 93.96551724137932,
+          "executed_lines": 109,
+          "missing_lines": 7,
+          "excluded_lines": 0,
+          "total_lines": 116
         },
         "projects/cognitive_case_diagrams/src/visualization/category_diagrams.py": {
           "coverage_percent": 95.83333333333334,
@@ -231,82 +238,89 @@
           "excluded_lines": 0,
           "total_lines": 168
         },
-        "projects/cognitive_case_diagrams/src/visualization/complexity_plots.py": {
-          "coverage_percent": 100.0,
-          "executed_lines": 77,
-          "missing_lines": 0,
-          "excluded_lines": 0,
-          "total_lines": 77
-        },
-        "projects/cognitive_case_diagrams/src/visualization/daif_plots.py": {
-          "coverage_percent": 98.55072463768117,
-          "executed_lines": 204,
+        "projects/cognitive_case_diagrams/src/visualization/category_diagrams_config.py": {
+          "coverage_percent": 0.0,
+          "executed_lines": 0,
           "missing_lines": 3,
           "excluded_lines": 0,
-          "total_lines": 207
+          "total_lines": 3
         },
-        "projects/cognitive_case_diagrams/src/visualization/discopy_diagrams.py": {
+        "projects/cognitive_case_diagrams/src/visualization/category_unpacking.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 87,
+          "executed_lines": 212,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 87
+          "total_lines": 212
+        },
+        "projects/cognitive_case_diagrams/src/visualization/complexity_plots.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 78,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 78
+        },
+        "projects/cognitive_case_diagrams/src/visualization/daif_plots.py": {
+          "coverage_percent": 98.70689655172413,
+          "executed_lines": 229,
+          "missing_lines": 3,
+          "excluded_lines": 0,
+          "total_lines": 232
         },
         "projects/cognitive_case_diagrams/src/visualization/enriched_diagrams.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 34,
+          "executed_lines": 33,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 34
+          "total_lines": 33
         },
         "projects/cognitive_case_diagrams/src/visualization/fluid_s_plots.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 63,
+          "executed_lines": 64,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 63
+          "total_lines": 64
         },
         "projects/cognitive_case_diagrams/src/visualization/functor_diagrams.py": {
-          "coverage_percent": 97.5,
-          "executed_lines": 78,
+          "coverage_percent": 98.4126984126984,
+          "executed_lines": 124,
           "missing_lines": 2,
           "excluded_lines": 0,
-          "total_lines": 80
+          "total_lines": 126
         },
         "projects/cognitive_case_diagrams/src/visualization/quantum_plots.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 29,
+          "executed_lines": 37,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 29
+          "total_lines": 37
         },
         "projects/cognitive_case_diagrams/src/visualization/security_plots.py": {
-          "coverage_percent": 100.0,
-          "executed_lines": 36,
-          "missing_lines": 0,
+          "coverage_percent": 98.66666666666667,
+          "executed_lines": 148,
+          "missing_lines": 2,
           "excluded_lines": 0,
-          "total_lines": 36
+          "total_lines": 150
         },
         "projects/cognitive_case_diagrams/src/visualization/string_diagrams.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 96,
+          "executed_lines": 95,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 96
+          "total_lines": 95
         },
         "projects/cognitive_case_diagrams/src/visualization/styles.py": {
-          "coverage_percent": 97.72727272727273,
-          "executed_lines": 43,
+          "coverage_percent": 97.77777777777777,
+          "executed_lines": 44,
           "missing_lines": 1,
           "excluded_lines": 0,
-          "total_lines": 44
+          "total_lines": 45
         },
         "projects/cognitive_case_diagrams/src/visualization/syntactic_sentence_diagrams.py": {
           "coverage_percent": 100.0,
-          "executed_lines": 66,
+          "executed_lines": 64,
           "missing_lines": 0,
           "excluded_lines": 0,
-          "total_lines": 66
+          "total_lines": 64
         }
       }
     }

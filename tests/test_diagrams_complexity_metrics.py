@@ -170,16 +170,16 @@ class TestAnalyzeDiagram:
         assert m.cup_count == 1
 
     def test_syntactic_complexity_transitive(self) -> None:
-        """Transitive complexity: 3 + 0.5*2 = 4.0."""
+        """Transitive complexity: 3 + 0.5*2 + 0.1*depth."""
         d = _make_transitive()
         score = syntactic_complexity_score(d)
-        assert score == pytest.approx(4.0)
+        assert score == pytest.approx(4.2)
 
     def test_syntactic_complexity_intransitive(self) -> None:
-        """Intransitive complexity: 2 + 0.5*1 = 2.5."""
+        """Intransitive complexity: 2 + 0.5*1 + 0.1*depth."""
         d = _make_intransitive()
         score = syntactic_complexity_score(d)
-        assert score == pytest.approx(2.5)
+        assert score == pytest.approx(2.7)
 
     def test_transitive_more_complex_than_intransitive(self) -> None:
         """Transitive should have higher complexity than intransitive."""

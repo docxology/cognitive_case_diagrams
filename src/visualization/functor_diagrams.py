@@ -5,10 +5,16 @@ source (Accusative) and target (Ergative) alignment systems, with explicit
 fixed-position hierarchical node layouts and clean functor arrows.
 
 Figure 17 of the manuscript: F: C_acc → C_erg
+
+Layout uses **one shared matplotlib Axes** with two disjoint x-ranges (left and
+right panels). Functor arrows are ``FancyArrowPatch`` curves in the same data
+coordinate system, so endpoints stay on node circles under ``set_aspect("equal")``
+and tight bounding-box export.
 """
+from __future__ import annotations
 
 import logging
-from pathlib import Path
+from collections import defaultdict
 from typing import Optional
 
 import matplotlib
@@ -16,6 +22,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
 
+from ..case_systems.case_category import CaseRole
 from ..case_systems.functor import AlignmentFunctor
 from .styles import (
     CASE_COLORS, FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_LABEL,
@@ -26,31 +33,38 @@ from .styles import (
 
 logger = logging.getLogger(__name__)
 
-# ─── Fixed node positions (data coords 0–1) for each alignment system ──────
+# ─── World x-ranges (single shared Axes): left panel | gap | right panel ───
+# Template coords 0–1 are placed inside each panel; gap holds functor notation.
+_PANEL_LEFT_X0 = 0.0
+_PANEL_LEFT_X1 = 1.0
+_PANEL_RIGHT_X0 = 1.58
+_PANEL_RIGHT_X1 = 2.58
+_FUNCTOR_COLUMN_X = (_PANEL_LEFT_X1 + _PANEL_RIGHT_X0) / 2.0
+
+# ─── Fixed node positions (template 0–1 within each panel) ────────────────
 # Source: AccusativeSystem  — NOM groups {S,A};  ACC groups {P}
-# Vertical hierarchy: intransitive-S / Agent at top, NOM in middle, then P, ACC at bottom.
+# Semantic roles aligned at y=0.85 across both panels.
 _ACC_POSITIONS: dict[str, tuple[float, float]] = {
-    "S":   (0.15, 0.90),
-    "A":   (0.85, 0.90),
-    "NOM": (0.50, 0.60),
-    "P":   (0.50, 0.30),
-    "ACC": (0.50, 0.02),
+    "A":   (0.20, 0.85),
+    "S":   (0.50, 0.85),
+    "P":   (0.80, 0.85),
+    "NOM": (0.35, 0.20),
+    "ACC": (0.80, 0.20),
 }
 
 # Target: ErgativeSystem — ERG groups {A only};  ABS groups {S+P}
-# Spread S/P apart at mid-level; ERG right, ABS left-bottom.
 _ERG_POSITIONS: dict[str, tuple[float, float]] = {
-    "A":   (0.85, 0.90),
-    "S":   (0.15, 0.60),
-    "P":   (0.85, 0.60),
-    "ERG": (0.85, 0.30),
-    "ABS": (0.15, 0.02),
+    "A":   (0.20, 0.85),
+    "S":   (0.50, 0.85),
+    "P":   (0.80, 0.85),
+    "ERG": (0.20, 0.20),
+    "ABS": (0.65, 0.20),
 }
 
 # Intra-category edges (within each panel)
 _ACC_EDGES = [
-    ("S",   "NOM", "→NOM"),
     ("A",   "NOM", "→NOM"),
+    ("S",   "NOM", "→NOM"),
     ("NOM", "ACC", "trans"),
     ("P",   "ACC", "→ACC"),
 ]
@@ -62,21 +76,68 @@ _ERG_EDGES = [
 ]
 
 _NODE_RADIUS = 0.085
+# Separate multiple functor arrows that share a target node (data coordinates).
+_STAGGER_FUNCTOR_TARGET_X = 0.042
+
+
+def _template_to_world(
+    template: dict[str, tuple[float, float]],
+    panel_x0: float,
+) -> dict[str, tuple[float, float]]:
+    """Map 0–1 template positions to world x by shifting panel origin."""
+    return {name: (panel_x0 + xy[0], xy[1]) for name, xy in template.items()}
+
+
+def _trim_segment_endpoints(
+    sx: float, sy: float, tx: float, ty: float, r: float
+) -> tuple[tuple[float, float], tuple[float, float]]:
+    """Return start/end on the segment inset by ``r`` from each endpoint."""
+    dx, dy = tx - sx, ty - sy
+    dist = max(float(np.hypot(dx, dy)), 1e-9)
+    dx_n, dy_n = dx / dist, dy / dist
+    start = (sx + dx_n * r, sy + dy_n * r)
+    end = (tx - dx_n * r, ty - dy_n * r)
+    return start, end
+
+
+def _stagger_offsets_x(n: int, step: float = _STAGGER_FUNCTOR_TARGET_X) -> list[float]:
+    """Symmetric horizontal offsets for ``n`` coincident targets."""
+    if n <= 1:
+        return [0.0]
+    mid = (n - 1) / 2.0
+    return [(i - mid) * step for i in range(n)]
+
+
+def _target_stagger_by_pair(
+    functor: AlignmentFunctor,
+) -> dict[tuple[str, str], float]:
+    """Map (target_role_name, source_role_name) -> x-offset at target."""
+    by_tgt: dict[str, list[CaseRole]] = defaultdict(list)
+    for src, tgt in functor.object_map.items():
+        by_tgt[tgt.name].append(src)
+    out: dict[tuple[str, str], float] = {}
+    for tgt_name, srcs in by_tgt.items():
+        srcs_sorted = sorted(srcs, key=lambda s: s.name)
+        offsets = _stagger_offsets_x(len(srcs_sorted))
+        for src, off in zip(srcs_sorted, offsets):
+            out[(tgt_name, src.name)] = off
+    return out
 
 
 def render_functor_diagram(
     functor: AlignmentFunctor,
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
     title: Optional[str] = None,
 ) -> matplotlib.figure.Figure:
     """Render an alignment functor as two side-by-side category diagrams.
 
     Source category on the left (Accusative), target on the right (Ergative).
-    Node positions are fixed hierarchically; functor arrows are drawn as
-    straight dashed lines between the two axes using ConnectionPatch.
+    Both panels share one Axes with disjoint x-ranges; purple functor arrows
+    follow ``functor.object_map`` as dashed ``FancyArrowPatch`` curves (endpoints
+    trimmed to node circles; coincident targets are staggered).
 
     Args:
-        functor: The alignment functor to visualize.
+        functor: The alignment functor to visualize (object map drives arrows).
         output_path: Optional path to save the figure.
         title: Optional title override.
 
@@ -84,26 +145,28 @@ def render_functor_diagram(
         The matplotlib Figure object.
     """
     fig = plt.figure(figsize=(20, 10), facecolor="white")
+    ax = fig.add_axes((0.04, 0.10, 0.92, 0.78))
 
-    # Three columns: source panel | functor labels | target panel
-    gs = fig.add_gridspec(
-        1, 3, width_ratios=[5, 1.4, 5],
-        left=0.03, right=0.97, top=0.88, bottom=0.05,
-        wspace=0.0,
+    left_pos = _template_to_world(_ACC_POSITIONS, _PANEL_LEFT_X0)
+    right_pos = _template_to_world(_ERG_POSITIONS, _PANEL_RIGHT_X0)
+
+    ax.set_xlim(-0.12, _PANEL_RIGHT_X1 + 0.12)
+    ax.set_ylim(-0.22, 1.14)
+    ax.axis("off")
+
+    # Subtle panel backgrounds (caption: blue vs amber panels)
+    ax.axvspan(
+        _PANEL_LEFT_X0 - 0.04, _PANEL_LEFT_X1 + 0.04,
+        facecolor="#EFF6FF", zorder=0, alpha=0.65, linewidth=0,
     )
-    ax_src = fig.add_subplot(gs[0])
-    ax_mid = fig.add_subplot(gs[1])
-    ax_tgt = fig.add_subplot(gs[2])
+    ax.axvspan(
+        _PANEL_RIGHT_X0 - 0.04, _PANEL_RIGHT_X1 + 0.04,
+        facecolor="#FFFBEB", zorder=0, alpha=0.7, linewidth=0,
+    )
 
-    for ax in (ax_src, ax_mid, ax_tgt):
-        ax.set_xlim(-0.1, 1.1)
-        ax.set_ylim(-0.12, 1.02)
-        ax.axis("off")
-
-    # ── Draw each category panel ──────────────────────────────────────────
     _draw_category_panel(
-        ax_src,
-        positions=_ACC_POSITIONS,
+        ax,
+        positions=left_pos,
         edges=_ACC_EDGES,
         panel_title="$\\mathcal{C}_{\\mathrm{acc}}$  (Accusative)",
         highlight_groups=[
@@ -112,8 +175,8 @@ def render_functor_diagram(
         ],
     )
     _draw_category_panel(
-        ax_tgt,
-        positions=_ERG_POSITIONS,
+        ax,
+        positions=right_pos,
         edges=_ERG_EDGES,
         panel_title="$\\mathcal{C}_{\\mathrm{erg}}$  (Ergative)",
         highlight_groups=[
@@ -122,63 +185,74 @@ def render_functor_diagram(
         ],
     )
 
-    # ── Draw functor arrows (cross-axes ConnectionPatch) ──────────────────
-    # Unique canonical mappings: NOM→ERG, ACC→ABS, S→ABS, A→ERG, P→ABS
-    functor_pairs = [
-        ("S",   _ACC_POSITIONS["S"],   "S",   _ERG_POSITIONS["S"],   "F(S)=ABS"),
-        ("A",   _ACC_POSITIONS["A"],   "A",   _ERG_POSITIONS["A"],   "F(A)=ERG"),
-        ("NOM", _ACC_POSITIONS["NOM"], "ERG", _ERG_POSITIONS["ERG"], "F(NOM)=ERG"),
-        ("P",   _ACC_POSITIONS["P"],   "ABS", _ERG_POSITIONS["ABS"], "F(P)=ABS"),
-        ("ACC", _ACC_POSITIONS["ACC"], "ABS", _ERG_POSITIONS["ABS"], "F(ACC)=ABS"),
-    ]
-
-    for src_name, (sx, sy), tgt_name, (tx, ty), label in functor_pairs:
-        con = mpatches.ConnectionPatch(
-            xyA=(sx, sy), coordsA=ax_src.transData,
-            xyB=(tx, ty), coordsB=ax_tgt.transData,
-            arrowstyle="->,head_width=10,head_length=10",
+    # Functor arrows (single coordinate system — no cross-subplot transform drift)
+    stagger = _target_stagger_by_pair(functor)
+    for src_role, tgt_role in sorted(
+        functor.object_map.items(),
+        key=lambda kv: (kv[1].name, kv[0].name),
+    ):
+        src_name = src_role.name
+        tgt_name = tgt_role.name
+        if src_name not in left_pos or tgt_name not in right_pos:
+            logger.warning(
+                "Skipping functor arrow %s→%s: missing layout position",
+                src_name,
+                tgt_name,
+            )
+            continue
+        cx, cy = right_pos[tgt_name]
+        off_x = stagger.get((tgt_name, src_name), 0.0)
+        tx, ty = cx + off_x, cy
+        sx, sy = left_pos[src_name]
+        xy_a, xy_b = _trim_segment_endpoints(sx, sy, tx, ty, _NODE_RADIUS)
+        vert_span = abs(sy - ty)
+        rad = 0.11 if vert_span > 0.45 else 0.045
+        arrow = mpatches.FancyArrowPatch(
+            xy_a,
+            xy_b,
+            arrowstyle="->",
+            connectionstyle=f"arc3,rad={rad}",
             color=COLOR_FUNCTOR_ARROW,
             linewidth=2.2,
-            linestyle="dashed",
+            linestyle="--",
             mutation_scale=18,
             zorder=12,
+            shrinkA=0,
+            shrinkB=0,
         )
-        fig.add_artist(con)
+        ax.add_patch(arrow)
 
-    # ── Middle column: functor label and arrows list ──────────────────────
-    ax_mid.text(
-        0.5, 0.92, "$F$", fontsize=26, ha="center", va="top",
+    # Functor column (data coords, centered in gap)
+    xc = _FUNCTOR_COLUMN_X
+    ax.text(
+        xc, 0.94, "$F$", fontsize=26, ha="center", va="top",
         fontweight="bold", color=COLOR_FUNCTOR_ARROW,
-        transform=ax_mid.transAxes,
     )
-    ax_mid.text(
-        0.5, 0.80, "$\\longrightarrow$", fontsize=22, ha="center", va="top",
-        color=COLOR_FUNCTOR_ARROW, transform=ax_mid.transAxes,
+    ax.text(
+        xc, 0.84, "$\\longrightarrow$", fontsize=22, ha="center", va="top",
+        color=COLOR_FUNCTOR_ARROW,
     )
     mapping_lines = [
-        "S $\\mapsto$ ABS",
-        "A $\\mapsto$ ERG",
-        "P $\\mapsto$ ABS",
-        "NOM $\\mapsto$ ERG",
-        "ACC $\\mapsto$ ABS",
+        f"{src.name} $\\mapsto$ {tgt.name}"
+        for src, tgt in sorted(
+            functor.object_map.items(), key=lambda kv: kv[0].name
+        )
     ]
     for i, line in enumerate(mapping_lines):
-        ax_mid.text(
-            0.5, 0.62 - i * 0.12, line, fontsize=13, ha="center", va="top",
-            color=COLOR_FUNCTOR_ARROW, transform=ax_mid.transAxes,
-            fontstyle="italic",
+        ax.text(
+            xc, 0.72 - i * 0.095, line, fontsize=13, ha="center", va="top",
+            color=COLOR_FUNCTOR_ARROW, fontstyle="italic",
         )
 
-    # Neutralization note
-    ax_mid.text(
-        0.5, 0.00,
+    ax.text(
+        xc, -0.06,
         mathtext_safe_arrows("Non-injective:\nS,P → ABS"),
-        fontsize=11, ha="center", va="bottom",
-        color="#BE185D", transform=ax_mid.transAxes,
-        style="italic",
+        fontsize=11, ha="center", va="top",
+        color="#BE185D", style="italic",
     )
 
-    # ── Figure title and annotation ──────────────────────────────────────
+    ax.set_aspect("equal")
+
     display_title = title or (
         r"Alignment Functor $F: \mathcal{C}_{\mathrm{acc}} \to \mathcal{C}_{\mathrm{erg}}$"
         "\n"
@@ -209,8 +283,8 @@ def _draw_category_panel(
     """Draw a single category as nodes + edges with background grouping.
 
     Args:
-        ax: Target axes.
-        positions: Dict mapping role name to (x, y) in [0,1] data coords.
+        ax: Target axes (shared across both panels).
+        positions: Dict mapping role name to (x, y) in world data coords.
         edges: List of (source_name, target_name, label).
         panel_title: Title of the panel.
         highlight_groups: List of (node_names, fill_color, group_label).
@@ -233,7 +307,7 @@ def _draw_category_panel(
         )
         halo = plt.Circle(
             (cx, cy), halo_r,
-            color=fill_color, zorder=0, alpha=0.55,
+            color=fill_color, zorder=1, alpha=0.55,
         )
         ax.add_patch(halo)
         ax.text(
@@ -250,7 +324,6 @@ def _draw_category_panel(
         sx, sy = positions[src_name]
         tx, ty = positions[tgt_name]
 
-        # Offset endpoints to node boundary
         dx, dy = tx - sx, ty - sy
         dist = max(np.hypot(dx, dy), 1e-9)
         dx_n, dy_n = dx / dist, dy / dist
@@ -276,7 +349,6 @@ def _draw_category_panel(
         color = CASE_COLORS.get(name, COLOR_NEUTRAL)
         circle = plt.Circle((x, y), r, color=color, zorder=5)
         ax.add_patch(circle)
-        # White ring border
         ring = plt.Circle(
             (x, y), r, fill=False,
             edgecolor="white", linewidth=2.5, zorder=6,
@@ -288,10 +360,10 @@ def _draw_category_panel(
             color="white", zorder=7,
         )
 
-    ax.set_title(
-        panel_title, fontsize=FONT_SIZE_LABEL + 2,
-        fontweight="bold", pad=10, color=COLOR_TEXT,
+    xs_p = [positions[k][0] for k in positions]
+    cx_title = float(np.mean(xs_p)) if xs_p else 0.5
+    ax.text(
+        cx_title, 1.08, panel_title,
+        fontsize=FONT_SIZE_LABEL + 2,
+        fontweight="bold", ha="center", va="bottom", color=COLOR_TEXT,
     )
-    ax.set_aspect("equal")
-    ax.set_xlim(-0.15, 1.15)
-    ax.set_ylim(-0.25, 1.10)

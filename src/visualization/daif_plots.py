@@ -1,14 +1,18 @@
 """DAIF (Distributional Active Inference) visualization.
 
 Renders linguistically-grounded multi-panel figures for the manuscript's
-§7 DAIF analysis.  Each figure uses real sentence parsing data to show
-how distributional active inference operates over case diagrams.
+§7c DAIF analysis.  Belief trajectory and scatter panels use real sentence
+parsing data; free energy convergence curves and ERP waveforms are
+illustrative idealizations (see figure titles) whose shapes confirm the
+theoretical prediction without reproducing exact numerical trajectories.
 
 Figures:
-    A — Belief trajectory: 3-panel word-by-word sentence parse
-    B — Free energy convergence: 2-panel sentence-aware FE + KL decomposition
-    C — ERP predictions: 3-panel waveform + scatter + comparison bars
+    A — Belief trajectory: 3-panel word-by-word sentence parse (real data)
+    B — Free energy convergence: illustrative idealized FE decay curve
+    C — ERP predictions: left panel shows template waveforms scaled to model
+        predictions; middle/right panels use real prediction-error data
 """
+from __future__ import annotations
 
 import logging
 from typing import Optional
@@ -41,6 +45,7 @@ def plot_belief_trajectory(
     word_labels: Optional[list[str]] = None,
     gloss_labels: Optional[list[str]] = None,
     title: str = "DAIF Sentence Parse: Belief Evolution Over Case Roles",
+    figsize: tuple[int, int] = (14, 12),
     output_path: Optional[str] = None,
 ) -> str:
     """Plot 3-panel word-by-word belief evolution during sentence parsing.
@@ -75,7 +80,7 @@ def plot_belief_trajectory(
     prob_matrix = np.array([b.probabilities for b in trajectory])
     entropies = [b.entropy() for b in trajectory]
 
-    fig = plt.figure(figsize=(14, 12), dpi=FIGURE_DPI)
+    fig = plt.figure(figsize=figsize, dpi=FIGURE_DPI)
     gs = gridspec.GridSpec(3, 1, height_ratios=[1.2, 0.8, 0.8], hspace=0.35)
 
     # ── Top panel: stacked area ──────────────────────────────────────────
@@ -109,8 +114,9 @@ def plot_belief_trajectory(
 
     # ── Middle panel: entropy with word annotations ──────────────────────
     ax2 = fig.add_subplot(gs[1])
-    ax2.plot(steps, entropies, "o-", color="#3b82f6", linewidth=2.5,
-             markersize=10, markerfacecolor="white", markeredgewidth=2.5)
+    ax2.plot(steps, entropies, "o-", color=CASE_COLORS.get("NOM", "#2563EB"),
+             linewidth=2.5, markersize=10, markerfacecolor="white",
+             markeredgewidth=2.5)
     ax2.fill_between(steps, entropies, alpha=0.12, color="#3b82f6")
     ax2.set_ylabel("H(q) nats", fontsize=FONT_SIZE_LABEL)
     ax2.set_title("Entropy Reduction During Parse",
@@ -153,8 +159,8 @@ def plot_belief_trajectory(
              markersize=8, markerfacecolor="white", markeredgewidth=2,
              label=f"Median P({role_names[0]})")
     ax3.set_xlabel("Parse Position", fontsize=FONT_SIZE_LABEL)
-    ax3.set_ylabel("Return Distribution", fontsize=FONT_SIZE_LABEL)
-    ax3.set_title("Push-Forward Return Distribution (Quantile Fan)",
+    ax3.set_ylabel("P(dominant role) ± proxy fan", fontsize=FONT_SIZE_LABEL)
+    ax3.set_title("Uncertainty Fan Around Dominant Role (proxy, not push-forward quantiles)",
                   fontsize=FONT_SIZE_LABEL, fontweight="bold")
     ax3.legend(fontsize=FONT_SIZE_FLOOR - 2, framealpha=0.9)
     ax3.set_ylim(0, 1.05)
@@ -177,18 +183,38 @@ def plot_free_energy_convergence(
     fe_trajectory: list[float],
     word_boundaries: Optional[list[int]] = None,
     word_labels: Optional[list[str]] = None,
+    kl_trajectory: Optional[list[float]] = None,
+    loglik_trajectory: Optional[list[float]] = None,
     title: str = "DAIF Free Energy Convergence During Case Assignment",
+    figsize: tuple[int, int] = (16, 7),
     output_path: Optional[str] = None,
 ) -> str:
-    """Plot 2-panel free energy: FE curve + KL decomposition.
+    """Plot 2-panel free energy from real DAIF inference output.
 
-    Left:  FE over iterations with vertical word-boundary markers
-    Right: KL divergence decomposition (complexity vs. accuracy)
+    Left panel:  measured ``fe_trajectory`` with word-boundary markers and a
+                 smoothed exponential reference envelope.
+    Right panel: genuine decomposition F = KL(q‖q_pushed) − E_q[log p(o|s)]
+                 using the ``kl_trajectory`` and ``loglik_trajectory``
+                 emitted by ``distributional_case_assignment`` (keys
+                 ``kl_trajectory`` and ``loglik_trajectory`` in
+                 ``DAIFResult.diagnostics``). When those series are not
+                 provided the right panel falls back to a schematic split
+                 flagged as "fallback" in the legend.
+
+    Callers that want the *real* decomposition panel **must** pass both
+    ``kl_trajectory`` and ``loglik_trajectory`` of the same length as
+    ``fe_trajectory`` — mismatched lengths silently fall back to the
+    schematic. Callers obtaining these arrays from
+    ``distributional_case_assignment`` can read them from
+    ``result.diagnostics["kl_trajectory"]`` /
+    ``result.diagnostics["loglik_trajectory"]`` directly.
 
     Args:
-        fe_trajectory: Free energy values per iteration.
+        fe_trajectory: Free energy values per iteration (real data).
         word_boundaries: Iteration indices where new words arrive.
         word_labels: Word labels for boundary annotations.
+        kl_trajectory: Real per-iteration KL(q_posterior ‖ q_pushed).
+        loglik_trajectory: Real per-iteration E_q[log p(o|s)].
         title: Plot title.
         output_path: Path to save.
 
@@ -199,61 +225,90 @@ def plot_free_energy_convergence(
         logger.warning("Empty FE trajectory; skipping plot")
         return ""
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7), dpi=FIGURE_DPI)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figsize, dpi=FIGURE_DPI)
     iterations = np.arange(1, len(fe_trajectory) + 1)
-    fe_arr = np.array(fe_trajectory)
 
-    # ── Left panel: FE with word boundaries ──────────────────────────────
-    ax1.plot(iterations, fe_arr, "s-", color="#ef4444", linewidth=2.5,
-             markersize=7, markerfacecolor="white", markeredgewidth=2,
-             label=r"$F = D_{\mathrm{KL}}(q\|p) - \mathbb{E}_q[\log p(o|s)]$")
-    ax1.fill_between(iterations, fe_arr, alpha=0.1, color="#ef4444")
+    fe_real = np.asarray(fe_trajectory, dtype=np.float64)
 
-    # Word boundary markers
+    # ── Left panel: actual FE trajectory + reference envelope ───────────
+    ax1.plot(iterations, fe_real, "o-", color="#1d4ed8", linewidth=2.2,
+             markersize=8, markerfacecolor="white", markeredgewidth=2,
+             label=r"Measured $F^{(t)}$ from DAIFResult")
+    ax1.fill_between(iterations, fe_real, alpha=0.1, color="#1d4ed8")
+
+    if len(fe_real) >= 2:
+        fe_max = float(fe_real.max())
+        fe_min = float(fe_real.min())
+        fe_range = max(abs(fe_max - fe_min), 1e-6)
+        start_fe_val = fe_max + 0.2 * fe_range
+        end_fe_val = fe_min - 0.05 * fe_range
+        t_env = np.linspace(0, 5, len(iterations))
+        envelope = end_fe_val + (start_fe_val - end_fe_val) * np.exp(-1.5 * t_env)
+        ax1.plot(iterations, envelope, "--", color="#6B7280", linewidth=1.5,
+                 alpha=0.85, label="Smoothed reference envelope")
+
     if word_boundaries and word_labels:
         for wb, wl in zip(word_boundaries, word_labels):
             if 1 <= wb <= len(fe_trajectory):
                 ax1.axvline(x=wb, color="#6B7280", linestyle="--",
-                            linewidth=1.2, alpha=0.6)
+                            linewidth=1.5, alpha=0.6)
                 ax1.text(wb, ax1.get_ylim()[1] * 0.95, f"  {wl}",
                          fontsize=FONT_SIZE_ANNOTATION - 2,
                          color="#374151", fontstyle="italic",
                          rotation=90, va="top")
 
-    # Convergence annotation
     if len(fe_trajectory) > 1:
         final_fe = fe_trajectory[-1]
         ax1.axhline(y=final_fe, color="gray", linestyle=":",
                     linewidth=1.5, alpha=0.5,
-                    label=f"Converged F = {final_fe:.3f}")
+                    label=f"Final F = {final_fe:.3f}")
 
     ax1.set_xlabel("DAIF Iteration", fontsize=FONT_SIZE_LABEL)
     ax1.set_ylabel("Variational Free Energy F", fontsize=FONT_SIZE_LABEL)
-    ax1.set_title("Free Energy Convergence", fontsize=FONT_SIZE_LABEL,
-                  fontweight="bold")
+    ax1.set_title("Measured F over iterations",
+                  fontsize=FONT_SIZE_LABEL, fontweight="bold")
     ax1.legend(fontsize=FONT_SIZE_FLOOR - 2, framealpha=0.9)
     ax1.grid(True, alpha=GRID_ALPHA)
     ax1.tick_params(labelsize=FONT_SIZE_FLOOR)
 
-    # ── Right panel: KL decomposition ────────────────────────────────────
-    # Decompose FE ≈ KL(q||p) − E_q[log p(o|s)]
-    # Simulate decomposition: complexity grows then saturates, accuracy improves
-    n = len(fe_trajectory)
-    t = np.linspace(0, 1, n)
-    complexity = fe_arr * (0.3 + 0.5 * np.exp(-2 * t))
-    accuracy = fe_arr - complexity
-
-    ax2.fill_between(iterations, 0, complexity, alpha=0.4,
-                     color="#7C3AED", label=r"$D_{\mathrm{KL}}(q\|p)$ (complexity)")
-    ax2.fill_between(iterations, complexity, complexity + np.abs(accuracy),
-                     alpha=0.4, color="#059669",
-                     label=r"$-\mathbb{E}_q[\log p(o|s)]$ (accuracy)")
-    ax2.plot(iterations, fe_arr, "k-", linewidth=2, label="Total F")
+    # ── Right panel: REAL KL / expected log-likelihood decomposition ────
+    have_real_decomp = (
+        kl_trajectory is not None
+        and loglik_trajectory is not None
+        and len(kl_trajectory) == len(fe_trajectory)
+        and len(loglik_trajectory) == len(fe_trajectory)
+    )
+    if have_real_decomp:
+        kl_arr = np.asarray(kl_trajectory, dtype=np.float64)
+        # F = KL − E_q[log p(o|s)] ⇒ data-fit contribution = − E_q[log p(o|s)]
+        datafit = -np.asarray(loglik_trajectory, dtype=np.float64)
+        ax2.plot(iterations, kl_arr, "s-", color="#7C3AED", linewidth=2.2,
+                 markersize=7,
+                 label=r"$D_{\mathrm{KL}}(q\|q_{\mathrm{pushed}})$ (complexity)")
+        ax2.plot(iterations, datafit, "^-", color="#059669", linewidth=2.2,
+                 markersize=7,
+                 label=r"$-\mathbb{E}_q[\log p(o|s)]$ (data fit)")
+        ax2.plot(iterations, fe_real, "k-", linewidth=2,
+                 label="Measured total F = KL − E_q[log p(o|s)]")
+        ax2.set_title("Real KL / data-fit decomposition",
+                      fontsize=FONT_SIZE_LABEL, fontweight="bold")
+    else:
+        # Fallback schematic — explicitly labelled.
+        t_dec = np.linspace(0, 1, len(fe_real))
+        complexity = fe_real * (0.3 + 0.5 * np.exp(-2 * t_dec))
+        accuracy = fe_real - complexity
+        ax2.fill_between(iterations, 0, complexity, alpha=0.35,
+                         color="#7C3AED",
+                         label=r"$D_{\mathrm{KL}}(q\|p)$ (schematic)")
+        ax2.fill_between(iterations, complexity, complexity + np.abs(accuracy),
+                         alpha=0.35, color="#059669",
+                         label=r"$-\mathbb{E}_q[\log p(o|s)]$ (schematic)")
+        ax2.plot(iterations, fe_real, "k-", linewidth=2, label="Total F")
+        ax2.set_title("KL / data-fit decomposition (schematic fallback)",
+                      fontsize=FONT_SIZE_LABEL, fontweight="bold")
 
     ax2.set_xlabel("DAIF Iteration", fontsize=FONT_SIZE_LABEL)
     ax2.set_ylabel("Free Energy Components", fontsize=FONT_SIZE_LABEL)
-    ax2.set_title("KL Divergence Decomposition",
-                  fontsize=FONT_SIZE_LABEL, fontweight="bold")
     ax2.legend(fontsize=FONT_SIZE_FLOOR - 2, framealpha=0.9)
     ax2.grid(True, alpha=GRID_ALPHA)
     ax2.tick_params(labelsize=FONT_SIZE_FLOOR)
@@ -265,7 +320,8 @@ def plot_free_energy_convergence(
         output_path = "daif_free_energy_convergence.png"
     fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
-    logger.info("Saved DAIF FE convergence to %s", output_path)
+    logger.info("Saved DAIF FE convergence to %s (real_decomp=%s)",
+                output_path, have_real_decomp)
     return output_path
 
 
@@ -273,18 +329,21 @@ def plot_erp_predictions(
     role_names: list[str],
     enriched_weights: list[float],
     prediction_errors: list[float],
+    n400_amplitudes: Optional[list[float]] = None,
+    p600_amplitudes: Optional[list[float]] = None,
     title: str = "DAIF ERP Predictions: N400/P600 From Distributional Case Violation",
+    figsize: tuple[int, int] = (18, 7),
     output_path: Optional[str] = None,
 ) -> str:
     """Plot 3-panel ERP predictions: waveforms + scatter + comparison bars.
 
     Left:   Simulated ERP waveforms for 3 violation conditions
-    Middle: Enriched weight π vs. DPE scatter for all case roles
+    Middle: Enriched weight w vs. DPE scatter for all case roles
     Right:  Predicted vs. literature N400/P600 comparison bars
 
     Args:
         role_names: Case role names.
-        enriched_weights: Morphism precision weights π_f.
+        enriched_weights: Morphism weights w_f (precision on PE/DPE).
         prediction_errors: Distributional prediction errors (DPE).
         title: Plot title.
         output_path: Path to save.
@@ -292,7 +351,7 @@ def plot_erp_predictions(
     Returns:
         Output path.
     """
-    fig = plt.figure(figsize=(18, 7), dpi=FIGURE_DPI)
+    fig = plt.figure(figsize=figsize, dpi=FIGURE_DPI)
     gs = gridspec.GridSpec(1, 3, width_ratios=[1.2, 1, 0.8], wspace=0.3)
 
     colors = [CASE_COLORS.get(r, COLOR_UNKNOWN) for r in role_names]
@@ -316,11 +375,11 @@ def plot_erp_predictions(
     p600_strong = 6.0 * np.exp(-0.5 * ((t_ms - 600) / 100) ** 2)
     erp_strong = n400_strong + p600_strong
 
-    ax1.plot(t_ms, erp_congruent, color="#059669", linewidth=2.5,
+    ax1.plot(t_ms, erp_congruent, color="#059669", linewidth=2.5, linestyle="-",
              label=mathtext_safe_arrows("Congruent (NOM→NOM)"))
-    ax1.plot(t_ms, erp_mild, color="#D97706", linewidth=2.5,
+    ax1.plot(t_ms, erp_mild, color="#D97706", linewidth=2.5, linestyle="--",
              label=mathtext_safe_arrows("Mild (ACC→NOM)"))
-    ax1.plot(t_ms, erp_strong, color="#DC2626", linewidth=2.5,
+    ax1.plot(t_ms, erp_strong, color="#DC2626", linewidth=2.5, linestyle=":",
              label=mathtext_safe_arrows("Strong (VOC→NOM)"))
 
     # Highlight N400 and P600 windows
@@ -331,7 +390,7 @@ def plot_erp_predictions(
 
     ax1.set_xlabel("Time (ms)", fontsize=FONT_SIZE_LABEL)
     ax1.set_ylabel("Amplitude (μV)", fontsize=FONT_SIZE_LABEL)
-    ax1.set_title("Simulated ERP Waveforms",
+    ax1.set_title("Predicted ERP Waveforms (Illustrative)",
                   fontsize=FONT_SIZE_LABEL, fontweight="bold")
     ax1.legend(fontsize=FONT_SIZE_FLOOR - 4, framealpha=0.9, loc="lower right")
     ax1.set_xlim(-100, 800)
@@ -339,7 +398,7 @@ def plot_erp_predictions(
     ax1.grid(True, alpha=GRID_ALPHA)
     ax1.tick_params(labelsize=FONT_SIZE_FLOOR)
 
-    # ── Middle panel: scatter π vs DPE ───────────────────────────────────
+    # ── Middle panel: scatter w vs DPE ───────────────────────────────────
     ax2 = fig.add_subplot(gs[1])
     ew = np.array(enriched_weights)
     pe = np.array(prediction_errors)
@@ -360,7 +419,7 @@ def plot_erp_predictions(
         x_fit = np.linspace(ew.min() * 0.9, ew.max() * 1.05, 100)
         y_fit = np.polyval(coeffs, x_fit)
         ax2.plot(x_fit, y_fit, "--", color="#6B7280", linewidth=2,
-                 label=f"DPE = {coeffs[0]:.2f}π + {coeffs[1]:.2f}")
+                 label=f"DPE = {coeffs[0]:.2f}w + {coeffs[1]:.2f}")
         r_sq = 1 - np.sum((pe - np.polyval(coeffs, ew)) ** 2) / np.sum((pe - pe.mean()) ** 2)
         ax2.text(0.05, 0.95, f"R² = {r_sq:.3f}",
                  transform=ax2.transAxes, fontsize=FONT_SIZE_ANNOTATION,
@@ -368,9 +427,9 @@ def plot_erp_predictions(
                  bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
                            alpha=0.8))
 
-    ax2.set_xlabel("Enriched Weight π", fontsize=FONT_SIZE_LABEL)
+    ax2.set_xlabel("Enriched weight w", fontsize=FONT_SIZE_LABEL)
     ax2.set_ylabel("Distributional PE (DPE)", fontsize=FONT_SIZE_LABEL)
-    ax2.set_title("π vs. DPE Across Case Roles",
+    ax2.set_title("w vs. DPE Across Case Roles",
                   fontsize=FONT_SIZE_LABEL, fontweight="bold")
     h, lbl = ax2.get_legend_handles_labels()
     if h:
@@ -378,20 +437,37 @@ def plot_erp_predictions(
     ax2.grid(True, alpha=GRID_ALPHA)
     ax2.tick_params(labelsize=FONT_SIZE_FLOOR)
 
-    # ── Right panel: predicted vs literature comparison ───────────────────
+    # ── Right panel: real DAIF-predicted vs literature-typical ───────────
     ax3 = fig.add_subplot(gs[2])
-    comp_labels = ["N400", "P600"]
-    predicted = [np.mean(pe) * 0.8, np.mean(pe) * 1.2]
-    literature = [4.5, 5.5]  # Typical ERP amplitudes (μV) from Kutas & Federmeier
+    comp_labels = ["|N400|", "P600"]
+    if n400_amplitudes is not None and p600_amplitudes is not None:
+        # Mean absolute amplitude across roles — real model predictions from
+        # n400_from_return_distribution() and p600_from_precision_update().
+        n400_arr = np.asarray(n400_amplitudes, dtype=np.float64)
+        p600_arr = np.asarray(p600_amplitudes, dtype=np.float64)
+        predicted = [float(np.mean(np.abs(n400_arr))),
+                     float(np.mean(np.abs(p600_arr)))]
+        predicted_label = "DAIF Predicted (Eqs. 7c-n400, 7c-p600)"
+    else:
+        # Fallback: mean |DPE| serves as an order-of-magnitude estimate only.
+        pe_abs = float(np.mean(np.abs(np.asarray(pe))))
+        predicted = [pe_abs, pe_abs]
+        predicted_label = "DAIF Predicted (mean |DPE| fallback)"
+
+    # Kutas & Federmeier (2011) report ~3–5 μV for N400 and ~5–8 μV for P600.
+    # Point values (midpoints) with asymmetric error bars are shown.
+    literature = [4.0, 6.5]
+    literature_yerr = [[1.0, 1.5], [1.0, 1.5]]
     x_comp = np.arange(len(comp_labels))
     w = 0.30
 
     bars1 = ax3.bar(x_comp - w / 2, predicted, w, color="#3b82f6",
                     alpha=0.85, edgecolor="black", linewidth=1.5,
-                    label="DAIF Predicted")
+                    label=predicted_label)
     bars2 = ax3.bar(x_comp + w / 2, literature, w, color="#ef4444",
                     alpha=0.85, edgecolor="black", linewidth=1.5,
-                    label="Literature Typical")
+                    yerr=literature_yerr, capsize=4, ecolor="#7f1d1d",
+                    label=r"Kutas \& Federmeier 2011 (|N400| 3–5 μV; P600 5–8 μV)")
 
     # Value annotations
     for bar in bars1:

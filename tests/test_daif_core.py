@@ -9,6 +9,7 @@ import pytest
 from src.case_systems.case_category import CaseRole
 from src.cognitive.belief import CaseDiagramBelief
 from src.daif.core import (
+    _single_bellman_step,
     push_forward_return,
     distributional_bellman_operator,
     categorical_return_distribution,
@@ -147,6 +148,27 @@ class TestDistributionalBellmanOperator:
         with pytest.raises(ValueError, match="Transition matrix shape"):
             distributional_bellman_operator(three_role_belief, np.eye(5), np.zeros(3), n_steps=2)
 
+    def test_convergence_early_termination(self, uniform_belief, stochastic_T):
+        """With convergence_tol, iteration should stop early once means stabilise."""
+        R = np.array([1.0, 2.0, 3.0])
+        results = distributional_bellman_operator(
+            uniform_belief, stochastic_T, R,
+            gamma=0.99, n_steps=200, n_quantiles=51,
+            convergence_tol=1e-6,
+        )
+        # Should have converged well before 200 steps
+        assert len(results) < 200
+        # Last two means should be within epsilon
+        assert abs(results[-1].mean - results[-2].mean) < 1e-6
+
+    def test_convergence_tol_none_runs_all_steps(self, three_role_belief, identity_T):
+        """Default convergence_tol=None must run exactly n_steps iterations."""
+        R = np.array([1.0, 0.5, 0.0])
+        results = distributional_bellman_operator(
+            three_role_belief, identity_T, R, n_steps=7,
+        )
+        assert len(results) == 7
+
 
 # --- categorical_return_distribution ---
 
@@ -188,3 +210,95 @@ class TestCategoricalReturnDistribution:
         ret = push_forward_return(three_role_belief, identity_T, R)
         probs = ret.to_categorical(v_min=0.0, v_max=2.0, n_atoms=21)
         assert np.isclose(probs.sum(), 1.0, atol=1e-6)
+
+
+class TestSingleBellmanStep:
+    """Direct tests for the private _single_bellman_step helper."""
+
+    def test_normal_operation_returns_distributional_return(self):
+        q = np.array([0.6, 0.3, 0.1])
+        T = np.eye(3)
+        R = np.array([1.0, 0.5, 0.0])
+        result = _single_bellman_step(q, T, R, gamma=0.9, n_quantiles=11)
+        assert isinstance(result, DistributionalReturn)
+        assert np.isfinite(result.mean)
+        assert result.variance >= 0
+        assert len(result.quantiles) == 11
+
+    def test_non_finite_reward_raises_value_error(self):
+        q = np.array([0.5, 0.5])
+        T = np.eye(2)
+        R = np.array([np.inf, 0.0])
+        with pytest.raises(ValueError, match="Non-finite"):
+            _single_bellman_step(q, T, R, gamma=0.9, n_quantiles=5)
+
+
+# --- Phase D2: distributional Bellman operator iterate stability ---
+
+class TestDistributionalBellmanContraction:
+    """Numerical check of the iterate behaviour of the mean-field Bellman
+    operator (manuscript §B1). In the mean-field specialisation the
+    successive iterate means *Z_k.mean* track the belief dynamics rather
+    than a raw Z → TZ contraction, so we verify the weaker (and actually
+    implemented) property: successive iterates converge.
+    """
+
+    @pytest.mark.parametrize("gamma", [0.5, 0.7, 0.9])
+    def test_bellman_iterate_means_converge(self, three_role_belief, gamma):
+        T = np.array([[0.7, 0.2, 0.1],
+                      [0.1, 0.8, 0.1],
+                      [0.2, 0.1, 0.7]])
+        R = np.array([1.0, 0.5, 0.0])
+        results = distributional_bellman_operator(
+            three_role_belief, T, R, gamma=gamma, n_steps=40,
+            n_quantiles=21, convergence_tol=1e-4,
+        )
+        means = np.array([r.mean for r in results])
+        # Successive absolute differences in the mean must monotonically
+        # shrink on the tail (Cauchy-like convergence).
+        diffs = np.abs(np.diff(means))
+        if len(diffs) > 3:
+            tail = diffs[-3:]
+            assert np.all(tail <= diffs[0] + 1e-8), (
+                f"Iterate means did not contract: head={diffs[0]:.4g}, tail={tail}"
+            )
+
+    def test_bellman_iterate_stays_finite(self, three_role_belief):
+        T = np.eye(3)
+        R = np.array([1.0, 0.5, 0.0])
+        results = distributional_bellman_operator(
+            three_role_belief, T, R, gamma=0.99, n_steps=10, n_quantiles=21,
+        )
+        for r in results:
+            assert np.isfinite(r.mean)
+            assert r.variance >= 0.0
+
+
+# --- Phase D7: trivial-shape and extreme-γ edge cases ---
+
+class TestExtremeGammaAndShapeEdges:
+    def test_single_role_1x1(self):
+        belief = CaseDiagramBelief(
+            roles=[CaseRole.NOM], probabilities=np.array([1.0]),
+        )
+        T = np.eye(1)
+        R = np.array([2.5])
+        result = push_forward_return(belief, T, R, gamma=0.9, n_quantiles=11)
+        # mean(Z) = q·(R + γ T^⊤ q) = 1 * (2.5 + 0.9·1·1) = 3.4
+        assert result.mean == pytest.approx(3.4, rel=1e-8)
+        assert result.variance == pytest.approx(0.0, abs=1e-8)
+
+    def test_gamma_near_zero_returns_reward_only(self, three_role_belief):
+        T = np.eye(3)
+        R = np.array([1.0, 2.0, 3.0])
+        result = push_forward_return(three_role_belief, T, R, gamma=1e-8, n_quantiles=21)
+        expected = float(three_role_belief.probabilities @ R)
+        assert result.mean == pytest.approx(expected, rel=1e-6)
+
+    def test_gamma_near_one_stays_finite(self, three_role_belief):
+        T = np.eye(3)
+        R = np.array([1.0, 0.5, 0.0])
+        result = push_forward_return(three_role_belief, T, R, gamma=0.99999, n_quantiles=21)
+        assert np.isfinite(result.mean)
+        assert np.isfinite(result.variance)
+        assert result.variance >= 0.0

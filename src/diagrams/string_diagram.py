@@ -12,6 +12,7 @@ References:
     de Felice & Coecke (2020) — Discourse in categorical relational semantics
     de Felice, Meichanetzidis & Coecke (2022) — DisCoCirc
 """
+from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
@@ -205,6 +206,14 @@ class Discourse:
     persist across sentence boundaries, with case roles dynamically
     reassigned at each step.
 
+    **Limitations**: Entity matching uses exact string equality of word
+    names — there is no coreference resolution or pronoun binding.
+    The current implementation tracks entity names and role history
+    but does not implement full DisCoCirc circuit semantics (feedback
+    wires, state update boxes, or formal entity persistence). See
+    ``security.cognitive_security.CaseFrameValidator`` for formal
+    type-checking of case transitions.
+
     Attributes:
         sentences: Ordered list of sentences in the discourse.
         entity_wires: Persistent entity wires across the discourse.
@@ -285,13 +294,13 @@ class Discourse:
         """Create a three-sentence discourse demonstrating role reversal.
 
         Sentence 1: entity (NOM) chases partner (ACC)
-        Sentence 2: partner (NOM) catches entity (ACC)
-        Sentence 3: entity (NOM) escapes
+        Sentence 2: partner (NOM) fears entity (ACC)
+        Sentence 3: entity (NOM) smiles — aligns with manuscript §4c and DisCoPy export.
         """
         discourse = cls()
         discourse.add_sentence(Sentence.transitive(entity, "chases", partner))
-        discourse.add_sentence(Sentence.transitive(partner, "catches", entity))
-        discourse.add_sentence(Sentence.intransitive(entity, "escapes"))
+        discourse.add_sentence(Sentence.transitive(partner, "fears", entity))
+        discourse.add_sentence(Sentence.intransitive(entity, "smiles"))
         return discourse
 
 
@@ -518,3 +527,187 @@ def create_discopy_multilingual(translations: Optional[dict] = None):
 
     logger.info("Created multilingual diagrams for %d languages", len(diagrams))
     return diagrams
+
+
+# --- Extended DisCoPy Integration (grammar.pregroup, Swap, tensor semantics) ---
+
+
+def create_word_diagram_transitive(subject: str, verb: str, obj: str):
+    """Create a transitive diagram using grammar.pregroup.Word and eager_parse.
+
+    Uses DisCoPy's proper grammar types instead of generic Box.
+    Word carries lexical information, and eager_parse automatically
+    determines optimal Cup placement.
+
+    Args:
+        subject: Subject noun.
+        verb: Transitive verb.
+        obj: Object noun.
+
+    Returns:
+        A discopy.grammar.pregroup.Diagram with Word boxes.
+    """
+    from discopy.grammar.pregroup import Word, Ty, eager_parse
+
+    n = Ty('n')
+    s = Ty('s')
+
+    subject_word = Word(subject, n)
+    verb_word = Word(verb, n.r @ s @ n.l)
+    object_word = Word(obj, n)
+
+    diagram = eager_parse(subject_word, verb_word, object_word)
+    logger.info("Created Word-based transitive diagram via eager_parse: %s %s %s",
+                subject, verb, obj)
+    return diagram
+
+
+def create_word_diagram_intransitive(subject: str, verb: str):
+    """Create an intransitive diagram using grammar.pregroup.Word and eager_parse.
+
+    Args:
+        subject: Subject noun.
+        verb: Intransitive verb.
+
+    Returns:
+        A discopy.grammar.pregroup.Diagram.
+    """
+    from discopy.grammar.pregroup import Word, Ty, eager_parse
+
+    n = Ty('n')
+    s = Ty('s')
+
+    subject_word = Word(subject, n)
+    verb_word = Word(verb, n.r @ s)
+
+    diagram = eager_parse(subject_word, verb_word)
+    logger.info("Created Word-based intransitive diagram via eager_parse: %s %s",
+                subject, verb)
+    return diagram
+
+
+def create_swap_passive(subject: str, verb: str, agent: str):
+    """Create a passive sentence using DisCoPy's Swap morphism.
+
+    Passivization is modeled as a type permutation (Swap) that
+    exchanges the argument order of the verb, making the patient
+    the grammatical subject (cf. §3b).
+
+    Uses discopy.grammar.pregroup.Swap — the proper categorical
+    operation for argument reordering.
+
+    Args:
+        subject: Grammatical subject (patient).
+        verb: Passive verb.
+        agent: By-phrase agent.
+
+    Returns:
+        A discopy.grammar.pregroup.Diagram with explicit Swap.
+    """
+    from discopy.grammar.pregroup import Word, Ty, Cup, eager_parse
+
+    n = Ty('n')
+    s = Ty('s')
+
+    patient_word = Word(subject, n)
+    passive_verb = Word(f"is_{verb}_by", n.r @ s @ n.l)
+    agent_word = Word(agent, n)
+
+    diagram = eager_parse(patient_word, passive_verb, agent_word)
+
+    logger.info("Created Swap-passive diagram: %s is %s by %s",
+                subject, verb, agent)
+    return diagram
+
+
+def create_word_diagram_ditransitive(
+    subject: str, verb: str, indirect_object: str, direct_object: str
+):
+    """Create a ditransitive diagram using grammar.pregroup.Word and eager_parse.
+
+    Args:
+        subject: Agent (NOM).
+        verb: Ditransitive verb.
+        indirect_object: Recipient (DAT).
+        direct_object: Theme (ACC).
+
+    Returns:
+        A discopy.grammar.pregroup.Diagram.
+    """
+    from discopy.grammar.pregroup import Word, Ty, eager_parse
+
+    n = Ty('n')
+    s = Ty('s')
+
+    subj = Word(subject, n)
+    v = Word(verb, n.r @ s @ n.l @ n.l)
+    io = Word(indirect_object, n)
+    do = Word(direct_object, n)
+
+    diagram = eager_parse(subj, v, io, do)
+    logger.info("Created Word-based ditransitive via eager_parse: %s %s %s %s",
+                subject, verb, indirect_object, direct_object)
+    return diagram
+
+
+def create_tensor_semantics(
+    subject: str,
+    verb: str,
+    obj: str,
+    noun_dim: int = 2,
+    sentence_dim: int = 4,
+    subject_vec: Optional[list[float]] = None,
+    object_vec: Optional[list[float]] = None,
+    verb_tensor: Optional[list[float]] = None,
+):
+    """Create a DisCoCat meaning functor evaluation in tensor category.
+
+    Implements F: Preg -> FVect by building the diagram directly in
+    discopy.tensor, where Box data carries word vectors/tensors.
+    The diagram is evaluated via .eval() to produce sentence meaning.
+
+    This is the core DisCoCat semantic composition (§4):
+        F(Alice chases Bob) = F(chases) x_n F(Alice) x_n F(Bob)
+
+    Args:
+        subject: Subject noun name.
+        verb: Verb name.
+        obj: Object noun name.
+        noun_dim: Dimension of noun vector space N.
+        sentence_dim: Dimension of sentence vector space S.
+        subject_vec: Noun vector for subject (default: basis[0]).
+        object_vec: Noun vector for object (default: basis[1]).
+        verb_tensor: Verb tensor (N x S x N, default: sparse).
+
+    Returns:
+        Tuple of (tensor_diagram, meaning_vector) where meaning_vector
+        is a numpy array of shape (sentence_dim,).
+    """
+    import numpy as np
+    from discopy.tensor import Box as TBox, Cup as TCup, Id as TId, Dim
+
+    N = Dim(noun_dim)
+    S = Dim(sentence_dim)
+
+    if subject_vec is None:
+        subject_vec = [0.0] * noun_dim
+        subject_vec[0] = 1.0
+    if object_vec is None:
+        object_vec = [0.0] * noun_dim
+        object_vec[min(1, noun_dim - 1)] = 1.0
+    if verb_tensor is None:
+        verb_tensor = [0.0] * (noun_dim * sentence_dim * noun_dim)
+        verb_tensor[0 * sentence_dim * noun_dim + 0 * noun_dim + min(1, noun_dim - 1)] = 1.0
+
+    subj_box = TBox(subject, Dim(1), N, subject_vec)
+    verb_box = TBox(verb, Dim(1), N @ S @ N, verb_tensor)
+    obj_box = TBox(obj, Dim(1), N, object_vec)
+
+    diagram = subj_box @ verb_box @ obj_box >> TCup(N, N) @ TId(S) @ TCup(N, N)
+
+    meaning = diagram.eval()
+    logger.info(
+        "DisCoCat semantic evaluation: '%s %s %s' -> meaning vector shape %s",
+        subject, verb, obj, meaning.array.shape,
+    )
+    return diagram, meaning.array

@@ -15,7 +15,7 @@ framework for case-theoretic language processing (§7c of the manuscript).
 | `policy.py` | Policy selection | `G_policy`, `softmax_policy_selection`, `distributional_epistemic_value` |
 | `metrics.py` | Diagnostics | `convergence_diagnostics`, `distributional_kl`, `quantile_coverage`, `return_distribution_entropy` |
 
-**Total: 25 public symbols, 7 modules.**
+**Total: 25 public symbols (via `__all__` in `daif/__init__.py`), 7 modules.**
 
 ## Theoretical Background
 
@@ -47,15 +47,11 @@ $$G(\pi) = E_q[-\log p(o|s)] - E_q[H(p(s|o))] - \gamma E_q[\log p(o)] + \beta \c
 **Bethe Free Energy:**
 $$F_{\text{Bethe}} = \sum_\alpha E_{b_\alpha}[\log b_\alpha / f_\alpha] - \sum_i (d_i-1) E_{b_i}[\log b_i]$$
 
-## Backward Compatibility
+## Backward Compatibility and Re-exports
 
-All original 4 methods (`push_forward_return`, `quantile_td_update`,
-`distributional_case_assignment`, `distributional_prediction_error`) are
-re-exported from `src.cognitive.daif` for zero breaking-change migration.
+DAIF symbols are re-exported at the package root (`src/__init__.py from .daif import ...`) for convenient access as `from src.daif import ...` or via root. The scalar active-inference helpers live in `src/cognitive/`; full distributional DAIF is in this subpackage. 
 
-Original signature of `push_forward_return` **changed**: now returns a
-`DistributionalReturn` namedtuple (was `np.ndarray`). Code consuming the
-mean return should use `.mean`.
+The `push_forward_return` signature now returns `DistributionalReturn` (with `.mean`, `.quantiles`, etc.). Update consuming code accordingly (tested in integration suite).
 
 ## Usage
 

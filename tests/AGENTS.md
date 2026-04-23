@@ -14,11 +14,11 @@ Current working directory must be the template root (parent of `projects/`):
 
 ```bash
 cd /path/to/template   # repository root, not cognitive_case_diagrams/
-uv sync --group rendering --group monitoring --group discopy
+uv sync   # root default-groups include `discopy` (and dev, rendering) so DisCoPy imports succeed
 uv run pytest projects/cognitive_case_diagrams/tests/
 ```
 
-Use path `projects/cognitive_case_diagrams/tests/` only from the root. Without `--group discopy` at the root, DisCoPy tests skip.
+Use path `projects/cognitive_case_diagrams/tests/` only from the root. CI also passes `--group monitoring` (and explicit groups) for other jobs; for DisCoPy-only needs, the default `discopy` group is enough. If `DISCOPY_AVAILABLE` is false, run `uv sync` at the root with an up-to-date `uv.lock`.
 
 ### Option B — Inside `projects/cognitive_case_diagrams/`
 
@@ -39,9 +39,21 @@ On some **macOS** environments, pytest may print `(rm_rf) … Directory not empt
 | Metric | Source of truth |
 |--------|-----------------|
 | Total tests | `uv run pytest tests/ --collect-only -q` (from [`projects/cognitive_case_diagrams/`](../..)) |
-| Line coverage on `src/` | `uv run pytest tests/ --cov=src --cov-report=term-missing` — **≥90%** required (`pyproject.toml`) |
-| Test files | `tests/test_*.py` (excludes `conftest.py`) |
+| Coverage on `src/` | `uv run pytest tests/ --cov=src --cov-report=term-missing` — **≥90%** total (line + branch; `branch = true` in `pyproject.toml`) |
+| Test files | `tests/test_*.py` (excludes `conftest.py`); **63** files (see inventory below) |
 | Policy | **Zero mocks** — no `MagicMock`, no `patch` |
+
+**Coverage artifacts:**
+
+- **Do not commit** binary/aggregate noise: `.coverage`, `.coverage.*`, `coverage.xml`, `htmlcov/` (see repository root [`.gitignore`](../../../.gitignore)).
+- **`coverage.json`** (project root, from `uv run pytest tests/ --cov=src --cov-report=json`): consumed by [`src/generate_manuscript_metrics.py`](../src/generate_manuscript_metrics.py) for real `${coverage_*}` / `${coverage_summary}` manuscript placeholders. Treat it as **optional to commit**: committing pins reproducible injected percentages for PDF/HTML builds; omitting it means each author regenerates JSON before `generate_manuscript_metrics` + `scripts/inject_variables.py`. It is not the same as `.coverage` (never commit the latter).
+
+If `pytest-cov` teardown fails with *Can't combine statement coverage data with branch data*, delete `.coverage*` in this project directory and re-run with explicit project config (isolates from other working trees):
+
+```bash
+rm -f .coverage .coverage.*
+uv run pytest tests/ --cov=src --cov-config=pyproject.toml --cov-report=term-missing --cov-fail-under=90
+```
 
 ### Visualization tests: division of labor
 
@@ -70,6 +82,8 @@ src/visualization/daif_plots.py    →  tests/test_visualization_daif_plots.py
 ```
 
 ## Test File Inventory
+
+There are **63** `test_*.py` files (aggregate counts for Appendix C come from `src/generate_manuscript_metrics.py`, not manual row sums).
 
 ### `case_systems/` (4 test files)
 
@@ -104,7 +118,7 @@ src/visualization/daif_plots.py    →  tests/test_visualization_daif_plots.py
 | `test_daif_prediction.py` | `prediction.py` | DPE, N400/P600 mapping |
 | `test_daif_quantile.py` | `quantile.py` | IQN, Huber quantile loss |
 
-### `diagrams/` (8 test files)
+### `diagrams/` (9 test files)
 
 | Test File | Source Module | Key Concepts |
 |-----------|-------------|--------------|
@@ -116,6 +130,7 @@ src/visualization/daif_plots.py    →  tests/test_visualization_daif_plots.py
 | `test_diagrams_complexity_examples_coverage.py` | `complexity_examples.py` | Extended coverage |
 | `test_diagrams_complexity_metrics_coverage.py` | `complexity_metrics.py` | Extended coverage |
 | `test_diagrams_string_diagram_coverage.py` | `string_diagram.py` | Extended coverage |
+| `test_discopy_extended.py` | DisCoPy `grammar.pregroup` / diagrams | `Word`, `eager_parse`, Swap, tensor semantics, depth/width (requires `discopy`) |
 
 ### `enriched_cat/` (1 test file)
 
@@ -160,6 +175,12 @@ src/visualization/daif_plots.py    →  tests/test_visualization_daif_plots.py
 | `test_visualization_syntactic_sentence_diagrams.py` | `syntactic_sentence_diagrams.py` | Syntactic trees |
 | `test_visualization_syntactic_coverage.py` | `syntactic_sentence_diagrams.py` | Extended coverage |
 | `test_visualization_plot_modules.py` | multiple viz modules | Coverage backfill / smoke (see “Visualization tests” above) |
+
+### Property-based / Hypothesis (1 test file)
+
+| Test File | Source modules | Key Concepts |
+|-----------|----------------|--------------|
+| `test_property_based.py` | `case_systems.case_category`, `enriched_cat.enriched` | Hypothesis: axioms, enriched composition, magnitude (requires `hypothesis` dev extra) |
 
 ### Cross-Module (1 test file)
 

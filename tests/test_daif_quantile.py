@@ -126,6 +126,66 @@ class TestImplicitQuantileNetworkUpdate:
             implicit_quantile_network_update(cq, np.array([1.5]), cq, np.array([0.5]))
 
 
+class TestIQNOverrideKwargs:
+    """The eta_distortion / cvar_alpha kwargs must (a) override module defaults,
+    (b) validate their inputs, (c) leave the neutral path unchanged when set.
+    """
+
+    def _inputs(self):
+        cq = np.array([0.10, 0.30, 0.55, 0.80])
+        cl = np.array([0.20, 0.40, 0.60, 0.80])
+        tq = np.array([0.20, 0.50, 0.75, 0.95])
+        tl = cl.copy()
+        return cq, cl, tq, tl
+
+    def test_eta_distortion_override_changes_optimistic_update(self):
+        cq, cl, tq, tl = self._inputs()
+        default_eta = implicit_quantile_network_update(
+            cq, cl, tq, tl, risk_distortion="optimistic",
+        )
+        # η closer to 0.5 (smaller) ⇒ 1/η larger ⇒ more extreme distortion ⇒
+        # different update than the default η=0.71.
+        custom_eta = implicit_quantile_network_update(
+            cq, cl, tq, tl, risk_distortion="optimistic", eta_distortion=0.5,
+        )
+        assert not np.allclose(default_eta, custom_eta, atol=1e-6)
+
+    def test_cvar_alpha_override_changes_cvar_update(self):
+        cq, cl, tq, tl = self._inputs()
+        default_alpha = implicit_quantile_network_update(
+            cq, cl, tq, tl, risk_distortion="CVaR",
+        )
+        custom_alpha = implicit_quantile_network_update(
+            cq, cl, tq, tl, risk_distortion="CVaR", cvar_alpha=0.05,
+        )
+        assert not np.allclose(default_alpha, custom_alpha, atol=1e-6)
+
+    def test_neutral_mode_ignores_overrides(self):
+        cq, cl, tq, tl = self._inputs()
+        baseline = implicit_quantile_network_update(
+            cq, cl, tq, tl, risk_distortion="neutral",
+        )
+        with_overrides = implicit_quantile_network_update(
+            cq, cl, tq, tl, risk_distortion="neutral",
+            eta_distortion=0.5, cvar_alpha=0.01,
+        )
+        np.testing.assert_allclose(baseline, with_overrides, atol=1e-12)
+
+    def test_invalid_eta_raises(self):
+        cq, cl, tq, tl = self._inputs()
+        with pytest.raises(ValueError, match="eta_distortion"):
+            implicit_quantile_network_update(
+                cq, cl, tq, tl, risk_distortion="optimistic", eta_distortion=0.0,
+            )
+
+    def test_invalid_cvar_alpha_raises(self):
+        cq, cl, tq, tl = self._inputs()
+        with pytest.raises(ValueError, match="cvar_alpha"):
+            implicit_quantile_network_update(
+                cq, cl, tq, tl, risk_distortion="CVaR", cvar_alpha=1.5,
+            )
+
+
 # --- wasserstein_return_distance ---
 
 class TestWassersteinReturnDistance:
@@ -165,3 +225,91 @@ class TestWassersteinReturnDistance:
         db = make_return_dist(n=31, offset=0.5)
         w = wasserstein_return_distance(da, db, p=1)
         assert w >= 0.0
+
+
+class TestWassersteinMetricProperties:
+    """Metric axioms: identity, symmetry, triangle inequality (Phase D1)."""
+
+    def test_identity_returns_zero(self):
+        da = make_return_dist(n=51, offset=0.0)
+        for p in (1, 2):
+            assert wasserstein_return_distance(da, da, p=p) == pytest.approx(0.0, abs=1e-10)
+
+    def test_symmetric(self):
+        da = make_return_dist(n=51, offset=0.0)
+        db = make_return_dist(n=51, offset=1.5)
+        for p in (1, 2):
+            w_ab = wasserstein_return_distance(da, db, p=p)
+            w_ba = wasserstein_return_distance(db, da, p=p)
+            assert w_ab == pytest.approx(w_ba, abs=1e-10)
+
+    def test_triangle_inequality(self):
+        da = make_return_dist(n=51, offset=0.0)
+        db = make_return_dist(n=51, offset=1.0)
+        dc = make_return_dist(n=51, offset=2.0)
+        for p in (1, 2):
+            w_ac = wasserstein_return_distance(da, dc, p=p)
+            w_ab = wasserstein_return_distance(da, db, p=p)
+            w_bc = wasserstein_return_distance(db, dc, p=p)
+            assert w_ac <= w_ab + w_bc + 1e-8
+
+
+class TestQuantileMonotonicityPreservation:
+    """quantile_td_update and IQN must preserve sorted order (Phase D1)."""
+
+    def test_td_update_preserves_sort(self):
+        current = np.array([0.05, 0.20, 0.35, 0.55, 0.80])
+        target = np.array([0.10, 0.25, 0.50, 0.65, 0.95])
+        updated = quantile_td_update(current, target, learning_rate=0.4)
+        assert np.all(np.diff(updated) >= -1e-9)
+
+    @pytest.mark.parametrize("mode", ["neutral", "optimistic", "pessimistic", "CVaR"])
+    def test_iqn_update_preserves_sort(self, mode):
+        cq = np.array([0.2, 0.5, 0.8])
+        cl = np.array([0.25, 0.50, 0.75])
+        tq = np.array([0.3, 0.6, 0.9])
+        tl = cl.copy()
+        result = implicit_quantile_network_update(
+            cq, cl, tq, tl, risk_distortion=mode, learning_rate=0.3,
+        )
+        assert np.all(np.diff(result) >= -1e-9), f"{mode} broke monotonicity"
+
+
+class TestIQNDistortionDirection:
+    """Direction-of-effect sanity for each risk mode (Phase D3).
+
+    With η_IQN = 0.71 < 1 (so 1/η > 1):
+      * optimistic ψ(τ) = τ^(1/η) < τ on (0,1) → shrinks positive-error weights
+      * pessimistic ψ(τ) = 1 − (1−τ)^(1/η) > τ on (0,1) → inflates positive-error weights
+      * CVaR ψ(τ) = τ·α_CVaR with α=0.25 → shrinks positive-error weights
+    """
+
+    def _base_inputs(self):
+        cq = np.array([0.10, 0.30, 0.55, 0.80])
+        cl = np.array([0.20, 0.40, 0.60, 0.80])
+        tq = np.array([0.20, 0.50, 0.75, 0.95])
+        tl = cl.copy()
+        return cq, cl, tq, tl
+
+    def test_pessimistic_inflates_update_vs_neutral(self):
+        cq, cl, tq, tl = self._base_inputs()
+        neutral = implicit_quantile_network_update(cq, cl, tq, tl, risk_distortion="neutral")
+        pess = implicit_quantile_network_update(cq, cl, tq, tl, risk_distortion="pessimistic")
+        # All TD errors here are positive ⇒ 1-(1-τ)^(1/η) > τ inflates updates.
+        assert np.sum(pess - cq) >= np.sum(neutral - cq) - 1e-9
+
+    def test_optimistic_dampens_update_vs_neutral(self):
+        cq, cl, tq, tl = self._base_inputs()
+        neutral = implicit_quantile_network_update(cq, cl, tq, tl, risk_distortion="neutral")
+        opt = implicit_quantile_network_update(cq, cl, tq, tl, risk_distortion="optimistic")
+        # τ^(1/η) < τ with η<1 ⇒ shrunk positive-error weight ⇒ smaller update.
+        assert np.sum(opt - cq) <= np.sum(neutral - cq) + 1e-9
+
+    def test_cvar_shrinks_update_magnitude(self):
+        cq, cl, tq, tl = self._base_inputs()
+        neutral = implicit_quantile_network_update(cq, cl, tq, tl, risk_distortion="neutral")
+        cvar = implicit_quantile_network_update(cq, cl, tq, tl, risk_distortion="CVaR")
+        # τ·0.25 < τ ⇒ update magnitude shrinks on any positive-error direction.
+        delta_neutral = np.abs(neutral - cq)
+        delta_cvar = np.abs(cvar - cq)
+        assert delta_cvar.sum() <= delta_neutral.sum() + 1e-9

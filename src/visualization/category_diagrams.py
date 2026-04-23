@@ -3,9 +3,9 @@
 Renders case categories as directed graphs, alignment comparisons,
 and composition triangles for the manuscript figures.
 """
+from __future__ import annotations
 
 import logging
-from pathlib import Path
 from typing import Optional, Union
 
 import matplotlib
@@ -60,7 +60,7 @@ def _get_color(role: CaseRole) -> str:
 
 def render_case_category(
     category: CaseCategory,
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
     title: Optional[str] = None,
     show_admissibility: bool = True,
     extra_prohibited: Optional[list[tuple[CaseRole, CaseRole, str]]] = None,
@@ -269,7 +269,7 @@ def render_case_category(
 
 
 def render_alignment_comparison(
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
 ) -> matplotlib.figure.Figure:
     """Render side-by-side comparison of Accusative, Ergative, and Tripartite systems.
 
@@ -349,7 +349,7 @@ def render_alignment_comparison(
 
 
 def render_composition_triangle(
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
 ) -> matplotlib.figure.Figure:
     """Render a composition diagram: f: A → B, g: B → C, h = g∘f: A → C.
 
@@ -377,8 +377,9 @@ def render_composition_triangle(
     }
     colors = [CASE_COLORS["NOM"], CASE_COLORS["ACC"], CASE_COLORS["DAT"]]
 
+    # Larger nodes so the parenthesised role labels fit inside the discs.
     nx.draw_networkx_nodes(
-        G, pos, ax=ax, node_size=2500, node_color=colors, alpha=0.9
+        G, pos, ax=ax, node_size=5200, node_color=colors, alpha=0.9
     )
     nx.draw_networkx_labels(
         G, pos, ax=ax, font_size=FONT_SIZE_LABEL - 2,

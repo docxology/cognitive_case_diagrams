@@ -1,4 +1,4 @@
-\begin{thebibliography}{94}
+\begin{thebibliography}{105}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -9,8 +9,7 @@
 {A2A Project}.
 \newblock Agent2agent protocol ({A2A}).
 \newblock \url{https://github.com/a2aproject/A2A}, 2025.
-\newblock Open protocol for agent-to-agent communication; 146 contributors, 10
-  releases.
+\newblock Open protocol for agent-to-agent communication.
 
 \bibitem[Akg{\"u}l et~al.(2026)Akg{\"u}l, Baykal, Hau{\ss}mann, {\c{C}}elikok,
   and Kandemir]{akgul2026distributional}
@@ -98,6 +97,17 @@ Filippo Bonchi, Fabio Gadducci, Aleks Kissinger, Pawe{\l} Soboci{\'n}ski, and
 \newblock String diagram rewriting modulo Frobenius as double-pushout
   hypergraph rewriting; foundational for diagram simplification.
 
+\bibitem[Bornkessel and Schlesewsky(2006)]{bornkessel2006extended}
+Ina Bornkessel and Matthias Schlesewsky.
+\newblock The extended argument dependency model: A neurocognitive approach to
+  sentence comprehension across languages.
+\newblock \emph{Psychological Review}, 113\penalty0 (4):\penalty0 787--821,
+  2006.
+\newblock \doi{10.1037/0033-295X.113.4.787}.
+\newblock Cross-linguistic neurocognitive model of argument-structure
+  processing; ERP predictions for case-violation paradigms in morphologically
+  rich languages including Russian.
+
 \bibitem[Bradley(2021)]{bradley2021entropy}
 Tai-Danae Bradley.
 \newblock Entropy as a topological operad derivation.
@@ -117,6 +127,15 @@ Tai-Danae Bradley.
 \newblock An enriched category theory of language.
 \newblock Tea Talk, 2025.
 \newblock URL \url{https://www.youtube.com/watch?v=KCtyiE6Ybnc}.
+
+\bibitem[Bradley and Vigneaux(2025)]{bradleyvigneaux2025magnitude}
+Tai-Danae Bradley and Juan~Pablo Vigneaux.
+\newblock The magnitude of categories of texts enriched by language models.
+\newblock \emph{Theory and Applications of Categories}, 44\penalty0
+  (37):\penalty0 1256--1281, 2025.
+\newblock URL \url{https://arxiv.org/abs/2501.06662}.
+\newblock Builds text categories from LM next-token probabilities; magnitude
+  and magnitude homology of an associated metric space.
 
 \bibitem[Bradley et~al.(2021)Bradley, Terilla, and Weyhrich]{fritz2021enriched}
 Tai-Danae Bradley, John Terilla, and Tyler Weyhrich.
@@ -195,6 +214,14 @@ Bob Coecke, Mehrnoosh Sadrzadeh, and Stephen Clark.
   distributional semantics, enabling compositional meaning computation that
   formalizes case-like structures through tensor contractions.
 
+\bibitem[Dabney et~al.(2018)Dabney, Rowland, Bellemare, and
+  Munos]{dabney2018distributional}
+Will Dabney, Mark Rowland, Marc~G. Bellemare, and R{\'e}mi Munos.
+\newblock Distributional reinforcement learning with quantile regression.
+\newblock In \emph{Proceedings of the 32nd AAAI Conference on Artificial
+  Intelligence (AAAI-18)}, pages 2892--2901, 2018.
+\newblock \doi{10.1609/aaai.v32i1.11791}.
+
 \bibitem[de~Felice and Coecke(2020)]{defelice2020discourse}
 Giovanni de~Felice and Bob Coecke.
 \newblock Discourse in categorical compositional relational semantics.
@@ -260,6 +287,12 @@ Ariane Duneau.
 \newblock Constructs DisCoCirc discourse circuits from CCG parse trees via
   iterative coreference resolution and wire merging.
 
+\bibitem[Duneau(2025)]{duneau2025comparative}
+Tiffany Duneau.
+\newblock Towards a comparative framework for compositional {AI} models, 2025.
+\newblock Extends DisCoCirc pipeline work to a comparative framework for
+  evaluating compositional AI model architectures.
+
 \bibitem[Fields and Glazebrook(2021)]{fields2021qrf}
 Chris Fields and James~F. Glazebrook.
 \newblock Reference frame induced symmetry breaking on holographic screens.
@@ -311,19 +344,13 @@ John~Rupert Firth.
 \newblock Origin of the distributional hypothesis: ``You shall know a word by
   the company it keeps''.
 
-\bibitem[Friedman and {Active Inference Institute}(2024)]{cerebrum2024github}
-Daniel~A. Friedman and {Active Inference Institute}.
-\newblock {CEREBRUM}: Case-enabled reasoning engine with bayesian
-  representations using models.
-\newblock \url{https://github.com/ActiveInferenceInstitute/CEREBRUM}, 2024.
-\newblock Open-source implementation of case-bearing active inference models.
-  MIT License.
-
-\bibitem[Friedman(2024)]{friedman2024cerebrum}
-Daniel~Ari Friedman.
+\bibitem[Friedman and {Active Inference Institute}(2024)]{friedman2024cerebrum}
+Daniel~Ari Friedman and {Active Inference Institute}.
 \newblock {CEREBRUM}: Case-enabled reasoning engine with {B}ayesian
   representations for unified modeling.
 \newblock \url{https://github.com/ActiveInferenceInstitute/CEREBRUM}, 2024.
+\newblock Open-source implementation of case-bearing active inference models.
+  MIT License.
 
 \bibitem[Friston(2010)]{friston2010free}
 Karl~J. Friston.
@@ -392,6 +419,13 @@ Edward Grefenstette and Mehrnoosh Sadrzadeh.
   2015.
 \newblock \doi{10.1162/COLI_a_00209}.
 
+\bibitem[Gutierrez~Cisneros et~al.(2026)]{gutierrez2026neuropragmatics}
+A.~Gutierrez~Cisneros et~al.
+\newblock Neuropragmatics: From classical pragmatics to neurocognitive
+  frameworks for speech-act evaluation.
+\newblock \emph{Frontiers in Psychology}, 2026.
+\newblock \doi{10.3389/fpsyg.2026.1745034}.
+
 \bibitem[Harris(1954)]{harris1954distributional}
 Zellig~S. Harris.
 \newblock Distributional structure.
@@ -422,10 +456,10 @@ Roman Jakobson.
   case forms.
 \newblock \emph{American Contributions to the Fourth International Congress of
   Slavicists}, 1958.
-\newblock Analyzes Russian verbal morphology through case oppositions (e.g.,
-  subject vs. object marking), laying groundwork for categorical views of
-  grammatical functions as morphisms preserving distributional contexts in
-  semantic spaces.
+\newblock Analyzes Russian nominal (declensional) morphology through case
+  oppositions (e.g., subject vs. object marking), laying groundwork for
+  categorical views of grammatical functions as morphisms preserving
+  distributional contexts in semantic spaces.
 
 \bibitem[Jha(2021)]{jha2021sanskrit}
 Girish~Nath Jha.
@@ -473,6 +507,7 @@ Aleks Kissinger and John van~de Wetering.
 Colin Krawchuk, Nikhil Khatri, Neil~John Ortega, and Dimitri Kartsaklis.
 \newblock Efficient generation of parameterised quantum circuits from large
   texts, 2025{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/2505.13208}.
 \newblock Uses DisCoCirc string diagrams to generate discourse-level quantum
   circuits via tree-like pregroup diagrams; part of lambeq Gen II.
 
@@ -481,10 +516,25 @@ Colin Krawchuk, Nikhil Khatri, Neil~John Ortega, and Dimitri Kartsaklis.
 Colin Krawchuk, Nikhil Khatri, Neil~John Ortega, and Dimitri Kartsaklis.
 \newblock lambeq {G}en {II}: Scalable compositional models for discourse-level
   {NLP}.
-\newblock Quantinuum / Cambridge Quantum, 2025{\natexlab{b}}.
-\newblock URL \url{https://arxiv.org/abs/2505.13208}.
-\newblock lambeq Gen II release with full DisCoCirc support; described in
-  arXiv:2505.13208.
+\newblock Quantinuum blog post, 2025{\natexlab{b}}.
+\newblock URL
+  \url{https://www.quantinuum.com/blog/lambeq-gen-ii-a-quantum-enhanced-interpretable-and-scalable-text-based-nlp-software-package}.
+\newblock Product announcement for lambeq Gen II with full DisCoCirc support;
+  technical paper: Krawchuk et al., arXiv:2505.13208.
+
+\bibitem[Kuperberg and Jaeger(2016)]{kuperberg2016mean}
+Gina~R. Kuperberg and T.~Florian Jaeger.
+\newblock What do we mean by prediction in language comprehension?
+\newblock \emph{Language, Cognition and Neuroscience}, 31\penalty0
+  (1):\penalty0 32--59, 2016.
+\newblock \doi{10.1080/23273798.2015.1102299}.
+
+\bibitem[Kutas and Federmeier(2011)]{kutas2011thirty}
+Marta Kutas and Kara~D. Federmeier.
+\newblock Thirty years and counting: Finding meaning in the {N400} component of
+  the event-related brain potential ({ERP}).
+\newblock \emph{Annual Review of Psychology}, 62:\penalty0 621--647, 2011.
+\newblock \doi{10.1146/annurev.psych.093008.131123}.
 
 \bibitem[Lambek(1958)]{lambek1958mathematics}
 Joachim Lambek.
@@ -554,13 +604,13 @@ Jiaxuan Li and Richard Futrell.
 \newblock Generalizes 2023 SCiL result: shallow surprisal tracks N400, deep
   surprisal tracks P600.
 
-\bibitem[Lorenz et~al.(2023)Lorenz, Pearson, Meichanetzidis, Kartsaklis, and
-  Coecke]{lorenz2023lambeq}
+\bibitem[Lorenz et~al.(2021)Lorenz, Pearson, Meichanetzidis, Kartsaklis, and
+  Coecke]{lorenz2021lambeq}
 Robin Lorenz, Anna Pearson, Konstantinos Meichanetzidis, Dimitri Kartsaklis,
   and Bob Coecke.
 \newblock lambeq: An efficient high-level python library for quantum {NLP}.
-\newblock \emph{arXiv preprint arXiv:2310.05033}, 2023.
-\newblock URL \url{https://arxiv.org/abs/2310.05033}.
+\newblock \emph{arXiv preprint arXiv:2110.04236}, 2021.
+\newblock URL \url{https://arxiv.org/abs/2110.04236}.
 
 \bibitem[Maele et~al.(2026)]{maele2026schema}
 V.~Maele et~al.
@@ -620,6 +670,22 @@ Richard Montague.
 \newblock In Jaakko Hintikka, Julius Moravcsik, and Patrick Suppes, editors,
   \emph{Approaches to Natural Language}, pages 221--242. Reidel, 1973.
 
+\bibitem[Murphy(2023)]{murphy2023rose}
+Elliot Murphy.
+\newblock {ROSE}: A neurocomputational architecture for syntax, 2023.
+\newblock URL \url{https://arxiv.org/abs/2303.08877}.
+\newblock Defines ROSE (Representation, Operation, Structure, Encoding) as a
+  neurocomputational architecture linking oscillatory coding to hierarchical
+  syntax.
+
+\bibitem[Murphy(2026)]{murphy2026frege}
+Elliot Murphy.
+\newblock Frege in the flesh: Biolinguistics and the neural enforcement of
+  syntactic structures, 2026.
+\newblock URL \url{https://arxiv.org/abs/2604.00291}.
+\newblock On MERGE, algebraic syntax, and constraints on neural mechanisms;
+  preprint.
+
 \bibitem[Myers(2023)]{myers2023double}
 David~Jaz Myers.
 \newblock Double categories of open dynamical systems.
@@ -628,6 +694,15 @@ David~Jaz Myers.
 \newblock \doi{10.4204/EPTCS.380.20}.
 \newblock Formalizes open and interacting dynamical systems using Double
   Categorical Systems Theory (DCST).
+
+\bibitem[Namjoshi(2026)]{namjoshi2026fundamentals}
+Sanjeev~V. Namjoshi.
+\newblock \emph{Fundamentals of Active Inference: Principles, Algorithms, and
+  Applications of the {Free Energy Principle} for Engineers}.
+\newblock MIT Press, 2026.
+\newblock ISBN 9780262050951.
+\newblock 576 pp., 8 $\times$ 10 in.; 213 color illus.; 24 b\&w illus. Pub.\
+  March 17, 2026.
 
 \bibitem[Pennington et~al.(2014)Pennington, Socher, and
   Manning]{pennington2014glove}
@@ -678,8 +753,16 @@ Maria Polinsky and Omer Preminger.
 \newblock
   \url{https://www.quantinuum.com/blog/lambeq-gen-ii-a-quantum-enhanced-interpretable-and-scalable-text-based-nlp-software-package},
   2025.
-\newblock Official release (May 22, 2025) with DisCoCircReader for
+\newblock Official release (May 21, 2025) with DisCoCircReader for
   discourse-level quantum circuits from full texts.
+
+\bibitem[Rabovsky et~al.(2018)Rabovsky, Hansen, and
+  McClelland]{rabovsky2018modelling}
+Milena Rabovsky, Steven~S Hansen, and James~L McClelland.
+\newblock Modelling the n400 brain potential as change in a probabilistic
+  representation of meaning.
+\newblock \emph{Nature Human Behaviour}, 2\penalty0 (9):\penalty0 693--705,
+  2018.
 
 \bibitem[Rad et~al.(2024)Rad, Setiawan, Babbush, et~al.]{rad2024trainability}
 Alireza Rad, Felippe Setiawan, Ryan Babbush, et~al.
@@ -774,6 +857,15 @@ Grace Wu.
 \newblock PhD thesis, University at Buffalo, SUNY, 2024.
 \newblock URL
   \url{https://arts-sciences.buffalo.edu/content/dam/arts-sciences/linguistics/AlumniDissertations/Wu\%20dissertation.pdf}.
+
+\bibitem[Yedidia et~al.(2005)Yedidia, Freeman, and
+  Weiss]{yedidia2005constructing}
+Jonathan~S. Yedidia, William~T. Freeman, and Yair Weiss.
+\newblock Constructing free-energy approximations and generalized belief
+  propagation algorithms.
+\newblock \emph{IEEE Transactions on Information Theory}, 51\penalty0
+  (7):\penalty0 2282--2312, 2005.
+\newblock \doi{10.1109/TIT.2005.850085}.
 
 \bibitem[{\v{Z}}olkovskij and Mel’{\v{c}}uk(1965)]{zolkovskij1965possible}
 Aleksandr~K. {\v{Z}}olkovskij and Igor~A. Mel’{\v{c}}uk.

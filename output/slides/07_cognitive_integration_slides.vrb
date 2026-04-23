@@ -1,5 +1,5 @@
-\frametitle{Surprise Minimization as Case Parsing}
-\protect\phantomsection\label{surprise-minimization-as-case-parsing}
+\frametitle{Surprise Minimization Drives Case-Frame Inference}
+\protect\phantomsection\label{surprise-minimization-drives-case-frame-inference}
 \begin{block}{Free Energy Bounds Surprisal}
 \protect\phantomsection\label{free-energy-bounds-surprisal}
 Active inference is the primary process theory derived from the free
@@ -91,8 +91,9 @@ likelihood.
 \end{block}
 \end{block}
 
-\begin{block}{Five-Step Generative Loop}
-\protect\phantomsection\label{five-step-generative-loop}
+\begin{block}{The Five-Step
+Prior--Observation--Update--Prediction--Action Loop}
+\protect\phantomsection\label{the-five-step-priorobservationupdatepredictionaction-loop}
 The process unfolds as follows:
 
 \begin{enumerate}
@@ -146,22 +147,30 @@ which situation will arise next.
 \textbf{scalar-belief} simulation: the agent holds a
 \texttt{CaseDiagramBelief} over alternative alignment frames (NOM--ACC
 vs.~ERG--ABS). As syntactic evidence arrives, variational free energy
-for the inconsistent frame rises and the posterior concentrates on the
-frame that fits the generative model---the same discrete update loop
-that \autoref{sec:daif-results} extends to full return distributions in
-DAIF. Generated programmatically from
-\texttt{src/visualization/active\_inference\_plots.plot\_belief\_distribution()}.
+and entropy track the discrete update loop that
+\autoref{sec:daif-results} extends to full return distributions in DAIF.
+Generated programmatically from
+\texttt{src/visualization/active\_inference\_plots.plot\_alignment\_frame\_belief\_dynamics()}
+(belief trajectory from \texttt{sequential\_belief\_update()} in
+\texttt{src/cognitive/belief\_updating.py}).
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio,alt={Variational free energy drives convergence to the correct case frame during belief updating. The agent starts with a uniform prior over possible case frames (NOM-ACC vs.~ERG-ABS). As categorical evidence is sampled from a TQNN-evaluated diagram, free energy for the incorrect frame rises while the posterior for the correct frame converges to certainty. This demonstrates dynamic surprisal minimization governed by the diagrammatic structure of the generative model.}]{../figures/active_inference_belief.png}}
+\pandocbounded{\includegraphics[keepaspectratio,alt={Variational free energy drives convergence to the correct case frame during belief updating. The agent begins with a uniform prior over possible case frames (NOM--ACC vs.~ERG--ABS, H{[}q{]} = \textbackslash log 2). Top: stacked P(\textbackslash text\{frame\}) over evidence steps (including the prior column). Middle: entropy H{[}q{]} in nats, with the steepest drop annotated at the most informative step. Bottom: variational free energy F{[}q{]} after each update (per-step curve) and its running minimum \textbackslash min\_\{\textbackslash tau\textbackslash leq t\} F{[}q\_\textbackslash tau{]} (non-increasing envelope), with dashed vertical markers at each evidence index (same convention as word arrivals in ). Likelihoods are synthetic categorical draws consistent with a TQNN-evaluated diagram. Generated programmatically from src/visualization/active\_inference\_plots.plot\_alignment\_frame\_belief\_dynamics() (PNG from scripts/generate\_cognitive\_figures.py).}]{output/figures/active_inference_belief.png}}
 \caption{Variational free energy drives convergence to the correct case
-frame during belief updating. The agent starts with a uniform prior over
-possible case frames (NOM-ACC vs.~ERG-ABS). As categorical evidence is
-sampled from a TQNN-evaluated diagram, free energy for the incorrect
-frame rises while the posterior for the correct frame converges to
-certainty. This demonstrates dynamic surprisal minimization governed by
-the diagrammatic structure of the generative
-model.}\label{fig:active-inference-belief}
+frame during belief updating. The agent begins with a uniform prior over
+possible case frames (NOM--ACC vs.~ERG--ABS, \(H[q] = \log 2\)).
+\textbf{Top}: stacked \(P(\text{frame})\) over evidence steps (including
+the prior column). \textbf{Middle}: entropy \(H[q]\) in nats, with the
+steepest drop annotated at the most informative step. \textbf{Bottom}:
+variational free energy \(F[q]\) after each update (per-step curve) and
+its running minimum \(\min_{\tau\leq t} F[q_\tau]\) (non-increasing
+envelope), with dashed vertical markers at each evidence index (same
+convention as word arrivals in \autoref{fig:daif-free-energy}).
+Likelihoods are synthetic categorical draws consistent with a
+TQNN-evaluated diagram. Generated programmatically from
+\protect\texttt{src/visualization/active\_inference\_plots.plot\_alignment\_frame\_belief\_dynamics()}
+(PNG from
+\protect\texttt{scripts/generate\_cognitive\_figures.py}).}\label{fig:active-inference-belief}
 \end{figure}
 \end{block}

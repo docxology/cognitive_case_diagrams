@@ -8,12 +8,14 @@ Modules:
     string_diagrams: DisCoCat/DisCoCirc renderers (matplotlib-native)
     discopy_diagrams: DisCoPy diagram rendering (optional dependency)
     complexity_plots: Complexity and normal-form comparison charts, radar plots
-    active_inference_plots: Scalar belief distributions (§7)
+    active_inference_plots: Scalar beliefs — bar snapshot + alignment-frame dynamics (§7)
     daif_plots: Distributional active inference panels (§7c)
     quantum_plots: Case POVM probabilities
     security_plots: Type violation analysis
     fluid_s_plots: Contextual volition alignment
     syntactic_sentence_diagrams: Eight-construction syntactic + pregroup panel (App A)
+    category_unpacking: Multi-panel pedagogical unpackings of key category-theoretic
+        constructions (pregroup reduction, DisCoCirc entity persistence, snake equation)
 """
 
 from __future__ import annotations
@@ -37,16 +39,24 @@ from .complexity_plots import (
     render_complexity_comparison,
     render_normal_form_comparison,
 )
-from .active_inference_plots import plot_belief_distribution
+from .active_inference_plots import (
+    plot_belief_distribution,
+    plot_alignment_frame_belief_dynamics,
+)
 from .daif_plots import (
     plot_belief_trajectory,
     plot_free_energy_convergence,
     plot_erp_predictions,
 )
 from .quantum_plots import plot_povm_probabilities
-from .security_plots import plot_type_violations
+from .security_plots import plot_type_violations, plot_monoidal_functor_security
 from .fluid_s_plots import plot_fluid_s_volition_landscape
 from .syntactic_sentence_diagrams import render_syntactic_panel
+from .category_unpacking import (
+    render_pregroup_reduction_unpacking,
+    render_discocirc_entity_persistence,
+    render_snake_equation_unpacking,
+)
 
 __all__ = [
     "CASE_COLORS",
@@ -64,13 +74,18 @@ __all__ = [
     "render_complexity_comparison",
     "render_normal_form_comparison",
     "plot_belief_distribution",
+    "plot_alignment_frame_belief_dynamics",
     "plot_belief_trajectory",
     "plot_free_energy_convergence",
     "plot_erp_predictions",
     "plot_povm_probabilities",
     "plot_type_violations",
+    "plot_monoidal_functor_security",
     "plot_fluid_s_volition_landscape",
     "render_syntactic_panel",
+    "render_pregroup_reduction_unpacking",
+    "render_discocirc_entity_persistence",
+    "render_snake_equation_unpacking",
 ]
 
 try:

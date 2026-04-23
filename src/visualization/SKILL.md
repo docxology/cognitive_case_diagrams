@@ -26,7 +26,8 @@ from src.visualization import (
     CASE_COLORS, FONT_SIZE_FLOOR,
     render_case_category, render_enriched_heatmap, render_functor_diagram,
     render_discocat_sentence, render_discourse_diagram,
-    plot_belief_distribution, plot_erp_predictions, plot_povm_probabilities,
+    plot_belief_distribution, plot_alignment_frame_belief_dynamics,
+    plot_erp_predictions, plot_povm_probabilities,
     render_syntactic_panel,
     # ... see __init__.__all__
 )

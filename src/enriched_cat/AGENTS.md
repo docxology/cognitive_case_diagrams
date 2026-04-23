@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `enriched_cat` subpackage implements **§5** of the manuscript: [0,1]-enriched category theory as a distributional semantic framework. Each pair of case roles carries a hom-value in [0,1] representing their distributional proximity — the categorical analogue of word embedding cosine similarity.
+The `enriched_cat` subpackage implements **§5** (and **§5b** magnitude homology) of the manuscript: [0,1]-enriched category theory as a distributional semantic framework. Each pair of case roles carries a hom-value in [0,1] representing their distributional proximity — the categorical analogue of word embedding cosine similarity.
 
 > **Reference**: Bradley, Terilla & Weyhrich (2021). *An enriched category theory of language: from syntax to semantics*. `[@bradley2021enriched]`
 

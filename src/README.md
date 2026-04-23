@@ -12,7 +12,11 @@ from src import (
     CaseDiagramBelief, CasePOVM, CaseFrameValidator,
 )
 from src.case_systems import FluidSFunctor, AlignmentFunctor
-from src.visualization import plot_belief_distribution, plot_povm_probabilities
+from src.visualization import (
+    plot_belief_distribution,
+    plot_alignment_frame_belief_dynamics,
+    plot_povm_probabilities,
+)
 ```
 
 ## Package Map
@@ -23,11 +27,11 @@ from src.visualization import plot_belief_distribution, plot_povm_probabilities
 | [`diagrams/`](diagrams/) | §3–§4c | String diagrams, complexity, discourse | `Sentence`, `Discourse`, `DitransitiveSentence` |
 | [`enriched_cat/`](enriched_cat/) | §5 | Enriched categories | `EnrichedCategory`, `standard_enriched_category` |
 | [`topos_theory/`](topos_theory/) | §6 | Morita equivalence | `GeometricTheory`, `ClassifyingTopos` |
-| [`cognitive/`](cognitive/) | §7a | Scalar active inference | `CaseDiagramBelief`, `variational_free_energy` |
+| [`cognitive/`](cognitive/) | §7 | Scalar active inference | `CaseDiagramBelief`, `variational_free_energy` |
 | [`daif/`](daif/) | §7c | Distributional active inference | `DistributionalReturn`, `DAIFResult`, `ERPProfile` |
 | [`quantum/`](quantum/) | §8 | POVM case assignment | `CasePOVM`, `case_probability` |
 | [`security/`](security/) | §9b | Type violation detection | `TypeViolation`, `CaseFrameValidator` |
-| [`visualization/`](visualization/) | All | Figure generation | `styles` + 13 renderer modules |
+| [`visualization/`](visualization/) | All | Figure generation (30 publication figures) | `styles` + 14 renderer modules |
 
 [`generate_manuscript_metrics.py`](generate_manuscript_metrics.py) writes `output/metrics.json` for manuscript `${variable}` injection (test counts, `daif` module counts).
 

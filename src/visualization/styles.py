@@ -1,9 +1,22 @@
 """Visual styling constants for publication-quality figures.
 
-Defines the colorblind-friendly palette and typography standards
-used across all visualization functions. All figures must satisfy
-the 16pt font floor for accessibility.
+Palette design
+--------------
+CASE_COLORS uses dark, saturated hues chosen for maximum luminance
+contrast between adjacent roles. The primary NOM/ACC pair (blue/red)
+maintains a ~40% relative luminance difference, distinguishable under
+protanopia and deuteranopia. GEN (emerald) and DAT (violet) separate
+on the blue-yellow axis preserved in all common dichromacies. For
+monochrome reproduction, roles remain separable by lightness ordering.
+All figures additionally use text labels and distinct markers to avoid
+relying on color alone (WCAG 2.1 §1.4.1).
+
+Typography
+----------
+All visualization functions enforce a 16 pt font floor for axis labels
+and annotations, following RASP accessibility standards.
 """
+from __future__ import annotations
 
 # 16pt minimum font size for accessibility (RASP standard)
 FONT_SIZE_FLOOR = 16
@@ -53,7 +66,7 @@ COLOR_ENTITY_WIRE = "#3B82F6"     # Blue — entity state wires in DisCoCirc
 COLOR_ENTITY_BORDER = "#1E40AF"   # Dark blue — entity wire border
 COLOR_UNKNOWN = "#808080"          # Pure mid-gray — truly unknown/unmapped roles
 
-# ─── Severity colour tiers (§9b Cognitive Security) ─────────────────────────
+# ─── Severity colour tiers (§9b cognitive security) ─────────────────────────
 COLOR_SEVERITY_HIGH = "#e74c3c"    # Red   — severity ≥ SEVERITY_HIGH_THRESHOLD
 COLOR_SEVERITY_MED = "#f39c12"     # Orange — severity ≥ SEVERITY_MED_THRESHOLD
 COLOR_SEVERITY_LOW = "#f1c40f"     # Yellow — severity < SEVERITY_MED_THRESHOLD

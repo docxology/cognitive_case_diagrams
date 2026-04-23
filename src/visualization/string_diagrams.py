@@ -5,7 +5,6 @@ using direct matplotlib drawing for maximum control over layout.
 """
 
 import logging
-from pathlib import Path
 from typing import Optional
 
 import matplotlib
@@ -29,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 def render_discocat_sentence(
     sentence: Sentence,
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
     title: Optional[str] = None,
 ) -> matplotlib.figure.Figure:
     """Render a single sentence as a DisCoCat string diagram.
@@ -124,7 +123,7 @@ def render_discocat_sentence(
 
 def render_discourse_diagram(
     discourse: Discourse,
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
     title: Optional[str] = None,
 ) -> matplotlib.figure.Figure:
     """Render a multi-sentence discourse as a DisCoCirc diagram.
@@ -223,7 +222,7 @@ def render_discourse_diagram(
 
 
 def render_discocirc_discourse(
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
 ) -> matplotlib.figure.Figure:
     """Render the canonical two-sentence discourse diagram.
 
@@ -238,11 +237,11 @@ def render_discocirc_discourse(
 
 
 def render_three_sentence_discourse(
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
 ) -> matplotlib.figure.Figure:
     """Render the three-sentence role reversal discourse.
 
-    Alice (NOM→ACC→NOM) across three sentences.
+    Uses ``Discourse.role_reversal`` (chases / fears / smiles). Alice (NOM→ACC→NOM) across three sentences.
     """
     discourse = Discourse.role_reversal("Alice", "Bob")
     return render_discourse_diagram(

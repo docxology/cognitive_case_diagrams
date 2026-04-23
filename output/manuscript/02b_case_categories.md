@@ -1,5 +1,7 @@
 # Case Categories: Roles as Objects, Relations as Morphisms, Alignment as Functors {#sec:case-categories}
 
+**Where we are in the argument.** \autoref{sec:case-systems} surveyed the cross-linguistic input data (five traditions, five alignment types). This chapter converts that data into the first formal object of the framework: a category whose objects are case roles, whose morphisms are grammatical relations, and whose alignment typologies are structure-preserving functors between categories — the layer on which every subsequent pillar (syntax, semantics, enrichment, cognitive inference) is built.
+
 ## Eight Case Roles as Objects
 
 We define a **case category** $\mathcal{C}$ as a small category where:
@@ -11,7 +13,7 @@ We define a **case category** $\mathcal{C}$ as a small category where:
 
 This formalization is implemented in our `CaseCategory` class, which uses set-based object tracking and list-based morphism storage as the underlying representation. Each object carries its role enum and optional morphosyntactic features; each morphism carries a relation label and an enriched weight $w \in [0,1]$. \autoref{fig:case-standard} shows the full eight-case standard category.
 
-![Eight case roles form a directed graph with weighted grammatical morphisms. The standard linguistic case category $\mathcal{C}$ with objects NOM, ACC, GEN, DAT, INS, LOC, ABL, VOC and directed morphisms encoding grammatical relations. Edge labels identify relation types (transitive_action: NOM$\to$ACC, possession: GEN$\to$NOM, transfer: ACC$\to$DAT, spatial_grounding: LOC$\to$ACC); edge weights $w \in [0,1]$ reflect proto-role satisfaction per Dowty's [-@dowty1991thematic] decomposition. The enriched structure over $([0,1], \cdot, 1)$ ensures multiplicative weight attenuation under composition (\autoref{eq:eq-2-1}). Generated programmatically from the `CaseCategory` class.](output/figures/case_category_standard.png){#fig:case-standard}
+![Eight case roles form a directed graph with weighted grammatical morphisms. The standard linguistic case category $\mathcal{C}$ with objects NOM, ACC, GEN, DAT, INS, LOC, ABL, VOC and directed morphisms encoding grammatical relations. Edge labels identify relation types (acts_on: NOM$\to$ACC, possesses: GEN$\to$NOM, received_by: ACC$\to$DAT, located_at: NOM$\to$LOC); edge weights $w \in [0,1]$ reflect proto-role satisfaction per Dowty's [-@dowty1991thematic] decomposition. The enriched structure over $([0,1], \cdot, 1)$ ensures multiplicative weight attenuation under composition (\autoref{eq:eq-2-1}). Generated programmatically from the `CaseCategory` class.](output/figures/case_category_standard.png){#fig:case-standard}
 
 ## Accusative vs. Ergative as Structurally Non-Isomorphic Functors
 
@@ -43,11 +45,13 @@ On morphisms, each functor strictly preserves the transitive relation: $F_{\text
 
 ![Functor kernels uniquely fingerprint each alignment typology. Three alignment systems realized as functors from $\mathcal{U} = \{S, A, P\}$: **Nominative--Accusative** merges $\{S,A\} \to \text{NOM}$ (kernel $\{(S,A)\}$, \autoref{eq:eq-2-3}); **Ergative--Absolutive** merges $\{S,P\} \to \text{ABS}$ (kernel $\{(S,P)\}$, \autoref{eq:eq-2-4}); **Tripartite** is injective (kernel $\emptyset$). Color-coded nodes reveal neutralization patterns: shared colors indicate functor identification of roles. Generated programmatically from the `CaseCategory` implementation.](output/figures/alignment_comparison.png){#fig:alignment}
 
-![Morphism composition attenuates weights multiplicatively through intermediate case roles. Morphism $f\colon\text{NOM}\to\text{ACC}$ (transitive action, $w_f=0.9$) and $g\colon\text{ACC}\to\text{DAT}$ (transfer, $w_g=0.7$) compose to $g \circ f\colon\text{NOM}\to\text{DAT}$ with $w(g \circ f) = 0.63$ per \autoref{eq:eq-2-1}. The commutative triangle encodes that DAT assignment factors through ACC---the multiplicative attenuation reflects the typological observation that subject--recipient relations are weaker than the constituent subject--object and object--recipient links. Generated programmatically from the `CaseCategory` class.](output/figures/composition_triangle.png){#fig:composition}
+![Morphism composition attenuates weights multiplicatively through intermediate case roles. Morphism $f\colon\text{NOM}\to\text{ACC}$ (acts_on) and $g\colon\text{ACC}\to\text{DAT}$ (received_by) compose to $h = g \circ f\colon\text{NOM}\to\text{DAT}$ per \autoref{eq:eq-2-1}; in the enriched category weights multiply (e.g., $w_f = 0.9$, $w_g = 0.7 \Rightarrow w(g \circ f) = 0.63$). The commutative triangle encodes that DAT assignment factors through ACC---the multiplicative attenuation reflects the typological observation that subject--recipient relations are weaker than the constituent subject--object and object--recipient links. Generated programmatically from the `CaseCategory` class.](output/figures/composition_triangle.png){#fig:composition}
 
 ## Graded Proto-Roles as $[0,1]$-Weighted Morphisms
 
 Following Dowty [-@dowty1991thematic], we equip morphisms with weights in $[0,1]$ that encode the degree of proto-role satisfaction. A morphism $f: \text{NOM} \to \text{ACC}$ with weight $w = 0.9$ indicates a strong transitive action (clear agent acting on clear patient), while $w = 0.4$ might indicate an experiencer construction ("The child fears the dark") where the nominative argument only weakly satisfies Proto-Agent entailments.
+
+**Slavic quirky case as overt evidence for sub-unit morphism weights.** Russian and Serbian/BCS supply a sharper, *morphologically overt* witness for $w < 1$: a class of verbs that systematically refuses the canonical NOM $\to$ ACC arrow and instead routes its object through GEN, DAT, or INS. In Russian, *boyat'sja* "to fear" governs the genitive (*boyus' sobaki* "I fear the dog-GEN", not \**sobaku*-ACC); *pomogat'* "to help" governs the dative (*pomogayu drugu* "I help the friend-DAT"); *upravlyat'* "to manage / steer" governs the instrumental (*upravlyaet mašinoj* "drives the car-INS"). Serbian/BCS shows the same pattern: *čestitati* "to congratulate" assigns DAT (*čestitam prijatelju* "I congratulate the friend-DAT"); *bojati se* "to fear" assigns GEN (*bojim se psa* "I fear the dog-GEN"). Each such verb supplies an enriched morphism whose target is *not* ACC, equivalently a NOM $\to$ ACC arrow whose Dowtian weight has been reduced to near zero — and the reduction is visible in the suffix on the noun, not merely hypothesised from semantics. These quirky-case lexemes are the cleanest empirical anchor for the graded $[0,1]$-enrichment we develop in \autoref{sec:enriched-categories}.
 
 Composition of enriched morphisms multiplies weights:
 \begin{equation}
@@ -57,7 +61,7 @@ w(g \circ f) = w(g) \cdot w(f)
 
 This multiplicative composition reflects the intuition that grammatical dependencies attenuate as they chain through intermediate roles. \autoref{fig:composition} illustrates the categorical composition of two morphisms through an intermediate case role. The resulting structure is a category enriched over $([0,1], \cdot, 1)$—a connection we develop fully in \autoref{sec:enriched-categories}.
 
-## Alignment Shifts as Natural Transformations: Grammar Agreement as Functor Commutativity
+## Alignment Shifts as Natural Transformations: Functor Commutativity Encodes Grammar Agreement
 
 Having established that alignment systems are functors $F, G: \mathcal{U} \to \mathcal{L}$ from a universal case category to language-specific categories, a natural question arises: *how do different alignment systems relate to each other?* The categorical answer is a **natural transformation** $\alpha: F \Rightarrow G$—a systematic family of morphisms $\alpha_A: F(A) \to G(A)$ for each case role $A$, satisfying the **naturality condition**:
 

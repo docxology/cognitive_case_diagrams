@@ -179,3 +179,73 @@ class TestReturnDistributionEntropy:
         dist = _make_dist()
         with pytest.raises(ValueError, match="n_bins"):
             return_distribution_entropy(dist, n_bins=1)
+
+
+# --- Phase D5: KL / entropy analytic bounds ---
+
+class TestAnalyticBounds:
+    def test_entropy_at_most_log_nbins(self):
+        dist = _make_dist(spread=4.0, n=200)
+        for nb in [8, 16, 50, 128]:
+            h = return_distribution_entropy(dist, n_bins=nb)
+            assert 0.0 <= h <= float(np.log(nb)) + 1e-6, f"H out of bounds for n_bins={nb}"
+
+    def test_point_mass_entropy_near_zero(self):
+        taus = np.linspace(0.05, 0.95, 51)
+        q = np.full(51, 2.0)
+        dist = DistributionalReturn(mean=2.0, variance=0.0,
+                                    quantiles=q, quantile_levels=taus)
+        # ε-smoothing makes the estimator small-but-positive; theoretical 0
+        # requires v_min == v_max, which the implementation avoids by
+        # inflating the range by 2e-8. Anything well below log(20) ≈ 3.0
+        # confirms the point-mass concentration.
+        h = return_distribution_entropy(dist, n_bins=20)
+        assert 0.0 <= h < 1e-3
+
+    def test_kl_identity_small(self):
+        da = _make_dist(offset=0.5, n=101)
+        kl = distributional_kl(da, da, n_bins=100)
+        assert 0.0 <= kl < 0.1
+
+    def test_kl_non_negative_random_pair(self):
+        for offset in [0.0, 0.5, 1.5, 3.0]:
+            da = _make_dist(offset=0.0, n=101)
+            db = _make_dist(offset=offset, n=101)
+            assert distributional_kl(da, db, n_bins=100) >= -1e-8
+
+
+# --- Phase D6: convergence diagnostics reference values ---
+
+class TestConvergenceDiagnosticsEdgeSemantics:
+    def test_single_point_trajectory_not_converged(self):
+        """One data point cannot demonstrate convergence."""
+        diag = convergence_diagnostics([5.0], min_iterations=1)
+        assert diag["converged"] is False, (
+            "Single-point trajectory has no iteration; "
+            "must not be reported as converged."
+        )
+
+    def test_flat_trajectory_is_trivially_converged(self):
+        """A perfectly flat trajectory is stationary → converged."""
+        diag = convergence_diagnostics([5.0, 5.0, 5.0, 5.0], min_iterations=2)
+        assert diag["converged"] is True
+        assert diag["monotone"] is True  # non-increasing
+        assert diag["total_reduction"] == 0.0
+        assert diag["mean_step_size"] == 0.0
+
+
+class TestConvergenceDiagnosticsReference:
+    def test_all_eight_fields_hand_computed(self):
+        fe = [10.0, 9.0, 8.2, 8.1, 8.05]
+        diag = convergence_diagnostics(fe)
+
+        assert diag["monotone"] is True
+        assert diag["total_reduction"] == pytest.approx(10.0 - 8.05, abs=1e-12)
+        assert diag["relative_reduction_pct"] == pytest.approx((1.95 / 10.0) * 100.0, abs=1e-10)
+        assert diag["n_iterations"] == 5
+        # range = 1.95; final |ΔF|=0.05; 0.05/1.95 ≈ 0.0256 > 0.01 ⇒ NOT converged
+        assert diag["converged"] is False
+        assert diag["fe_range"] == (8.05, 10.0)
+        # |Δ| = [1, 0.8, 0.1, 0.05]; mean = 0.4875
+        assert diag["mean_step_size"] == pytest.approx(0.4875, abs=1e-10)
+        assert diag["final_delta"] == pytest.approx(0.05, abs=1e-10)

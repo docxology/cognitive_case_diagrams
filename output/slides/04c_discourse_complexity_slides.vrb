@@ -8,7 +8,7 @@ category of qubit systems. This observation underlies the \textbf{QNLP}
 {[}@meichanetzidis2020qnlp{]}, which implements DisCoCat models as
 parameterized quantum circuits.
 
-The \textbf{lambeq} library {[}@lorenz2023lambeq{]} provides a practical
+The \textbf{lambeq} library {[}@lorenz2021lambeq{]} provides a practical
 pipeline:
 
 \begin{enumerate}
@@ -31,7 +31,7 @@ pipeline achieves competitive performance on question-answering tasks,
 confirming that the categorical structure captures genuine linguistic
 regularities even when instantiated on noisy near-term quantum hardware.
 
-\textbf{lambeq Gen II} (released May 22, 2025 by Quantinuum) marks a
+\textbf{lambeq Gen II} (released May 21, 2025 by Quantinuum) marks a
 significant advance by incorporating full \textbf{DisCoCirc} support as
 its core mathematical foundation, enabling the framework to scale beyond
 single-sentence semantics to discourse-level NLP {[}@lambeq2025genii;

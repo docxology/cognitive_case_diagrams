@@ -217,3 +217,66 @@ class TestPlotErpPredictions:
             output_path=str(out),
         )
         assert out.exists()
+
+
+# --- Real-data optional kwargs (Phase A5/A6 regression tests) ---
+
+class TestFreeEnergyConvergenceRealDecomposition:
+    """When kl_trajectory and loglik_trajectory are provided, the figure
+    plots the genuine decomposition F = KL − E_q[log p(o|s)] instead of
+    the schematic fallback."""
+
+    def test_with_kl_and_loglik_trajectories(self, tmp_path):
+        n = 20
+        fe = [2.5 * np.exp(-0.3 * i) + 0.1 for i in range(n)]
+        kl = [0.8 * np.exp(-0.2 * i) for i in range(n)]
+        loglik = [kl[i] - fe[i] for i in range(n)]
+        out = tmp_path / "fe_real_decomp.png"
+        result = plot_free_energy_convergence(
+            fe,
+            kl_trajectory=kl,
+            loglik_trajectory=loglik,
+            output_path=str(out),
+        )
+        assert result == str(out)
+        assert out.exists() and out.stat().st_size > 0
+
+    def test_fallback_without_decomposition(self, tmp_path):
+        fe = [2.5, 2.0, 1.6, 1.3, 1.1, 1.0]
+        out = tmp_path / "fe_fallback.png"
+        result = plot_free_energy_convergence(fe, output_path=str(out))
+        assert result == str(out)
+        assert out.exists()
+
+
+class TestErpPredictionsRealAmplitudes:
+    """When n400_amplitudes and p600_amplitudes are provided, the right
+    panel bars the real per-role model predictions rather than the
+    ad-hoc mean(|DPE|) fallback."""
+
+    def _standard_args(self):
+        role_names = ["NOM", "ACC", "GEN", "DAT", "INS"]
+        enriched_weights = [0.95, 0.85, 0.70, 0.60, 0.45]
+        prediction_errors = [0.4, 0.7, 0.9, 1.1, 1.3]
+        return role_names, enriched_weights, prediction_errors
+
+    def test_with_real_amplitudes(self, tmp_path):
+        rn, ew, pe = self._standard_args()
+        n400 = [-3.5, -2.1, -1.8, -2.5, -1.2]
+        p600 = [6.0, 4.2, 3.1, 4.8, 2.5]
+        out = tmp_path / "erp_real.png"
+        result = plot_erp_predictions(
+            rn, ew, pe,
+            n400_amplitudes=n400,
+            p600_amplitudes=p600,
+            output_path=str(out),
+        )
+        assert result == str(out)
+        assert out.exists() and out.stat().st_size > 0
+
+    def test_fallback_without_amplitudes(self, tmp_path):
+        rn, ew, pe = self._standard_args()
+        out = tmp_path / "erp_fallback.png"
+        result = plot_erp_predictions(rn, ew, pe, output_path=str(out))
+        assert result == str(out)
+        assert out.exists()

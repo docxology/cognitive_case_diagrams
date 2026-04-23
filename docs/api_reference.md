@@ -9,6 +9,22 @@ Public API for all `src/` packages in the `cognitive_case_diagrams` project.
 
 ---
 
+## Manuscript metrics helper (`src.generate_manuscript_metrics`)
+
+Not one of the nine domain subpackages: a **build-time** module at [`../src/generate_manuscript_metrics.py`](../src/generate_manuscript_metrics.py). It collects test counts, DAIF figures, domain package counts, optional **coverage totals** from `coverage.json` (produce with `uv run pytest tests/ --cov=src --cov-report=json`), installed **NumPy/DisCoPy** versions, and English-word forms for counts; then writes `output/metrics.json` for `${…}` substitution in manuscript Markdown (see [`../manuscript/11c_automated_test_inventory.md`](../manuscript/11c_automated_test_inventory.md) and [`../manuscript/config.yaml`](../manuscript/config.yaml)).
+
+```bash
+cd projects/cognitive_case_diagrams
+uv run pytest tests/ --cov=src --cov-report=json   # refresh coverage.json at project root
+uv run python -m src.generate_manuscript_metrics   # writes output/metrics.json
+uv run python -m src.generate_manuscript_metrics --dry-run
+uv run python scripts/inject_variables.py          # writes output/manuscript/*.md
+```
+
+Public entrypoints: `collect_metrics()`, `write_metrics()` (see module docstring).
+
+---
+
 ## `src.case_systems` — Linguistic Case Systems (§2)
 
 ### `CaseRole` (enum)
@@ -145,34 +161,159 @@ assert erg[CaseRole.S] == CaseRole.ABS
 
 > **Mathematical note**: Morphism composition implements $w(g \circ f) = w(g) \cdot w(f)$ from §2. This multiplicative weight propagation encodes the proto-role gradient — see [`glossary.md`](glossary.md#linguistic-case-theory) for details.
 
+### `MonoidalFunctor` (tensor checks; §9b protocol narrative)
+```python
+class MonoidalFunctor:
+    """Tensor-preservation checks on case-alignment maps (cf. §9b).
+
+    Used in the **specification-level** analysis of prompt injection under a
+    Categorical Communication Protocol—not as a guarantee on production LLM APIs."""
+    source_category: CaseCategory
+    target_category: CaseCategory
+    object_map: dict[CaseRole, CaseRole]
+
+    def preserves_tensor(role_a: CaseRole, role_b: CaseRole) -> bool
+    # Returns False if tensor structure collapses or morphisms are missing —
+    # models illicit role merges discussed in §9b.
+```
+
+**Phase 2 additions to `CaseCategory`**:
+```python
+# Added to src/case_systems/case_category.py in Phase 2
+class CaseCategory:
+    # ... existing methods ...
+
+    def assess_daif_surprisal(
+        self, observed: Morphism, predicted_weight: float
+    ) -> dict[str, float]:
+        """Compute N400 and P600 DAIF surprisal amplitudes.
+        Returns {"N400_amplitude": float, "P600_amplitude": float} per the
+        Li & Futrell (2024) / Rabovsky et al. (2025) shallow/deep surprisal
+        decomposition (§7c).
+        N400 ~ |predicted_weight − observed.weight|.
+        P600 ~ 1.0 if observed is not structurally licensed, else 0.0."""
+```
+
+For categorical type-checking and prompt-injection detection, use
+``security.CaseFrameValidator.validate_assignment()`` (see
+[`src.security.cognitive_security`](#srcsecurity--cognitive_security)).
+
 ---
 
 ## `src.diagrams` — String diagrams, complexity, discourse (§3–§4c)
 
-### `string_diagram`
+### `string_diagram` — Native Representations
+
 ```python
 class Sentence:
-    words: list[str]
-    types: list[...]
-    def to_diagram() -> discopy.Diagram
+    text: str
+    boxes: list[Box]
+    wires: list[Wire]
+    case_assignments: dict[str, CaseRole]
+
+    def add_noun(word: str, case_role: CaseRole) -> Wire
+    def add_verb(word: str, subject: Wire, obj: Wire = None) -> Wire
+    @classmethod
+    def transitive(cls, subject, verb, obj) -> Sentence
+    @classmethod
+    def intransitive(cls, subject, verb) -> Sentence
 
 class Discourse:
     sentences: list[Sentence]
-    def to_circuit() -> discopy.Diagram
+    entity_wires: dict[str, list[Wire]]
+    role_history: dict[str, list[CaseRole]]
 
-class DitransitiveSentence(Sentence):
-    # Three-argument sentences (NOM/ACC/DAT)
+    def add_sentence(sentence: Sentence) -> None
+    def role_reversal_entities() -> list[str]
+
+    @classmethod
+    def two_sentence(cls, subj1, verb1, obj1, subj2, verb2) -> Discourse
+    @classmethod
+    def role_reversal(cls, entity: str, partner: str) -> Discourse
+```
+
+For discourse-level prompt-injection detection, build a
+``CaseFrameValidator`` from ``src.security.cognitive_security`` and call
+``validate_assignment(role_history_per_entity)`` on the relevant slice of
+``Discourse.role_history``.
+
+### `ditransitive` — Three-argument constructions
+```python
+@dataclass
+class DitransitiveSentence:
+    subject: str
+    verb: str
+    direct_object: str
+    indirect_object: str
+    sentence: Sentence  # populated in __post_init__; case NOM (subject) / DAT (indirect_object) / ACC (direct_object)
+
+def create_ditransitive(subject: str, verb: str, indirect_object: str, direct_object: str) -> DitransitiveSentence
+def create_discopy_ditransitive(subject, verb, indirect_object, direct_object)  # discopy.grammar.pregroup.Diagram
+```
+
+### `string_diagram` — DisCoPy Integration (requires `discopy`)
+
+```python
+# Base functions (discopy.rigid.Box)
+def create_discopy_transitive(subject, verb, obj) -> rigid.Diagram
+def create_discopy_intransitive(subject, verb) -> rigid.Diagram
+def create_discopy_passive(subject, verb, agent) -> rigid.Diagram
+def create_discopy_snake_equation() -> tuple[Diagram, Diagram, Diagram]
+def create_discopy_composition(subject, verb, obj) -> tuple[Diagram, Diagram]
+def create_discopy_multilingual(translations=None) -> dict[str, Diagram]
+
+# Extended functions (discopy.grammar.pregroup.Word + eager_parse)
+def create_word_diagram_transitive(subject, verb, obj) -> pregroup.Diagram
+def create_word_diagram_intransitive(subject, verb) -> pregroup.Diagram
+def create_swap_passive(subject, verb, agent) -> pregroup.Diagram
+def create_word_diagram_ditransitive(subject, verb, io, do) -> pregroup.Diagram
+
+# Semantic evaluation (discopy.tensor — DisCoCat F: Preg → FVect)
+def create_tensor_semantics(
+    subject, verb, obj,
+    noun_dim=2, sentence_dim=4,
+    subject_vec=None, object_vec=None, verb_tensor=None,
+) -> tuple[tensor.Diagram, numpy.ndarray]
+# Builds diagram in tensor category and evaluates via .eval()
+# Returns (diagram, meaning_vector) with meaning_vector.shape == (sentence_dim,)
 ```
 
 ### `complexity_metrics`
+
 ```python
+@dataclass
+class DiagramMetrics:
+    name: str
+    box_count: int; word_count: int; cup_count: int; cap_count: int
+    is_normal_form: bool; normal_form_box_count: int
+    dom_type: str; cod_type: str
+    depth: int; width: int
+
 def count_boxes(diagram: Diagram) -> int
+def count_words(diagram: Diagram) -> int
 def count_cups(diagram: Diagram) -> int
-def compute_depth(diagram: Diagram) -> int
-def syntactic_complexity_score(
-    diagram: Diagram, *, w_box: float = 1.0, w_cup: float = 1.0, w_depth: float = 1.0
-) -> float
-def compare_diagrams(diagrams: dict[str, Diagram]) -> dict[str, dict[str, float]]
+def count_caps(diagram: Diagram) -> int
+def diagram_depth(diagram: Diagram) -> int    # diagram.depth() — sequential layers
+def diagram_width(diagram: Diagram) -> int    # diagram.width — max parallel wires
+def compute_normal_form(diagram: Diagram) -> Diagram
+def is_in_normal_form(diagram: Diagram) -> bool
+def diagrams_equal(d1: Diagram, d2: Diagram) -> bool  # via normal form
+def analyze_diagram(diagram: Diagram, name: str) -> DiagramMetrics
+def syntactic_complexity_score(diagram: Diagram) -> float
+# Formula: words + 0.5*cups + 0.25*caps + 0.1*depth
+def compare_diagrams(diagrams: list[tuple[str, Diagram]]) -> list[DiagramMetrics]
+
+@dataclass
+class MagnitudeHomologyMetrics:
+    base_syntactic_complexity: float
+    topological_holes_1d: int
+    estimated_decoherence_rate: float
+    quantum_environment_commutes: bool
+
+def compute_quantum_magnitude_homology(
+    diagram: Diagram,
+    environmental_noise: float = 0.05,
+) -> MagnitudeHomologyMetrics
 ```
 
 ---
@@ -187,12 +328,23 @@ class EnrichedCategory:
     roles: list[CaseRole]                  # cardinality $N_C$
     proximity_matrix: np.ndarray           # $N_C \times N_C$ matrix, entries $Z_{ij} \in [0,1]$
 
-    def hom_value(a: CaseRole, b: CaseRole) -> float
-    def check_identity_axiom() -> bool
-    def check_composition_inequality(a, b, c: CaseRole) -> bool
+    def hom(source: CaseRole, target: CaseRole) -> float
+    def check_composition_inequality(a, b, c: CaseRole, *, rel_tol: float = 1e-9) -> bool
     def magnitude() -> float               # ∑ᵢⱼ (Z⁻¹)ᵢⱼ , bounded by $\mathcal{O}(N_C^3)$
-    def effective_size() -> float           # alias for magnitude()
-    def role_clusters(threshold: float) -> list[set[CaseRole]]
+    def weighting() -> np.ndarray          # column sums of Z⁻¹
+    def coweighting() -> np.ndarray        # row sums of Z⁻¹
+    def magnitude_deficit() -> float        # n − |C|
+    def full_composition_check() -> dict    # {"holds", "violations", "violation_rate", "total"}
+    def role_clusters(threshold: float = 0.6) -> list[set[CaseRole]]
+```
+
+> **Identity axiom** $\mathcal{C}(A,A) = 1$ is enforced inside `__post_init__` via `_validate()` at construction time (raises `ValueError` otherwise); no separate `check_identity_axiom()` method is exposed.
+
+**Factory / module constants:**
+```python
+STANDARD_ROLES: list[CaseRole]           # NOM, ACC, GEN, DAT, INS, LOC, ABL, VOC
+STANDARD_PROXIMITY_MATRIX: np.ndarray    # 8×8 canonical proximity matrix
+def standard_enriched_category() -> EnrichedCategory
 ```
 
 ### Usage Example: Computing Magnitude
@@ -210,10 +362,16 @@ proximity = np.array([
 ])
 
 ec = EnrichedCategory(name="3-case", roles=roles, proximity_matrix=proximity)
+# Identity axiom C(A,A)=1 is enforced in __post_init__ (raises ValueError if violated).
 
 # Magnitude < n indicates role redundancy
 mag = ec.magnitude()  # |C| = sum of (Z⁻¹)_ij
 print(f"Magnitude = {mag:.3f}")  # If < 3.0, some roles overlap
+print(f"Magnitude deficit = {ec.magnitude_deficit():.3f}")  # n − |C|
+
+# Query a hom-value and composition inequality
+print(f"C(NOM, ACC) = {ec.hom(CaseRole.NOM, CaseRole.ACC):.3f}")
+assert ec.check_composition_inequality(CaseRole.NOM, CaseRole.ACC, CaseRole.DAT)
 
 # Find clusters of similar roles
 clusters = ec.role_clusters(threshold=0.6)
@@ -228,29 +386,55 @@ clusters = ec.role_clusters(threshold=0.6)
 
 ### `GeometricTheory` / `ClassifyingTopos`
 ```python
+class TheoryType(Enum):
+    TYPOLOGICAL; TYPE_LOGICAL; DISTRIBUTIONAL; ENRICHED
+
+@dataclass
+class Axiom:
+    name: str
+    antecedent: str              # e.g. "f: Hom(A,B) ∧ g: Hom(B,C)"
+    consequent: str              # e.g. "∃ g∘f: Hom(A,C)"
+    sort_variables: list[str]
+
 @dataclass
 class GeometricTheory:
     name: str
-    sorts: set[str]
-    relations: dict[str, tuple]
+    theory_type: TheoryType
+    sorts: list[str]             # ordered list of sort names
+    relation_symbols: dict[str, tuple[str, ...]]
     axioms: list[Axiom]
 
-    def add_sort(s: str) -> None
-    def add_relation(name: str, arity: tuple) -> None
+    def add_sort(sort_name: str) -> None
+    def add_relation(name: str, arity: tuple[str, ...]) -> None
     def add_axiom(a: Axiom) -> None
+    def signature_invariant() -> tuple[int, int, int]  # (|sorts|, |relations|, |axioms|)
+    def arity_spectrum() -> list[int]                  # sorted relation arities
 
 @dataclass
 class ClassifyingTopos:
     theory: GeometricTheory
     invariants: dict[str, Any]
 
-def check_morita_equivalence(t1, t2: ClassifyingTopos) -> bool
-def bridge_transfer(source, target: ClassifyingTopos, data: dict) -> dict
+def check_morita_equivalence(
+    topos1: ClassifyingTopos, topos2: ClassifyingTopos
+) -> tuple[bool, list[str]]
+    # Returns (equivalent, mismatches) — necessary (not sufficient) invariant check.
+
+def build_typological_theory(
+    category: CaseCategory, alignment_name: str = "typological"
+) -> GeometricTheory
+
+def build_enriched_theory(enriched_cat: EnrichedCategory) -> GeometricTheory
+
+def bridge_transfer(
+    source_topos: ClassifyingTopos, target_topos: ClassifyingTopos,
+    property_name: str,
+) -> dict
 ```
 
 ---
 
-## `src.cognitive` — Active Inference (§7a)
+## `src.cognitive` — Active Inference (§7)
 
 Six focused modules implementing point-estimate active inference:
 
@@ -294,9 +478,9 @@ def sequential_belief_update(
 def prediction_error(
     enriched_weight: float, predicted: float, observed: float
 ) -> float
-    # PE(f) = π_f · |μ_predicted − μ_observed|
+    # PE(f) = w_f · |μ_predicted − μ_observed|
 def p600_amplitude_ratio(weight_strong: float, weight_weak: float) -> float
-    # π_strong / π_weak
+    # w_strong / w_weak
 ```
 
 ### `action_selection`
@@ -340,7 +524,7 @@ posterior = update_belief(prior, likelihoods)
 assert posterior.most_likely_role() == CaseRole.NOM
 
 # Compute prediction error with precision weighting
-# PE = π_f · |μ_pred − μ_obs| (precision-weighted mismatch)
+# PE = w_f · |μ_pred − μ_obs| (precision-weighted mismatch)
 pe = prediction_error(enriched_weight=0.9, predicted=0.5, observed=0.8)
 # Higher PE → larger P600 amplitude in ERP predictions
 ```
@@ -351,7 +535,7 @@ pe = prediction_error(enriched_weight=0.9, predicted=0.5, observed=0.8)
 
 ## `src.daif` — Distributional Active Inference (§7c)
 
-Dedicated sub-package (7 modules, 25 public symbols) implementing full return-distribution inference.
+Dedicated sub-package (7 modules, 25 public symbols — authoritative list in `src/daif/__init__.py::__all__`, also tracked as `daif_symbols` in `output/metrics.json`) implementing full return-distribution inference.
 
 ### `types` — Shared Type Containers
 ```python
@@ -499,18 +683,26 @@ def distributional_prediction_error(
     expected_role_index: int,
     enriched_weight: float = 1.0,
 ) -> float
-    # DPE = π · (−log q[expected_role])
+    # Scalar DPE = w_f · (−log q[expected_role])
+
+def wasserstein_prediction_error(
+    predicted: DistributionalReturn,
+    observed: DistributionalReturn,
+    enriched_weight: float = 1.0,
+) -> float
+    # Distributional DPE = w_f · W₁(Z_pred, Z_obs)  (Eq. 7c-dpe)
 
 def n400_from_return_distribution(
     return_dist: DistributionalReturn,
     baseline_return: float = 0.0,
     precision: float = 1.0,
-) -> float  # μV (0 if E[Z] ≥ baseline, negative otherwise)
+    violation_severity: float = 1.0,
+) -> float  # N400 μV = −|E[Z] − baseline| · precision · S_violation
 
 def p600_from_precision_update(
     prior_precision: float, posterior_precision: float,
-    dpe: float, scaling: float = 1.0,
-) -> float  # μV = scaling · ΔΛ · DPE
+    dpe: float, scaling: float = 1.0, violation_severity: float = 1.0,
+) -> float  # P600 μV = scaling · ΔΛ · DPE · S_violation
 
 def erp_amplitude_profile(
     belief: CaseDiagramBelief,
@@ -522,6 +714,10 @@ def erp_amplitude_profile(
     t_end_ms: float = 900.0,
     n_timepoints: int = 1100,
     condition: str = "unknown",
+    n400_peak_ms: float = 380.0,
+    p600_peak_ms: float = 600.0,
+    n400_sigma_ms: float = 60.0,
+    p600_sigma_ms: float = 90.0,
 ) -> ERPProfile
     # Synthetic N400 + P600 waveform with baseline correction
 ```
@@ -657,7 +853,8 @@ assert povm.is_complete()  # Σ E_c = I
 rho = semantic_state(weights={CaseRole.NOM: 0.6, CaseRole.ACC: 0.3, CaseRole.DAT: 0.1})
 
 # Born rule: P(c|ρ) = Tr(E_c ρ)
-p_nom = case_probability(povm, rho, CaseRole.NOM)
+# Note: case_probability() takes a single POVM *element* matrix, not the full CasePOVM.
+p_nom = case_probability(povm.elements[CaseRole.NOM], rho)
 print(f"P(NOM) = {p_nom:.3f}")  # ≈ 0.6 for crisp POVM
 ```
 
@@ -665,7 +862,7 @@ print(f"P(NOM) = {p_nom:.3f}")  # ≈ 0.6 for crisp POVM
 
 ---
 
-## `src.security` — Cognitive Security (§9b)
+## `src.security` — Cognitive Security (§9b) {#srcsecurity--cognitive_security}
 
 ### `TypeViolation`
 ```python
@@ -682,8 +879,13 @@ class TypeViolation:
 ```python
 class CaseFrameValidator:
     def __init__(self, category: CaseCategory | None = None,
-                 enriched: EnrichedCategory | None = None): ...
-    def validate_assignment(assignments: dict[str, CaseRole]) -> list[TypeViolation]
+                 enriched: EnrichedCategory | None = None):
+        # Defaults to ``standard_case_category()`` when ``category`` is None.
+        ...
+    def validate_assignment(
+        self, assignments: dict[str, CaseRole]
+    ) -> list[TypeViolation]
+        # Returns a list of TypeViolation instances (empty when well-typed).
 ```
 
 ### Module Functions
@@ -698,20 +900,27 @@ def semantic_integrity_check(enriched: EnrichedCategory) -> list[tuple]  # viola
 ### Usage Example: Adversarial Injection Detection
 
 ```python
-from src.security import CaseFrameValidator
-from src.security.cognitive_security import injection_score, detect_type_violation
+from src.security import CaseFrameValidator, injection_score, detect_type_violation
 from src.case_systems import CaseRole, standard_case_category
 
-# Set up the firewall with a legitimate case category
+# Set up the case-frame validator with a legitimate case category (§9b protocol story)
 cat = standard_case_category()
-validator = CaseFrameValidator(cat)
+validator = CaseFrameValidator(category=cat)
 
-# Validate a potentially adversarial frame
-# (e.g., data trying to promote itself from ACC to NOM)
-frame = {"role": CaseRole.NOM, "source": "user_input"}  # suspicious
-violations = validator.validate(frame)
+# 1) Frame-level validation: map entity names → CaseRole
+assignments = {
+    "alice": CaseRole.NOM,
+    "bob":   CaseRole.ACC,
+    "cindy": CaseRole.DAT,
+}
+violations = validator.validate_assignment(assignments)
 score = injection_score(violations)
-print(f"Injection score: {score:.2f}")  # > 0 indicates violation
+print(f"Injection score (well-typed frame): {score:.2f}")  # 0.0
+
+# 2) Single-morphism decidable check: detect_type_violation(category, source, target)
+bad = detect_type_violation(cat, CaseRole.VOC, CaseRole.NOM)
+if bad is not None:
+    print(f"Violation: {bad.description} (severity={bad.severity})")
 ```
 
 > **§9b insight**: Prompt injection is a type violation — adversarial text tries to reassign its case role from ACC (data/patient) to NOM (command/agent). The `CaseFrameValidator` makes this decidable.
@@ -754,12 +963,16 @@ def render_*(
 | `render_discocirc_discourse()` | `string_diagrams` | DisCoCirc circuit rendering |
 | `render_three_sentence_discourse()` | `string_diagrams` | 3-sentence discourse rendering |
 | `render_syntactic_panel()` | `syntactic_sentence_diagrams` | Syntactic tree panel |
-| `plot_belief_distribution()` | `active_inference_plots` | Case role belief bar chart |
+| `plot_belief_distribution()` | `active_inference_plots` | Case role belief bar chart (snapshot) |
+| `plot_alignment_frame_belief_dynamics()` | `active_inference_plots` | §7 scalar alignment-frame trajectory (3-panel) |
 | `plot_povm_probabilities()` | `quantum_plots` | POVM measurement bar chart |
 | `plot_type_violations()` | `security_plots` | Severity-colored violation bars |
 | `plot_fluid_s_volition_landscape()` | `fluid_s_plots` | 2D volition–agentivity heatmap |
 | `plot_belief_trajectory()` | `daif_plots` | DAIF belief + return trajectory |
 | `plot_free_energy_convergence()` | `daif_plots` | Free energy convergence curve |
 | `plot_erp_predictions()` | `daif_plots` | Synthetic N400 + P600 waveforms |
+| `render_pregroup_reduction_unpacking()` | `category_unpacking` | Four-panel pregroup reduction walkthrough (Fig 23) |
+| `render_discocirc_entity_persistence()` | `category_unpacking` | DisCoCirc entity-persistence role-history ribbon (Fig 24) |
+| `render_snake_equation_unpacking()` | `category_unpacking` | Three-panel snake-equation visual derivation (Fig 25) |
 
-*All functions are accessible via `from src.visualization import *` (see `src/visualization/__init__.py`).*
+*All functions above are re-exported from `src.visualization` (see `src/visualization/__init__.py::__all__`). Last updated: 2026-04-23.*

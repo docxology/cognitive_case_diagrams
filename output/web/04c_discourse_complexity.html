@@ -168,6 +168,71 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <script defer=""
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
@@ -176,6 +241,15 @@
 <body>
 <h1 id="sec:discocirc-discourse">Beyond the Sentence: State Wires
 Accumulate Semantic History Across Discourse</h1>
+<p><strong>Where we are in the argument.</strong> – formalised
+individual sentences as compact-closed string diagrams and their
+complexity as a four-metric summary. This chapter extends composition
+<em>across</em> sentence boundaries: de Felice–Coecke DisCoCirc adds
+persistent entity wires that carry an entity’s case-role history across
+a discourse, so that a three-sentence discourse traces Alice’s NOM → ACC
+→ NOM trajectory and Bob’s ACC → NOM trajectory as first-class
+diagrammatic data rather than coreference annotation bolted on after the
+fact.</p>
 <h2
 id="discocirc-state-wires-resolve-coreference-and-role-shifts">DisCoCirc
 State Wires Resolve Coreference and Role Shifts</h2>
@@ -210,11 +284,15 @@ has demonstrated that DisCoCirc can scale to text, dynamically composing
 sentence-level diagrams along shared entity wires via an iterative
 process of coreference resolution and wire merging <span
 class="citation"
-data-cites="duneau2021parsing">[-@duneau2021parsing]</span>.
-Complementary work on <strong>DiscoSG</strong> (Discourse Scene Graphs)
-extends this approach to multi-sentence image captions, parsing text
-into scene graphs that capture cross-sentence coreference relations.
-\autoref{fig:discourse} illustrates a multi-sentence discourse diagram
+data-cites="duneau2021parsing">[-@duneau2021parsing]</span>. This
+pipeline approach has since been extended to a comparative framework for
+evaluating compositional AI model architectures <span class="citation"
+data-cites="duneau2025comparative">[-@duneau2025comparative]</span>,
+confirming that the DisCoCirc wire-merging strategy generalizes across
+model families. Complementary work on <strong>DiscoSG</strong>
+(Discourse Scene Graphs) extends this approach to multi-sentence image
+captions, parsing text into scene graphs that capture cross-sentence
+coreference relations. illustrates a multi-sentence discourse diagram
 where entity wires persist across sentence boundaries. For case theory,
 DisCoCirc is significant because it shows how case-marked argument
 structure <em>composes across discourse</em>: the nominative subject of
@@ -222,43 +300,51 @@ one sentence can become the accusative object of the next, and this
 transformation is tracked as a morphism in the discourse category.</p>
 <figure id="fig:discourse">
 <img src="output/figures/discopy_discocirc_discourse.png"
-alt="Entity persistence across sentence boundaries enables case role tracking. A DisCoCirc-style discourse diagram for “Alice chases Bob. Bob runs.” generated via DisCoPy’s pregroup grammar. Sentence 1: three Word boxes contract Alice (n) and Bob (n) into the transitive verb “chases” (n^r \otimes s \otimes n^l), producing sentence type s. Sentence 2: Bob (n) contracts into the intransitive “runs” (n^r \otimes s), producing a second s. The full discourse type is s \otimes s, encoding inter-sentential coherence. In a full DisCoCirc implementation, Bob’s shared entity wire would carry accumulated semantic state across the sentence boundary—the foundation for dynamic case role tracking in ." />
-<figcaption aria-hidden="true">Entity persistence across sentence
-boundaries enables case role tracking. A DisCoCirc-style discourse
-diagram for “Alice chases Bob. Bob runs.” generated via DisCoPy’s
-pregroup grammar. <strong>Sentence 1</strong>: three Word boxes contract
-Alice (<span class="math inline">\(n\)</span>) and Bob (<span
-class="math inline">\(n\)</span>) into the transitive verb “chases”
-(<span class="math inline">\(n^r \otimes s \otimes n^l\)</span>),
-producing sentence type <span class="math inline">\(s\)</span>.
-<strong>Sentence 2</strong>: Bob (<span
-class="math inline">\(n\)</span>) contracts into the intransitive “runs”
-(<span class="math inline">\(n^r \otimes s\)</span>), producing a second
-<span class="math inline">\(s\)</span>. The full discourse type is <span
-class="math inline">\(s \otimes s\)</span>, encoding inter-sentential
-coherence. In a full DisCoCirc implementation, Bob’s shared entity wire
-would carry accumulated semantic state across the sentence boundary—the
-foundation for dynamic case role tracking in .</figcaption>
+alt="DisCoCirc type structure encodes discourse coherence as a tensor product of sentence types. DisCoPy pregroup grammar for “Alice chases Bob. Bob runs.” showing inter-sentential composition. Sentence 1 (left subdiagram): Alice (n) and Bob (n) contract into “chases” (n^r \otimes s \otimes n^l) via two Cups, yielding sentence type s. Sentence 2 (right subdiagram): Bob (n) contracts into “runs” (n^r \otimes s) via one Cup, yielding s. The joint discourse type s \otimes s encodes inter-sentential coherence as a tensor product, the computational primitive that DisCoCirc state wires exploit to propagate Bob’s semantic state from ACC (sentence 1) to NOM (sentence 2). See  for wire-colour confirmation of the role transition, and  for the three-sentence DisCoPy tensor layout (role reversal; anaphora is developed in prose and in the Discourse API below, not as a separate pronoun box in the DisCoPy figure)." />
+<figcaption aria-hidden="true">DisCoCirc type structure encodes
+discourse coherence as a tensor product of sentence types. DisCoPy
+pregroup grammar for “Alice chases Bob. Bob runs.” showing
+inter-sentential composition. <strong>Sentence 1</strong> (left
+subdiagram): Alice (<span class="math inline">\(n\)</span>) and Bob
+(<span class="math inline">\(n\)</span>) contract into “chases” (<span
+class="math inline">\(n^r \otimes s \otimes n^l\)</span>) via two Cups,
+yielding sentence type <span class="math inline">\(s\)</span>.
+<strong>Sentence 2</strong> (right subdiagram): Bob (<span
+class="math inline">\(n\)</span>) contracts into “runs” (<span
+class="math inline">\(n^r \otimes s\)</span>) via one Cup, yielding
+<span class="math inline">\(s\)</span>. The joint discourse type <span
+class="math inline">\(s \otimes s\)</span> encodes inter-sentential
+coherence as a tensor product, the computational primitive that
+DisCoCirc state wires exploit to propagate Bob’s semantic state from ACC
+(sentence 1) to NOM (sentence 2). See for wire-colour confirmation of
+the role transition, and for the three-sentence DisCoPy tensor layout
+(role reversal; anaphora is developed in prose and in the
+<code>Discourse</code> API below, not as a separate pronoun box in the
+DisCoPy figure).</figcaption>
 </figure>
 <figure id="fig:native-discourse">
 <img src="output/figures/discourse_string_diagram.png"
-alt="Wire colour directly encodes dynamic case-role transitions across sentence boundaries. Native matplotlib DisCoCirc diagram for “Alice chases Bob. Bob runs.” generated via src.visualization.string_diagrams.render_discocirc_discourse(), cross-validating  without library dependency. Vertical wires (grey) are persistent entity wires for Alice and Bob. At each sentence boundary, a coloured disc marks Bob’s case role: red (ACC) in sentence 1 (chased object), blue (NOM) in sentence 2 (running agent). The ACC \to NOM transition is read directly from wire colour at successive levels. This confirms that our native string-diagram module correctly resolves entity identity and tracks role reassignment using src.diagrams.string_diagram.Discourse data structures." />
-<figcaption aria-hidden="true">Wire colour directly encodes dynamic
-case-role transitions across sentence boundaries. Native matplotlib
-DisCoCirc diagram for “Alice chases Bob. Bob runs.” generated via
-<code>src.visualization.string_diagrams.render_discocirc_discourse()</code>,
-cross-validating without library dependency. <strong>Vertical
-wires</strong> (grey) are persistent entity wires for Alice and Bob. At
-each sentence boundary, a coloured disc marks Bob’s case role:
-<strong>red</strong> (ACC) in sentence 1 (chased object),
-<strong>blue</strong> (NOM) in sentence 2 (running agent). The ACC <span
-class="math inline">\(\to\)</span> NOM transition is read directly from
-wire colour at successive levels. This confirms that our native
-string-diagram module correctly resolves entity identity and tracks role
-reassignment using <code>src.diagrams.string_diagram.Discourse</code>
-data structures.</figcaption>
+alt="Wire colour provides independent visual confirmation of the ACC\toNOM role transition that  encodes algebraically. Native matplotlib DisCoCirc diagram for the same two-sentence discourse, generated via src.visualization.string_diagrams.render_discocirc_discourse() without the DisCoPy library. Vertical grey wires: persistent entity wires for Alice and Bob, confirming that identity is tracked across the sentence boundary. Colour-coded role discs: Bob’s wire is marked red (ACC) at sentence 1 (chased object) and blue (NOM) at sentence 2 (running agent). The ACC\toNOM colour change is directly readable from the diagram without algebraic computation — Shimojima’s free-ride inference in action. This independent rendering cross-validates that src.diagrams.string_diagram.Discourse correctly resolves entity identity and role reassignment using only case-role metadata." />
+<figcaption aria-hidden="true">Wire colour provides independent visual
+confirmation of the ACC<span class="math inline">\(\to\)</span>NOM role
+transition that encodes algebraically. Native matplotlib DisCoCirc
+diagram for the same two-sentence discourse, generated via
+<code>src.visualization.string_diagrams.render_discocirc_discourse()</code>
+without the DisCoPy library. <strong>Vertical grey wires</strong>:
+persistent entity wires for Alice and Bob, confirming that identity is
+tracked across the sentence boundary. <strong>Colour-coded role
+discs</strong>: Bob’s wire is marked <strong>red</strong> (ACC) at
+sentence 1 (chased object) and <strong>blue</strong> (NOM) at sentence 2
+(running agent). The ACC<span class="math inline">\(\to\)</span>NOM
+colour change is directly readable from the diagram without algebraic
+computation — Shimojima’s free-ride inference in action. This
+independent rendering cross-validates that
+<code>src.diagrams.string_diagram.Discourse</code> correctly resolves
+entity identity and role reassignment using only case-role
+metadata.</figcaption>
 </figure>
-<h2 id="alices-trajectory-nomaccnom">Alice’s Trajectory NOM→ACC→NOM</h2>
+<h2 id="alices-role-trajectory-nomaccnom-across-three-sentences">Alice’s
+Role Trajectory: NOM→ACC→NOM Across Three Sentences</h2>
 <p>The power of DisCoCirc for case theory becomes particularly vivid in
 multi-sentence discourses where the <em>same entity occupies different
 case roles</em> across sentences. Consider the three-sentence
@@ -295,24 +381,110 @@ implementation, Alice’s entity wire would carry accumulated semantic
 state—the meaning of “She” in sentence 3 inherits the enriched state of
 an Alice who has first chased and then been feared, not merely the bare
 lexical entry for “Alice.”</p>
+<p>The trajectory is <em>executable</em>: the
+<code>src.diagrams.string_diagram.Discourse</code> class implements
+exactly this entity-wire-with-role-history bookkeeping. The following
+snippet, taken verbatim from the public API exercised by the test suite,
+builds the three-sentence Alice/Bob discourse and reads back the role
+history that drives :</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.diagrams.string_diagram <span class="im">import</span> Sentence, Discourse</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>discourse <span class="op">=</span> Discourse()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>discourse.add_sentence(Sentence.transitive(<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;chases&quot;</span>, <span class="st">&quot;Bob&quot;</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>discourse.add_sentence(Sentence.transitive(<span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;fears&quot;</span>, <span class="st">&quot;Alice&quot;</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>discourse.add_sentence(Sentence.intransitive(<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;smiles&quot;</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Persistent entity wires (DisCoCirc state-wire reading)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> discourse.entities <span class="op">==</span> {<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> discourse.num_sentences <span class="op">==</span> <span class="dv">3</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Role history per entity reproduces the NOM → ACC → NOM trajectory</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> [r.name <span class="cf">for</span> r <span class="kw">in</span> discourse.role_history[<span class="st">&quot;Alice&quot;</span>]] <span class="op">==</span> [<span class="st">&quot;NOM&quot;</span>, <span class="st">&quot;ACC&quot;</span>, <span class="st">&quot;NOM&quot;</span>]</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> [r.name <span class="cf">for</span> r <span class="kw">in</span> discourse.role_history[<span class="st">&quot;Bob&quot;</span>]]   <span class="op">==</span> [<span class="st">&quot;ACC&quot;</span>, <span class="st">&quot;NOM&quot;</span>]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># `role_reversal_entities` flags every entity whose case role</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># changes across the discourse — the formal analogue of the</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># trajectory pictured in \autoref{fig:three-sentence-discourse}.</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">set</span>(discourse.role_reversal_entities()) <span class="op">==</span> {<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>}</span></code></pre></div>
+<p>Slavic discourse supplies a <em>morphologically overt</em> analogue
+of the persistent state wire: in Serbian/BCS, second-position clitics
+(Wackernagel position) such as <em>je</em> AUX.3SG, <em>mu</em>
+DAT.3SG.M, <em>ga</em> ACC.3SG.M form a fixed-order cluster that
+<em>carries the case role of the discourse referent forward in
+time</em>. <em>Marko ga je video</em> “Marko him.ACC AUX saw” and
+<em>Dao mu ga je</em> “He gave him.DAT it.ACC AUX” make Bob’s
+wire-and-case-history visible in the surface string in a way that
+English pronouns (which collapse case morphology onto a tiny three-form
+<code>I/me/my</code> paradigm) cannot. Russian, which lacks the BCS
+clitic cluster, instead encodes the same persistence directly in the
+suffix on the noun or full pronoun (<em>ego</em> ACC, <em>emu</em> DAT,
+<em>im</em> INS), so role reversals like Alice’s NOM<span
+class="math inline">\(\to\)</span>ACC<span
+class="math inline">\(\to\)</span>NOM trajectory in <em>Alisa gonyaet
+Boba. Bob boitsja Alisy. Ona ulybaetsja</em> are reconstructible
+<em>from the morphology alone</em>, with no positional ambiguity. These
+are the cleanest natural-language witnesses for the
+entity-wire-with-role-history bookkeeping that the
+<code>Discourse</code> API formalises.</p>
+<p>The point of including the snippet in prose is reproducibility, not
+novelty: every assertion above is exercised in
+<code>tests/test_diagrams_string_diagram.py</code>, so a reader who
+clones the repository can re-derive the discourse-level role
+trajectories with no additional setup beyond <code>uv sync</code>. The
+same <code>Discourse</code> object is what
+<code>src.visualization.string_diagrams.render_discocirc_discourse()</code>
+consumes to produce — closing the loop between symbolic case assignment,
+computational state-wire bookkeeping, and the colour-coded role
+transitions visible in the diagram.</p>
 <figure id="fig:three-sentence-discourse">
 <img src="output/figures/discopy_three_sentence_discourse.png"
-alt="Dynamic case role reversal tracks entity identity across three-sentence discourse. DisCoPy rendering of “Alice chases Bob. Bob fears Alice. She smiles.” Sentence 1: Alice NOM, Bob ACC. Sentence 2: Bob NOM, Alice ACC—a complete agent–patient reversal. Sentence 3: anaphoric “She” resolves to Alice, who returns to NOM. Alice’s trajectory NOM\toACC\toNOM is tracked by the triple tensor s \otimes s \otimes s. In a full DisCoCirc implementation, Alice’s entity wire carries accumulated semantic state—“She” in sentence 3 inherits the enriched state of an Alice who has both chased and been feared. This dynamic case assignment across discourse boundaries is what lambeq Gen II [@lambeq2025genii] compiles into parameterized quantum circuits." />
+alt="Dynamic case role reversal tracks entity identity across three-sentence discourse. DisCoPy rendering with lexical heads matching the discourse above: “Alice chases Bob. Bob fears Alice. Alice smiles.” (sentence 3 uses the subject node —same referent as anaphoric  in the running text; DisCoPy boxes are lexical, not pronominal). Sentence 1: Alice NOM, Bob ACC. Sentence 2: Bob NOM, Alice ACC—a complete agent–patient reversal. Sentence 3: Alice NOM as agent of . Alice’s trajectory NOM\toACC\toNOM is tracked by the triple tensor s \otimes s \otimes s. In a full DisCoCirc implementation, Alice’s entity wire carries accumulated semantic state—“She” in the gloss inherits the enriched state of an Alice who has both chased and been feared. This dynamic case assignment across discourse boundaries is what lambeq Gen II [@lambeq2025genii] compiles into parameterized quantum circuits." />
 <figcaption aria-hidden="true">Dynamic case role reversal tracks entity
-identity across three-sentence discourse. DisCoPy rendering of “Alice
-chases Bob. Bob fears Alice. She smiles.” <strong>Sentence 1</strong>:
-Alice NOM, Bob ACC. <strong>Sentence 2</strong>: Bob NOM, Alice ACC—a
-complete agent–patient reversal. <strong>Sentence 3</strong>: anaphoric
-“She” resolves to Alice, who returns to NOM. Alice’s trajectory NOM<span
-class="math inline">\(\to\)</span>ACC<span
+identity across three-sentence discourse. DisCoPy rendering with lexical
+heads matching the discourse above: “Alice chases Bob. Bob fears Alice.
+Alice smiles.” (sentence 3 uses the subject node —same referent as
+anaphoric in the running text; DisCoPy boxes are lexical, not
+pronominal). <strong>Sentence 1</strong>: Alice NOM, Bob ACC.
+<strong>Sentence 2</strong>: Bob NOM, Alice ACC—a complete agent–patient
+reversal. <strong>Sentence 3</strong>: Alice NOM as agent of . Alice’s
+trajectory NOM<span class="math inline">\(\to\)</span>ACC<span
 class="math inline">\(\to\)</span>NOM is tracked by the triple tensor
 <span class="math inline">\(s \otimes s \otimes s\)</span>. In a full
 DisCoCirc implementation, Alice’s entity wire carries accumulated
-semantic state—“She” in sentence 3 inherits the enriched state of an
+semantic state—“She” in the gloss inherits the enriched state of an
 Alice who has both chased and been feared. This dynamic case assignment
 across discourse boundaries is what lambeq Gen II <span class="citation"
 data-cites="lambeq2025genii">[@lambeq2025genii]</span> compiles into
 parameterized quantum circuits.</figcaption>
+</figure>
+<p>The DisCoPy rendering encodes entity persistence
+<em>algebraically</em> (each sentence contributes a tensor factor <span
+class="math inline">\(s_i\)</span> and the entity wires are shared by
+construction), but the reader must infer the shared-entity structure
+from context. makes the structure <em>visual</em>: each entity is given
+its own colour (Alice indigo, Bob amber), the three sentence panels sit
+side-by-side with cups coloured by the entity each one contracts, and
+the bottom <em>role-history ribbon</em> explicitly plots Alice’s NOM
+<span class="math inline">\(\to\)</span> ACC <span
+class="math inline">\(\to\)</span> NOM trajectory and Bob’s ACC <span
+class="math inline">\(\to\)</span> NOM trajectory with the case-role
+palette used throughout the paper. It is the same object as —
+re-presented with the Frobenius-spider entity-identity bookkeeping that
+DisCoCirc posits, made graphically explicit.</p>
+<figure id="fig:discocirc-persistence">
+<img src="output/figures/discocirc_entity_persistence.png"
+alt="DisCoCirc entity-persistence unpacking for Alice chases Bob. Bob fears Alice. Alice smiles. Three sentence panels (top) plus a role-history ribbon (bottom). Each entity has a dedicated colour (Alice indigo, Bob amber) and the cup contractions are coloured by the entity each one consumes. The ribbon shows Alice traversing NOM→ACC→NOM and Bob traversing ACC→NOM (with an “absent” marker for sentence 3), exhibiting graphically the Frobenius-spider entity persistence that motivates DisCoCirc. Generated programmatically from src.visualization.category_unpacking.render_discocirc_entity_persistence()." />
+<figcaption aria-hidden="true">DisCoCirc entity-persistence unpacking
+for <em>Alice chases Bob. Bob fears Alice. Alice smiles.</em> Three
+sentence panels (top) plus a role-history ribbon (bottom). Each entity
+has a dedicated colour (Alice indigo, Bob amber) and the cup
+contractions are coloured by the entity each one consumes. The ribbon
+shows Alice traversing NOM→ACC→NOM and Bob traversing ACC→NOM (with an
+“absent” marker for sentence 3), exhibiting graphically the
+Frobenius-spider entity persistence that motivates DisCoCirc. Generated
+programmatically from
+<code>src.visualization.category_unpacking.render_discocirc_entity_persistence()</code>.</figcaption>
 </figure>
 <h2 id="lambeq-gen-ii-compiles-discocirc-discourse-diagrams">lambeq Gen
 II Compiles DisCoCirc Discourse Diagrams</h2>
@@ -326,7 +498,7 @@ Natural Language Processing) program <span class="citation"
 data-cites="meichanetzidis2020qnlp">[@meichanetzidis2020qnlp]</span>,
 which implements DisCoCat models as parameterized quantum circuits.</p>
 <p>The <strong>lambeq</strong> library <span class="citation"
-data-cites="lorenz2023lambeq">[@lorenz2023lambeq]</span> provides a
+data-cites="lorenz2021lambeq">[@lorenz2021lambeq]</span> provides a
 practical pipeline:</p>
 <ol type="1">
 <li>Parse a sentence into a pregroup derivation (via the neural CCG
@@ -343,7 +515,7 @@ demonstrate that this pipeline achieves competitive performance on
 question-answering tasks, confirming that the categorical structure
 captures genuine linguistic regularities even when instantiated on noisy
 near-term quantum hardware.</p>
-<p><strong>lambeq Gen II</strong> (released May 22, 2025 by Quantinuum)
+<p><strong>lambeq Gen II</strong> (released May 21, 2025 by Quantinuum)
 marks a significant advance by incorporating full
 <strong>DisCoCirc</strong> support as its core mathematical foundation,
 enabling the framework to scale beyond single-sentence semantics to

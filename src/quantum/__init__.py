@@ -1,4 +1,4 @@
-"""Quantum case assignment subpackage — §8 of the manuscript.
+"""Quantum case assignment subpackage — §8 (and §8b) of the manuscript.
 
 POVM-based quantum measurement model of case assignment:
     - quantum_case: CasePOVM, case_probability, crisp/graded/fluid-S POVM

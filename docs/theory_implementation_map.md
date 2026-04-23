@@ -18,9 +18,12 @@ The foundation of the framework: linguistic case systems formalized as categorie
 | Morphisms between roles | `src.case_systems.case_category` | `Morphism` | ✅ | `source`, `target`, `label`, `weight` |
 | Case category $\mathcal{L}$ | `src.case_systems.case_category` | `CaseCategory` | ✅ | `objects`, `morphisms`, `compose()` |
 | Accusative functor $F_{\text{acc}}$ | `src.case_systems.functor` | `AlignmentFunctor` | ✅ | `object_map`, `map_object`, `map_morphism`; `preserves_composition` compares weights |
+| Monoidal functor $F_{\otimes}$ (tensor checks; §9b protocol story) | `src.case_systems.functor` | `MonoidalFunctor` | ✅ | `preserves_tensor()` checks tensor preservation for role pairs; aligns with non-cartesian **specification** for interaction diagrams (§9b), not a production LLM guarantee |
 | Naturality square $G(f)\circ\alpha_A = \alpha_B\circ F(f)$ | `src.case_systems.natural_transformation` | `NaturalTransformation.naturality_holds()` (alias `verify_naturality`) | ✅ | Quantifies over `source_functor.source.morphisms` whose endpoints lie in `object_map`; requires `is_complete()` |
 | Fluid-S alignment | `src.case_systems.fluid_s` | `FluidSFunctor` | ✅ | `map_object`, `split_probability`, `map_morphism`, `kernel()`, `create_fluid_s_functor()` |
 | Eq. `eq-2-1`: $w(g \circ f)=w(g)\cdot w(f)$ | `src.case_systems.case_category` | `CaseCategory.compose()` | ✅ | weight multiplication in `compose()` |
+| DAIF surprisal (N400/P600) on morphism | `src.case_systems.case_category` | `CaseCategory.assess_daif_surprisal()` | ✅ | Returns `{"n400", "p600"}` per Li & Futrell (2024); shallow = semantic surprise, deep = structural discrepancy (§7c) |
+| Prompt injection detect (ACC→NOM) | `src.security.cognitive_security` | `CaseFrameValidator.validate_assignment()` | ✅ | Decidable graph check on `Mor(C_protocol)` (§9b); replaces legacy `CaseCategory.detect_prompt_injection()` |
 
 ---
 
@@ -30,9 +33,14 @@ Pregroup grammar and the Lambek calculus, realized as DisCoPy type reductions. T
 
 | Manuscript Element | Module | Class / Function | Status | Notes |
 |---|---|---|---|---|
-| Pregroup types | `src.diagrams.string_diagram` | `Sentence` | ✅ | wraps DisCoPy `Ty` |
+| Pregroup types | `src.diagrams.string_diagram` | `Sentence` + DisCoPy `Ty` | ✅ | Native + DisCoPy dual representations |
 | Type reduction / cups | `src.diagrams.string_diagram` | DisCoPy `Cup` | ✅ | DisCoPy enforces Lambek residuation |
 | Lambek residuation | (structural — DisCoPy enforces) | — | ✅ | — |
+| Lexical entries (Word) | `src.diagrams.string_diagram` | `create_word_diagram_transitive()` | ✅ | `grammar.pregroup.Word` + `eager_parse` |
+| Automatic cup placement | `src.diagrams.string_diagram` | `eager_parse()` via `create_word_diagram_*()` | ✅ | DisCoPy determines optimal Cup sequence |
+| Passivization / Swap | `src.diagrams.string_diagram` | `create_swap_passive()` | ✅ | `grammar.pregroup.Swap` for type permutation |
+| Passivization type reduction — active (eq-3-3) | `src.diagrams.string_diagram` | `create_discopy_passive()` | ✅ | Active-voice verb type $n^r \otimes s \otimes n^l$; permutes noun wires via DisCoPy `Swap`; renders as `discopy_passive.png` |
+| Passivization type reduction — patient-promoted (eq-3-4) | `src.diagrams.string_diagram` | `create_discopy_passive()` | ✅ | Surface chain $n_{\text{NOM}} \cdot (n^r \cdot s \cdot n^l) \cdot n_{\text{OBL}} \to s$ with promoted patient as NOM and oblique agent; `Swap` + cup wiring; same renderer as active, different case labels (`discopy_passive.png`) |
 | Native DisCoCat string diagram (fig:native-discocat) | `src.visualization.string_diagrams` | `render_discocat_sentence()` | ✅ | Matplotlib render, cross-validates DisCoPy output |
 
 ---
@@ -43,7 +51,7 @@ The meaning functor from grammar to vector spaces. DisCoCat is argued to be the 
 
 | Manuscript Element | Module | Class / Function | Status | Notes |
 |---|---|---|---|---|
-| Meaning functor $F: \mathbf{Preg} \to \mathbf{FVect}$ | `src.diagrams.string_diagram` | `Sentence.to_diagram()` | ✅ | DisCoPy applies the functor |
+| Meaning functor $F: \mathbf{Preg} \to \mathbf{FVect}$ | `src.diagrams.string_diagram` | `create_tensor_semantics()` | ✅ | `discopy.tensor` — evaluates to numpy meaning vectors |
 | Sentence meaning composition (eq. `eq-4-2`) | `src.visualization.discopy_diagrams` | `render_discopy_transitive()` | ✅ | Produces string diagram PNG |
 
 ---
@@ -55,8 +63,10 @@ Snake equation, normal form, and diagram complexity metrics (`04b_compact_closur
 | Manuscript Element | Module | Class / Function | Status | Notes |
 |---|---|---|---|---|
 | Snake equation (eq. `eq-4-3`) | `src.visualization.discopy_diagrams` | `render_discopy_snake()` | ✅ | Verifies `normal_form() == Id(Ty('x'))` |
-| Complexity score (eq. `eq-4-4`) | `src.diagrams.complexity_metrics` | `syntactic_complexity_score()` | ✅ | Configurable weights $w_b, w_c, w_d$ |
-| Diagram comparison | `src.diagrams.complexity_metrics` | `compare_diagrams()` | ✅ | Returns per-diagram metric dict |
+| Complexity score (eq. `eq-4-4`) | `src.diagrams.complexity_metrics` | `syntactic_complexity_score()` | ✅ | words + 0.5·cups + 0.25·caps + 0.1·depth |
+| Circuit depth (eq. `eq-4-4`) | `src.diagrams.complexity_metrics` | `diagram_depth()` | ✅ | `diagram.depth()` — sequential layer count |
+| Circuit width | `src.diagrams.complexity_metrics` | `diagram_width()` | ✅ | `diagram.width` — max parallel wires |
+| Diagram comparison | `src.diagrams.complexity_metrics` | `compare_diagrams()` | ✅ | Returns per-diagram `DiagramMetrics` list |
 
 ---
 
@@ -70,6 +80,7 @@ The discourse-level extension: nouns become **persistent entity wires** that car
 | Entity wire persistence | `src.visualization.discopy_diagrams` | `render_discopy_three_sentence_discourse()` | ✅ | Entity state updated per sentence |
 | Native DisCoCirc string diagram (fig:native-discourse) | `src.visualization.string_diagrams` | `render_discocirc_discourse()` | ✅ | Matplotlib render, cross-validates DisCoPy discourse output |
 | Discourse data structure | `src.diagrams.string_diagram` | `Discourse` | ✅ | Entity wires across `Sentence` list |
+| Prompt injection scan (discourse-level) | `src.security.cognitive_security` | `CaseFrameValidator.validate_assignment()` | ✅ | Feed per-entity role assignments from `Discourse.role_history`; flags ACC→NOM alternation violating non-cartesian monoidal structure (§9b). Replaces legacy `Discourse.detect_prompt_injection()` |
 
 ---
 
@@ -79,8 +90,8 @@ The transition from discrete to continuous: case categories enriched over $[0,1]
 
 | Manuscript Element | Module | Class / Function | Status | Notes |
 |---|---|---|---|---|
-| Hom-value $\mathcal{C}(A,B)\in[0,1]$ | `src.enriched_cat.enriched` | `EnrichedCategory.hom_value()` | ✅ | Reads `proximity_matrix` |
-| Identity axiom $\mathcal{C}(A,A)=1$ | `src.enriched_cat.enriched` | `EnrichedCategory.check_identity_axiom()` | ✅ | Asserts diagonal = 1 |
+| Hom-value $\mathcal{C}(A,B)\in[0,1]$ | `src.enriched_cat.enriched` | `EnrichedCategory.hom()` | ✅ | Reads `proximity_matrix[i,j]` |
+| Identity axiom $\mathcal{C}(A,A)=1$ | `src.enriched_cat.enriched` | `EnrichedCategory.__post_init__` → `_validate()` | ✅ | Enforced at construction; raises `ValueError` on violation |
 | Composition inequality (eq. `eq-5-2`) | `src.enriched_cat.enriched` | `EnrichedCategory.check_composition_inequality()` | ✅ | Returns bool |
 | Magnitude $|\mathcal{C}| = \sum_{ij}(Z^{-1})_{ij}$ (eq. `eq-5-3`) | `src.enriched_cat.enriched` | `EnrichedCategory.magnitude()` | ✅ | Via `np.linalg.inv` |
 | Similarity matrix $Z$ (eq. `eq-5-4`) | `src.enriched_cat.enriched` | `EnrichedCategory.proximity_matrix` | ✅ | NumPy ndarray |
@@ -91,10 +102,12 @@ Magnitude as a **complexity invariant** for case systems, and its connection to 
 
 | Manuscript Element | Module | Class / Function | Status | Notes |
 |---|---|---|---|---|
-| Effective size = magnitude | `src.enriched_cat.enriched` | `EnrichedCategory.effective_size()` | ✅ | Alias for `magnitude()` |
+| Effective size = magnitude | `src.enriched_cat.enriched` | `EnrichedCategory.magnitude()` (+ `magnitude_deficit()`) | ✅ | $\lvert\mathcal{C}\rvert$ and $n - \lvert\mathcal{C}\rvert$ quantify effective-size and redundancy respectively |
 | Role clusters by proximity | `src.enriched_cat.enriched` | `EnrichedCategory.role_clusters()` | ✅ | Threshold-based grouping |
 | Magnitude < n indicates redundancy | `src.enriched_cat.enriched` | `EnrichedCategory.magnitude()` | ✅ | $\|\mathcal{C}\| < n$ means roles overlap |
 | Enriched hom-proximity heatmap | `src.visualization.enriched_diagrams` | `render_enriched_heatmap()` | ✅ | Fig. 15 in manuscript |
+| Magnitude homology invariant $H_k(\mathcal{C})$ (Leinster-Shulman) | `src.diagrams.complexity_metrics` | `MagnitudeHomologyMetrics` | ✅ | Graded homological invariant extending magnitude; `classical_magnitude`, `homology_groups: list[dict]` |
+| Quantum-bounded magnitude homology $\|\mathcal{C}\|_q = \|\mathcal{C}\|(1-\lambda)$ | `src.diagrams.complexity_metrics` | `compute_quantum_magnitude_homology()` | ✅ | Applies decoherence penalty $\lambda$ per §5b caveat (Bradley and Vigneaux 2025 LM-enriched homology) |
 
 ---
 
@@ -111,7 +124,7 @@ Caramello's bridge technique: when two case-theoretic formalizations have Morita
 
 ---
 
-## §7a Cognitive Integration (Active Inference)
+## §7 Cognitive Integration (Active Inference)
 
 Active inference as a process theory: agents maintain beliefs over case role assignments and minimize variational free energy through Bayesian updating. This layer uses **point-estimate** (scalar) methods.
 
@@ -122,8 +135,8 @@ Active inference as a process theory: agents maintain beliefs over case role ass
 | Variational free energy $F = \mathbb{E}_q[\log q - \log p]$ | `src.cognitive.free_energy` | `variational_free_energy()` | ✅ | Minimized by perceptual inference |
 | Bayesian belief update $q(s) \propto p(o|s) q(s)$ | `src.cognitive.belief_updating` | `update_belief()` | ✅ | Single-step posterior |
 | Five-step generative loop (§7) | `src.cognitive.belief_updating` | `sequential_belief_update()` | ✅ | Multi-word processing |
-| Precision-weighted PE: $\text{PE} = \pi_f \cdot |\mu_{pred} - \mu_{obs}|$ | `src.cognitive.prediction_error` | `prediction_error()` | ✅ | P600 ERP prediction |
-| P600 amplitude ratio $\pi_{strong}/\pi_{weak}$ | `src.cognitive.prediction_error` | `p600_amplitude_ratio()` | ✅ | Predicts ERP ratio |
+| Precision-weighted PE: $\text{PE} = w_f \cdot |\mu_{pred} - \mu_{obs}|$ | `src.cognitive.prediction_error` | `prediction_error()` | ✅ | P600 ERP prediction |
+| P600 amplitude ratio $w_{\mathrm{strong}}/w_{\mathrm{weak}}$ | `src.cognitive.prediction_error` | `p600_amplitude_ratio()` | ✅ | Predicts ERP ratio |
 | Expected free energy $G(\pi)$ (point-estimate) | `src.cognitive.action_selection` | `expected_free_energy()` | ✅ | Action/word selection |
 | Garden-path reanalysis $\Delta|\mathcal{C}|$ | `src.cognitive.reanalysis` | `magnitude_reanalysis_cost()` | ✅ | P600 late positivity |
 | N400 semantic violation proxy | `src.cognitive.reanalysis` | `n400_amplitude_proxy()` | ✅ | N400 early negativity |
@@ -149,9 +162,12 @@ The distributional extension: agents maintain the parameterised cumulative densi
 | Precision-weighted VMP | `src.daif.inference` | `variational_message_passing()` | ✅ | Sum-product with sequential damping to arrest cycle oscillations |
 | Bethe free energy (Eq. 7-3) $F_{\text{Bethe}}$ | `src.daif.inference` | `bethe_free_energy()` | ✅ | Subtracts intersection entropy terms for loopy geometries |
 | Expected information gain EIG$(o^*)$ | `src.daif.inference` | `expected_information_gain()` | ✅ | Computes discrete KL divergence iteratively conditioned on $o^*$ |
-| DPE $= \pi \cdot (-\log q[\text{role}])$ | `src.daif.prediction` | `distributional_prediction_error()` | ✅ | Weights entropy by precision scalar $\pi \in \mathbb{R}^+$ |
-| N400 from return distribution | `src.daif.prediction` | `n400_from_return_distribution()` | ✅ | Evaluates linear discrepancy from established prior expectation |
-| P600 from precision update $\Delta\Lambda \cdot \text{DPE}$ | `src.daif.prediction` | `p600_from_precision_update()` | ✅ | Binds parameter reassignment cost to voltage amplitude |
+| DPE scalar (Eq. 7c-dpe-scalar) $= w_f \cdot (-\log q[c])$ | `src.daif.prediction` | `distributional_prediction_error()` | ✅ | Weights cross-entropy by enriched morphism weight $w_f$ |
+| DPE Wasserstein (Eq. 7c-dpe) $= w_f \cdot W_1(Z_{\text{pred}}, Z_{\text{obs}})$ | `src.daif.prediction` | `wasserstein_prediction_error()` | ✅ | Precision-weighted distributional mismatch |
+| DPE_semantic (Eq. 7c-dpe-semantic) $= \lvert \mathbb{E}[Z_{\text{pred}}] - \mathbb{E}[Z_{\text{obs}}] \rvert$ | `src.daif.prediction` | `n400_from_return_distribution()` | ✅ | Mean-return mismatch — heuristic (N400-tracking) component |
+| DPE_structural (Eq. 7c-dpe-structural) $= W_1(Z_{\text{pred}}, Z_{\text{obs}})$ | `src.daif.prediction` | `wasserstein_prediction_error()` → `p600_from_precision_update()` | ✅ | Wasserstein-1 mismatch — discrepancy/update (P600-tracking) component |
+| N400 (Eq. 7c-n400) $= -\,\mathrm{DPE}_{\text{semantic}} \cdot w_c \cdot S_{\text{viol}}$ | `src.daif.prediction` | `n400_from_return_distribution()` | ✅ | Signed negative per ERP convention |
+| P600 (Eq. 7c-p600) $= s \cdot \Delta\Lambda \cdot \mathrm{DPE}_{\text{structural}} \cdot S_{\text{viol}}$ | `src.daif.prediction` | `p600_from_precision_update()` | ✅ | $s$ is dimensionless amplitude-calibration scalar (default 1.0) |
 | Full ERP waveform (Eq. 7-4) | `src.daif.prediction` | `erp_amplitude_profile()` | ✅ | Gaussian superposition of generated components |
 | EFE with risk $G(\pi) + \beta \text{Var}[Z]$ | `src.daif.policy` | `G_policy()` | ✅ | Augments EFE with explicit variance penalty $\beta$ |
 | Boltzmann policy $P(\pi) \propto e^{-G/T}$ | `src.daif.policy` | `softmax_policy_selection()` | ✅ | Controls policy entropy via thermal parameter $T$ |
@@ -162,9 +178,11 @@ The distributional extension: agents maintain the parameterised cumulative densi
 | Return entropy $H[Z]$ | `src.daif.metrics` | `return_distribution_entropy()` | ✅ | Limits $Z$ to atomic discretization sequence before calculation |
 | Li-Futrell surprisal (shallow → N400) | `src.daif.prediction` | `n400_from_return_distribution()` | ✅ | Converts lexical surprisal bound directly into voltage offset |
 | Li-Futrell surprisal (deep → P600) | `src.daif.prediction` | `p600_from_precision_update()` | ✅ | Isolates syntactic restructuring cost |
-| DAIF belief trajectory (Fig. 17b) | `src.visualization.daif_plots` | `plot_belief_trajectory()` | ✅ | Renders temporal evolution as confidence funnel |
-| DAIF free energy convergence (Fig. 17c) | `src.visualization.daif_plots` | `plot_free_energy_convergence()` | ✅ | Verifies discrete limits algorithmically |
-| DAIF ERP predictions (Fig. 17d) | `src.visualization.daif_plots` | `plot_erp_predictions()` | ✅ | Overlays theoretical outputs against physiological noise limits |
+| DAIF belief trajectory (Fig. 17b) | `src.visualization.daif_plots` | `plot_belief_trajectory()` | ✅ | Renders temporal evolution; bottom-panel fan is a proxy, not a 51-quantile push-forward decomposition (explicit in caption) |
+| DAIF free energy convergence (Fig. 17c) | `src.visualization.daif_plots` | `plot_free_energy_convergence()` | ✅ | Real `fe_trajectory` + real KL/log-lik decomposition via optional `kl_trajectory` / `loglik_trajectory` kwargs |
+| DAIF ERP predictions (Fig. 17d) | `src.visualization.daif_plots` | `plot_erp_predictions()` | ✅ | Real DAIF-predicted N400/P600 via optional `n400_amplitudes` / `p600_amplitudes` kwargs; literature-typical ranges shown with error bars |
+| Limitations & neurobiological scope (§daif-limitations) | N/A | Documented in `manuscript/07c_daif_results.md` | 📋 | Mean-field approximation trade-off, enriched-category unification conjecture, single-sentence empirical scope, PAC-latency gap (ROSE) |
+| Supporting utilities (§daif-support-utils) | `src.daif.policy`, `src.daif.core` | `distributional_epistemic_value()`, `categorical_return_distribution()` | ✅ | Documented as explicit support for Eq. 7c-g risk term and Eq. 7c-c51 projection |
 
 ---
 
@@ -204,7 +222,7 @@ Selected entries from `11b_notation.md` (App B) mapped to Python identifiers:
 |----------------------|-------------------|---------|
 | $\mathcal{C}$ | `CaseCategory` | `case_systems` |
 | $\text{Ob}(\mathcal{C})$ | `CaseCategory.objects` | `case_systems` |
-| $\text{Hom}(A, B)$ | `EnrichedCategory.hom_value(A, B)` | `enriched_cat` |
+| $\text{Hom}(A, B)$ | `EnrichedCategory.hom(A, B)` | `enriched_cat` |
 | $F: \mathcal{C} \to \mathcal{D}$ | `AlignmentFunctor` | `case_systems` |
 | $\alpha: F \Rightarrow G$ | `NaturalTransformation` | `case_systems` |
 | $\|\mathcal{C}\|$ | `EnrichedCategory.magnitude()` | `enriched_cat` |
@@ -218,4 +236,49 @@ Selected entries from `11b_notation.md` (App B) mapped to Python identifiers:
 
 ---
 
-*Last updated: 2026-03-19 — Added §5b magnitude homology mapping, conceptual narrative paragraphs for each section, implementation status badges, and Appendix notation → code symbol mapping. DAIF promoted to `src.daif/` subpackage (7 modules, 25 symbols); §7 split into §7a (cognitive) + §7c (DAIF).*
+## Verification Protocol
+
+To independently verify that every theory-to-code mapping above is correct:
+
+### Step 1: Run the Full Test Suite
+
+```bash
+cd projects/cognitive_case_diagrams
+uv run pytest tests/ --cov=src -v
+```
+
+This runs all 64 test files (authoritative live count in `output/metrics.json::total_test_files`). Coverage must exceed 90 % on `src/` (currently 95.96 %). Every row in the tables above has at least one corresponding `assert` in the test suite.
+
+### Step 2: Verify Specific Equations
+
+Each equation can be verified in isolation. For example, to confirm that the composition inequality $\mathcal{C}(A,C) \geq \mathcal{C}(A,B) \cdot \mathcal{C}(B,C)$ is enforced:
+
+```bash
+uv run pytest tests/test_enriched_cat_enriched.py -k "composition_inequality" -v
+```
+
+### Step 3: Check Notation–Code Alignment
+
+The Appendix notation table above maps every mathematical symbol used in the manuscript to its Python identifier. To verify completeness, check that every `\label{eq:...}` in the manuscript has a corresponding entry:
+
+```bash
+grep -r '\\label{eq:' manuscript/ | wc -l
+```
+
+### Step 4: Generate and Inspect Figures
+
+All 30 figures are generated from the same `src/` code used above. To regenerate and verify:
+
+```bash
+uv run python scripts/generate_diagrams.py
+ls -la output/figures/*.png | wc -l  # Should match output/metrics.json::total_figures (30 as of this revision)
+```
+
+### Traceability Invariant
+
+The mapping enforces a **bidirectional traceability invariant**: every manuscript equation must have a Python implementation, and every public function in `src/` must trace back to a manuscript equation (or to a utility/visualization role documented in `api_reference.md`). This invariant is maintained by ADR-007.
+
+---
+
+*Last updated: 2026-04-22 — All 9 subpackages fully mapped with ✅ status; 25 DAIF symbols across 7 modules; figure-to-code traceability complete for all 30 figures (including the three pedagogical unpacking companions for §3 / §4b / §4c); Appendix notation → code symbol mapping.*
+

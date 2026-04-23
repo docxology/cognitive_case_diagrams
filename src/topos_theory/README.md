@@ -1,4 +1,4 @@
-# topos_theory/ — §6: Topos Theory
+# topos_theory/ — §6: Topos-Theoretic Bridges
 
 Geometric theories, classifying toposes, and Morita equivalence for inter-theoretic translation between case systems.
 

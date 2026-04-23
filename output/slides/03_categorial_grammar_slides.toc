@@ -1,1 +1,1 @@
-\beamer@sectionintoc {1}{From Phrase Structure to Type Algebra}{1}{0}{1}
+\beamer@sectionintoc {1}{Categorial Grammar: Syntax as Algebraic Composition and Proof}{1}{0}{1}

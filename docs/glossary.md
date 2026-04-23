@@ -1,6 +1,6 @@
 # Glossary
 
-Comprehensive term reference for *A Cognitive Case for Diagrams*. Maps mathematical notation, linguistic terminology, and cognitive science concepts to their Python implementations.
+Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case*. Maps mathematical notation, linguistic terminology, and cognitive science concepts to their Python implementations.
 
 > Cross-reference: See [`11b_notation.md`](../manuscript/11b_notation.md) for the full mathematical notation table (sections A–K).
 
@@ -17,6 +17,7 @@ Comprehensive term reference for *A Cognitive Case for Diagrams*. Maps mathemati
 | **Natural transformation** | A family of morphisms connecting two functors, one per object | `NaturalTransformation` | §2 |
 | **Compact closed category** | A monoidal category where every object has a dual; enables cups/caps | DisCoPy `rigid.Category` | §3–4 |
 | **Monoidal category** | A category with a tensor product ⊗ and unit object I | DisCoPy `monoidal.Category` | §3 |
+| **Monoidal functor** | A functor preserving tensor structure: $F(A\otimes B)=F(A)\otimes F(B)$. In its *non-cartesian* reading, models constraints on copying/discarding wires — a **specification-level** hook for the protocol analysis of prompt injection in §9b (not a deployed-API guarantee) | `MonoidalFunctor.preserves_tensor()` | §9b |
 | **Enriched category** | A category whose hom-sets are objects in a monoidal category (here, [0,1]) | `EnrichedCategory` | §5 |
 | **Classifying topos** | The canonical topos associated with a geometric theory | `ClassifyingTopos` | §6 |
 | **Morita equivalence** | When two theories share the same classifying topos | `check_morita_equivalence()` | §6 |
@@ -25,10 +26,12 @@ Comprehensive term reference for *A Cognitive Case for Diagrams*. Maps mathemati
 
 | Term | Definition | Code | §  |
 |------|-----------|------|----|
-| **Hom-value** | The [0,1]-valued proximity between two case roles: $\mathcal{C}(A,B) \in [0,1]$ | `EnrichedCategory.hom_value()` | §5 |
-| **Identity axiom** | $\mathcal{C}(A,A) = 1$ — self-similarity is maximal | `check_identity_axiom()` | §5 |
+| **Hom-value** | The [0,1]-valued proximity between two case roles: $\mathcal{C}(A,B) \in [0,1]$ | `EnrichedCategory.hom()` | §5 |
+| **Identity axiom** | $\mathcal{C}(A,A) = 1$ — self-similarity is maximal | `EnrichedCategory.__post_init__` / `_validate()` (enforced at construction) | §5 |
 | **Composition inequality** | $\mathcal{C}(A,C) \geq \mathcal{C}(A,B) \cdot \mathcal{C}(B,C)$ | `check_composition_inequality()` | §5 |
 | **Categorical magnitude** | $\|\mathcal{C}\| = \sum_{ij}(Z^{-1})_{ij}$ — the "effective size" of a category | `EnrichedCategory.magnitude()` | §5 |
+| **Magnitude homology** | The Leinster–Shulman graded homological invariant $H_k(\mathcal{C})$ that categorifies magnitude from a scalar to a sequence of homology groups, revealing topological structure (clustering, holes) beyond the scalar magnitude | `MagnitudeHomologyMetrics` | §5b |
+| **Quantum magnitude homology** | Magnitude homology corrected for quantum decoherence: $\|\mathcal{C}\|_q = \|\mathcal{C}\|(1-\lambda)$, where $\lambda$ is the decoherence penalty bounding classical–quantum comparison (see §5b; LM-enriched magnitude homology in Bradley and Vigneaux 2025) | `compute_quantum_magnitude_homology()` | §5b |
 | **Similarity matrix** $Z$ | The proximity matrix whose entries are hom-values | `proximity_matrix` (ndarray) | §5 |
 
 ## Linguistic Case Theory
@@ -63,12 +66,12 @@ Comprehensive term reference for *A Cognitive Case for Diagrams*. Maps mathemati
 |------|-----------|------|----|
 | **Pregroup grammar** | A type-logical grammar where types form a pregroup (partially ordered group) | DisCoPy `Ty` | §3 |
 | **Type reduction** | The cancellation of adjoint types via cup operations: $n \cdot n^r \to 1$ | DisCoPy `Cup` | §3 |
-| **String diagram** | A graphical calculus for morphisms in monoidal categories | `Sentence.to_diagram()` | §3 |
+| **String diagram** | A graphical calculus for morphisms in monoidal categories | `Sentence` / `create_discopy_transitive()` | §3 |
 | **Cup / Cap** | The unit/counit of a compact closed category; connects adjoint types | DisCoPy `Cup`, `Cap` | §3 |
 | **Snake equation** | The zigzag identity $\varepsilon \circ \eta = \text{id}$ proving coherence | `render_discopy_snake()` | §4b |
-| **DisCoCat** | Categorical Compositional Distributional Semantics | `Sentence.to_diagram()` | §4 |
+| **DisCoCat** | Categorical Compositional Distributional Semantics | `create_tensor_semantics()` / `create_word_diagram_transitive()` | §4 |
 | **Meaning functor** | $F: \mathbf{Preg} \to \mathbf{FVect}$ mapping grammar to vector spaces | DisCoPy functor | §4 |
-| **DisCoCirc** | Discourse-level extension of DisCoCat with persistent entity wires | `Discourse.to_circuit()` | §4c |
+| **DisCoCirc** | Discourse-level extension of DisCoCat with persistent entity wires | `Discourse` / `create_discopy_discocirc_discourse()` | §4c |
 | **Entity wire** | A persistent noun wire that carries state across sentence boundaries | §4c (manuscript) | §4c |
 | **Complexity score** | $c = w_b \cdot \#\text{boxes} + w_c \cdot \#\text{cups} + w_d \cdot \text{depth}$ | `syntactic_complexity_score()` | §4b |
 
@@ -81,13 +84,13 @@ Comprehensive term reference for *A Cognitive Case for Diagrams*. Maps mathemati
 | **KL divergence** | $D_\text{KL}(q \| p) = \sum q_i \log(q_i / p_i)$ — divergence between distributions | `kl_divergence()` | §7 |
 | **Belief** | A probability distribution over case role assignments | `CaseDiagramBelief` | §7 |
 | **Belief update** | $q(s) \propto p(o|s) \cdot q(s)$ — Bayesian posterior update | `update_belief()` | §7 |
-| **Prediction error** (PE) | $\text{PE} = \pi_f \cdot |\mu_\text{pred} - \mu_\text{obs}|$ — precision-weighted mismatch | `prediction_error()` | §7 |
+| **Prediction error** (PE) | $\text{PE} = w_f \cdot |\mu_\text{pred} - \mu_\text{obs}|$ — precision-weighted mismatch | `prediction_error()` | §7 |
 | **Expected free energy** (EFE) | $G(\pi) = \text{Ambiguity} - \text{EIG} - \gamma \cdot \text{Pragmatic}$ | `expected_free_energy()` | §7 |
 | **P600** | An ERP component (~600ms) reflecting syntactic reanalysis | `p600_amplitude_ratio()` | §7 |
 | **N400** | An ERP component (~400ms) reflecting semantic violation | `n400_amplitude_proxy()` | §7 |
 | **Garden-path** | A sentence that requires reanalysis mid-parse | `magnitude_reanalysis_cost()` | §7 |
 | **Generative model** | The internal model an agent uses to predict sensory input | §7 (manuscript) | §7 |
-| **Precision** | The inverse variance of a distribution; controls the weight of prediction errors | $\pi_f$ in `prediction_error()` | §7 |
+| **Precision** | The inverse variance of a distribution; controls the weight of prediction errors | $w_f$ in `prediction_error()` | §7 |
 
 ## Distributional Active Inference (DAIF)
 
@@ -129,13 +132,16 @@ Comprehensive term reference for *A Cognitive Case for Diagrams*. Maps mathemati
 | **Surprisal decomposition** | Li & Futrell (2024): decomposes total surprisal into shallow (lexical/N400) and deep (structural/P600) components | `n400_from_return_distribution()`, `p600_from_precision_update()` | §7c |
 | **Calibration error** | Mean $|\text{empirical coverage}(\tau) - \tau|$ — how well predicted quantiles match observed frequencies | `quantile_coverage()` | §7c |
 | **Monotone convergence** | Whether free energy decreases at every DAIF iteration (ideal convergence) | `convergence_diagnostics()["monotone"]` | §7c |
+| ***assess\_daif\_surprisal*** | Instance method on `CaseCategory` that returns N400 (shallow/semantic) and P600 (deep/structural) surprisal estimates for a given morphism, implementing the Li & Futrell (2024) decomposition: N400 ~ `1 - morphism.weight`, P600 ~ variance across co-occurring role weights | `CaseCategory.assess_daif_surprisal()` | §7c |
 
 ## Quantum Semantics
 
 | Term | Definition | Code | §  |
 |------|-----------|------|----|
 | **POVM** | Positive Operator-Valued Measure — generalized quantum measurement | `CasePOVM` | §8 |
-| **POVM element** | $E_c$: a positive semidefinite matrix summing to identity | `CasePOVM.elements` | §8 |
+| **POVM element** | $E_c$: a positive semidefinite matrix, with $\sum_c E_c = I$ | `CasePOVM.elements` | §8 |
+| **Crisp POVM** | Orthogonal projective measurement: $E_c E_{c'} = \delta_{cc'} E_c$. Special case of a POVM in which all elements are mutually orthogonal one-dimensional projectors; yields deterministic case assignment (see §8b). | `crisp_case_povm()` in `src/quantum/quantum_case.py` | §8b |
+| **Graded / context-dependent POVM** | A POVM family $\{E_c^{(\lambda)}\}$ parametrised by a context variable $\lambda$ (here $p_{\text{vol}}$), so that case probabilities $P(c\mid\rho)$ vary continuously with $\lambda$ even when the underlying state $\rho$ is fixed. In this project's Fluid-S implementation the elements remain *mutually orthogonal* one-dimensional projectors at every $\lambda$ (so each individual POVM is still crisp in the formal sense), but the measurement *basis* is rotated through $\theta = (\pi/2)(1 - p_{\text{vol}})$, giving graded case assignment as a function of context. Genuinely *overlapping* POVM elements ($E_c E_{c'} \neq 0$) would be a stricter notion; none of the functions currently ship a graded POVM in that stricter sense — callers who need true element overlap must construct the density matrix and elements directly. | `fluid_s_povm()` in `src/quantum/quantum_case.py` | §8b |
 | **Case probability** | $P(c|\rho) = \text{Tr}(E_c \rho)$ — probability of case assignment | `case_probability()` | §8 |
 | **Density matrix** | $\rho$: a quantum state representing semantic content | `semantic_state()` | §8 |
 | **ZX-calculus** | A graphical calculus for quantum circuits using Z and X spiders | §8 (manuscript) | §8 |
@@ -157,18 +163,33 @@ Comprehensive term reference for *A Cognitive Case for Diagrams*. Maps mathemati
 |------|-----------|------|----|
 | **Type violation** | An illicit case-role reassignment (e.g., ACC→NOM promotion) | `TypeViolation` | §9b |
 | **Injection score** | Aggregate severity of detected type violations | `injection_score()` | §9b |
-| **Case-theoretic firewall** | A validator that blocks morphisms violating relational type constraints | `CaseFrameValidator` | §9b |
+| **Case-theoretic firewall** | Under a fixed interaction protocol, validators that reject morphisms violating relational type constraints (engineering target; see §9b) | `CaseFrameValidator` | §9b |
 | **Topological robustness** | Magnitude-based metric for resistance to adversarial perturbation | `topological_robustness()` | §9b |
-| **Prompt injection** | An adversarial attack promoting data (ACC) to command (NOM) status | §9b (manuscript) | §9b |
+| **Prompt injection** | An adversarial attack promoting data (ACC) to command (NOM) status. Detected via `CaseFrameValidator.validate_assignment()` over per-entity role assignments | `CaseFrameValidator` | §9b |
 
-## CEREBRUM Architecture
+## Discourse and Compositionality
 
-| Term | Definition | §  |
-|------|-----------|---|
-| **CEREBRUM** | Case-Enabled Reasoning Engine with Bayesian Representations for Unified Modeling | §7, §10 |
-| **Case-bearing entity** | A model component assigned a functional case role (NOM=agent, ACC=patient, etc.) | §7 |
-| **8-case functional table** | NOM, ACC, DAT, GEN, INS, LOC, ABL, VOC mapped to computational functions | §7c |
+| Term | Definition | Code | §  |
+|------|-----------|------|---|
+| **DisCoCirc** | Discourse-level extension of DisCoCat where entity wires persist across sentence boundaries, enabling multi-sentence semantic composition | `Discourse` class | §4c |
+| **Entity wire** | A persistent wire in a DisCoCirc circuit representing an entity referenced across multiple sentences | `Discourse.entity_wires` | §4c |
+| **Sentence progression** | The sequential accumulation of semantic information as each sentence updates the discourse state | `discopy_sentence_progression.png` | §4c |
+| **Cup-counting** | The measure of syntactic complexity by counting the number of cups (contractions) in a pregroup derivation | `count_cups()` / `DiagramMetrics.cup_count` in `src.diagrams.complexity_metrics` | §3b |
+| **Meaning functor** | The structure-preserving map $\hat{F}: \mathbf{Gram} \to \mathbf{FVect}$ sending pregroup derivations to linear maps over meaning spaces | §4 (manuscript) | §4 |
+| **Compact closure** | The property of a monoidal category where every object has an adjoint (dual), enabling cup/cap morphisms for composition | DisCoPy `rigid` module | §4b |
+
+## Build and Documentation Infrastructure
+
+| Term | Definition | Code | §  |
+|------|-----------|------|---|
+| **Zero-mock policy** | The architectural constraint that all tests use real mathematical computations, never `MagicMock` or `patch` | ADR-002 | all |
+| **Figure parity** | The requirement that figure counts are synchronized across `manuscript_figure_index.md`, `output/figures/`, and manuscript `![...]` references | ADR-010 | all |
+| **Documentation duality** | The standard that every directory carries `AGENTS.md` (machine-readable), `README.md` (human-readable), and `SKILL.md` (AI skill descriptor) | ADR-011 | all |
+| **Manuscript variable injection** | The build-time substitution of `${VARIABLE}` placeholders in the manuscript with computed values from `generate_manuscript_metrics.py` | `generate_manuscript_metrics.py` | all |
+| **Thin orchestrator** | A script that contains no business logic, only import-and-call orchestration of `src/` modules | root `scripts/*.py` | all |
+| **Alignment functor** | A structure-preserving map between case systems of different typological alignments (ACC↔ERG, etc.) | `accusative_alignment()` etc. | §2 |
 
 ---
 
-*Last updated: 2026-03-19. For mathematical notation details, see [Appendix B — Notation Reference](../manuscript/11b_notation.md).*
+*Last updated: 2026-04-22. For mathematical notation details, see [Appendix B — Notation Reference](../manuscript/11b_notation.md).*
+

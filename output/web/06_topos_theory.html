@@ -241,6 +241,14 @@
 <body>
 <h1 id="sec:topos-theory">Topos-Theoretic Bridges: Transferring Results
 Across Case-Theoretic Frameworks</h1>
+<p><strong>Where we are in the argument.</strong> – have erected four
+formal layers — typological categories (), type-logical pregroup syntax
+(–), distributional semantics (–), and enriched magnitude (–). This
+chapter supplies the meta-framework that lets results proven in one
+layer transfer to the others: classifying toposes and Morita equivalence
+(with the honest limitation that the repository checks
+necessary-but-not-sufficient invariant matching, not full topos
+equivalence).</p>
 <h2 id="the-inter-theoretic-translation-problem">The Inter-Theoretic
 Translation Problem</h2>
 <p>The preceding sections constructed four formally distinct
@@ -249,13 +257,19 @@ enriched. A central methodological question arises: <em>when can
 structural results proved in one framework be carried over to another
 without starting from scratch?</em> Caramello’s <span class="citation"
 data-cites="caramello2016bridges">[-@caramello2016bridges]</span>
-topos-theoretic bridge technique answers this for properties that are
-<strong>invariants of a shared classifying topos</strong>, once Morita
-equivalence or a suitable bridge is in hand.</p>
+topos-theoretic bridge technique provides this methodology for
+properties that are <strong>invariants of a shared classifying
+topos</strong>, once Morita equivalence (or a suitable bridge topos) is
+in hand. We adopt this methodology as a research programme for case
+theory: establishing full Morita equivalences for the specific
+case-theoretic formalizations developed here remains largely open (see
+the implementation note later in this section), but the framework
+precisely identifies <em>what</em> must be proved and <em>what</em>
+would transfer as a result.</p>
 <h2 id="classifying-toposes-the-logical-shape-of-a-theory">Classifying
 Toposes: The Logical Shape of a Theory</h2>
-<h3 id="a-topos-is-a-universe-with-internal-logic">A Topos Is a Universe
-With Internal Logic</h3>
+<h3 id="a-topos-is-a-self-contained-logical-universe">A Topos Is a
+Self-Contained Logical Universe</h3>
 <p>A <strong>topos</strong> is a category possessing the structural
 richness of a generalized “universe of sets”: products, exponentials,
 and a subobject classifier (a “truth-value object”) that supports
@@ -274,11 +288,14 @@ class="math inline">\(\mathbb{T}\)</span> (axiomatized by sequents with
 finite conjunctions, arbitrary disjunctions, and existential
 quantification) generates a unique <strong>classifying topos</strong>
 <span class="math inline">\(\mathcal{E}_{\mathbb{T}}\)</span>: a
-canonical topos whose models correspond one-to-one with geometric
-functors out of <span
-class="math inline">\(\mathcal{E}_{\mathbb{T}}\)</span>. The classifying
-topos encodes the theory’s “logical shape” independently of any
-particular model.</p>
+canonical topos such that, for any Grothendieck topos <span
+class="math inline">\(\mathcal{F}\)</span>, models of <span
+class="math inline">\(\mathbb{T}\)</span> in <span
+class="math inline">\(\mathcal{F}\)</span> correspond naturally to
+<strong>geometric morphisms</strong> <span
+class="math inline">\(\mathcal{F} \to \mathcal{E}_{\mathbb{T}}\)</span>.
+The classifying topos encodes the theory’s “logical shape” independently
+of any particular model.</p>
 <p>Caramello’s insight <span class="citation"
 data-cites="caramello2016bridges caramello2021five">[-@caramello2016bridges;
 -@caramello2021five]</span> is that formally different theories can
@@ -289,10 +306,11 @@ class="math inline">\(\mathcal{E}_{\mathbb{T}_1} \simeq
 invariant of the shared topos transfers automatically from <span
 class="math inline">\(\mathbb{T}_1\)</span> to <span
 class="math inline">\(\mathbb{T}_2\)</span> without re-proof.</p>
-<h2 id="a-chain-of-morita-equivalences-connects-case-theories">A Chain
-of Morita Equivalences Connects Case Theories</h2>
-<h3 id="formalizing-case-theories-as-geometric-theories">Formalizing
-Case Theories as Geometric Theories</h3>
+<h2
+id="a-chain-of-morita-equivalences-connects-the-four-case-theories">A
+Chain of Morita Equivalences Connects the Four Case Theories</h2>
+<h3 id="each-case-framework-as-a-geometric-theory">Each Case Framework
+as a Geometric Theory</h3>
 <p>We formalize each case-theoretic framework as a geometric theory:</p>
 <ol type="1">
 <li><p><strong>Typological case theory</strong> <span
@@ -313,8 +331,9 @@ expressions, morphisms carry <span
 class="math inline">\([0,1]\)</span>-valued weights, axioms specify the
 identity and composition inequalities.</p></li>
 </ol>
-<h3 id="the-bridge-theorem-morita-equivalence-chain">The Bridge Theorem:
-Morita Equivalence Chain</h3>
+<h3
+id="the-bridge-programme-a-chain-of-classifying-toposes-for-case-theory">The
+Bridge Programme: A Chain of Classifying Toposes for Case Theory</h3>
 <p>The <strong>research programme</strong> we pursue is that these four
 perspectives admit a topos-theoretic alignment: formally distinct case
 theories should be related by bridge toposes and, where Morita
@@ -348,41 +367,80 @@ class="math inline">\([0,1]\)</span>-valued weights could be pulled back
 to probabilistic readings of typological, logical, and distributional
 constructions.</li>
 </ul>
-<p>The Python <code>topos</code> module does <strong>not</strong>
-implement general classifying toposes or full Morita equivalence proofs;
-it constructs finite <strong>invariant profiles</strong> (sort counts,
-symbol arities, axiom tallies) from <code>CaseCategory</code> instances
-and uses those profiles for <code>check_morita_equivalence()</code> and
-guarded <code>bridge_transfer()</code>—a concrete, testable proxy for
-the diagram in (<span class="math inline">\(\ref{eq:eq-6-1}\)</span>),
-not a replacement for topos-level equivalence.</p>
+<p><strong>Implementation status.</strong> The Python <code>topos</code>
+module does <strong>not</strong> implement general classifying toposes
+or full Morita equivalence proofs. It constructs finite
+<strong>invariant profiles</strong> (sort counts, symbol arities, axiom
+tallies) from <code>CaseCategory</code> instances and uses those
+profiles for <code>check_morita_equivalence()</code> and guarded
+<code>bridge_transfer()</code>. The equivalence check verifies
+<em>necessary but not sufficient</em> conditions: matching arity spectra
+and compatible axiom counts. A positive result means equivalence is
+<em>consistent with the evidence</em>; it does not constitute a proof.
+This proxy is a concrete, testable approximation of the diagram in
+(<span class="math inline">\(\ref{eq:eq-6-1}\)</span>), not a
+replacement for topos-level equivalence. Full classifying topos
+construction and Morita equivalence proof for specific case theory pairs
+remains an open research target (see F2).</p>
 <p> visualizes the alignment functor between the Accusative and Ergative
 category instantiations, showing how the same eight case roles are
 connected by different morphism structures under different alignment
 types.</p>
 <figure id="fig:functor-alignment">
 <img src="output/figures/functor_alignment.png"
-alt="The alignment functor preserves role inventory but restructures morphism grouping. Functor F\colon\mathcal{C}_{\text{acc}} \to \mathcal{C}_{\text{erg}} mapping the Accusative case category (source, blue panel) to the Ergative (target, amber panel). All eight case roles appear in both; purple horizontal arrows show the object-level mapping F(\text{role}). The key structural difference: Accusative groups \{S, A\} \to \text{NOM} (kernel \{(S,A)\}, cf. ), while Ergative groups \{S, P\} \to \text{ABS} (kernel \{(S,P)\}, cf. ). This diagram provides one link in the Morita equivalence chain of  enabling inter-theoretic bridge transfer. Generated programmatically from the AlignmentFunctor class." />
+alt="The alignment functor preserves role inventory but restructures morphism grouping. Functor F\colon\mathcal{C}_{\text{acc}} \to \mathcal{C}_{\text{erg}} mapping the Accusative case category (source, blue panel) to the Ergative (target, amber panel). Five nodes appear in each panel — the three semantic primitives S, A, P plus the alignment-specific case labels (NOM, ACC in the accusative; ERG, ABS in the ergative); purple dashed functor arrows show the object-level mapping F(\text{role}) (from AlignmentFunctor.object_map). The key structural difference: Accusative groups \{S, A\} \to \text{NOM} (kernel \{(S,A)\}, cf. ), while Ergative groups \{S, P\} \to \text{ABS} (kernel \{(S,P)\}, cf. ). This diagram provides one link in the alignment functor structure that would, if full Morita equivalence were established, enable inter-theoretic bridge transfer (see F2 for the proof programme). Generated programmatically from src.visualization.functor_diagrams.render_functor_diagram() with the canonical accusative_to_ergative_functor() (scripts/generate_category_figures.py); panel layout is fixed for publication while cross-panel arrows follow the functor’s object map." />
 <figcaption aria-hidden="true">The alignment functor preserves role
 inventory but restructures morphism grouping. Functor <span
 class="math inline">\(F\colon\mathcal{C}_{\text{acc}} \to
 \mathcal{C}_{\text{erg}}\)</span> mapping the Accusative case category
-(source, blue panel) to the Ergative (target, amber panel). All eight
-case roles appear in both; purple horizontal arrows show the
-object-level mapping <span
-class="math inline">\(F(\text{role})\)</span>. The key structural
+(source, blue panel) to the Ergative (target, amber panel). Five nodes
+appear in each panel — the three semantic primitives S, A, P plus the
+alignment-specific case labels (NOM, ACC in the accusative; ERG, ABS in
+the ergative); purple dashed functor arrows show the object-level
+mapping <span class="math inline">\(F(\text{role})\)</span> (from
+<code>AlignmentFunctor.object_map</code>). The key structural
 difference: Accusative groups <span class="math inline">\(\{S, A\} \to
 \text{NOM}\)</span> (kernel <span
 class="math inline">\(\{(S,A)\}\)</span>, cf. ), while Ergative groups
 <span class="math inline">\(\{S, P\} \to \text{ABS}\)</span> (kernel
 <span class="math inline">\(\{(S,P)\}\)</span>, cf. ). This diagram
-provides one link in the Morita equivalence chain of enabling
-inter-theoretic bridge transfer. Generated programmatically from the
-<code>AlignmentFunctor</code> class.</figcaption>
+provides one link in the alignment functor structure that would, if full
+Morita equivalence were established, enable inter-theoretic bridge
+transfer (see F2 for the proof programme). Generated programmatically
+from
+<code>src.visualization.functor_diagrams.render_functor_diagram()</code>
+with the canonical <code>accusative_to_ergative_functor()</code>
+(<code>scripts/generate_category_figures.py</code>); panel layout is
+fixed for publication while cross-panel arrows follow the functor’s
+object map.</figcaption>
 </figure>
 <h2
-id="phillips-lot-properties-arise-as-universal-topos-constructions">Phillips:
-LoT Properties Arise as Universal Topos Constructions</h2>
+id="reconciling-classical-daif-with-intuitionistic-topos-logic-via-sheaf-cohomology">Reconciling
+Classical DAIF with Intuitionistic Topos Logic via Sheaf Cohomology</h2>
+<p>An unresolved tension arises when binding topos-theoretic invariants
+of case structures with the Distributional Active Inference (DAIF) layer
+(). DAIF relies on Quantile Temporal Difference (TD) learning, which
+assumes Markovian updates over classical probability distributions.</p>
+<p>Conversely, the internal logic of a classifying topos is generally
+intuitionistic—yielding <em>non-distributive lattices</em> of truth
+values where the classical law of excluded middle fails. Forcing
+classical Markovian density tracking onto non-distributive topological
+spaces risks mathematical collapse: the case alignments (modeled as
+geometric properties) may fail to compose covariantly under quantum NLP
+(lambeq Gen II) decoherence.</p>
+<p>To resolve this, we propose that classical DAIF distributions cannot
+be mapped directly into the topos. Instead, a <strong>sheaf-theoretic
+bridge</strong> is required: probability densities over case assignments
+must be treated as <em>sections of a probability sheaf</em>. Local
+discrepancies in case assignment (e.g., during pragmatic garden-path
+discourse) resolve globally via <em>sheaf cohomology</em>. This ensures
+that while local parses resolve classically via quantile Huber loss,
+their global composition respects the intuitionistic structure of the
+geometric case theory.</p>
+<h2
+id="phillipss-result-language-of-thought-properties-as-universal-topos-constructions">Phillips’s
+Result: Language-of-Thought Properties as Universal Topos
+Constructions</h2>
 <p>Phillips <span class="citation"
 data-cites="phillips2024lot">[-@phillips2024lot]</span> provides a
 striking application of topos-theoretic methods to cognitive science. He
@@ -411,8 +469,10 @@ structural capacity to represent case assignments. This grounds the
 claim that case structure is a universal feature of higher cognition in
 the mathematical framework of topos theory rather than in typological
 observation alone.</p>
-<h2 id="caramellos-learning-algorithm">Caramello’s Learning
-Algorithm</h2>
+<h2
+id="caramellos-syntactic-learning-algorithm-inducing-case-theories-from-annotated-corpora">Caramello’s
+Syntactic Learning Algorithm: Inducing Case Theories from Annotated
+Corpora</h2>
 <p>Caramello <span class="citation"
 data-cites="caramello2023syntactic">[-@caramello2023syntactic]</span>
 extends the bridge technique to a learning theory: she shows that
@@ -440,9 +500,9 @@ the empirical hom-values as normalized co-occurrence frequencies.</li>
 saturated theory—the canonical topos whose models are exactly the
 case-assignment patterns attested in the corpus. The topos-theoretic
 invariants (sort count, arity distribution, axiom count) combined with
-the magnitude and magnitude homology invariants of the enriched theory
-() provide a multi-dimensional fingerprint of the language’s case
-system.</li>
+categorical magnitude and magnitude homology ()—computed from the <span
+class="math inline">\([0,1]\)</span>-enriched hom-values of —provide a
+multi-dimensional fingerprint of the language’s case system.</li>
 <li><strong>Identification</strong>: Compare the fingerprint against the
 Morita equivalence classes of known alignment types. If the classifying
 topos matches an existing class, the language’s alignment type is
@@ -451,8 +511,8 @@ pattern.</li>
 </ol>
 <p>This topos-theoretic learning procedure would be provably correct
 (recovering the true theory in the limit) and maximally general (not
-presupposing any particular alignment type). The magnitude invariant
-from enters at step 3 as a scalar summary of the learned category’s
+presupposing any particular alignment type). The scalar magnitude
+invariant from enters at step 3 as a summary of the learned category’s
 “effective size,” while magnitude homology provides a finer-grained
 topological signature.</p>
 <h2
@@ -490,9 +550,9 @@ formulations—not as a claim that every step of (<span
 class="math inline">\(\ref{eq:eq-6-1}\)</span>) is already proved for
 our case theories.</p>
 <h2
-id="python-implementation-build_typological_theory-check_morita_equivalence-bridge_transferall-working">Python
-Implementation: build_typological_theory(), check_morita_equivalence(),
-bridge_transfer()—All Working</h2>
+id="python-implementation-proxy-invariant-checks-implemented-and-tested">Python
+Implementation: Proxy Invariant Checks (<strong>implemented and
+tested</strong>)</h2>
 <p>The topos-theoretic narrative above is paired with a
 <code>topos</code> Python module that implements <strong>finite
 geometric theories</strong> extracted from <code>CaseCategory</code>,
@@ -500,8 +560,9 @@ geometric theories</strong> extracted from <code>CaseCategory</code>,
 (<code>check_morita_equivalence</code>), and <strong>guarded bridge
 transfer</strong> when profiles match—not a full classifying-topos
 construction inside the runtime.</p>
-<h3 id="geometric-theories-from-case-categories">Geometric Theories from
-Case Categories</h3>
+<h3
+id="extracting-geometric-theories-from-casecategory-instances">Extracting
+Geometric Theories from <code>CaseCategory</code> Instances</h3>
 <p>The <code>build_typological_theory()</code> function constructs a
 geometric theory <span
 class="math inline">\(\mathbb{T}_{\text{typ}}\)</span> from a
@@ -520,8 +581,9 @@ produces a theory with 3 sorts and 5 function symbols. Our
 <code>build_enriched_theory()</code> function further annotates the
 geometric theory with <span class="math inline">\([0,1]\)</span>-valued
 hom weights from the enriched structure of .</p>
-<h3 id="classifying-toposes-the-logical-shape-of-a-theory-1">Classifying
-Toposes: The Logical Shape of a Theory</h3>
+<h3
+id="classifyingtopos-invariants-and-the-morita-equivalence-check"><code>ClassifyingTopos</code>
+Invariants and the Morita Equivalence Check</h3>
 <p>The <code>ClassifyingTopos</code> class computes topological
 invariants—number of sorts, function arity distribution, and axiom
 count—that characterize the “logical shape” of a theory. Two theories
@@ -532,6 +594,60 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>T_min <span class="op">=</span> build_typological_theory(minimal_case_category())</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>equivalent <span class="op">=</span> check_morita_equivalence(T_std, T_min)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># False: 8-sort and 3-sort theories have different invariants</span></span></code></pre></div>
+<h3 id="sec:morita-two-object">Concrete Morita Equivalence: A Two-Object
+Illustration</h3>
+<p>To build intuition, we work out a minimal example. Consider two
+presentations of the same relational structure — a binary agent-patient
+dependency — formalized as geometric theories over the two-case system
+<span class="math inline">\(\{\)</span>NOM, ACC<span
+class="math inline">\(\}\)</span>:</p>
+<p><strong>Theory <span
+class="math inline">\(\mathbb{T}_{\text{syn}}\)</span> (syntactic
+presentation)</strong>: Sorts <span class="math inline">\(\{n,
+a\}\)</span>; one binary relation symbol <span
+class="math inline">\(\text{acts\_on}(n, a)\)</span>; one axiom
+asserting that every element of sort <span
+class="math inline">\(n\)</span> participates in at least one <span
+class="math inline">\(\text{acts\_on}\)</span> instance.</p>
+<p><strong>Theory <span
+class="math inline">\(\mathbb{T}_{\text{sem}}\)</span> (semantic
+presentation)</strong>: Sorts <span
+class="math inline">\(\{+\text{agent}, +\text{patient}\}\)</span>; one
+binary relation symbol <span
+class="math inline">\(\text{transfers\_force}\)</span>; the same
+participation axiom expressed using the semantic sort names.</p>
+<p>Both theories present the same classifying topos: the category of
+sheaves over a two-node directed graph with a single edge. Their
+invariant profiles match — two sorts, one function symbol of arity <span
+class="math inline">\((1,1)\)</span>, one existential axiom — so
+<code>check_morita_equivalence</code> returns <code>True</code>:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>T_syn <span class="op">=</span> GeometricTheory(<span class="st">&quot;syn&quot;</span>, TheoryType.TYPOLOGICAL)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>T_syn.add_sort(<span class="st">&quot;nom&quot;</span>)<span class="op">;</span> T_syn.add_sort(<span class="st">&quot;acc&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>T_syn.add_relation(<span class="st">&quot;acts_on&quot;</span>, arity<span class="op">=</span>(<span class="st">&quot;nom&quot;</span>, <span class="st">&quot;acc&quot;</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>T_syn.add_axiom(Axiom(<span class="st">&quot;participation&quot;</span>, antecedent<span class="op">=</span><span class="st">&quot;nom(x)&quot;</span>, consequent<span class="op">=</span><span class="st">&quot;∃y.acts_on(x,y)&quot;</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>T_sem <span class="op">=</span> GeometricTheory(<span class="st">&quot;sem&quot;</span>, TheoryType.TYPE_LOGICAL)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>T_sem.add_sort(<span class="st">&quot;+agent&quot;</span>)<span class="op">;</span> T_sem.add_sort(<span class="st">&quot;+patient&quot;</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>T_sem.add_relation(<span class="st">&quot;transfers_force&quot;</span>, arity<span class="op">=</span>(<span class="st">&quot;+agent&quot;</span>, <span class="st">&quot;+patient&quot;</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>T_sem.add_axiom(Axiom(<span class="st">&quot;participation&quot;</span>, antecedent<span class="op">=</span><span class="st">&quot;+agent(x)&quot;</span>, consequent<span class="op">=</span><span class="st">&quot;∃y.transfers_force(x,y)&quot;</span>))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>check_morita_equivalence(T_syn, T_sem)  <span class="co"># True — same classifying topos</span></span></code></pre></div>
+<p>The Morita equivalence here licenses one concrete transfer: any
+result proved about <span class="math inline">\(\text{acts\_on}\)</span>
+morphisms in <span
+class="math inline">\(\mathbb{T}_{\text{syn}}\)</span> — such as
+transitivity conditions derivable from the participation axiom — applies
+verbatim to <span class="math inline">\(\text{transfers\_force}\)</span>
+morphisms in <span
+class="math inline">\(\mathbb{T}_{\text{sem}}\)</span>, without
+re-proof. In the full linguistic setting, this corresponds to
+transferring structural theorems about nominative-accusative case from a
+surface-form typological theory to a semantic proto-role theory,
+provided the two share the same classifying topos. The code proxy in
+<code>topos_theory.py</code> detects invariant equivalence; verifying
+the full Grothendieck-site equivalence for richer theories remains a
+programme for future work ().</p>
 <p>The <code>bridge_transfer()</code> function implements the transfer
 mechanism: given two Morita-equivalent theories, it constructs the
 functorial translation that carries properties (alignment constraints,

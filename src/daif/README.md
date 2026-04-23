@@ -1,4 +1,4 @@
-# daif/ — §7c Distributional Active Inference
+# daif/ — §7c: DAIF: The Convergence of Distributional Semantics and RL
 
 DAIF extends point-estimate active inference (`src/cognitive/`) with **return distributions**, quantile TD, VMP/Bethe free energy, and ERP-linked prediction error. Manuscript: §7c (`07c_daif_results.md`).
 

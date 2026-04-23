@@ -8,6 +8,7 @@ References:
     Polinsky & Preminger (2015) — Case and Grammatical Relations
     Claassen (2025) — Typology of grammatical relations
 """
+from __future__ import annotations
 
 import logging
 import math
@@ -215,3 +216,80 @@ def tripartite_functor() -> AlignmentFunctor:
     )
     logger.info("Created tripartite functor (injective=%s)", functor.is_injective())
     return functor
+
+
+@dataclass
+class MonoidalFunctor(AlignmentFunctor):
+    """Monoidal functor for tensor-preservation checks on case-alignment maps (cf. §9b).
+
+    Under a **Categorical Communication Protocol**, non-cartesian tensor structure can be
+    specified so that disallowed wire manipulations (e.g., merging roles that must stay
+    distinct) are detectable. This class implements **specification-level** tensor checks
+    aligned with the case-theoretic analysis of prompt injection in
+    ``manuscript/09b_cognitive_security.md``; it does **not** secure a deployed LLM API
+    by itself. Multi-turn context attacks remain an open systems problem; see empirical
+    motivation in adversarial LLM-agent work (e.g. ARLAS 2025, cited in §9b).
+
+    Use :meth:`preserves_tensor` to test whether ``F`` preserves tensor structure for
+    role pairs; collapsing distinct roles models the kind of illicit ACC/NOM merge
+    discussed in §9b.
+    """
+    
+    def preserves_tensor(self, role_a: CaseRole, role_b: CaseRole) -> bool:
+        """Check that F(A ⊗ B) ≅ F(A) ⊗ F(B) for a pair of roles.
+
+        Tensor preservation requires:
+        1. Both roles are in the functor's domain.
+        2. Distinct roles map to distinct images (no tensor collapse).
+        3. If a morphism A→B exists in the source, F(A)→F(B) exists in the target.
+
+        In pregroup grammars, wires cannot be arbitrarily copied or deleted.
+        A tensor collapse (two distinct roles mapping to the same image)
+        represents loss of structural information — e.g., an adversary
+        merging ACC (data) with NOM (authority).
+
+        Args:
+            role_a: First role in the tensor product.
+            role_b: Second role in the tensor product.
+
+        Returns:
+            True if tensor structure is preserved for this pair.
+        """
+        try:
+            fa = self.map_object(role_a)
+            fb = self.map_object(role_b)
+        except KeyError:
+            logger.warning(
+                "Tensor preservation: unmapped role(s) %s, %s in functor %s",
+                role_a.name, role_b.name, self.name,
+            )
+            return False
+
+        # Distinct inputs mapping to the same output collapses tensor factors
+        if role_a != role_b and fa == fb:
+            logger.warning(
+                "Tensor preservation fails: %s ⊗ %s collapses to %s ⊗ %s "
+                "under functor %s — distinct roles merged",
+                role_a.name, role_b.name, fa.name, fb.name, self.name,
+            )
+            return False
+
+        # Check morphism structure is preserved between the pair
+        source_morphisms = self.source.get_morphisms_from(role_a)
+        for m in source_morphisms:
+            if m.target == role_b:
+                target_morphisms = self.target.get_morphisms_from(fa)
+                if not any(tm.target == fb for tm in target_morphisms):
+                    logger.warning(
+                        "Tensor preservation fails: morphism %s→%s exists "
+                        "but F(%s)→F(%s) missing in target under functor %s",
+                        role_a.name, role_b.name,
+                        fa.name, fb.name, self.name,
+                    )
+                    return False
+
+        logger.debug(
+            "Tensor %s ⊗ %s preserved under functor %s",
+            role_a.name, role_b.name, self.name,
+        )
+        return True

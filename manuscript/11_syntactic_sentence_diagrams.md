@@ -6,10 +6,10 @@ This appendix presents a curated panel of syntactic constituency-style diagrams 
 
 The figure below (\autoref{fig:syntactic-panel}) presents eight constructions arrayed in two rows of four panels, each panel containing:
 
-1. **Syntactic tree** (top): a constituency-style diagram with arcs linking argument to predicate, nodes colour-coded by case role following the palette of \autoref{sec:notation}, §A.
+1. **Syntactic tree** (top): a constituency-style diagram with arcs linking argument to predicate, nodes colour-coded by case role following the palette of [Linguistic Terms](11b_notation.md#sec:notation-linguistic).
 2. **Pregroup type formula** (bottom): the formal typing derivation from \autoref{sec:case-type-logic}, showing how Cup contractions collapse all argument wires to sentence type $s$.
 
-The constructions span a deliberate difficulty gradient:
+The constructions in \autoref{tbl:appendix-syntactic-constructions} span a deliberate difficulty gradient:
 
 | Panel | Construction | Roles | Type Complexity |
 | :---: | :----------- | :---: | :--------------: |
@@ -20,7 +20,9 @@ The constructions span a deliberate difficulty gradient:
 | 5 | Ergative clause (ERG+ABS) | ERG×2, ABS×2, V | 5 boxes, 2 Cups |
 | 6 | Benefactive (NOM+DAT+ACC+oblique) | NOM, V, ACC, DAT | 4 boxes, 3 Cups |
 | 7 | Relative clause (embedded NOM) | NOM×2, V1, V2 | 6 boxes, 3 Cups |
-| 8 | Causative + Adj + Adv (complex) | NOM, V, ACC, V2, ADV | 8 boxes, 5 Cups |
+| 8 | Causative + Adj + Adv (complex) | NOM, V, ACC, V2, ADV | 12 boxes, 5 Cups |
+
+Table: Appendix A panel index: eight constructions and their categorical complexity indicators. {#tbl:appendix-syntactic-constructions}
 
 The monotonic increase in Cup count and box count across rows is precisely what \autoref{eq:eq-4-4} captures as the categorical complexity $\kappa{(D)}$: each additional argument slot requires one additional Cup contraction, and each modifier requires one additional Box–Cup pair.
 
@@ -38,7 +40,7 @@ Panel 7 (Relative clause) is the most structurally novel: in *The man the dog ch
 
 ### Complex Construction and the Complexity Metric
 
-Panel 8 (Causative + Adj + Adv) reaches the highest complexity: 8 boxes and 5 Cup contractions. This corresponds to a categorical complexity value of $\kappa = 8 + 5 = 13$, placing it at the upper end of the single-sentence range plotted in \autoref{fig:complexity-comparison}. The formula illustrates how clausal complement embedding (the causative taking a VP complement) adds a full additional layer of type nesting beyond even the ditransitive.
+Panel 8 (Causative + Adj + Adv) reaches the highest complexity: 12 boxes and 5 Cup contractions. This corresponds to a categorical complexity value of $\kappa = 12 + 5 = 17$, placing it at the upper end of the single-sentence range plotted in \autoref{fig:complexity-comparison}. The formula illustrates how clausal complement embedding (the causative taking a VP complement) adds a full additional layer of type nesting beyond even the ditransitive.
 
 ![Compositional complexity increases monotonically from intransitive to causative constructions across eight case-assignment patterns. Multi-panel diagram ordered by categorical complexity $\kappa(D)$ (\autoref{eq:eq-4-4}). **Top of each panel**: constituency-style syntactic tree with argument arcs and colour-coded case roles (Blue=NOM, Red=ACC, Violet=DAT, Purple=ERG, Teal=ABS, Dark=V). **Bottom of each panel**: categorical pregroup type formula showing Cup contractions that collapse argument wires to sentence type $s$. Panels 1--4 cover nominative-accusative (intransitive, transitive, ditransitive, passive); Panels 5--6 show ergative-absolutive and benefactive; Panels 7--8 demonstrate relative-clause embedding and causative complex predicates. Cup count and box count increase monotonically across panels, directly instantiating $\kappa(D)$. Generated programmatically from `src.visualization.syntactic_sentence_diagrams.render_syntactic_panel()`.](output/figures/syntactic_case_panel.png){#fig:syntactic-panel}
 

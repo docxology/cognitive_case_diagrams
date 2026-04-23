@@ -11,6 +11,14 @@ from ..enriched_cat.enriched import EnrichedCategory
 logger = logging.getLogger(__name__)
 
 
+def _enrichment_magnitude_delta(
+    enriched_before: EnrichedCategory,
+    enriched_after: EnrichedCategory,
+) -> float:
+    """Absolute magnitude change between two enriched categories."""
+    return abs(enriched_after.magnitude() - enriched_before.magnitude())
+
+
 def magnitude_reanalysis_cost(
     enriched_before: EnrichedCategory,
     enriched_after: EnrichedCategory,
@@ -19,7 +27,8 @@ def magnitude_reanalysis_cost(
 
     The processing cost of reanalyzing a garden-path sentence should
     correlate with the change in categorical magnitude between the
-    initial and revised case diagrams (manuscript §7).
+    initial and revised case diagrams (manuscript §7). Corresponds to
+    P600 (syntactic structural reanalysis).
 
     Δ|C| = ||C_after| − |C_before||
 
@@ -30,12 +39,10 @@ def magnitude_reanalysis_cost(
     Returns:
         Absolute magnitude change (non-negative).
     """
-    mag_before = enriched_before.magnitude()
-    mag_after = enriched_after.magnitude()
-    cost = abs(mag_after - mag_before)
+    cost = _enrichment_magnitude_delta(enriched_before, enriched_after)
     logger.info(
-        "Reanalysis cost: |%.4f − %.4f| = %.4f",
-        mag_after, mag_before, cost,
+        "Reanalysis cost (P600): |%.4f − %.4f| = %.4f",
+        enriched_after.magnitude(), enriched_before.magnitude(), cost,
     )
     return cost
 
@@ -50,9 +57,10 @@ def n400_amplitude_proxy(
     violations correlates with the change in categorical magnitude,
     complementing the P600 prediction for *syntactic* violations.
 
-    The N400 reflects early semantic retrieval difficulty, while the
-    P600 reflects late structural reanalysis. Both map onto magnitude
-    change, but are triggered by different violation types.
+    The N400 reflects early semantic retrieval difficulty (200–500 ms),
+    while the P600 reflects late structural reanalysis (500–900 ms).
+    Both map onto magnitude change but are triggered by different
+    violation types — semantic vs syntactic respectively.
 
     Δ|C|_semantic = ||C_after| − |C_before||
 
@@ -63,11 +71,9 @@ def n400_amplitude_proxy(
     Returns:
         N400 amplitude proxy (non-negative float).
     """
-    mag_before = enriched_before.magnitude()
-    mag_after = enriched_after.magnitude()
-    proxy = abs(mag_after - mag_before)
+    proxy = _enrichment_magnitude_delta(enriched_before, enriched_after)
     logger.info(
-        "N400 proxy: |%.4f − %.4f| = %.4f",
-        mag_after, mag_before, proxy,
+        "N400 proxy (semantic): |%.4f − %.4f| = %.4f",
+        enriched_after.magnitude(), enriched_before.magnitude(), proxy,
     )
     return proxy

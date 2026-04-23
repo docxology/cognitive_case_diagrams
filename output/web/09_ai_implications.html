@@ -239,7 +239,48 @@
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:ai-implications">Categorical AI Protocols</h1>
+<h1 id="sec:ai-implications">Categorical Communication Protocols:
+Composing Agent Interactions via Typed Case Morphisms</h1>
+<p><strong>Three concrete handles for agent-safety researchers.</strong>
+For a reader deploying agentic LLM systems in 2026, the preceding formal
+layers (case categories, enriched structure, DisCoCat wiring, DAIF
+posteriors) are not an abstract exercise — they supply three concrete,
+computable <em>handles</em> that today’s untyped JSON-RPC protocol stack
+does not expose:</p>
+<ol type="1">
+<li><strong>A type discipline on inter-agent messages.</strong> Every
+message is a morphism in a fixed case category, typed by case role (NOM
+command, INS tool-call, ACC data, DAT recipient). A2A <span
+class="citation" data-cites="google2025a2a">[@google2025a2a]</span> and
+Model Context Protocol <span class="citation"
+data-cites="anthropic2024mcp">[@anthropic2024mcp]</span> today validate
+<em>JSON shape</em>, not <em>case-relational type</em>; the extension
+this paper specifies closes exactly that gap (developed in below).</li>
+<li><strong>Decidable admissibility of every multi-turn
+interaction.</strong> Once messages are typed, a candidate turn sequence
+is admissible iff its composite morphism exists in the protocol category
+— a decidable graph check, not an open-ended content-filter game. Prompt
+injection, reframed, is <em>not</em> a heuristic pattern-matching
+problem but the question “does <span class="math inline">\(\phi \colon
+\text{Webpage}_{\text{ACC}} \to \text{Model}_{\text{INS}}\)</span> exist
+in <span
+class="math inline">\(\text{Mor}(\mathcal{C}_{\text{protocol}})\)</span>?”
+().</li>
+<li><strong>A graded-confidence channel inside the type
+discipline.</strong> The enriched <span
+class="math inline">\([0,1]\)</span>-hom-values of carry through to
+protocol morphisms, so “this source is 0.8-trusted and that channel is
+0.3-trusted” becomes a numerical constraint the category enforces by
+sub-multiplicative composition, not a piece of prose documentation.
+Multi-hop trust attenuation is an immediate corollary — an indirect
+message relayed through many agents cannot accumulate more authority
+than its weakest link provides.</li>
+</ol>
+<p>All three handles are <em>engineering specifications</em> —
+deployable design targets — not automatic guarantees on unmodified
+present-day LLM APIs. The rest of this section develops the
+specification; the security-specific case (prompt injection as a type
+violation) is elaborated in .</p>
 <h2 id="a2a-mcp-acp-anp-are-missing-compositional-semantics">A2A, MCP,
 ACP, ANP Are Missing Compositional Semantics</h2>
 <p>The categorical framework developed in the preceding sections—case
@@ -274,19 +315,23 @@ data-cites="anp2025protocol">[@anp2025protocol]</span> share this
 vulnerability: they validate the <em>shape</em> of the JSON schema, but
 rely purely on probabilistic inference to govern the <em>topology of the
 interaction</em>.</p>
-<p>Category theory injects this missing protective layer. By compiling
+<p>Category theory proposes a missing protective layer. By compiling
 agent interactions into strict string diagrams, messages cease to be
 flat strings and instead become typed morphisms traversing a case
 category.</p>
-<h2 id="nom-is-the-requester-ins-is-the-tool-dat-is">NOM Is the
-Requester, INS Is the Tool, DAT Is</h2>
+<h2
+id="case-roles-in-agent-protocols-nom-requests-ins-executes-acc-receives-dat-benefits">Case
+Roles in Agent Protocols: NOM Requests, INS Executes, ACC Receives, DAT
+Benefits</h2>
 <p>The eight-case framework of CEREBRUM <span class="citation"
 data-cites="friedman2024cerebrum">[@friedman2024cerebrum]</span> maps
 rigidly onto the operational constraints of multi-agent execution. In a
 Categorical Communication Protocol, interactions are legally licensed
 only if their computational wiring diagrams satisfy a strict grammatical
 type-signature:</p>
-<table>
+<table id="tbl:ai-case-roles">
+<caption>Case role mappings to agent system analogues in a Categorical
+Communication Protocol.</caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 33%" />
@@ -347,10 +392,10 @@ contraction:</p>
 \label{eq:ai-interaction-trace}
 \end{equation}\]</span></p>
 <p>If an untyped internal subsystem (e.g., an adversarial user-uploaded
-document) attempts to independently forge a command, the operation
-simply fails to compile. The document lacks a valid tensor wire bridging
-from its marginalized <span class="math inline">\(\text{ACC}\)</span>
-domain back into the execution flow governing <span
+document) attempts to forge a command, the operation fails to compile.
+The document lacks a valid tensor wire bridging from its marginalized
+<span class="math inline">\(\text{ACC}\)</span> domain back into the
+execution flow governing <span
 class="math inline">\(\text{INS}\)</span>. The grammar ensures every
 interaction is structurally typed, guaranteeing safety properties akin
 to <strong>memory safety, but for agentic volition</strong>.</p>
@@ -375,7 +420,7 @@ id="interpretability-for-free-discocat-diagrams-make-every-compositional-step-hu
 for Free: DisCoCat Diagrams Make Every Compositional Step
 Human-Readable</h2>
 <p>The lambeq library <span class="citation"
-data-cites="lorenz2023lambeq">[@lorenz2023lambeq]</span> demonstrates
+data-cites="lorenz2021lambeq">[@lorenz2021lambeq]</span> demonstrates
 that string diagrams provide a practical interface between linguistic
 structure and machine learning. As an “efficient high-level Python
 library for Quantum NLP,” lambeq translates sentences into string
@@ -392,8 +437,8 @@ wire has a linguistic interpretation. Extending this to agent
 communication, a categorical protocol would produce not just working
 message exchanges but <em>interpretable</em> interaction diagrams where
 each step’s relational role is transparent.</p>
-<h2 id="multi-turn-dialogue-as-discourse-circuit">Multi-Turn Dialogue as
-Discourse Circuit</h2>
+<h2 id="multi-turn-dialogue-as-a-discocirc-discourse-circuit">Multi-Turn
+Dialogue as a DisCoCirc Discourse Circuit</h2>
 <p>The DisCoCirc framework <span class="citation"
 data-cites="defelice2022discocirc">[@defelice2022discocirc]</span>
 extends compositional semantics from single sentences to multi-sentence
@@ -438,9 +483,9 @@ communication chains. Equilibria in the multi-agent game correspond to
 fixed points of the enriched functor, where no agent can improve its
 utility by changing its case-role assignment.</p>
 <h2
-id="dcst-two-dimensional-morphisms-model-both-sequential-interaction-and-hierarchical-nesting">DCST:
-Two-Dimensional Morphisms Model Both Sequential Interaction and
-Hierarchical Nesting</h2>
+id="dcst-double-categorical-morphisms-for-sequential-and-hierarchical-agent-interaction">DCST:
+Double-Categorical Morphisms for Sequential and Hierarchical Agent
+Interaction</h2>
 <p>Recent foundational work on Double Categorical Systems Theory (DCST)
 formalizes open and interacting dynamical systems using double
 categories <span class="citation"
@@ -512,5 +557,21 @@ verifies that information flows respect case-role constraints across the
 entire conversation. This formalization provides a bridge between the
 flat JSON payloads of current A2A/MCP implementations and the rich
 compositional semantics that categorical linguistics provides.</p>
+<p><strong>Natural-language precedent.</strong> The “type discipline on
+inter-agent messages” advocated in handle 1 is not an abstract design
+conjecture: morphologically case-marked Slavic languages already enforce
+something close to it on every nominal in every utterance. Russian and
+Serbian/BCS speakers cannot send a noun phrase into a sentence without
+overtly declaring its case role (NOM / ACC / DAT / INS / GEN / LOC, plus
+VOC in BCS), and the receiver type-checks the role assignment before
+semantic interpretation; the stress-test paradigms (<em>stol</em>,
+<em>brat</em>, <em>prijatelj</em>) show this discipline operating at the
+morpheme level. Reading the proposed Categorical Communication Protocol
+as a <em>re-implementation</em> of the Slavic case discipline at the
+inter-agent-message layer makes the engineering target concrete:
+ill-typed agent traffic should fail to compose for the same reason that
+<em>*Vižu sobaka</em> “I see the dog-NOM” fails to parse in Russian —
+the morphology of the wire does not match the syntactic slot it is being
+routed into.</p>
 </body>
 </html>

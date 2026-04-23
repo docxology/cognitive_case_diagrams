@@ -1,0 +1,182 @@
+[
+  {
+    "filename": "case_category_standard.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/case_category_standard.png",
+    "label": "fig:case-category-standard",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "case_category_minimal.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/case_category_minimal.png",
+    "label": "fig:case-category-minimal",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "composition_triangle.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/composition_triangle.png",
+    "label": "fig:composition-triangle",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "alignment_comparison.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/alignment_comparison.png",
+    "label": "fig:alignment-comparison",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "functor_alignment.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/functor_alignment.png",
+    "label": "fig:functor-alignment",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discopy_transitive.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discopy_transitive.png",
+    "label": "fig:discopy-transitive",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discopy_composition.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discopy_composition.png",
+    "label": "fig:discopy-composition",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discopy_snake.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discopy_snake.png",
+    "label": "fig:discopy-snake",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discopy_passive.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discopy_passive.png",
+    "label": "fig:discopy-passive",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discopy_sentence_progression.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discopy_sentence_progression.png",
+    "label": "fig:discopy-sentence-progression",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discopy_multilingual.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discopy_multilingual.png",
+    "label": "fig:discopy-multilingual",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discopy_ditransitive.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discopy_ditransitive.png",
+    "label": "fig:discopy-ditransitive",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discopy_discocirc_discourse.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discopy_discocirc_discourse.png",
+    "label": "fig:discopy-discocirc-discourse",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discopy_three_sentence_discourse.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discopy_three_sentence_discourse.png",
+    "label": "fig:discopy-three-sentence-discourse",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "complexity_comparison.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/complexity_comparison.png",
+    "label": "fig:complexity-comparison",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "active_inference_belief.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/active_inference_belief.png",
+    "label": "fig:active-inference-belief",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "fluid_s_volition_landscape.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/fluid_s_volition_landscape.png",
+    "label": "fig:fluid-s-volition-landscape",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "daif_belief_trajectory.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/daif_belief_trajectory.png",
+    "label": "fig:daif-belief-trajectory",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "daif_free_energy_convergence.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/daif_free_energy_convergence.png",
+    "label": "fig:daif-free-energy-convergence",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "daif_erp_predictions.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/daif_erp_predictions.png",
+    "label": "fig:daif-erp-predictions",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "quantum_povm_probabilities.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/quantum_povm_probabilities.png",
+    "label": "fig:quantum-povm-probabilities",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "security_type_violations.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/security_type_violations.png",
+    "label": "fig:security-type-violations",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "monoidal_functor_security.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/monoidal_functor_security.png",
+    "label": "fig:monoidal-functor-security",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "syntactic_case_panel.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/syntactic_case_panel.png",
+    "label": "fig:syntactic-case-panel",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "pregroup_reduction_unpacking.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/pregroup_reduction_unpacking.png",
+    "label": "fig:pregroup-reduction-unpacking",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discocirc_entity_persistence.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discocirc_entity_persistence.png",
+    "label": "fig:discocirc-entity-persistence",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "snake_equation_unpacking.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/snake_equation_unpacking.png",
+    "label": "fig:snake-equation-unpacking",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "string_diagram_discocat.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/string_diagram_discocat.png",
+    "label": "fig:string-diagram-discocat",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "discourse_string_diagram.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/discourse_string_diagram.png",
+    "label": "fig:discourse-string-diagram",
+    "generated_by": "scripts/generate_diagrams.py"
+  },
+  {
+    "filename": "enriched_hom_matrix.png",
+    "path": "/Users/4d/Documents/GitHub/template/projects/cognitive_case_diagrams/output/figures/enriched_hom_matrix.png",
+    "label": "fig:enriched-hom-matrix",
+    "generated_by": "scripts/generate_diagrams.py"
+  }
+]

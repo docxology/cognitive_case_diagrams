@@ -201,3 +201,52 @@ class TestExpectedInformationGain:
     def test_negative_likelihoods_raises(self, uniform_belief):
         with pytest.raises(ValueError, match="non-negative"):
             expected_information_gain(uniform_belief, np.array([[-0.1, 0.6, 0.5]]))
+
+
+# --- Phase A5 / A8: per-iteration KL and data-fit trajectories ---
+
+class TestDiagnosticsKLandLoglik:
+    """distributional_case_assignment must expose per-iteration
+    KL(q_posterior ‖ q_pushed) and E_q[log p(o|s)] so the figure layer
+    can plot the real F = KL − E_q[log p(o|s)] decomposition."""
+
+    def test_kl_and_loglik_lists_match_fe_length(self, uniform_belief):
+        obs = np.array([0.8, 0.15, 0.05])
+        result = distributional_case_assignment(uniform_belief, obs, n_iterations=4)
+        diag = result.diagnostics
+        assert "kl_trajectory" in diag
+        assert "loglik_trajectory" in diag
+        assert len(diag["kl_trajectory"]) == len(result.fe_trajectory)
+        assert len(diag["loglik_trajectory"]) == len(result.fe_trajectory)
+
+    def test_kl_non_negative_and_fe_identity(self, uniform_belief):
+        obs = np.array([0.8, 0.15, 0.05])
+        result = distributional_case_assignment(uniform_belief, obs, n_iterations=4)
+        kl = np.asarray(result.diagnostics["kl_trajectory"])
+        ll = np.asarray(result.diagnostics["loglik_trajectory"])
+        fe = np.asarray(result.fe_trajectory)
+        assert np.all(kl >= -1e-9)
+        # F = KL − E_q[log p(o|s)] to numerical precision
+        np.testing.assert_allclose(fe, kl - ll, atol=1e-8)
+
+    @pytest.mark.parametrize(
+        "prior_probs, obs",
+        [
+            (np.array([0.6, 0.3, 0.1]), np.array([0.7, 0.2, 0.1])),
+            (np.array([0.9, 0.05, 0.05]), np.array([0.4, 0.3, 0.3])),
+            (np.array([0.34, 0.33, 0.33]), np.array([0.5, 0.3, 0.2])),
+            (np.array([0.2, 0.5, 0.3]), np.array([0.1, 0.6, 0.3])),
+        ],
+    )
+    def test_fe_kl_loglik_identity_across_settings(
+        self, three_roles, prior_probs, obs
+    ):
+        """F^{(t)} = KL^{(t)} - E_q[log p(o|s)]^{(t)} must hold at every
+        iteration, under varied prior/observation combinations."""
+        prior = CaseDiagramBelief(three_roles, prior_probs, name="param_prior")
+        result = distributional_case_assignment(prior, obs, n_iterations=6)
+        fe = np.asarray(result.fe_trajectory)
+        kl = np.asarray(result.diagnostics["kl_trajectory"])
+        ll = np.asarray(result.diagnostics["loglik_trajectory"])
+        assert fe.shape == kl.shape == ll.shape
+        np.testing.assert_allclose(fe, kl - ll, atol=1e-8)

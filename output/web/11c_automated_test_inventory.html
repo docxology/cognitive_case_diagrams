@@ -178,10 +178,17 @@
 Inventory</h1>
 <p>This appendix summarizes the <strong>categories</strong> of tests
 behind the counts in . Aggregate figures are injected at build time
-(<strong>804</strong> tests, <strong>47</strong> files; see
+(<strong>1197</strong> tests, <strong>64</strong> files,
+<strong>9</strong> domain packages under <code>src/</code>; 95.96%
+line-and-branch coverage on <code>src/</code> (from
+<code>coverage.json</code>); see
 <code>src/generate_manuscript_metrics.py</code> and
-<code>output/metrics.json</code>). Every test uses real mathematical
-computations—no mocks or fakes.</p>
+<code>output/metrics.json</code>). API summary: <a
+href="../docs/api_reference.md#manuscript-metrics-helper-srcgenerate_manuscript_metrics"><code>docs/api_reference.md</code></a>.
+The open-source package <span class="citation"
+data-cites="cognitive_case_diagrams2026code">[@cognitive_case_diagrams2026code]</span>
+holds the implementation exercised by these tests. Every test uses real
+mathematical computations—no mocks or fakes.</p>
 <ul>
 <li><strong>Categorical axiom tests</strong>: Identity morphism
 existence, composition associativity, weight invariants,
@@ -224,7 +231,8 @@ with symmetry, N400 semantic violation proxy (including
 <code>test_cognitive_integration.py</code>)</li>
 <li><strong>Quantum case tests</strong>: Crisp POVM orthogonal
 projectors, graded proto-role POVM, Fluid-S basis rotation, density
-matrix creation, (in ) P(c|ρ) = Tr(E_c ρ) verification</li>
+matrix creation, (in ) <span class="math inline">\(P(c\mid\rho) =
+\mathrm{Tr}(E_c\,\rho)\)</span> verification</li>
 <li><strong>Cognitive security tests</strong>: Type-violation detection,
 case frame validation, injection score computation, magnitude-based
 topological robustness, composition inequality as security boundary</li>
@@ -236,7 +244,7 @@ complexity comparison with transitive</li>
 heatmaps, functor panels, string and DisCoPy diagrams, complexity and
 DAIF plots, quantum and security plots, Fluid-S landscapes, syntactic
 panels—PNG output and structural checks where applicable</li>
-<li><strong>DAIF subpackage tests</strong> (161 tests across 7 test
+<li><strong>DAIF subpackage tests</strong> (224 tests across 8 test
 files):
 <ul>
 <li><code>test_daif_core.py</code>: Distributional Bellman operator,
@@ -262,6 +270,32 @@ quantile calibration error, return entropy</li>
 helpers, <code>DAIFResult</code> / <code>ERPProfile</code> properties
 (with integration coverage of re-exported DAIF entrypoints)</li>
 </ul></li>
+<li><strong>Cross-module and structural coverage tests</strong>
+(<code>test_cross_module_coverage.py</code>): Integration paths across
+enriched category and case_category modules not reached by per-module
+unit tests; verifies composition chaining, morphism weight transitivity
+(), and magnitude consistency across module boundaries</li>
+<li><strong>Property-based and parametric tests</strong>
+(<code>test_property_based.py</code>): Algebraic invariants exercised
+over parametric inputs—enriched composition inequality, magnitude
+positivity, and morphism weight bounds in <span
+class="math inline">\([0,1]\)</span>—confirming structural properties
+hold generically rather than only for specific examples used in unit
+tests</li>
+<li><strong>Visualization multi-module tests</strong>
+(<code>test_visualization_plot_modules.py</code>,
+<code>test_visualization_syntactic_coverage.py</code>): Multi-module
+rendering pipelines and syntactic panel coverage paths not hit by
+per-module visualization tests; verifies that all registered plot
+functions execute to file without exception</li>
+<li><strong>Script and metrics tests</strong>
+(<code>test_diagrams_generator.py</code>,
+<code>test_generate_manuscript_metrics.py</code>): Round-trip invocation
+of <code>scripts/generate_diagrams.py</code> domain dispatcher and
+<code>src/generate_manuscript_metrics.py</code>; verifies domain
+registry completeness, figure-path collection, and manuscript variable
+extraction against the live test suite and installed package
+versions</li>
 </ul>
 </body>
 </html>

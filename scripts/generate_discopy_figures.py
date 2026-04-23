@@ -10,7 +10,7 @@ Thin orchestrator for DisCoPy-domain figures:
     6.  discopy_multilingual.png            — 6-language structural isomorphism
     7.  discopy_ditransitive.png            — Ditransitive diagram
     8.  discopy_discocirc_discourse.png     — Two-sentence DisCoCirc discourse
-    9.  discopy_three_sentence_discourse.png — Three-sentence role reversal
+    9.  discopy_three_sentence_discourse.png — Three-sentence role reversal (chases / fears / smiles)
     10. complexity_comparison.png           — κ(D) across 10 sentence types
 
 Requires ``discopy`` to be installed.  Exits cleanly with a warning if not.

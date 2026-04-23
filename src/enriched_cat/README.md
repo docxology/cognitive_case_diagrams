@@ -1,4 +1,4 @@
-# enriched_cat/ — §5: Enriched Categories
+# enriched_cat/ — §5: Enriched Categories and Magnitude
 
 [0,1]-enriched category theory for distributional semantics. Hom-values represent distributional proximity between case roles.
 

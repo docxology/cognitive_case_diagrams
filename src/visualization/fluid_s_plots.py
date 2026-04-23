@@ -5,6 +5,7 @@ with functor boundary, overlaid Bats verb exemplars, and ERG/ABS regions.
 
 Figure 2 of the manuscript.
 """
+from __future__ import annotations
 
 import logging
 from typing import Optional
@@ -44,25 +45,29 @@ def _sigmoid(x: np.ndarray, k: float = 10.0, x0: float = 0.5) -> np.ndarray:
 
 
 def plot_fluid_s_volition_landscape(
-    functors: list[FluidSFunctor],
-    probabilities: list[float],
-    verb_names: list[str],
+    functors: list[FluidSFunctor] | None = None,
+    probabilities: list[float] | None = None,
+    verb_names: list[str] | None = None,
     title: str = "Fluid-S Volition Landscape: Context-Dependent Case Assignment",
     output_path: Optional[str] = None,
 ) -> str:
-    """Plot the 2D volition–agentivity landscape with functor decision boundary.
+    """Plot the 2D volition-agentivity landscape with functor decision boundary.
 
     Renders a heatmap where:
-      - x-axis = volitional control θ ∈ [0,1]
-      - y-axis = proto-agentivity (Dowty 1991) ∈ [0,1]
-      - color = P(ERG | θ, agentivity)
+      - x-axis = volitional control theta in [0,1]
+      - y-axis = proto-agentivity (Dowty 1991) in [0,1]
+      - color = P(ERG | theta, agentivity)
     Overlays Bats verb exemplars at their coordinates and draws the
-    F_θ functor decision boundary curve.
+    F_theta functor decision boundary curve.
+
+    Note: ``functors``, ``probabilities``, and ``verb_names`` are accepted
+    for backward compatibility but not used. The plot uses the canonical
+    ``BATS_VERBS`` exemplar data defined in this module.
 
     Args:
-        functors: List of FluidSFunctors (used for configuration).
-        probabilities: List of volition probabilities (legacy compat).
-        verb_names: List of verb names (legacy compat).
+        functors: Unused (kept for API compatibility).
+        probabilities: Unused (kept for API compatibility).
+        verb_names: Unused (kept for API compatibility).
         title: Title of the plot.
         output_path: Path to save the figure.
 

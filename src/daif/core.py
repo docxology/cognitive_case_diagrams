@@ -11,6 +11,7 @@ References:
     Bellemare et al. (2017) — C51 distributional RL
     Dabney et al. (2018) — Quantile Regression DQN
 """
+from __future__ import annotations
 
 import logging
 from typing import Optional
@@ -23,6 +24,89 @@ from .types import DistributionalReturn
 logger = logging.getLogger(__name__)
 
 
+def _single_bellman_step(
+    current_q: np.ndarray,
+    transition_matrix: np.ndarray,
+    reward_vector: np.ndarray,
+    gamma: float,
+    n_quantiles: int,
+) -> DistributionalReturn:
+    """Compute one step of the distributional Bellman operator.
+
+    Shared computation extracted from push_forward_return() and the inner
+    loop of distributional_bellman_operator(). Given belief weights q,
+    transition matrix T, and reward vector R, computes a mean-field
+    approximation of the distributional Bellman equation (Eq. 7c-bellman):
+
+        z_vec = R + γ · T^⊤ q
+
+    This is a mean-field approximation: instead of maintaining per-state
+    return distributions Z(s) and pushing each forward independently,
+    we compute a single belief-weighted return vector. The push-forward
+    T^⊤ q propagates the belief through the transition dynamics, and
+    the reward R provides immediate returns. The resulting z_vec gives
+    the expected return contribution for each role under the current
+    belief, from which we extract quantile statistics.
+
+    Args:
+        current_q: Belief probability vector, shape (n,).
+        transition_matrix: Row-stochastic T[i,j], shape (n,n).
+        reward_vector: Reward per role, shape (n,).
+        gamma: Discount factor in [0,1].
+        n_quantiles: Number of quantile levels.
+
+    Returns:
+        DistributionalReturn with mean, variance, quantiles, quantile_levels.
+
+    Note on degenerate beliefs:
+        If ``current_q`` assigns exactly zero probability to some role i,
+        the induced cumulative distribution has a flat plateau at the
+        z-value of role i, and quantile levels τ falling inside that
+        plateau are mathematically indeterminate. The implementation
+        uses ``np.interp`` which returns the left endpoint of the flat
+        region — any value in the plateau would be an equally valid
+        quantile, so this is an arbitrary-but-consistent choice. The
+        quantile vector is still non-decreasing by construction.
+    """
+    T = transition_matrix
+    R = reward_vector
+
+    # Mean-field Bellman: per-role return under belief-weighted dynamics
+    z_vec = R + gamma * T.T @ current_q
+
+    if not np.all(np.isfinite(z_vec)):
+        raise ValueError(
+            f"Non-finite values in z_vec after Bellman step — check reward_vector "
+            f"and transition_matrix for NaN/inf. z_vec={z_vec!r}"
+        )
+
+    mean_z = float(current_q @ z_vec)
+
+    z_second_moment = float(current_q @ (z_vec ** 2))
+    var_z = max(0.0, z_second_moment - mean_z ** 2)
+
+    tau_levels = np.linspace(
+        1 / (2 * n_quantiles), 1 - 1 / (2 * n_quantiles), n_quantiles
+    )
+    role_sorted_idx = np.argsort(z_vec)
+    cumulative = np.cumsum(current_q[role_sorted_idx])
+    cumulative = np.maximum.accumulate(cumulative)
+    if cumulative[-1] <= 0:
+        raise ValueError(
+            "Degenerate quantile distribution: cumulative probability sums to zero. "
+            "Ensure current_q is a valid probability distribution (non-negative, sums > 0)."
+        )
+    cumulative = cumulative / cumulative[-1]
+    quantile_vals = np.interp(tau_levels, cumulative, z_vec[role_sorted_idx])
+
+    return DistributionalReturn(
+        mean=mean_z,
+        variance=var_z,
+        quantiles=quantile_vals,
+        quantile_levels=tau_levels,
+    )
+
+
 def push_forward_return(
     belief: CaseDiagramBelief,
     transition_matrix: np.ndarray,
@@ -32,6 +116,7 @@ def push_forward_return(
 ) -> DistributionalReturn:
     """Compute the push-forward return distribution via distributional Bellman.
 
+    Implements Eq. 7-1 from the manuscript (push-forward return integral).
     Given current belief q over case roles and transition matrix T[i,j] = P(s'=j|s=i),
     computes the one-step push-forward distribution:
 
@@ -72,35 +157,14 @@ def push_forward_return(
     if n_quantiles < 2:
         raise ValueError(f"n_quantiles must be >= 2, got {n_quantiles}")
 
-    # Distributional Bellman mean: Z̄ = R + γ T^⊤ q
-    z_mean_vec = R + gamma * T.T @ q
-    mean_z = float(q @ z_mean_vec)
-
-    # Variance: Var[Z] = Var_q[R] + γ² · q^⊤ diag(T^⊤ q) − (γ T^⊤ q)²
-    r_centered = R - (q @ R)
-    var_r = float(q @ (r_centered ** 2))
-    z_second_moment = float(q @ (z_mean_vec ** 2))
-    var_z = max(0.0, z_second_moment - mean_z ** 2)
-
-    # Quantile representation: discretise via role-weighted mixture
-    tau_levels = np.linspace(1 / (2 * n_quantiles), 1 - 1 / (2 * n_quantiles), n_quantiles)
-    # Each role contributes its z_mean_vec value with weight q[i]
-    # Quantiles of the mixture approximated by sorted role values weighted by q
-    role_sorted_idx = np.argsort(z_mean_vec)
-    cumulative = np.cumsum(q[role_sorted_idx])
-    # Interpolate quantile values
-    quantile_vals = np.interp(tau_levels, cumulative, z_mean_vec[role_sorted_idx])
+    result = _single_bellman_step(q, T, R, gamma, n_quantiles)
 
     logger.debug(
         "push_forward_return: mean=%.4f, std=%.4f, Z_range=[%.3f,%.3f]",
-        mean_z, np.sqrt(var_z), quantile_vals.min(), quantile_vals.max(),
+        result.mean, np.sqrt(result.variance),
+        result.quantiles.min(), result.quantiles.max(),
     )
-    return DistributionalReturn(
-        mean=mean_z,
-        variance=var_z,
-        quantiles=quantile_vals,
-        quantile_levels=tau_levels,
-    )
+    return result
 
 
 def distributional_bellman_operator(
@@ -110,6 +174,7 @@ def distributional_bellman_operator(
     gamma: float = 0.99,
     n_steps: int = 10,
     n_quantiles: int = 51,
+    convergence_tol: Optional[float] = None,
 ) -> list[DistributionalReturn]:
     """Multi-step distributional Bellman iteration: Z_k = T Z_{k-1}.
 
@@ -124,6 +189,9 @@ def distributional_bellman_operator(
         gamma: Discount factor ∈ [0,1].
         n_steps: Number of Bellman applications.
         n_quantiles: Quantiles to track.
+        convergence_tol: If not None, terminate early when the absolute
+            change in mean between successive steps is below this threshold.
+            Default None preserves legacy behaviour (always run n_steps).
 
     Returns:
         List of DistributionalReturn, one per Bellman step.
@@ -149,34 +217,34 @@ def distributional_bellman_operator(
 
     results: list[DistributionalReturn] = []
     current_q = q.copy()
+    prev_mean: Optional[float] = None
 
     for step in range(n_steps):
-        # Single-step Bellman application
-        z_vec = R + gamma * T.T @ current_q
-        mean_z = float(current_q @ z_vec)
+        result = _single_bellman_step(current_q, T, R, gamma, n_quantiles)
+        results.append(result)
 
-        z2 = float(current_q @ (z_vec ** 2))
-        var_z = max(0.0, z2 - mean_z ** 2)
+        logger.debug(
+            "Bellman step %d/%d: mean=%.4f, std=%.4f",
+            step + 1, n_steps, result.mean, np.sqrt(result.variance),
+        )
 
-        tau_levels = np.linspace(1 / (2 * n_quantiles), 1 - 1 / (2 * n_quantiles), n_quantiles)
-        role_sorted_idx = np.argsort(z_vec)
-        cumulative = np.cumsum(current_q[role_sorted_idx])
-        quantile_vals = np.interp(tau_levels, cumulative, z_vec[role_sorted_idx])
-
-        results.append(DistributionalReturn(
-            mean=mean_z,
-            variance=var_z,
-            quantiles=quantile_vals,
-            quantile_levels=tau_levels,
-        ))
+        # Convergence check (only when tolerance is explicitly provided)
+        if convergence_tol is not None and prev_mean is not None:
+            delta = abs(result.mean - prev_mean)
+            if delta < convergence_tol:
+                logger.info(
+                    "Bellman operator converged at step %d/%d "
+                    "(|delta_mean|=%.2e < tol=%.2e)",
+                    step + 1, n_steps, delta, convergence_tol,
+                )
+                break
+        prev_mean = result.mean
 
         # Propagate belief through transition for next step
         current_q = T.T @ current_q
         total = current_q.sum()
         if total > 0:
             current_q = current_q / total
-
-        logger.debug("Bellman step %d/%d: mean=%.4f, std=%.4f", step + 1, n_steps, mean_z, np.sqrt(var_z))
 
     return results
 

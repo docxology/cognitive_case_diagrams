@@ -8,6 +8,7 @@
 from src.visualization import (
     render_case_category,
     plot_belief_distribution,
+    plot_alignment_frame_belief_dynamics,
     plot_belief_trajectory,
     render_syntactic_panel,
 )
@@ -24,7 +25,7 @@ from src.visualization import (
 | `string_diagrams.py` | `render_discocat_sentence`, `render_discourse_diagram`, `render_discocirc_discourse`, `render_three_sentence_discourse` | Native string diagrams |
 | `discopy_diagrams.py` | `render_discopy_*`, `get_diagram_metrics` | DisCoPy PNGs (optional dep.) |
 | `complexity_plots.py` | `render_complexity_comparison`, `render_syntactic_complexity_radar` | `complexity_comparison.png`, radar |
-| `active_inference_plots.py` | `plot_belief_distribution` | `active_inference_belief.png` |
+| `active_inference_plots.py` | `plot_belief_distribution`, `plot_alignment_frame_belief_dynamics` | `active_inference_belief.png` |
 | `daif_plots.py` | `plot_belief_trajectory`, `plot_free_energy_convergence`, `plot_erp_predictions` | DAIF §7c PNGs |
 | `quantum_plots.py` | `plot_povm_probabilities` | `quantum_povm_probabilities.png` |
 | `security_plots.py` | `plot_type_violations` | `security_type_violations.png` |

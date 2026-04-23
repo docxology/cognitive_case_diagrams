@@ -11,6 +11,7 @@ References:
     Gelman et al. (2013) — Bayesian Data Analysis, Ch. 11 (R-hat)
     Kuleshov et al. (2018) — Accurate uncertainties for deep learning models
 """
+from __future__ import annotations
 
 import logging
 
@@ -32,7 +33,7 @@ def convergence_diagnostics(
     - 'total_reduction': F_0 − F_final (total free energy minimised)
     - 'relative_reduction': (F_0 − F_final) / |F_0| (in %)
     - 'n_iterations': Total number of iterations run
-    - 'converged': True if final |ΔF| < 1% of initial range
+    - 'converged': True if final |ΔF| < 1% of full trajectory range
     - 'fe_range': (min, max) FE across trajectory
     - 'mean_step_size': Mean |ΔF| per iteration
 
@@ -61,7 +62,17 @@ def convergence_diagnostics(
     fe_range = (float(fe.min()), float(fe.max()))
     mean_step = float(np.mean(np.abs(deltas))) if len(deltas) > 0 else 0.0
     fe_range_size = fe_range[1] - fe_range[0]
-    converged = bool(abs(deltas[-1]) < 0.01 * fe_range_size) if len(deltas) > 0 and fe_range_size > 0 else True
+
+    # Convergence semantics:
+    #   * No deltas (single-point trajectory)       ⇒ False (no iteration, cannot demonstrate convergence)
+    #   * Deltas exist but trajectory is exactly flat ⇒ True  (stationary, trivially converged)
+    #   * Deltas exist and trajectory has nonzero range ⇒ final |ΔF| within 1 % of the range
+    if len(deltas) == 0:
+        converged = False
+    elif fe_range_size == 0:
+        converged = True
+    else:
+        converged = bool(abs(deltas[-1]) < 0.01 * fe_range_size)
 
     diag = {
         "monotone": monotone,

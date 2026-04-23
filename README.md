@@ -1,31 +1,42 @@
 # Cognitive Case Diagrams
 
-**A Cognitive Case for Diagrams: Category-Theoretic Approaches to Linguistic Case Systems in Total Cognitive Scenario Understanding**
+**Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case** — category-theoretic approaches to linguistic case systems in total cognitive scenario understanding
 
-*Daniel Ari Friedman · Active Inference Institute · 2026*
+*Daniel Ari Friedman · Active Inference Institute · v2.3 (2026-04-22) · DOI [10.5281/zenodo.19695260](https://doi.org/10.5281/zenodo.19695260)*
 
 ---
 
 ## Location
 
-This tree currently lives under **`projects/cognitive_case_diagrams/`**. Run tests and figure generation **from this directory** (commands below).
+This project lives at **`projects/cognitive_case_diagrams/`** and is pipeline-discoverable. Run tests and figure generation **from this directory** (commands below).
+
+## Versions (two numbers)
+
+| What | Where | Meaning |
+|------|--------|--------|
+| **Python package** | [`pyproject.toml`](pyproject.toml) `project.version` | Semver for the installable `cognitive_case_diagrams` package (currently **2.3.0**). |
+| **Manuscript / paper** | [`manuscript/AGENTS.md`](manuscript/AGENTS.md) authorship block, [`manuscript/config.yaml`](manuscript/config.yaml) | Research edition (currently **v2.3**, dated **2026-04-22**, DOI `10.5281/zenodo.19695260`). Bump this when the PDF content or metadata release changes independently of API semver. |
+
+They are intentionally separate: code releases can patch without a full manuscript revision, and manuscript edits do not always require a package version bump.
 
 ## Overview
 
 This project formalizes linguistic case systems using category theory, integrating them into the Active Inference framework via the CEREBRUM architecture. The central argument: commutative diagrams are cognitively privileged representations because they simultaneously encode algebraic structure, distributional semantics, and inference processes.
 
-## Five Theoretical Pillars
+## Formal layers, sixth strand, extensions
 
-| § | Pillar | Implementation |
-|---|--------|---------------|
-| §2 | Linguistic Typology & Case Systems | `src/case_systems/` |
-| §3–4 | Categorial Grammar & DisCoCat | `src/diagrams/` |
+| § | Layer / strand | Implementation |
+|---|----------------|---------------|
+| §2 | Linguistic typology & case systems | `src/case_systems/` |
+| §3–4 | Categorial grammar & DisCoCat | `src/diagrams/` |
 | §4b | Compact closure, snake, diagram complexity | `src/diagrams/` |
 | §4c | DisCoCirc discourse (entity wires) | `src/diagrams/` |
-| §5 | [0,1]-Enriched Categories | `src/enriched_cat/` |
-| §6 | Topos Theory & Morita Equivalence | `src/topos_theory/` |
+| §5 | [0,1]-enriched categories | `src/enriched_cat/` |
+| §6 | Topos theory & Morita equivalence | `src/topos_theory/` |
+| §7–§7b | Sixth strand: ROSE / biolinguistic–neuro interface | `src/cognitive/` + manuscript §7b |
+| §7c | DAIF & neurolinguistic metrics | `src/daif/` |
 
-**Extensions:** Active Inference §7 (`src/cognitive/`), DAIF §7c (`src/daif/`), Quantum POVM §8 (`src/quantum/`), Cognitive Security §9b (`src/security/`). Manuscript §7b (computational verification) is prose + test counts; implementation for distributional inference lives in `src/daif/`.
+**Extensions:** Quantum §8 (`src/quantum/`); AI implications §9; **protocol-level** cognitive security §9b (`src/security/`). Distributional inference code lives in `src/daif/`; §7b ties formal claims to the test suite and verification narrative.
 
 ## Quick Start
 
@@ -38,9 +49,9 @@ cd projects/cognitive_case_diagrams
 uv sync
 uv run pytest tests/ --cov=src --cov-report=term-missing -v
 
-# Same tests from monorepo root (CI-style; needs root optional groups including discopy)
+# Same tests from monorepo root (root `default-groups` include `discopy`, `rendering`, and `dev`)
 cd /path/to/repository-root
-uv sync --group rendering --group monitoring --group discopy
+uv sync
 uv run pytest projects/cognitive_case_diagrams/tests/
 
 # Generate all manuscript figures (from repo root or this directory)
@@ -52,6 +63,29 @@ uv run python -m infrastructure.validation.cli markdown projects/cognitive_case_
 
 Do not run `uv sync --group rendering` from `projects/cognitive_case_diagrams/` — those groups are defined only on the **template root** `pyproject.toml`. From this folder use plain `uv sync` (DisCoPy is a normal dependency here).
 
+## Manuscript `${variable}` injection (author workflow)
+
+Run **from `projects/cognitive_case_diagrams/`** so `tests/` and `src/` paths resolve as documented in [`tests/AGENTS.md`](tests/AGENTS.md):
+
+```bash
+cd projects/cognitive_case_diagrams
+
+# 1) Tests + JSON coverage (feeds real ${coverage_*} numbers; coverage.json commit policy — tests/AGENTS.md)
+uv run pytest tests/ --cov=src --cov-report=json:coverage.json
+
+# 2) Write output/metrics.json
+uv run python -m src.generate_manuscript_metrics
+
+# 3) Render substituted chapters to output/manuscript/ (PDF stage prefers this directory when present)
+uv run python scripts/inject_variables.py
+
+# 4) Combined PDF from repository root
+cd ../..   # template root
+uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams
+```
+
+Use `scripts/inject_variables.py --dry-run` to print metrics without writing `output/manuscript/`. See [`manuscript/README.md`](manuscript/README.md) and [`docs/api_reference.md`](docs/api_reference.md).
+
 ## Project Structure
 
 ```
@@ -60,7 +94,7 @@ cognitive_case_diagrams/
 ├── README.md                    # This file
 ├── pyproject.toml               # Package config + test/coverage settings
 ├── docs/                        # Technical reference documentation
-├── manuscript/                  # Research manuscript (24 Pandoc Markdown files)
+├── manuscript/                  # Research manuscript (24 section .md + config.yaml + preamble.md + references.bib)
 │   ├── 00_abstract.md           # Abstract
 │   ├── 01_introduction.md       # §1 Introduction
 │   ├── 01a_research_questions.md       # §1a Research Questions
@@ -75,7 +109,7 @@ cognitive_case_diagrams/
 │   ├── 05b_magnitude_homology.md    # §5b Magnitude Homology
 │   ├── 06_topos_theory.md           # §6 Topos Theory
 │   ├── 07_cognitive_integration.md  # §7 Active Inference
-│   ├── 07b_computational_verification.md # §7b Computational Verification
+│   ├── 07b_diagrammatic_cognition.md # §7b Diagrammatic Cognition & ERP Predictions
 │   ├── 07c_daif_results.md          # §7c DAIF Results
 │   ├── 08_quantum_active_inference.md # §8 Quantum
 │   ├── 08b_quantum_semantics.md     # §8b Quantum Semantics
@@ -86,14 +120,22 @@ cognitive_case_diagrams/
 │   ├── 11b_notation.md             # App B: Complete notation reference (A–K)
 │   ├── 11c_automated_test_inventory.md # App C: Test suite inventory
 │   ├── config.yaml                  # Paper metadata
-│   ├── preamble.md                  # Pandoc build config
+│   ├── preamble.md                  # LaTeX package declarations for Pandoc rendering
 │   └── references.bib               # Bibliography (BibTeX)
 ├── output/                      # Generated artifacts
 │   ├── figures/                 # Matplotlib publication figures
 │   ├── pdf/                     # Compiled PDFs
 │   └── reports/                 # Analysis reports
 ├── scripts/                     # Thin orchestrators
-│   └── generate_diagrams.py     # Generates all manuscript figures
+│   ├── 01_generate_manuscript_metrics.py  # Collects test counts, DAIF symbols, coverage → output/metrics.json
+│   ├── generate_diagrams.py     # Master dispatcher — generates all 30 manuscript figures
+│   ├── generate_category_figures.py       # §2 case category + functor figures (5)
+│   ├── generate_category_unpacking_figures.py  # §3–§4c pedagogical unpacking PNGs (3)
+│   ├── generate_cognitive_figures.py      # §7 / §7c active inference + DAIF figures (5)
+│   ├── generate_discopy_figures.py        # §3–§4c DisCoPy + complexity figures (10)
+│   ├── generate_quantum_figures.py        # §8 / §9b quantum POVM + security figures (3)
+│   ├── generate_syntactic_figures.py      # App A syntactic case panel (1)
+│   └── inject_variables.py      # Manuscript ${variable} injection from output/metrics.json
 ├── src/                         # Scientific source code
 │   ├── case_systems/            # §2: CaseRole, CaseCategory, FluidSFunctor
 │   ├── diagrams/                # §3–4b: String diagrams, DisCoCirc
@@ -103,27 +145,31 @@ cognitive_case_diagrams/
 │   ├── daif/                    # §7c: DistributionalReturn, DAIF inference, ERP-linked metrics
 │   ├── quantum/                 # §8: CasePOVM, case_probability
 │   ├── security/                # §9b: TypeViolation, CaseFrameValidator
-│   └── visualization/           # Publication-quality figures (13 plot modules + __init__)
+│   └── visualization/           # Publication-quality figures (15 plot modules + __init__)
 └── tests/                       # Full suite — counts via pytest --collect-only
 ```
 
 ## Test & Coverage Status
 
-| Metric | How to verify |
-|--------|----------------|
-| Tests | `cd projects/cognitive_case_diagrams && uv run pytest tests/ --collect-only -q` |
-| Coverage | `uv run pytest tests/ --cov=src --cov-report=term-missing` (≥90% on `src/` in `pyproject.toml`) |
-| Policy | **Zero mocks** — all real computations |
+Latest snapshot (authoritative source: [`output/metrics.json`](../../output/cognitive_case_diagrams/metrics.json)):
+
+| Metric | Value | How to verify |
+|--------|-------|----------------|
+| Total tests | **1,207** across **64** test files | `cd projects/cognitive_case_diagrams && uv run pytest tests/ --collect-only -q` |
+| DAIF-specific tests | **224** across **8** files | `uv run pytest tests/test_daif*.py --collect-only -q` |
+| Line + branch coverage | **95.96%** (3510/3604 lines, 789/876 branches) | `uv run pytest tests/ --cov=src --cov-report=term-missing` (≥90% enforced in `pyproject.toml`) |
+| Figures | **30** PNGs in `output/cognitive_case_diagrams/figures/` | `ls output/cognitive_case_diagrams/figures/*.png \| wc -l` |
+| Policy | **Zero mocks** — all real computations | see `tests/AGENTS.md` |
 
 ## Key Dependencies
 
 ```toml
 [dependencies]
-numpy = ">=1.24"
+numpy = ">=1.24"         # verified against 2.4.4 in metrics.json
 matplotlib = ">=3.7"
 networkx = ">=3.0"
 pyyaml = ">=6.0"
-discopy = ">=1.0.0"   # required in this package — DisCoPy diagrams
+discopy = ">=1.0.0"      # required in this package — DisCoPy diagrams (verified 1.2.2)
 ```
 
 ## Documentation

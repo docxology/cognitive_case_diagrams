@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `src/` directory is **Layer 2** of the Two-Layer Architecture: all scientific business logic lives here. **Nine** subpackages mirror the manuscript; `visualization/` spans all sections. [`generate_manuscript_metrics.py`](generate_manuscript_metrics.py) at this level introspects tests and `src/daif/` for manuscript variable injection.
+The `src/` directory is **Layer 2** of the Two-Layer Architecture: all scientific business logic lives here. **Nine** subpackages mirror the manuscript; `visualization/` spans all sections. [`generate_manuscript_metrics.py`](generate_manuscript_metrics.py) at this level introspects tests, `src/daif/`, optional root `coverage.json` (from `pytest --cov-report=json`), and installed DisCoPy/NumPy versions; it writes `output/metrics.json` for `${variable}` injection (`scripts/inject_variables.py`).
 
 > **Thin Orchestrator Rule**: `scripts/` import from `src/`. `src/` contains computation. This separation must never be violated.
 
@@ -16,7 +16,7 @@ src/
 ├── diagrams/                # §3–§4c: String diagrams, complexity, discourse, ditransitive
 ├── enriched_cat/            # §5: [0,1]-enriched categories, magnitude
 ├── topos_theory/            # §6: Geometric theories, Morita equivalence
-├── cognitive/               # §7a (manuscript §7): scalar beliefs, variational FEP
+├── cognitive/               # §7: scalar beliefs, variational FEP
 ├── daif/                    # §7c: Distributional Active Inference (return distributions)
 ├── quantum/                 # §8: POVM-based quantum case assignment
 ├── security/                # §9b: Type violation detection, injection scoring
@@ -79,11 +79,11 @@ Authoritative list: `__all__` in [`__init__.py`](__init__.py).
 | `diagrams` | §3–§4c | `Sentence`, `Discourse`, `DitransitiveSentence`, `AtomicType`, `Wire`, `Box`, `DiagramMetrics`, `syntactic_complexity_score`, `create_ditransitive` | Imports `case_systems`; root re-exports the three sentence/discourse types only |
 | `enriched_cat` | §5 | `EnrichedCategory`, `standard_enriched_category()`, `STANDARD_ROLES`, `STANDARD_PROXIMITY_MATRIX` | Imports `case_systems`; root `src` re-exports `EnrichedCategory` and `standard_enriched_category` |
 | `topos_theory` | §6 | `GeometricTheory`, `ClassifyingTopos`, `TheoryType`, `Axiom`, `check_morita_equivalence()`, `build_typological_theory()`, `build_enriched_theory()` | Imports `case_systems`; root re-exports `GeometricTheory`, `ClassifyingTopos`, `TheoryType`, `check_morita_equivalence` |
-| `cognitive` | §7 / §7a | `CaseDiagramBelief`, FE, belief update, PE, EFE, N400/P600 proxies (scalar) | Imports `case_systems`, `enriched_cat` |
+| `cognitive` | §7 | `CaseDiagramBelief`, FE, belief update, PE, EFE, N400/P600 proxies (scalar) | Imports `case_systems`, `enriched_cat` |
 | `daif` | §7c | `DistributionalReturn`, `DAIFResult`, `ERPProfile`, push-forward / quantile / VMP / policy / metrics API | Imports `cognitive`, `enriched_cat`, `case_systems`; 7 modules, 25 `__all__` symbols |
 | `quantum` | §8 | `CasePOVM`, `case_probability()`, `crisp_case_povm()`, `graded_case_povm()`, `fluid_s_povm()`, `semantic_state()` | Imports `case_systems`; root re-exports `CasePOVM` only |
 | `security` | §9b | `TypeViolation`, `CaseFrameValidator`, `detect_type_violation()`, `injection_score()`, `topological_robustness()`, `semantic_integrity_check()` | Imports `case_systems`, `enriched_cat`; root re-exports `CaseFrameValidator` only |
-| `visualization` | All | 13 modules under `visualization/` besides `__init__.py` (includes `styles.py` + figure renderers) | May import any subpackage for rendering |
+| `visualization` | All | 15 modules under `visualization/` besides `__init__.py` (includes `styles.py` + figure renderers, e.g. `category_unpacking`, `syntactic_sentence_diagrams`) | May import any subpackage for rendering |
 
 Coverage: enforce **≥90%** on `src/` via `pyproject.toml`; run `uv run pytest tests/ --cov=src` for current totals.
 

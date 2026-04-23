@@ -1,4 +1,4 @@
-"""Enriched categories subpackage — §5 of the manuscript.
+"""Enriched categories subpackage — §5 (and §5b) of the manuscript.
 
 [0,1]-enriched categories for distributional semantics:
     - enriched: EnrichedCategory with magnitude, weighting, and composition checks

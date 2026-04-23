@@ -72,6 +72,7 @@ from .prediction import (
     n400_from_return_distribution,
     p600_from_precision_update,
     erp_amplitude_profile,
+    wasserstein_prediction_error,
 )
 
 # Policy & EFE
@@ -112,6 +113,7 @@ __all__ = [
     "n400_from_return_distribution",
     "p600_from_precision_update",
     "erp_amplitude_profile",
+    "wasserstein_prediction_error",
     # Policy
     "G_policy",
     "softmax_policy_selection",

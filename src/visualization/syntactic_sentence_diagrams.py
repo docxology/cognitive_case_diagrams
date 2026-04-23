@@ -9,7 +9,6 @@ Figure output: syntactic_case_panel.png
 """
 
 import logging
-from pathlib import Path
 from typing import Optional
 
 import matplotlib
@@ -161,7 +160,7 @@ def _draw_tree_panel(
         # Arc label
         ax.text(
             xm, y_word + 0.04 + 0.15 * dist, lbl,
-            fontsize=7.5, ha="center", va="bottom", color="#374151",
+            fontsize=9, ha="center", va="bottom", color="#374151",
             fontstyle="italic", zorder=3,
         )
 
@@ -177,13 +176,13 @@ def _draw_tree_panel(
         # Case label inside circle
         ax.text(
             xs[i], y_word, role or "",
-            fontsize=7, ha="center", va="center", color="white",
+            fontsize=8.5, ha="center", va="center", color="white",
             fontweight="bold", zorder=5,
         )
         # Word label below circle
         ax.text(
             xs[i], y_word - 0.095,
-            word, fontsize=7.5, ha="center", va="top",
+            word, fontsize=9, ha="center", va="top",
             color="#111827", fontweight="bold",
         )
 
@@ -193,9 +192,9 @@ def _draw_tree_panel(
 
 
 def render_syntactic_panel(
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
     panels: Optional[list] = None,
-) -> Path:
+) -> str:
     """Render the multi-panel syntactic + semantic case assignment figure.
 
     Produces a 2-row × N-col panel figure where each column shows:
@@ -267,7 +266,7 @@ def render_syntactic_panel(
         ax_type.text(
             0.5, 0.12,
             panel["desc"],
-            ha="center", va="center", fontsize=7.5,
+            ha="center", va="center", fontsize=9,
             color="#374151", transform=ax_type.transAxes,
         )
         ax_type.axis("off")
@@ -296,9 +295,7 @@ def render_syntactic_panel(
     )
 
     if output_path is None:
-        output_path = Path("syntactic_case_panel.png")
-    else:
-        output_path = Path(output_path)
+        output_path = "syntactic_case_panel.png"
 
     fig.savefig(
         output_path,

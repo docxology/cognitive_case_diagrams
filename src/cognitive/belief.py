@@ -3,6 +3,7 @@
 Represents the listener's current belief about who-does-what-to-whom
 as a probability distribution over possible case role assignments.
 """
+from __future__ import annotations
 
 import logging
 from dataclasses import dataclass

@@ -176,6 +176,16 @@
 <body>
 <h1 id="sec:case-systems">Case Systems: From Pāṇinian Kāraka to
 Cross-Linguistic Alignment Typology</h1>
+<p><strong>Where we are in the argument.</strong> stated the central
+claim — that commutative diagrams are cognitively privileged because
+they encode algebra, distribution, and inference at once, with case as
+the pivot. Before we formalise case as a category in , this chapter
+surveys the linguistic input the formalism must cover: five analytical
+traditions (Pāṇinian <span class="math inline">\(k\bar{a}raka\)</span>,
+Fillmorean deep case, Jakobsonian features, Mel’čukian dependency,
+Haspelmathian typology) and the five alignment typologies
+(nominative-accusative, ergative-absolutive, tripartite, active-stative,
+fluid-S) on which cross-linguistic variation converges.</p>
 <h2
 id="five-analytical-traditions-that-shaped-the-modern-theory-of-case">Five
 Analytical Traditions That Shaped the Modern Theory of Case</h2>
@@ -208,6 +218,29 @@ cas</em> <span class="citation"
 data-cites="hjelmslev1935categorie">[-@hjelmslev1935categorie]</span>
 reinforced this functionalist tradition by formalizing case as a purely
 relational category within a dynamic semiotic network.</p>
+<p>To make Jakobson’s componential analysis tangible, consider the
+six-case singular paradigm of the Russian masculine inanimate noun
+<em>stol</em> “table”: NOM <em>stol</em> / ACC <em>stol</em> / GEN
+<em>stolá</em> / DAT <em>stolú</em> / INS <em>stolóm</em> / PREP (LOC)
+<em>stolé</em>. The same root surfaces in six morphological guises whose
+contrasts Jakobson decomposes along the binary features
+<code>[±directional]</code> (the dative singles out goal-directed cases)
+and <code>[±peripheral]</code> (the instrumental and locative push out
+from the core argument cases). Serbian/BCS <em>prijatelj</em> “friend”
+runs a parallel paradigm but adds an overt vocative <em>prijatelju!</em>
+“friend!”, giving a seven-way contrast that exercises the entire
+eight-role inventory we adopt in (with the ablative absorbed into Slavic
+genitive-of-source and the prepositional/locative). These overt
+morphological contrasts will reappear in as concrete witnesses for the
+alignment functor and in as a calibration source for <span
+class="math inline">\([0,1]\)</span>-enriched hom-values. Slavic
+languages — with their dense nominal morphology, productive derivation,
+and unambiguous case suffixes — are also a natural stress-test candidate
+for the Distributional Active Inference framework developed in ; the
+limitations discussion in returns to this point explicitly, noting that
+a Russian or Serbian/BCS sentence would deliver an
+information-theoretically sharper drop in posterior entropy than the
+German example currently shipped.</p>
 <h3 id="fillmores-deep-case-and-generative-roots">Fillmore’s Deep Case
 and Generative Roots</h3>
 <p>Charles Fillmore’s seminal “The Case for Case” (1968) built directly
@@ -250,8 +283,12 @@ categorical formalizations mapping conceptual structures to syntactic
 types.</p>
 <h3 id="dowtys-proto-roles-and-graded-topologies">Dowty’s Proto-Roles
 and Graded Topologies</h3>
-<p>Fillmore’s deep cases serve as the direct precursors to modern
-<em>thematic role</em> theory. Dowty <span class="citation"
+<p>Where MTT models the <em>mapping</em> from deep semantic roles to
+surface morphology via hierarchical dependency graphs, Dowty’s
+contribution is to decompose the deep roles themselves into continuous,
+gradient primitives. Fillmore’s deep cases serve as the direct
+precursors to modern <em>thematic role</em> theory. Dowty <span
+class="citation"
 data-cites="dowty1991thematic">[-@dowty1991thematic]</span> refined this
 paradigm by decomposing thematic roles into clusters of sentential
 entailments, yielding two <em>proto-roles</em>: the Proto-Agent
@@ -265,16 +302,20 @@ continuous weights <span class="math inline">\(w \in [0,1]\)</span>
 representing the degree to which a noun phrase satisfies proto-role
 entailments—a design choice that yields the enriched category structure
 developed formally in .</p>
-<h2 id="four-alignment-systems">Four Alignment Systems</h2>
+<h2 id="alignment-typology-how-languages-group-s-a-and-p">Alignment
+Typology: How Languages Group S, A, and P</h2>
 <p>Contemporary typological work reveals that the world’s languages
 realize case systems according to a small number of <em>alignment
 types</em>—systematic patterns governing how the core arguments of
 transitive and intransitive clauses are grouped <span class="citation"
 data-cites="polinsky2015case blake2001grammatical haspelmath2009universality">[@polinsky2015case;
 @blake2001grammatical; @haspelmath2009universality]</span>.</p>
-<h3 id="s-a-p">S, A, P</h3>
+<h3 id="the-three-core-argument-primitives-s-a-p">The Three Core
+Argument Primitives: S, A, P</h3>
 <p>The cross-linguistic comparison rests on three primitives:</p>
-<table>
+<table id="tbl:s-a-p">
+<caption>The three core argument primitives used in cross-linguistic
+case typology.</caption>
 <colgroup>
 <col style="width: 35%" />
 <col style="width: 35%" />
@@ -307,14 +348,14 @@ vase</strong>”</td>
 </tr>
 </tbody>
 </table>
-<h3
-id="accusative-ergative-active-stative-fluid-s-four-ways-to-group-intransitive-subjects">Accusative,
-Ergative, Active-Stative, Fluid-S: Four Ways to Group Intransitive
-Subjects</h3>
+<h3 id="the-five-cross-linguistic-alignment-types">The Five
+Cross-Linguistic Alignment Types</h3>
 <p>The key insight from typological research is that languages differ in
 how they <em>group</em> these three roles for purposes of case marking,
 agreement, and other grammatical processes:</p>
-<table>
+<table id="tbl:alignment-types">
+<caption>Five alignment types and their grouping of the three core
+argument primitives.</caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 33%" />
@@ -360,6 +401,41 @@ class="math inline">\(\neq\)</span> P</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Slavic case morphology as a stress-test for the
+formalism.</strong> Russian (six cases) and Serbian/BCS (seven cases
+including a productive vocative) sit firmly in the nominative-accusative
+column of , yet their nominal paradigms exercise the <em>full</em>
+eight-role inventory of in ways that English’s collapsed paradigm hides.
+Two animacy-conditioned syncretisms in Russian masculine singular
+illustrate the point precisely:</p>
+<ul>
+<li><strong>Inanimate masculine — NOM = ACC syncretism.</strong>
+<em>stol</em> “table” surfaces identically in subject and direct-object
+position (NOM <em>stol</em> / ACC <em>stol</em>; <em>Stol stoit</em>
+“the table stands” vs. <em>Vižu stol</em> “I see the table”). The
+surface-realisation functor <span
+class="math inline">\(M\colon\mathcal{C}_{\text{grammatical}} \to
+\mathcal{C}_{\text{morphological}}\)</span> identifies <span
+class="math inline">\(\{\text{NOM},\text{ACC}\}\)</span> for this
+declension class — a <em>partial</em> kernel that coexists with full
+distinguishability for feminine and neuter paradigms.</li>
+<li><strong>Animate masculine — ACC = GEN syncretism.</strong>
+<em>brat</em> “brother” takes ACC = GEN <em>brata</em> (<em>Vižu
+brata</em> “I see the brother”, same form as the genitive <em>bez
+brata</em> “without the brother”). The morphology overtly licenses the
+canonical formalism’s claim that the surface functor neutralises
+distinct grammatical objects on a <em>paradigm-by-paradigm</em> basis,
+not globally.</li>
+</ul>
+<p>Serbian/BCS replicates the same animacy split (<em>čovek</em> /
+<em>čoveka</em> parallel to <em>brat</em> / <em>brata</em>) and adds a
+productive vocative (<em>prijatelju!</em> “friend!”, <em>bože!</em>
+“God!”) that English lacks entirely. These are exactly the empirical
+witnesses the alignment functor of predicts: where English shows a
+single inflectionless noun, Slavic morphology exposes a non-trivial
+kernel structure on a per-declension-class basis, supplying ready-made
+cross-linguistic targets for the categorical apparatus we develop
+next.</p>
 <p><strong>Fluid-S and Context-Dependent Functors.</strong> In Bats
 (Nakh-Daghestanian), the intransitive subject of a single verb surfaces
 in different cases strictly depending on the speaker’s internal
@@ -377,7 +453,7 @@ satisfying naturality only up to a probabilistic reparameterization of
 <span class="math inline">\(\theta\)</span>.</p>
 <figure id="fig:fluid-s">
 <img src="output/figures/fluid_s_volition_landscape.png"
-alt="Fluid-S alignment is a continuous mapping, not a binary switch. The context-dependent functor F_\theta: \mathcal{U} \to \mathcal{L} is rendered as a 2D decision surface with volitional control \theta \in [0,1] on the x-axis and proto-agentivity [@dowty1991thematic] on the y-axis. Color intensity represents P(\text{ERG} \mid \theta, \text{agentivity}), computed via a logistic boundary. Nakh-Daghestanian verb exemplars (Bats language) are overlaid at their typologically attested coordinates: low-volition actions (sneeze, accidental fall) cluster in the ABS region; high-volition actions (jump, fight) occupy the ERG region. The dashed curve marks the functor decision boundary where F_\theta(S) transitions from ABS to ERG. Generated programmatically from the FluidSFunctor class." />
+alt="Fluid-S alignment is a continuous mapping, not a binary switch. The context-dependent functor F_\theta: \mathcal{U} \to \mathcal{L} is rendered as a 2D decision surface with volitional control \theta \in [0,1] on the x-axis and proto-agentivity [@dowty1991thematic] on the y-axis. Color intensity represents P(\text{ERG} \mid \theta, \text{agentivity}), computed via a logistic boundary. Nakh-Daghestanian verb exemplars (Bats language) are overlaid at their typologically attested coordinates: low-volition actions (sneeze, accidental fall) cluster in the ABS region; high-volition actions (jump, fight) occupy the ERG region. The dashed curve marks the functor decision boundary where F_\theta(S) transitions from ABS to ERG. Generated programmatically from src.visualization.fluid_s_plots.plot_fluid_s_volition_landscape()." />
 <figcaption aria-hidden="true">Fluid-S alignment is a continuous
 mapping, not a binary switch. The context-dependent functor <span
 class="math inline">\(F_\theta: \mathcal{U} \to \mathcal{L}\)</span> is
@@ -393,8 +469,8 @@ typologically attested coordinates: low-volition actions (sneeze,
 accidental fall) cluster in the ABS region; high-volition actions (jump,
 fight) occupy the ERG region. The dashed curve marks the functor
 decision boundary where <span class="math inline">\(F_\theta(S)\)</span>
-transitions from ABS to ERG. Generated programmatically from the
-<code>FluidSFunctor</code> class.</figcaption>
+transitions from ABS to ERG. Generated programmatically from
+<code>src.visualization.fluid_s_plots.plot_fluid_s_volition_landscape()</code>.</figcaption>
 </figure>
 <p><strong>Synthetic Case-Role Algebra.</strong> We introduce Synthetic
 Case-Role Algebra as a novel, computational upgrade to the Dowty-style
@@ -415,20 +491,23 @@ of formal grammar and the statistical representations of modern neural
 language models ().</p>
 <p>Claassen <span class="citation"
 data-cites="claassen2019alignment">[-@claassen2019alignment]</span>
-provides a comprehensive survey of the explanatory frameworks proposed
-for alignment diversity, arguing that no single factor (processing
-efficiency, disambiguation, discourse pragmatics) suffices—a conclusion
-that motivates our multi-dimensional categorical formalization. Wu <span
-class="citation" data-cites="wu2024amis">[-@wu2024amis]</span> offers a
-detailed case study of Amis (Austronesian), demonstrating how verb
-classification, case marking, and grammatical relations interact in a
-language that defies simple alignment classification.</p>
+surveys the explanatory frameworks proposed for alignment diversity,
+arguing that no single factor (processing efficiency, disambiguation,
+discourse pragmatics) suffices—a conclusion that motivates our
+multi-dimensional categorical formalization. Wu <span class="citation"
+data-cites="wu2024amis">[-@wu2024amis]</span> offers a detailed case
+study of Amis (Austronesian), demonstrating how verb classification,
+case marking, and grammatical relations interact in a language that
+defies simple alignment classification.</p>
 <p>Beyond the three core arguments, languages distinguish a rich
 inventory of oblique cases. Our formalization follows the CEREBRUM
 framework <span class="citation"
 data-cites="friedman2024cerebrum">[@friedman2024cerebrum]</span> in
-adopting eight fundamental cases:</p>
-<table>
+adopting eight fundamental cases ():</p>
+<table id="tbl:eight-cases">
+<caption>Eight fundamental case roles adopted from the CEREBRUM
+framework <span class="citation"
+data-cites="friedman2024cerebrum">[@friedman2024cerebrum]</span>.</caption>
 <colgroup>
 <col style="width: 23%" />
 <col style="width: 29%" />
@@ -501,7 +580,7 @@ Protocol</strong> introduced in . By rigidly mapping artificial agent
 capabilities to corresponding grammatical cases—e.g., treating an API as
 strictly <code>INS</code>, passive data strictly as <code>ACC</code>,
 and system context rigidly as <code>LOC</code>—the cognitive case
-diagram enforces computational boundary constraints that natively repel
-prompt injection attacks ().</p>
+diagram enforces computational boundary constraints that formally
+constrain prompt injection attacks through explicit role typing ().</p>
 </body>
 </html>

@@ -17,6 +17,7 @@ References:
     Caramello (2023) — Syntactic learning via classifying toposes
     Phillips (2024) — Language of Thought as universal topos constructions
 """
+from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
@@ -218,8 +219,8 @@ def check_morita_equivalence(
         )
 
     # Check axiom count parity (same modular structure)
-    count1 = topos1.invariants.get("axiom_count", 0)
-    count2 = topos2.invariants.get("axiom_count", 0)
+    count1: int = topos1.invariants.get("axiom_count", 0)  # type: ignore[assignment]
+    count2: int = topos2.invariants.get("axiom_count", 0)  # type: ignore[assignment]
     if abs(count1 - count2) > 2:
         mismatches.append(
             f"Axiom counts differ significantly: {count1} vs {count2}"

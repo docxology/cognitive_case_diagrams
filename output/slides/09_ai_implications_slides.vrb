@@ -1,16 +1,27 @@
-\frametitle{NOM Is the Requester, INS Is the Tool, DAT Is}
-\protect\phantomsection\label{nom-is-the-requester-ins-is-the-tool-dat-is}
+\frametitle{Case Roles in Agent Protocols: NOM Requests, INS Executes, ACC Receives, DAT Benefits}
+\protect\phantomsection\label{case-roles-in-agent-protocols-nom-requests-ins-executes-acc-receives-dat-benefits}
 The eight-case framework of CEREBRUM {[}@friedman2024cerebrum{]} maps
 rigidly onto the operational constraints of multi-agent execution. In a
 Categorical Communication Protocol, interactions are legally licensed
 only if their computational wiring diagrams satisfy a strict grammatical
 type-signature:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\caption{Case role mappings to agent system analogues in a Categorical
+Communication Protocol.}\label{tbl:ai-case-roles}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Case Role
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Agent System Analogue
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Protocol Function Type
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Case Role
@@ -33,7 +44,6 @@ information flow (\(X_{\text{DAT}}\)) \\
 behavior (\(X_{\text{LOC}}\)) \\
 \bottomrule\noalign{}
 \end{longtable}
-}
 
 This turns prompt engineering into rigorous compilation. Instead of
 parsing a prompt to heuristically guess caller intent, a categorical
@@ -48,9 +58,9 @@ formalized tensor contraction:
 \end{equation}
 
 If an untyped internal subsystem (e.g., an adversarial user-uploaded
-document) attempts to independently forge a command, the operation
-simply fails to compile. The document lacks a valid tensor wire bridging
-from its marginalized \(\text{ACC}\) domain back into the execution flow
-governing \(\text{INS}\). The grammar ensures every interaction is
-structurally typed, guaranteeing safety properties akin to
-\textbf{memory safety, but for agentic volition}.
+document) attempts to forge a command, the operation fails to compile.
+The document lacks a valid tensor wire bridging from its marginalized
+\(\text{ACC}\) domain back into the execution flow governing
+\(\text{INS}\). The grammar ensures every interaction is structurally
+typed, guaranteeing safety properties akin to \textbf{memory safety, but
+for agentic volition}.

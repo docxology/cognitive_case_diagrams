@@ -236,6 +236,100 @@ class TestIntroductoryCategory:
         assert id_m.weight == pytest.approx(1.0)
 
 
+class TestAssociativity:
+    """Tests for CaseCategory.associativity_holds() including weight checks."""
+
+    def test_associativity_with_unit_weights(self):
+        """Associativity holds for unit-weight morphisms."""
+        cat = minimal_case_category()
+        assert cat.associativity_holds()
+
+    def test_associativity_with_enriched_weights(self):
+        """Associativity holds for non-unit weights (multiplicative is associative)."""
+        cat = CaseCategory(name="Weighted")
+        for r in [CaseRole.NOM, CaseRole.ACC, CaseRole.DAT]:
+            cat.add_role(r)
+        cat.add_morphism(Morphism(CaseRole.NOM, CaseRole.ACC, "f", weight=0.8))
+        cat.add_morphism(Morphism(CaseRole.ACC, CaseRole.DAT, "g", weight=0.7))
+        cat.add_morphism(Morphism(CaseRole.NOM, CaseRole.DAT, "h", weight=0.6))
+        assert cat.associativity_holds()
+
+    def test_empty_category_associativity(self):
+        """Vacuously true: no morphisms to check."""
+        cat = CaseCategory(name="Empty")
+        cat.add_role(CaseRole.NOM)
+        assert cat.associativity_holds()
+
+
+class TestIsWellFormed:
+    """Tests for CaseCategory.is_well_formed()."""
+
+    def test_minimal_category_well_formed(self):
+        cat = minimal_case_category()
+        assert cat.is_well_formed()
+
+    def test_standard_category_well_formed(self):
+        cat = standard_case_category()
+        assert cat.is_well_formed()
+
+    def test_introductory_well_formed(self):
+        cat = introductory_case_category()
+        assert cat.is_well_formed()
+
+    def test_empty_objects_well_formed(self):
+        """Category with no objects is vacuously well-formed."""
+        cat = CaseCategory(name="Empty")
+        assert cat.is_well_formed()
+
+
+class TestAssessDAIFSurprisal:
+    """Tests for CaseCategory.assess_daif_surprisal()."""
+
+    def test_n400_amplitude_proportional_to_weight_mismatch(self):
+        cat = minimal_case_category()
+        observed = Morphism(CaseRole.NOM, CaseRole.ACC, "acts_on", weight=0.6)
+        result = cat.assess_daif_surprisal(observed, predicted_weight=0.9)
+        assert result["N400_amplitude"] == pytest.approx(0.3)
+
+    def test_p600_zero_when_structurally_licensed(self):
+        cat = minimal_case_category()
+        observed = Morphism(CaseRole.NOM, CaseRole.ACC, "acts_on", weight=1.0)
+        result = cat.assess_daif_surprisal(observed, predicted_weight=1.0)
+        assert result["P600_amplitude"] == 0.0
+
+    def test_p600_triggers_on_unlicensed_morphism(self):
+        cat = minimal_case_category()
+        unlicensed = Morphism(CaseRole.ACC, CaseRole.NOM, "fake", weight=1.0)
+        result = cat.assess_daif_surprisal(unlicensed, predicted_weight=1.0)
+        assert result["P600_amplitude"] == 1.0
+
+    def test_n400_zero_on_perfect_prediction(self):
+        cat = minimal_case_category()
+        observed = Morphism(CaseRole.NOM, CaseRole.ACC, "acts_on", weight=0.5)
+        result = cat.assess_daif_surprisal(observed, predicted_weight=0.5)
+        assert result["N400_amplitude"] == pytest.approx(0.0)
+
+
+class TestActiveStativeAlignment:
+    """Tests for active_stative_alignment()."""
+
+    def test_returns_two_modes(self):
+        from src.case_systems.case_category import active_stative_alignment
+        result = active_stative_alignment()
+        assert "active" in result
+        assert "stative" in result
+
+    def test_active_s_maps_to_erg(self):
+        from src.case_systems.case_category import active_stative_alignment
+        result = active_stative_alignment()
+        assert result["active"][CaseRole.S] == CaseRole.ERG
+
+    def test_stative_s_maps_to_abs(self):
+        from src.case_systems.case_category import active_stative_alignment
+        result = active_stative_alignment()
+        assert result["stative"][CaseRole.S] == CaseRole.ABS
+
+
 class TestAlignments:
     """Tests for alignment mapping functions."""
 
@@ -264,3 +358,33 @@ class TestAlignments:
         for align_fn in [accusative_alignment, ergative_alignment, tripartite_alignment]:
             align = align_fn()
             assert set(align.keys()) == {CaseRole.S, CaseRole.A, CaseRole.P}
+
+
+class TestAssociativityHoldsToleranceKwarg:
+    """Regression tests for the ``weight_tolerance`` kwarg on
+    ``CaseCategory.associativity_holds()`` — promotes the previously-hardcoded
+    ``_FLOAT_TOLERANCE = 1e-9`` to a per-call knob so callers with noisy
+    user-supplied weights can loosen or tighten the equality check without
+    forking the code."""
+
+    def test_default_tolerance_passes_on_standard_category(self):
+        cat = standard_case_category()
+        assert cat.associativity_holds() is True
+
+    def test_explicit_tight_tolerance_still_passes(self):
+        cat = standard_case_category()
+        # Unit-weight morphisms have exact composition, so even a very tight
+        # tolerance must still pass on the standard category.
+        assert cat.associativity_holds(weight_tolerance=1e-15) is True
+
+    def test_explicit_loose_tolerance_still_passes(self):
+        cat = standard_case_category()
+        # Loosening the tolerance cannot turn a pass into a fail.
+        assert cat.associativity_holds(weight_tolerance=1e-3) is True
+
+    def test_non_positive_tolerance_raises(self):
+        cat = standard_case_category()
+        with pytest.raises(ValueError, match="weight_tolerance"):
+            cat.associativity_holds(weight_tolerance=0.0)
+        with pytest.raises(ValueError, match="weight_tolerance"):
+            cat.associativity_holds(weight_tolerance=-1e-9)

@@ -11,6 +11,7 @@ References:
     Dowty (1991) — Thematic proto-roles and argument selection
     Fillmore (1968) — The Case for Case
 """
+from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
@@ -46,6 +47,9 @@ class CaseRole(Enum):
     P = "Patient"   # Patient-like argument of transitive
 
 
+_FLOAT_TOLERANCE: float = 1e-9
+
+
 @dataclass(frozen=True)
 class Morphism:
     """A morphism in the case category representing a grammatical relation.
@@ -61,6 +65,13 @@ class Morphism:
     target: CaseRole
     label: str
     weight: float = 1.0
+
+    def __post_init__(self) -> None:
+        if not (0.0 <= self.weight <= 1.0):
+            raise ValueError(
+                f"Morphism weight must be in [0,1], got {self.weight} "
+                f"for '{self.label}' ({self.source.name} → {self.target.name})"
+            )
 
     def __repr__(self) -> str:
         return f"{self.source.name} --{self.label}(w={self.weight:.2f})--> {self.target.name}"
@@ -123,7 +134,7 @@ class CaseCategory:
         """Compose two morphisms: g ∘ f.
 
         Requires f.target == g.source (standard categorical composition).
-        Enriched weights multiply: ``w(g ∘ f) = w(f) · w(g)`` (manuscript §2,
+        Enriched weights multiply: ``w(g ∘ f) = w(f) · w(g)`` (manuscript §4–5,
         multiplicative composition over ``[0,1]``).
 
         Args:
@@ -156,14 +167,23 @@ class CaseCategory:
         """Return all morphisms targeting a given role."""
         return [m for m in self.morphisms if m.target == role]
 
-    def associativity_holds(self) -> bool:
+    def associativity_holds(self, *, weight_tolerance: float | None = None) -> bool:
         """Verify that composition is associative: h ∘ (g ∘ f) = (h ∘ g) ∘ f.
 
         Tests all composable triples of morphisms.
 
+        Args:
+            weight_tolerance: Absolute tolerance on the weight-comparison
+                ``|w(h∘(g∘f)) - w((h∘g)∘f)| < tol``. Defaults to the
+                module-level ``_FLOAT_TOLERANCE`` (1e-9). Loosen this when
+                checking associativity on user-supplied noisy weights.
+
         Returns:
             True if associativity holds for all composable triples.
         """
+        tol = _FLOAT_TOLERANCE if weight_tolerance is None else float(weight_tolerance)
+        if tol <= 0:
+            raise ValueError(f"weight_tolerance must be > 0, got {tol}")
         for f in self.morphisms:
             for g in self.morphisms:
                 if f.target != g.source:
@@ -177,13 +197,19 @@ class CaseCategory:
                     # (h ∘ g) ∘ f
                     hg = self.compose(g, h)
                     right = self.compose(f, hg)
-                    # Check source and target match
+                    # Check source, target, and weight match
                     if left.source != right.source or left.target != right.target:
                         logger.warning(
-                            "Associativity fails: %s vs %s", left, right
+                            "Associativity fails (endpoints): %s vs %s", left, right
                         )
                         return False
-        logger.info("Associativity verified for category %s", self.name)
+                    if not (abs(left.weight - right.weight) < tol):
+                        logger.warning(
+                            "Associativity fails (weights): %.9f vs %.9f (tol=%.1e)",
+                            left.weight, right.weight, tol,
+                        )
+                        return False
+        logger.info("Associativity verified for category %s (tol=%.1e)", self.name, tol)
         return True
 
     def is_well_formed(self) -> bool:
@@ -223,6 +249,34 @@ class CaseCategory:
 
         logger.info("Category %s is well-formed", self.name)
         return True
+
+    def assess_daif_surprisal(self, observed: Morphism, predicted_weight: float) -> dict[str, float]:
+        """Assess DAIF Distributional Prediction Error (DPE) (cf. §7c).
+        
+        Following Li et al. (2024) and Rabovsky et al. (2025):
+        - N400 (heuristic semantic surprise) tracks distance between predicted vs observed scalar enriched weights.
+        - P600 (structural geometric discrepancy) triggers forcefully upon foundational topology failure.
+        
+        Args:
+            observed: The observed linguistic relation pattern.
+            predicted_weight: The Bayesian prior weight expectation.
+            
+        Returns: 
+            Dictionary of N400 and P600 simulated amplitudes.
+        """
+        n400_semantic_surprise = abs(predicted_weight - observed.weight)
+        
+        # P600 triggers geometrically if the fundamental morphism isn't structurally licensed
+        structurally_licensed = any(
+            m.source == observed.source and m.target == observed.target 
+            for m in self.morphisms
+        )
+        p600_structural_discrepancy = 0.0 if structurally_licensed else 1.0
+        
+        return {
+            "N400_amplitude": n400_semantic_surprise,
+            "P600_amplitude": p600_structural_discrepancy
+        }
 
 
 def standard_case_category() -> CaseCategory:
@@ -275,7 +329,7 @@ def introductory_case_category() -> CaseCategory:
     Extends the minimal NOM--INS--ACC transitive triangle with VOC so that
     structurally prohibited morphisms (e.g. VOC→NOM) can be drawn alongside
     licensed edges. Weights on the triangle match the manuscript: legs with
-    w=0.9 and w=0.7 compose multiplicatively to 0.63 (see §2 enriched
+    w=0.9 and w=0.7 compose multiplicatively to 0.63 (see §4–5 enriched
     composition). Theory code should keep using ``minimal_case_category()``.
 
     Returns:

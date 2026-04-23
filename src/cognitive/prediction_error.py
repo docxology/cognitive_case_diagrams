@@ -16,16 +16,16 @@ def prediction_error(
 ) -> float:
     """Compute prediction error scaled by enriched morphism weight.
 
-    PE(f) ∝ π_f · |μ_predicted − μ_observed|
+    PE(f) ∝ w_f · |μ_predicted − μ_observed|
 
-    where π_f = C(A,B) is the enriched weight (precision) of the
+    where w_f = C(A,B) is the enriched weight (precision) of the
     morphism f: A → B.
 
     This generates the manuscript's electrophysiological predictions:
     P600 amplitude scales with morphism weight (§7).
 
     Args:
-        enriched_weight: Precision weight π_f from enriched category (in [0,1]).
+        enriched_weight: Morphism weight w_f from enriched category (in [0,1]).
         predicted: Expected case feature value.
         observed: Observed case feature value.
 

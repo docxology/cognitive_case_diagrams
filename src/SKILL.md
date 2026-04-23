@@ -7,7 +7,7 @@ description: Hub skill for cognitive_case_diagrams Layer-2 src — case categori
 
 ## When to use
 
-- Implementing or refactoring manuscript-aligned code for *A Cognitive Case for Diagrams*.
+- Implementing or refactoring manuscript-aligned code for *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* (v2.3, 2026-04-22).
 - Choosing which subpackage owns new logic (scalar FEP → `cognitive/`; return distributions / §7c → `daif/`).
 - Wiring scripts: import from `src` or subpackages; keep algorithms in `src/`, orchestration in `scripts/`.
 

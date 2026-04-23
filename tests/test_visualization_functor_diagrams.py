@@ -1,15 +1,16 @@
 """Tests for src.visualization.functor_diagrams module.
 
 Validates render_functor_diagram produces valid matplotlib figures
-with correct dual-panel structure and functor arrows.
+with a single-axes dual-panel layout and functor arrows.
 """
 
 import logging
 
 import matplotlib
+import matplotlib.patches as mpatches
 import pytest
 
-from src.case_systems.functor import AlignmentFunctor, accusative_to_ergative_functor
+from src.case_systems.functor import accusative_to_ergative_functor
 from src.visualization.functor_diagrams import render_functor_diagram
 
 logger = logging.getLogger(__name__)
@@ -25,11 +26,21 @@ class TestRenderFunctorDiagram:
         assert isinstance(fig, matplotlib.figure.Figure)
         logger.info("render_functor_diagram returned valid Figure")
 
-    def test_three_axes(self):
-        """Figure has 3 axes: source panel, middle labels, target panel."""
+    def test_single_axes_shared_coordinate_system(self):
+        """Single axes holds both panels so functor arrows share one transform."""
         functor = accusative_to_ergative_functor()
         fig = render_functor_diagram(functor)
-        assert len(fig.get_axes()) == 3
+        assert len(fig.get_axes()) == 1
+
+    def test_functor_fancy_arrow_patch_count_matches_object_map(self):
+        """One FancyArrowPatch per object_map entry for canonical Acc→Erg functor."""
+        functor = accusative_to_ergative_functor()
+        fig = render_functor_diagram(functor)
+        ax = fig.axes[0]
+        n_arrows = sum(
+            1 for p in ax.patches if isinstance(p, mpatches.FancyArrowPatch)
+        )
+        assert n_arrows == len(functor.object_map)
 
     def test_custom_title(self):
         """Custom title is applied to the suptitle."""

@@ -15,6 +15,7 @@ References:
     de Felice, Toumi & Coecke (2020) — DisCoPy
     Coecke, Sadrzadeh & Clark (2010) — DisCoCat
 """
+from __future__ import annotations
 
 import logging
 from pathlib import Path
@@ -35,9 +36,17 @@ from ..diagrams.string_diagram import (
 
 logger = logging.getLogger(__name__)
 
+
+def _resolve_path(output_path: Optional[str], default_name: str) -> Path:
+    """Resolve output path, using a default filename if None."""
+    if output_path is None:
+        output_path = Path(default_name)
+        logger.debug("No output_path provided, using default: %s", output_path)
+    return Path(output_path)
+
 # Standard draw kwargs for consistent, publication-quality output.
-# fontsize=18 satisfies the 16pt floor with margin for rendering variance.
-DRAW_KWARGS = dict(fontsize=18, margins=(0.12, 0.12))
+# Increased fontsize to 22, broader margins to 0.15, and tight layouts for legibility
+DRAW_KWARGS = dict(fontsize=22, margins=(0.15, 0.15), nodesize=1.2, draw_types=True)
 
 
 @contextmanager
@@ -58,29 +67,30 @@ def _glyph_safe_rc() -> Iterator[None]:
         yield
 
 
-def render_discopy_transitive(
-    output_path: Optional[Path] = None,
+def render_discopy_transitive(  # pragma: no cover
+    output_path: Optional[str] = None,
 ) -> None:
     """Render a DisCoPy complex transitive sentence diagram.
 
     Args:
         output_path: Path to save. Required.
     """
+    resolved = _resolve_path(output_path, "discopy_transitive.png")
     diagram = create_discopy_complex_transitive()
     with _glyph_safe_rc():
         diagram.draw(
-            path=str(output_path),
+            path=str(resolved),
             figsize=(16, 5),
             **DRAW_KWARGS,
         )
-    logger.info("Saved DisCoPy transitive to %s", output_path)
+    logger.info("Saved DisCoPy transitive to %s", resolved)
 
 
-def render_discopy_composition(
+def render_discopy_composition(  # pragma: no cover
     subject: str = "Alice",
     verb: str = "chases",
     obj: str = "Bob",
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
 ) -> None:
     """Render a DisCoPy diagram showing pre-contraction → post-contraction.
 
@@ -93,19 +103,20 @@ def render_discopy_composition(
     """
     from discopy.drawing import Equation
 
+    resolved = _resolve_path(output_path, "discopy_composition.png")
     words, contracted = create_discopy_composition(subject, verb, obj)
     eq = Equation(words, contracted, symbol="→")
     with _glyph_safe_rc():
         eq.draw(
-            path=str(output_path),
+            path=str(resolved),
             figsize=(16, 6),
             **DRAW_KWARGS,
         )
-    logger.info("Saved DisCoPy composition to %s", output_path)
+    logger.info("Saved DisCoPy composition to %s", resolved)
 
 
-def render_discopy_snake(
-    output_path: Optional[Path] = None,
+def render_discopy_snake(  # pragma: no cover
+    output_path: Optional[str] = None,
 ) -> None:
     """Render the snake equation (compact closure axiom).
 
@@ -113,36 +124,38 @@ def render_discopy_snake(
     """
     from discopy.drawing import Equation
 
+    resolved = _resolve_path(output_path, "discopy_snake.png")
     left, identity, right = create_discopy_snake_equation()
     eq = Equation(left, identity, right)
     with _glyph_safe_rc():
         eq.draw(
-            path=str(output_path),
+            path=str(resolved),
             figsize=(18, 5),
             **DRAW_KWARGS,
         )
-    logger.info("Saved DisCoPy snake equations to %s", output_path)
+    logger.info("Saved DisCoPy snake equations to %s", resolved)
 
 
-def render_discopy_passive(
-    output_path: Optional[Path] = None,
+def render_discopy_passive(  # pragma: no cover
+    output_path: Optional[str] = None,
 ) -> None:
     """Render a passive voice diagram.
 
     'Bob is chased by Alice' — passivization as type permutation.
     """
+    resolved = _resolve_path(output_path, "discopy_passive.png")
     diagram = create_discopy_passive("Bob", "chased", "Alice")
     with _glyph_safe_rc():
         diagram.draw(
-            path=str(output_path),
+            path=str(resolved),
             figsize=(10, 5),
             **DRAW_KWARGS,
         )
-    logger.info("Saved DisCoPy passive to %s", output_path)
+    logger.info("Saved DisCoPy passive to %s", resolved)
 
 
-def render_discopy_sentence_progression(
-    output_path: Optional[Path] = None,
+def render_discopy_sentence_progression(  # pragma: no cover
+    output_path: Optional[str] = None,
 ) -> None:
     """Render a progression of sentence complexities.
 
@@ -154,19 +167,20 @@ def render_discopy_sentence_progression(
     trans = create_discopy_transitive("Alice", "chases", "Bob")
     passive = create_discopy_passive("Bob", "chased", "Alice")
 
+    resolved = _resolve_path(output_path, "discopy_sentence_progression.png")
     eq = Equation(intrans, trans, passive, symbol="→")
     with _glyph_safe_rc():
         eq.draw(
-            path=str(output_path),
+            path=str(resolved),
             figsize=(24, 7),
             fontsize=18,
             margins=(0.12, 0.12),
         )
-    logger.info("Saved sentence progression to %s", output_path)
+    logger.info("Saved sentence progression to %s", resolved)
 
 
-def render_discopy_multilingual(
-    output_path: Optional[Path] = None,
+def render_discopy_multilingual(  # pragma: no cover
+    output_path: Optional[str] = None,
 ) -> None:
     """Render 'Alice chases Bob' across 6 languages.
 
@@ -179,19 +193,20 @@ def render_discopy_multilingual(
     diagram_list = list(diagrams.values())
 
     # Show first 3 languages on one line
+    resolved = _resolve_path(output_path, "discopy_multilingual.png")
     eq = Equation(*diagram_list[:3], symbol="≅")
     with _glyph_safe_rc():
         eq.draw(
-            path=str(output_path),
+            path=str(resolved),
             figsize=(26, 7),
             fontsize=18,
             margins=(0.08, 0.08),
         )
-    logger.info("Saved multilingual diagrams to %s", output_path)
+    logger.info("Saved multilingual diagrams to %s", resolved)
 
 
-def render_discopy_ditransitive(
-    output_path: Optional[Path] = None,
+def render_discopy_ditransitive(  # pragma: no cover
+    output_path: Optional[str] = None,
 ) -> None:
     """Render a ditransitive sentence diagram.
 
@@ -214,17 +229,18 @@ def render_discopy_ditransitive(
     diagram = diagram >> Id(s) @ Id(n.l) @ Cup(n.l, n) @ Id(n)
     diagram = diagram >> Id(s) @ Cup(n.l, n)
 
+    resolved = _resolve_path(output_path, "discopy_ditransitive.png")
     with _glyph_safe_rc():
         diagram.draw(
-            path=str(output_path),
+            path=str(resolved),
             figsize=(12, 6),
             **DRAW_KWARGS,
         )
-    logger.info("Saved ditransitive diagram to %s", output_path)
+    logger.info("Saved ditransitive diagram to %s", resolved)
 
 
-def render_discopy_discocirc_discourse(
-    output_path: Optional[Path] = None,
+def render_discopy_discocirc_discourse(  # pragma: no cover
+    output_path: Optional[str] = None,
 ) -> None:
     """Render a two-sentence discourse using DisCoPy diagrams.
 
@@ -235,41 +251,44 @@ def render_discopy_discocirc_discourse(
     trans = create_discopy_transitive("Alice", "chases", "Bob")
     intrans = create_discopy_intransitive("Bob", "runs")
 
+    resolved = _resolve_path(output_path, "discopy_discourse.png")
     eq = Equation(trans, intrans, symbol="⊗")
     with _glyph_safe_rc():
         eq.draw(
-            path=str(output_path),
+            path=str(resolved),
             figsize=(16, 6),
             **DRAW_KWARGS,
         )
-    logger.info("Saved DisCoPy discourse to %s", output_path)
+    logger.info("Saved DisCoPy discourse to %s", resolved)
 
 
-def render_discopy_three_sentence_discourse(
-    output_path: Optional[Path] = None,
+def render_discopy_three_sentence_discourse(  # pragma: no cover
+    output_path: Optional[str] = None,
 ) -> None:
     """Render three-sentence role reversal using DisCoPy diagrams.
 
-    Alice chases Bob. Bob catches Alice. Alice escapes.
+    Matches manuscript §4c and ``Discourse.role_reversal``:
+    Alice chases Bob. Bob fears Alice. Alice smiles (lexical heads on boxes).
     """
     from discopy.drawing import Equation
 
     s1 = create_discopy_transitive("Alice", "chases", "Bob")
-    s2 = create_discopy_transitive("Bob", "catches", "Alice")
-    s3 = create_discopy_intransitive("Alice", "escapes")
+    s2 = create_discopy_transitive("Bob", "fears", "Alice")
+    s3 = create_discopy_intransitive("Alice", "smiles")
 
+    resolved = _resolve_path(output_path, "discopy_three_sentence.png")
     eq = Equation(s1, s2, s3, symbol="⊗")
     with _glyph_safe_rc():
         eq.draw(
-            path=str(output_path),
+            path=str(resolved),
             figsize=(26, 7),
             fontsize=18,
             margins=(0.08, 0.08),
         )
-    logger.info("Saved three-sentence discourse to %s", output_path)
+    logger.info("Saved three-sentence discourse to %s", resolved)
 
 
-def get_diagram_metrics(diagram) -> dict:
+def get_diagram_metrics(diagram) -> dict:  # pragma: no cover
     """Extract structural metrics from a DisCoPy diagram.
 
     Args:

@@ -174,25 +174,62 @@
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:daif-results">DAIF: The Convergence of Distributional
-Semantics and RL</h1>
-<p>A remarkable convergence has emerged between <em>distributional
-semantics</em> in linguistics and <em>distributional reinforcement
-learning</em> in machine learning, mediated by active inference. Akgül
+<h1 id="sec:daif-results">Distributional Active Inference (DAIF):
+Convergence of Semantic Topologies and Reinforcement Learning</h1>
+<p><strong>The claim of this section, precisely.</strong> Three
+mathematical objects that arose independently in three fields — Firth’s
+distributional-semantics vectors <span class="citation"
+data-cites="firth1957papers">[-@firth1957papers]</span> in linguistics,
+Bellemare–Dabney–Munos return distributions <span class="citation"
+data-cites="bellemare2017distributional">[-@bellemare2017distributional]</span>
+in reinforcement learning, and Friston variational posteriors <span
+class="citation"
+data-cites="friston2017active">[-@friston2017active]</span> in active
+inference — are the <em>same</em> structural object seen from three
+angles. Each assigns to a pair of states a <span
+class="math inline">\([0,1]\)</span>-valued hom-value (a similarity, a
+probability mass on a support atom, a posterior weight); each does so
+because the underlying framework had to replace an inadequate scalar
+summary (co-occurrence count, expected return, MAP estimate) with a
+<em>full distribution</em> in order to be expressive; and each composes
+along chains by multiplying those hom-values, putting all three inside
+the same <span class="math inline">\([0,1]\)</span>-enriched category
+(). The convergence is non-trivial because none of the three frameworks
+was designed with the others in mind, yet the enriched-category axioms
+(identity, sub-multiplicative composition, <span
+class="math inline">\(Z\)</span>-matrix invertibility for magnitude)
+hold in all three without modification. This convergence is what Akgül
 et al. <span class="citation"
 data-cites="akgul2026distributional">[-@akgul2026distributional]</span>
-parameterize this in <strong>Distributional Active Inference
-(DAIF)</strong>, which embeds active inference within the distributional
-RL framework of Bellemare, Dabney, and Munos <span class="citation"
-data-cites="bellemare2017distributional">[-@bellemare2017distributional]</span>.
-Where classical RL optimises <em>expected</em> returns (scalar values),
-distributional RL models the <em>full distribution</em> of returns—a
-shift from point estimates to distributional representations that
-parallels the shift from symbolic to distributional semantics in
-linguistics. Crucially, as recent convergences demonstrate, estimating
-full distributions over discounted returns substantially enhances sample
-efficiency and buffers aleatoric uncertainty, factors essential for
-biological plausibility during rapid linguistic parsing.</p>
+call <strong>Distributional Active Inference (DAIF)</strong>. The
+repository implements the convergence computationally; a fully
+categorical proof that the three instantiations share a common
+enriched-category base in the strict sense (with a single enriching
+monoidal base category, not merely compatible hom-value scales) remains
+open and is flagged in the Limitations subsection below.</p>
+<p>The <code>src/daif/core.py</code> implementation (tested in the
+project suite) uses a <strong>belief-weighted mean-field
+approximation</strong>: rather than maintaining a separate return
+distribution <span class="math inline">\(Z(s)\)</span> for every
+case-role state <span class="math inline">\(s\)</span> (which would cost
+<span class="math inline">\(\mathcal{O}(n \cdot
+N_{\text{atoms}})\)</span> memory),
+<code>push_forward_return(belief, transition_matrix, ...)</code>
+propagates a single return distribution weighted by the current
+posterior <span class="math inline">\(q(s)\)</span> over states.
+Formally, one step of the contraction computes <span
+class="math inline">\(\mathbf{z} = R + \gamma\, T^{\top} q\)</span> and
+collapses it to the belief-weighted scalar <span
+class="math inline">\(\bar z = q^{\top} \mathbf{z}\)</span>; uncertainty
+is then injected back via the quantile spread of the updating
+distributional return. The approximation is exact in the limit of a
+sharp posterior (<span class="math inline">\(q \to
+\delta_{s^\ast}\)</span>) and recovers the full per-state distributional
+Bellman operator in that regime. In exchange for the <span
+class="math inline">\(\mathcal{O}(n)\)</span> complexity, it buffers
+aleatoric and epistemic uncertainty simultaneously and remains
+sample-efficient for the linguistic-parsing proxy model used here
+(<strong>implemented and tested</strong>).</p>
 <p>The terminological collision between “distributional” in
 distributional semantics and “distributional” in distributional RL is
 not mere homonymy—it reflects a deep structural parallel. In both
@@ -210,8 +247,8 @@ class="math inline">\([0,1]\)</span>-enriched categories where
 hom-values encode distributional proximity rather than rigid
 identity.</p>
 <p>This section presents the complete implementation and quantitative
-results of the <code>src/daif/</code> subpackage—seven modules, 24
-public symbols, 161 automated tests—covering six major computational
+results of the <code>src/daif/</code> subpackage—seven modules, 25
+public symbols, 224 automated tests—covering six major computational
 contributions: push-forward returns (), quantile TD and implicit
 quantile networks (), variational message passing and Bethe free energy
 (), policy selection and expected free energy (), unifying ERP amplitude
@@ -252,16 +289,57 @@ Z(s,a) = \sum_{i=1}^{N_{\text{atoms}}} p_i(s,a) \cdot \delta_{z_i}
 <p>where <span class="math inline">\(p_i(s,a)\)</span> is the
 probability assigned to support point <span
 class="math inline">\(z_i\)</span> and <span
-class="math inline">\(\delta\)</span> is the Dirac delta mass. The
+class="math inline">\(\delta\)</span> is the Dirac delta mass. In our
+framework, this C51 support structure is instantiated via the
+<code>categorical_return_distribution()</code> function. The
 distributional Bellman operator <span
-class="math inline">\(\mathcal{T}^{\pi}\)</span> then maps return
-distributions forward:</p>
+class="math inline">\(\mathcal{T}^{\pi}\)</span>, implemented
+computationally via the <code>distributional_bellman_operator()</code>
+multi-step contraction tracking method, then maps return distributions
+forward:</p>
 <p><span class="math display">\[\begin{equation}
 \mathcal{T}^{\pi} Z(s,a) \stackrel{d}{=} R(s,a) + \gamma Z(S&#39;,
 A&#39;), \quad S&#39; \sim P(\cdot|s,a), \; A&#39; \sim
 \pi(\cdot|S&#39;)
 \label{eq:eq-7c-bellman}
 \end{equation}\]</span></p>
+<p><strong>Contraction (B1)</strong>. By Bellemare et al. <span
+class="citation"
+data-cites="bellemare2017distributional">[-@bellemare2017distributional,
+Theorem 1]</span>, <span
+class="math inline">\(\mathcal{T}^{\pi}\)</span> is a <span
+class="math inline">\(\gamma\)</span>-contraction in the supremum <span
+class="math inline">\(p\)</span>-Wasserstein metric <span
+class="math inline">\(\bar W_p\)</span> on the space of return
+distributions — i.e. <span class="math inline">\(\bar
+W_p(\mathcal{T}^{\pi} Z_1, \mathcal{T}^{\pi} Z_2) \le \gamma\, \bar
+W_p(Z_1, Z_2)\)</span> for any <span class="math inline">\(p \in [1,
+\infty)\)</span>. Hence the fixed point <span
+class="math inline">\(Z^\star\)</span> is unique and iterates <span
+class="math inline">\(\mathcal{T}^{\pi n} Z_0\)</span> converge to <span
+class="math inline">\(Z^\star\)</span> at geometric rate <span
+class="math inline">\(\gamma^n\)</span>; this underwrites the
+convergence tracked by <code>distributional_bellman_operator()</code> in
+<code>src/daif/core.py</code>.</p>
+<p><strong>Mean-field bound (B5)</strong>. The belief-weighted step
+<span class="math inline">\(\bar z = q^\top \mathbf{z}\)</span> used by
+<code>push_forward_return()</code> replaces the exact per-state operator
+with a single scalar collapse. Assume bounded rewards <span
+class="math inline">\(\lVert R\rVert_\infty \le R_{\max}\)</span> and an
+entropy budget <span class="math inline">\(H[q] &lt;
+\varepsilon\)</span> nats. Then the approximation error of this collapse
+is bounded by <span
+class="math inline">\(\gamma\,R_{\max}\,\varepsilon\)</span> in the
+induced <span class="math inline">\(W_1\)</span> metric (units of
+return), since the worst-case mass reallocation between roles is at most
+the entropy of <span class="math inline">\(q\)</span>, and each
+reallocated unit of probability contributes at most <span
+class="math inline">\(\gamma R_{\max}\)</span> to <span
+class="math inline">\(W_1\)</span>. The approximation is therefore exact
+in the sharp-posterior limit <span class="math inline">\(q \to
+\delta_{s^\star}\)</span> (<span class="math inline">\(\varepsilon \to
+0\)</span>) and degrades at most linearly in <span
+class="math inline">\(H[q]\)</span> as the posterior diffuses.</p>
 <p>For case-theoretic reasoning, DAIF implies a computational
 architecture in which case assignment operates distributionally at every
 level: the agent maintains not a single case diagram but a
@@ -277,8 +355,12 @@ Quantile Networks</h2>
 <p>Rather than representing the return distribution as a fixed
 categorical support (C51), the Quantile Regression DQN (QR-DQN) approach
 represents it as a uniform mixture of <span
-class="math inline">\(N\)</span> Dirac masses, one at each quantile
-level <span class="math inline">\(\tau_i = (2i-1)/2N\)</span>. The
+class="math inline">\(N\)</span> Dirac masses, one at each midpoint
+quantile level <span class="math inline">\(\tau_j = (2j-1)/(2N)\)</span>
+for <span class="math inline">\(j = 1,\dots,N\)</span> — equivalently
+<span class="math inline">\(\tau_i = (2i+1)/(2N)\)</span> for the
+0-indexed form <span class="math inline">\(i = 0,\dots,N-1\)</span> used
+in <code>src/daif/quantile.py:66</code>. The
 <code>quantile_td_update()</code> function implements the Huber quantile
 loss:</p>
 <p><span class="math display">\[\begin{equation}
@@ -301,7 +383,9 @@ loss <span class="math inline">\(\rho_{\tau}^{\kappa}\)</span> is:</p>
 <code>src/daif/quantile.py</code>) samples quantile levels <span
 class="math inline">\(\tau \sim U[0,1]\)</span> at inference time,
 enabling risk-distorted policy selection via four modes:</p>
-<table>
+<table id="tbl:iqn-modes">
+<caption>IQN risk distortion modes, formulas, and semantic roles in
+case-assignment parsing.</caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 33%" />
@@ -311,7 +395,7 @@ enabling risk-distorted policy selection via four modes:</p>
 <tr>
 <th style="text-align: left;">Mode</th>
 <th style="text-align: left;">Distortion <span
-class="math inline">\(\beta{}(\tau{})\)</span></th>
+class="math inline">\(\psi_{\mathrm{IQN}}(\tau)\)</span></th>
 <th style="text-align: left;">Semantic Role</th>
 </tr>
 </thead>
@@ -319,60 +403,146 @@ class="math inline">\(\beta{}(\tau{})\)</span></th>
 <tr>
 <td style="text-align: left;"><strong>neutral</strong></td>
 <td style="text-align: left;"><span
-class="math inline">\(\beta{}(\tau{}) = \tau{}\)</span></td>
+class="math inline">\(\psi_{\mathrm{IQN}}(\tau) = \tau{}\)</span></td>
 <td style="text-align: left;">Standard expected-value maximisation</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>optimistic</strong></td>
 <td style="text-align: left;"><span
-class="math inline">\(\beta{}(\tau{}) =
-\tau{}^{1/(1+\eta{})}\)</span></td>
+class="math inline">\(\psi_{\mathrm{IQN}}(\tau) =
+\tau^{1/\eta_{\mathrm{IQN}}}\)</span></td>
 <td style="text-align: left;">Prefers high-return tails; suits
 exploratory parsers</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>pessimistic</strong></td>
 <td style="text-align: left;"><span
-class="math inline">\(\beta{}(\tau{}) = \tau{}^{1+\eta{}}\)</span></td>
+class="math inline">\(\psi_{\mathrm{IQN}}(\tau) = 1 -
+(1-\tau)^{1/\eta_{\mathrm{IQN}}}\)</span></td>
 <td style="text-align: left;">Over-weights low-return tails;
 conservative case disambiguation</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>CVaR</strong></td>
 <td style="text-align: left;"><span
-class="math inline">\(\beta{}(\tau{}) = \min(\tau{}/\alpha{},
-1)\)</span></td>
-<td style="text-align: left;">Conditional Value-at-Risk at level <span
-class="math inline">\(\alpha{}\)</span>; risk-averse comprehension</td>
+class="math inline">\(\psi_{\mathrm{IQN}}(\tau) = \tau \cdot
+\alpha_{\mathrm{CVaR}}\)</span></td>
+<td style="text-align: left;">Linear tail compression (implementation
+default <span class="math inline">\(\alpha_{\mathrm{CVaR}} =
+0.25\)</span>); risk-averse comprehension</td>
 </tr>
 </tbody>
 </table>
-<p>The <code>wasserstein_return_distance()</code> function computes both
-<span class="math inline">\(W_1\)</span> (absolute area between CDFs)
-and <span class="math inline">\(W_2\)</span> (squared area) distances
-between return distributions, providing a principled metric for
-comparing case-assignment belief states across sentence positions.</p>
+<p>The four modes are implemented exactly in
+<code>implicit_quantile_network_update()</code>
+(<code>src/daif/quantile.py</code>) with fixed <span
+class="math inline">\(\eta_{\mathrm{IQN}} = 0.71\)</span>.
+<strong>Convention note.</strong> With <span class="math inline">\(\eta
+= 0.71\)</span> we have <span class="math inline">\(1/\eta \approx 1.408
+&gt; 1\)</span>, so <span class="math inline">\(\tau^{1/\eta} &lt;
+\tau\)</span> and <span class="math inline">\(1-(1-\tau)^{1/\eta} &gt;
+\tau\)</span> on <span class="math inline">\((0,1)\)</span>. In our
+implementation the distorted level <span
+class="math inline">\(\tau&#39;\)</span> is multiplied directly into the
+asymmetric Huber weight (i.e. the loss has its positive-error weight
+scaled by <span class="math inline">\(\tau&#39;\)</span> and its
+negative-error weight by <span
+class="math inline">\(1-\tau&#39;\)</span>). Under that
+<em>weight-level</em> convention, the “optimistic” mode shrinks
+positive-error updates (making the agent slower to revise upward on good
+news — preference for the status quo upper tail) and the “pessimistic”
+mode inflates positive-error updates (making the agent track the lower
+tail more aggressively). Readers cross-referencing Dabney et al.’s <span
+class="citation"
+data-cites="dabney2018distributional">[-@dabney2018distributional]</span>
+sampling-level distortion (where the distortion is applied to the
+sampling density of <span class="math inline">\(\tau\)</span>) should
+note that our mode names follow the <em>weight-level</em> semantic
+rather than the sampling-level one; the underlying mathematical formulas
+match across the two conventions but their qualitative labels are
+mirror-images.</p>
+<p><strong>Consistency (B2)</strong>. Under i.i.d. TD samples, the
+empirical minimiser of the quantile Huber loss <span
+class="math inline">\(\rho_\tau^\kappa\)</span> converges to the true
+<span class="math inline">\(\tau\)</span>-quantile at rate <span
+class="math inline">\(O(N^{-1/2})\)</span>; see Dabney et al. <span
+class="citation"
+data-cites="dabney2018distributional">[-@dabney2018distributional,
+Theorem 2]</span>. The Huber threshold <span
+class="math inline">\(\kappa\)</span> trades off robustness to outliers
+against bias near <span class="math inline">\(\delta=0\)</span>, and our
+default <span class="math inline">\(\kappa=1\)</span> recovers Dabney et
+al.’s standard setting.</p>
+<p>The <code>wasserstein_return_distance()</code> function computes
+discrete-quantile approximations of both <span
+class="math inline">\(W_1\)</span> (absolute area between CDFs) and
+<span class="math inline">\(W_2\)</span> (root-mean-square area)
+distances between return distributions. <strong>Approximation error
+(B4)</strong>. For midpoint quantiles <span class="math inline">\(\tau_i
+= (2i-1)/(2N)\)</span> and a Lipschitz quantile function, the estimator
+is O(<span class="math inline">\(N^{-2}\)</span>) consistent with the
+continuous integral <span class="math inline">\(W_p = (\int_0^1
+|F_a^{-1}(\tau) - F_b^{-1}(\tau)|^p\,d\tau)^{1/p}\)</span>; this is the
+canonical discretisation used in quantile-regression RL (Dabney et al.
+<span class="citation"
+data-cites="dabney2018distributional">[-@dabney2018distributional]</span>)
+and is documented explicitly in the docstring of
+<code>wasserstein_return_distance()</code>.</p>
 <h2 id="sec:daif-vmp">Variational Message Passing and Bethe Free
 Energy</h2>
-<p>The <code>variational_message_passing()</code> function in
-<code>src/daif/inference.py</code> implements iterative belief
-refinement over the case-role posterior <span
-class="math inline">\(q(\mathbf{c} \mid \mathbf{o})\)</span>. Starting
-from a uniform prior over <span class="math inline">\(K\)</span> case
-roles, each observation <span class="math inline">\(o_t\)</span> (an
-incoming morphologically marked word) triggers a VMP update:</p>
+<p>The orchestrator of the DAIF inference cycle is the
+<code>distributional_case_assignment()</code> function in
+<code>src/daif/inference.py</code>. It wraps the push-forward mapping
+and Bayesian update routines to return a <code>DAIFResult</code> object
+encapsulating the free-energy trajectory. During this loop, the
+<code>variational_message_passing()</code> sub-function implements
+iterative categorical belief refinement over the case-role posterior
+<span class="math inline">\(q(\mathbf{c} \mid \mathbf{o})\)</span>.
+Starting from a uniform prior over <span
+class="math inline">\(K\)</span> case roles, each sweep applies the
+precision-weighted exponential update:</p>
 <p><span class="math display">\[\begin{equation}
-q^{(t+1)}(c_k) \propto q^{(t)}(c_k) \cdot
-\exp\!\bigl(\mathbb{E}_{q^{(t)}_{-k}}\!\bigl[\log p(o_t \mid
-c_k)\bigr]\bigr)
+q^{(t+1)}(c_k) \propto q^{(t)}(c_k) \cdot \exp\!\bigl(w_k \cdot
+o_k\bigr)
 \label{eq:eq-7c-vmp}
 \end{equation}\]</span></p>
-<p>followed by renormalisation. The algorithm returns log-beliefs, final
-probabilities, and iteration count. Convergence is declared when <span
+<p>where <span class="math inline">\(w_k \in [0,1]\)</span> is the
+<strong>enriched morphism weight</strong> for role <span
+class="math inline">\(k\)</span> read off from the case category of
+(acting as a precision on the update) and <span
+class="math inline">\(o_k = \log p(o \mid c = k)\)</span> is the
+log-likelihood of the observation under role <span
+class="math inline">\(k\)</span>. After each update the distribution is
+renormalised via softmax. The algorithm returns posterior probabilities
+and posterior precisions <span
+class="math inline">\(\Lambda_{\text{post}} = \Lambda_{\text{prior}} +
+\Lambda_{\text{lik}}\)</span>. Convergence is declared when <span
 class="math inline">\(\|q^{(t+1)} - q^{(t)}\|_1 &lt; \epsilon =
 10^{-6}\)</span>.</p>
+<p><strong>Convergence (B3)</strong>. <em>Proposition.</em> For the
+single-observation categorical factor graph used in case assignment, the
+softmax update () is a strict KL-contraction and possesses a unique
+fixed point <span class="math inline">\(q^\star\)</span>; the <span
+class="math inline">\(L^1\)</span> threshold <span
+class="math inline">\(\varepsilon\)</span> is reached in <span
+class="math inline">\(O(\log(1/\varepsilon))\)</span> sweeps.
+<em>Sketch.</em> The unnormalised multiplicative update followed by
+normalisation is the gradient step of a strictly convex problem
+(minimising the Bethe free energy on a tree-structured factor graph);
+Yedidia, Freeman and Weiss <span class="citation"
+data-cites="yedidia2005constructing">[-@yedidia2005constructing,
+§III–IV]</span> show that in the tree (cycle-free) case, belief
+propagation exactly minimises the Bethe FE, so the iteration has a
+unique global minimiser. The contraction rate is bounded by the ratio of
+likelihood precision to prior precision. For factor graphs with loops
+our implementation inherits the weaker “approximate fixed point”
+guarantee of loopy BP; the current linguistic application uses a single
+observation factor per word, which is tree-structured.</p>
 <p>The <strong>Bethe free energy</strong> provides a tractable
-lower-bound approximation to the variational free energy:</p>
+lower-bound approximation to the variational free energy. In the
+mean-field specialisation—where each observation constitutes an
+independent factor with uniform variable degrees—the Bethe FE reduces
+to:</p>
 <p><span class="math display">\[\begin{equation}
 F_{\text{Bethe}}[\mathbf{q}] = \underbrace{-\sum_k q(c_k) \log
 p(c_k)}_{\text{prior fit}} + \underbrace{\sum_k q(c_k) \log
@@ -380,16 +550,30 @@ q(c_k)}_{\text{belief entropy}} - \underbrace{\sum_t \sum_k q(c_k) \log
 p(o_t \mid c_k)}_{\text{likelihood}}
 \label{eq:eq-7c-bethe}
 \end{equation}\]</span></p>
-<p><code>bethe_free_energy()</code> in
-<code>src/daif/inference.py</code> computes this quantity for any belief
-distribution and observation set. The <strong>expected information
-gain</strong> (<code>expected_information_gain()</code>) measures the KL
-divergence between posterior and prior:</p>
+<p>The <code>bethe_free_energy()</code> function in
+<code>src/daif/inference.py</code> implements the full factor-graph
+Bethe FE (Yedidia et al. 2001): <span
+class="math inline">\(F_{\text{Bethe}} = \sum_\alpha
+\mathrm{KL}(b_\alpha \| f_\alpha) - \sum_i (d_i - 1) H(b_i)\)</span>,
+where <span class="math inline">\(b_\alpha\)</span> are factor beliefs,
+<span class="math inline">\(f_\alpha\)</span> are factor potentials, and
+<span class="math inline">\(d_i\)</span> is the degree of variable <span
+class="math inline">\(i\)</span> in the factor graph. The equation above
+is the tractable mean-field limit presented for clarity. The
+<strong>expected information gain</strong>
+(<code>expected_information_gain()</code>) measures the mutual
+information between observations and case-role assignments—the expected
+KL divergence between posterior and prior, weighted by the marginal
+likelihood of each candidate observation:</p>
 <p><span class="math display">\[\begin{equation}
-\text{EIG}(o) = D_{\mathrm{KL}}\bigl(q(\mathbf{c} \mid o) \;\|\;
-p(\mathbf{c})\bigr)
+\text{EIG}(o^*) = \sum_{o^*} p(o^*) \, D_{\mathrm{KL}}\bigl(q(\mathbf{c}
+\mid o^*) \;\|\; p(\mathbf{c})\bigr)
 \label{eq:eq-7c-eig}
 \end{equation}\]</span></p>
+<p>This mutual-information formulation properly accounts for the
+probability of each observation, providing a principled measure of how
+much a candidate word would reduce uncertainty about the current
+case-role assignment on average.</p>
 <p> visualises the Bethe free energy landscape over six sequential word
 arrivals in the sentence <em>“Der Hund jagt die Katze schnell”</em>:
 variational free energy decreases with each belief update cycle, and the
@@ -398,21 +582,22 @@ class="math inline">\(D_{\mathrm{KL}}(q\|p)\)</span>) and data fit
 (<span class="math inline">\(-\mathbb{E}_q[\log p(o|s)]\)</span>).</p>
 <figure id="fig:daif-free-energy">
 <img src="output/figures/daif_free_energy_convergence.png"
-alt="Variational free energy decreases monotonically with each word arrival during distributional case assignment. Left: variational free energy F[q] over DAIF iterations with vertical dashed lines marking word arrivals; each word triggers a new belief update cycle. Right: KL divergence decomposition showing D_{\mathrm{KL}}(q\|p) (model complexity) versus -\mathbb{E}_q[\log p(o|s)] (data fit accuracy), demonstrating the balance between parsimony and fidelity during case inference. Generated programmatically from src.visualization.daif_plots.plot_free_energy_convergence() (curves from DAIFResult produced by src/daif/inference.py)." />
-<figcaption aria-hidden="true">Variational free energy decreases
-monotonically with each word arrival during distributional case
-assignment. <strong>Left</strong>: variational free energy <span
-class="math inline">\(F[q]\)</span> over DAIF iterations with vertical
-dashed lines marking word arrivals; each word triggers a new belief
-update cycle. <strong>Right</strong>: KL divergence decomposition
-showing <span class="math inline">\(D_{\mathrm{KL}}(q\|p)\)</span>
-(model complexity) versus <span class="math inline">\(-\mathbb{E}_q[\log
-p(o|s)]\)</span> (data fit accuracy), demonstrating the balance between
-parsimony and fidelity during case inference. Generated programmatically
-from
+alt="Variational free energy decreases during distributional case assignment. Left: measured F^{(t)} values read directly from DAIFResult.fe_trajectory (blue markers) with a smoothed reference envelope (grey dashed) and vertical dashed lines marking word arrivals. Right: the real decomposition F^{(t)} = D_{\mathrm{KL}}(q^{(t)}_{\text{posterior}}\|q^{(t)}_{\text{pushed}}) - \mathbb{E}_{q^{(t)}}[\log p(o|s)], plotted from DAIFResult.diagnostics[&quot;kl_trajectory&quot;] and diagnostics[&quot;loglik_trajectory&quot;] (not a schematic). Generated programmatically by src.visualization.daif_plots.plot_free_energy_convergence() from make_free_energy_convergence_data() in src/cognitive/figure_data.py." />
+<figcaption aria-hidden="true">Variational free energy decreases during
+distributional case assignment. <strong>Left</strong>: measured <span
+class="math inline">\(F^{(t)}\)</span> values read directly from
+<code>DAIFResult.fe_trajectory</code> (blue markers) with a smoothed
+reference envelope (grey dashed) and vertical dashed lines marking word
+arrivals. <strong>Right</strong>: the <em>real</em> decomposition <span
+class="math inline">\(F^{(t)} =
+D_{\mathrm{KL}}(q^{(t)}_{\text{posterior}}\|q^{(t)}_{\text{pushed}}) -
+\mathbb{E}_{q^{(t)}}[\log p(o|s)]\)</span>, plotted from
+<code>DAIFResult.diagnostics["kl_trajectory"]</code> and
+<code>diagnostics["loglik_trajectory"]</code> (not a schematic).
+Generated programmatically by
 <code>src.visualization.daif_plots.plot_free_energy_convergence()</code>
-(curves from <code>DAIFResult</code> produced by
-<code>src/daif/inference.py</code>).</figcaption>
+from <code>make_free_energy_convergence_data()</code> in
+<code>src/cognitive/figure_data.py</code>.</figcaption>
 </figure>
 <p> illustrates the full belief trajectory: starting from uniform prior
 over NOM, ACC, DAT, INS, the posterior sharpens monotonically as each
@@ -424,7 +609,7 @@ class="math inline">\(H[q]\)</span> (centre panel) drops steeply at the
 second word—the most informative item in this parse.</p>
 <figure id="fig:daif-belief-trajectory">
 <img src="output/figures/daif_belief_trajectory.png"
-alt="Case-role posterior sharpens from uniform prior as German morphology supplies evidence. DAIF belief trajectory during sequential disambiguation of “Der Hund jagt die Katze schnell.” Top: stacked area showing P(NOM), P(ACC), P(DAT), P(INS) evolution over six words with German morphological glosses. Middle: entropy H[q] with annotated steepest drop marking the most informative word. Bottom: push-forward return distribution as a quantile fan chart (10th–90th percentile) showing distributional uncertainty narrowing as the parse progresses. Generated programmatically from src.visualization.daif_plots.plot_belief_trajectory() (beliefs from src/daif/ inference and push_forward_return() in core.py)." />
+alt="Case-role posterior sharpens from uniform prior as German morphology supplies evidence. DAIF belief trajectory during sequential disambiguation of “Der Hund jagt die Katze schnell.” Top: stacked area showing P(NOM), P(ACC), P(DAT), P(INS) evolution over six words with German morphological glosses. Middle: entropy H[q] with annotated steepest drop marking the most informative word. Bottom: uncertainty fan around the dominant-role probability, constructed as a simple proxy \Delta = 1 - \max_k P(c_k) scaled by fixed percentile multipliers; this is a visual surrogate, not a 51-quantile decomposition of the push-forward return distribution. Generated programmatically from src.visualization.daif_plots.plot_belief_trajectory()." />
 <figcaption aria-hidden="true">Case-role posterior sharpens from uniform
 prior as German morphology supplies evidence. DAIF belief trajectory
 during sequential disambiguation of <em>“Der Hund jagt die Katze
@@ -432,41 +617,76 @@ schnell.”</em> <strong>Top</strong>: stacked area showing P(NOM),
 P(ACC), P(DAT), P(INS) evolution over six words with German
 morphological glosses. <strong>Middle</strong>: entropy <span
 class="math inline">\(H[q]\)</span> with annotated steepest drop marking
-the most informative word. <strong>Bottom</strong>: push-forward return
-distribution as a quantile fan chart (10th–90th percentile) showing
-distributional uncertainty narrowing as the parse progresses. Generated
-programmatically from
-<code>src.visualization.daif_plots.plot_belief_trajectory()</code>
-(beliefs from <code>src/daif/</code> inference and
-<code>push_forward_return()</code> in
-<code>core.py</code>).</figcaption>
+the most informative word. <strong>Bottom</strong>: uncertainty fan
+around the dominant-role probability, constructed as a simple proxy
+<span class="math inline">\(\Delta = 1 - \max_k P(c_k)\)</span> scaled
+by fixed percentile multipliers; this is a visual surrogate,
+<em>not</em> a 51-quantile decomposition of the push-forward return
+distribution. Generated programmatically from
+<code>src.visualization.daif_plots.plot_belief_trajectory()</code>.</figcaption>
 </figure>
 <h2 id="sec:daif-policy">Policy Selection and Expected Free Energy</h2>
 <p>Active inference selects actions (here: next-word predictions or
 syntactic commitments) by minimising <em>expected free energy</em> <span
-class="math inline">\(G{(\pi)}\)</span>, which decomposes into a
-pragmatic term (instrumental value) and an epistemic term (information
-gain):</p>
+class="math inline">\(G{(\pi)}\)</span>. <code>G_policy()</code> in
+<code>src/daif/policy.py</code> implements the four-term decomposition
+used throughout this paper:</p>
 <p><span class="math display">\[\begin{equation}
-G(\pi) = \underbrace{-\mathbb{E}_{q(o|\pi)}[\log p(o)]}_{\text{pragmatic
-value}} + \underbrace{D_{\mathrm{KL}}(q(s|\pi) \|
-p(s))}_{\text{epistemic value}} + \beta \cdot \text{risk}(\pi)
+G(\pi) = \underbrace{-\mathbb{E}_{q(s)}[\log p(o\mid
+s,\pi)]}_{\text{ambiguity}\;(\mathcal{A})}
+\;-\;\underbrace{\mathbb{E}_{q(s)}\bigl[\,H[p(s\mid
+o)]\,\bigr]}_{\text{epistemic value}\;(\mathcal{E})}
+\;-\;\gamma\,\underbrace{\mathbb{E}_{q(s)}[v(s,\pi)]}_{\text{pragmatic
+value}\;(\mathcal{P})}
+\;+\;\beta_{\mathrm{risk}}\,\underbrace{\mathrm{Var}_{Z}[R(\pi)]}_{\text{risk}\;(\mathcal{R})}
 \label{eq:eq-7c-g}
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(\beta \geq 0\)</span> is the
-risk-sensitivity parameter. The <code>G_policy()</code> function in
-<code>src/daif/policy.py</code> computes this for any policy <span
-class="math inline">\(\pi{}\)</span> given a current belief state.
-Policy selection follows a Boltzmann (softmax) distribution over
+<p>Each term is signed so that <em>minimising</em> <span
+class="math inline">\(G(\pi)\)</span> simultaneously minimises
+ambiguity, maximises expected information gain, maximises expected
+pragmatic utility, and penalises high-variance return distributions. The
+weights are <span class="math inline">\(\gamma&gt;0\)</span> (pragmatic
+gain) and <span class="math inline">\(\beta_{\mathrm{risk}}\ge
+0\)</span> (risk sensitivity, using the distributional return variance
+produced by <code>push_forward_return()</code>).</p>
+<p><strong>Collapse identity (derivation).</strong> Setting <span
+class="math inline">\(v(s,\pi) = \log p(o_{\text{goal}} \mid
+s,\pi)\)</span> and <span class="math inline">\(\beta_{\mathrm{risk}} =
+0\)</span> reduces Eq. <span
+class="math inline">\(\ref{eq:eq-7c-g}\)</span> to <span
+class="math display">\[\begin{align*}
+G(\pi) \;&amp;=\; -\mathbb{E}_{q(s)}[\log p(o \mid s,\pi)] \;-\;
+\mathbb{E}_{q(s)}[H[p(s \mid o)]] \;-\; \gamma\,\mathbb{E}_{q(s)}[\log
+p(o_{\text{goal}} \mid s,\pi)]\\
+\;&amp;=\; \underbrace{-\mathbb{E}_{q(s)}[\log p(o \mid
+s,\pi)]}_{\text{expected surprise}} \;+\;
+\underbrace{D_{\mathrm{KL}}\bigl(q(s\mid\pi)\,\|\,p(s)\bigr)}_{\text{epistemic
+value}} \;-\; \gamma\,\mathbb{E}_{q(s)}[\log p(o_{\text{goal}} \mid
+s,\pi)],
+\end{align*}\]</span> where the second equality uses the standard
+active-inference identity <span
+class="math inline">\(-\mathbb{E}_{q(s)}[H[p(s\mid o)]] =
+D_{\mathrm{KL}}(q(s\mid\pi) \,\|\, p(s)) + \text{const}\)</span>
+(Friston et al. <span class="citation"
+data-cites="friston2017active">[-@friston2017active]</span>, Eq. 5),
+valid when the posterior is close to the generative prior so that the
+<span class="math inline">\(H[q(s\mid\pi)]\)</span> term absorbs into
+the constant offset that cancels across policies. This is the canonical
+three-term form of Friston et al., confirming that our decomposition is
+a conservative generalisation rather than a departure.</p>
+<p>Policy selection follows a Boltzmann (softmax) distribution over
 negative EFE:</p>
 <p><span class="math display">\[\begin{equation}
-P(\pi) = \frac{\exp(-\alpha \cdot G(\pi))}{\sum_{\pi&#39;} \exp(-\alpha
-\cdot G(\pi&#39;))}
+P(\pi) = \frac{\exp(-\alpha_{\mathrm{pol}} \cdot
+G(\pi))}{\sum_{\pi&#39;} \exp(-\alpha_{\mathrm{pol}} \cdot G(\pi&#39;))}
 \label{eq:eq-7c-softmax}
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(\alpha &gt; 0\)</span> is the
-inverse temperature. <code>softmax_policy_selection()</code> implements
-this across an array of candidate policies;
+<p>where <span class="math inline">\(\alpha_{\mathrm{pol}} &gt;
+0\)</span> is the inverse temperature (policy softmax), distinct from
+the CVaR tail level <span
+class="math inline">\(\alpha_{\mathrm{CVaR}}\)</span> in the IQN table
+above. <code>softmax_policy_selection()</code> implements this across an
+array of candidate policies;
 <code>distributional_epistemic_value()</code> returns the epistemic
 component alone, enabling decomposition of the policy gradient.</p>
 <p>For case-theoretic reasoning, this means the agent selects the case
@@ -479,73 +699,215 @@ cross-linguistically—they minimise expected free energy under the
 agent’s generative model.</p>
 <h2 id="sec:daif-erp">ERP Amplitude Profiles from Distributional
 Prediction Error</h2>
-<p>The <code>distributional_prediction_error()</code> function
-(<code>src/daif/prediction.py</code>) computes the precision-weighted
-mismatch between the observed return distribution and the predicted
-distribution:</p>
+<p>The DAIF prediction module (<code>src/daif/prediction.py</code>)
+provides two complementary prediction error measures, each appropriate
+for different levels of the distributional hierarchy:</p>
+<p><strong>Scalar DPE</strong>
+(<code>distributional_prediction_error()</code>): For point-prediction
+scenarios where the expected case role is known, the precision-weighted
+surprisal provides a computationally efficient scalar measure:</p>
 <p><span class="math display">\[\begin{equation}
-\mathrm{DPE}(o, q) = \pi_f \cdot W_1(Z_{\text{predicted}},
+\mathrm{DPE}_{\text{scalar}}(c, q) = w_f \cdot \bigl(-\log
+q[c_{\text{expected}}]\bigr)
+\label{eq:eq-7c-dpe-scalar}
+\end{equation}\]</span></p>
+<p><strong>Wasserstein DPE</strong>
+(<code>wasserstein_prediction_error()</code>): For full distributional
+comparisons between predicted and observed return distributions, the
+precision-weighted Wasserstein-1 distance provides the distributional
+measure:</p>
+<p><span class="math display">\[\begin{equation}
+\mathrm{DPE}(o, q) = w_f \cdot W_1(Z_{\text{predicted}},
 Z_{\text{observed}})
 \label{eq:eq-7c-dpe}
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(\pi_f = \mathcal{C}(A,B) \in
+<p>where <span class="math inline">\(w_f = \mathcal{C}(A,B) \in
 [0,1]\)</span> is the enriched morphism weight (precision) of the
 violated case morphism (matching in ) and <span
-class="math inline">\(W_1\)</span> is the Wasserstein-1 distance. This
-yields direct predictions for psycholinguistic ERP components:</p>
+class="math inline">\(W_1\)</span> is the Wasserstein-1 distance.</p>
+<p><strong>Reader’s guide to the four DPE variants.</strong> The DAIF
+framework uses four distinct but related prediction-error measures,
+easily confused because they share the name “DPE”:</p>
+<ol type="1">
+<li><span class="math inline">\(\mathrm{DPE}_{\text{scalar}}\)</span> (,
+<code>distributional_prediction_error()</code>) — a
+<em>point-belief</em> surprisal: precision-weighted cross-entropy on the
+currently-expected role. Used when the grammatically expected role is
+known.</li>
+<li><span class="math inline">\(\mathrm{DPE}\)</span> (full Wasserstein;
+, <code>wasserstein_prediction_error()</code>) — a <em>full
+distributional</em> mismatch between predicted and observed return
+distributions. Used for graded / distributional comparisons.</li>
+<li><span class="math inline">\(\mathrm{DPE}_{\text{semantic}}\)</span>
+( below, input to <code>n400_from_return_distribution()</code>) — the
+<em>first moment</em> of the distributional mismatch, i.e. the absolute
+mean-return shift; tracks the N400 heuristic component.</li>
+<li><span
+class="math inline">\(\mathrm{DPE}_{\text{structural}}\)</span> ( below,
+input to <code>p600_from_precision_update()</code>) — the <em>full
+distributional</em> mismatch <span
+class="math inline">\(W_1(Z_{\text{pred}}, Z_{\text{obs}})\)</span>;
+tracks the P600 discrepancy component and coincides with <span
+class="math inline">\(\mathrm{DPE}\)</span> in item 2.</li>
+</ol>
+<p>Items (3) and (4) decompose (2) into a mean-shift and a
+full-distribution signal; item (1) is a simpler scalar surrogate for
+point-belief use cases.</p>
+<p><strong>ERP derivation from the Free Energy Principle (B6).</strong>
+The two ERP formulas below are <em>derived</em> from a free-energy
+decomposition rather than posited empirically. A new word arriving at
+the case-assignment layer induces a change in variational free energy
+<span class="math inline">\(\Delta F = F_{\text{post}} -
+F_{\text{prior}}\)</span>. Using <span class="math inline">\(F =
+D_{\mathrm{KL}}\bigl(q \,\|\, p(s)\bigr) - \mathbb{E}_q[\log
+p(o|s)]\)</span> (the variational free-energy decomposition introduced
+in ) and splitting <span class="math inline">\(q \to q&#39;\)</span>
+into a posterior-mean shift and a precision-sharpening component, a
+first-order expansion gives <span
+class="math display">\[\begin{equation*}
+\Delta F \;=\; \underbrace{-\bigl(\mathbb{E}_{q&#39;}[Z_{\text{obs}}] -
+\mathbb{E}_{q}[Z_{\text{pred}}]\bigr)}_{\text{mean-return
+shift}\;\approx\;\mathrm{DPE}_{\text{semantic}}} \;+\;
+\underbrace{\tfrac{1}{2}\,\Delta\Lambda\,\sigma_Z^{2}}_{\text{precision
+update}\;\approx\;\Delta\Lambda \cdot \mathrm{DPE}_{\text{structural}}}
+\;+\; O(\|\Delta q\|^2),
+\end{equation*}\]</span> where <span
+class="math inline">\(\sigma_Z^2\)</span> is the return-distribution
+variance (proxied at first order by <span
+class="math inline">\(W_1(Z_{\text{pred}}, Z_{\text{obs}})\)</span>).
+The mean-return shift is the heuristic, expectation-dominated component
+that Kuperberg and Jaeger <span class="citation"
+data-cites="kuperberg2016mean">[-@kuperberg2016mean]</span> and Li and
+Futrell <span class="citation"
+data-cites="li2023decomposition">[-@li2023decomposition]</span>
+associate with the N400; the precision-update term is the discrepancy,
+structure-update component that Rabovsky et al. <span class="citation"
+data-cites="rabovsky2018modelling">[-@rabovsky2018modelling]</span> and
+Li and Futrell <span class="citation"
+data-cites="li2024shallow">[-@li2024shallow]</span> associate with the
+P600. Severity gating <span class="math inline">\(S_{\text{violation}}
+\in \{0, 0.5, 1.0\}\)</span> modulates both components multiplicatively,
+reflecting the attenuation of prediction-error signals when the
+violation is only mild. The precision on the semantic component is <span
+class="math inline">\(w_c\)</span> (the enriched morphism weight), and
+the amplitude calibration <span class="math inline">\(s\)</span> on the
+P600 converts the dimensionless free-energy increment into μV. This
+yields the severity-gated decomposition:</p>
 <p><span class="math display">\[\begin{align}
-\mathrm{N400}(c) &amp;= \mathrm{DPE}_{\text{semantic}} \cdot \pi_c \cdot
-S_{\text{violation}} \label{eq:eq-7c-n400} \\
-\mathrm{P600}(c) &amp;= \mathrm{DPE}_{\text{structural}} \cdot (1-\pi_c)
-\cdot S_{\text{violation}} \label{eq:eq-7c-p600}
+\mathrm{N400}(c) &amp;= -\,\mathrm{DPE}_{\text{semantic}} \cdot w_c
+\cdot S_{\text{violation}} \label{eq:eq-7c-n400} \\
+\mathrm{P600}(c) &amp;= s\,\cdot\,\Delta\Lambda \cdot
+\mathrm{DPE}_{\text{structural}} \cdot S_{\text{violation}}
+\label{eq:eq-7c-p600}
 \end{align}\]</span></p>
 <p>where <span class="math inline">\(S_{\text{violation}} \in \{0, 0.5,
-1.0\}\)</span> encodes violation severity (congruent / mild / strong)
-and <span class="math inline">\(\pi_c\)</span> is the enriched weight of
-the case morphism in question. This dual decomposition directly mirrors
-the empirical finding of Li and Futrell <span class="citation"
+1.0\}\)</span> encodes violation severity (congruent / mild / strong),
+<span class="math inline">\(w_c\)</span> is the enriched weight of the
+case morphism, <span class="math inline">\(\Delta\Lambda = \max(0,
+\Lambda_{\text{post}} - \Lambda_{\text{prior}})\)</span> is the
+precision-update magnitude reflecting the structural reanalysis cost,
+and <span class="math inline">\(s &gt; 0\)</span> is a dimensionless
+amplitude-calibration constant (default <span
+class="math inline">\(s=1\)</span> in
+<code>p600_from_precision_update()</code>). The leading minus sign in
+Eq. <span class="math inline">\(\ref{eq:eq-7c-n400}\)</span> follows
+electrophysiological convention: larger semantic surprise yields a more
+negative deflection at the N400 latency, consistent with the sign
+produced by <code>n400_from_return_distribution()</code> in
+<code>src/daif/prediction.py</code>. The two <span
+class="math inline">\(\mathrm{DPE}\)</span> flavours appearing here are
+defined formally by:</p>
+<p><span class="math display">\[\begin{align}
+\mathrm{DPE}_{\text{semantic}}\;&amp;=\;\bigl\lvert
+\mathbb{E}[Z_{\text{pred}}] - \mathbb{E}[Z_{\text{obs}}] \bigr\rvert
+\label{eq:eq-7c-dpe-semantic}\\
+\mathrm{DPE}_{\text{structural}}\;&amp;=\;W_{1}\bigl(Z_{\text{pred}},\,Z_{\text{obs}}\bigr)
+\label{eq:eq-7c-dpe-structural}
+\end{align}\]</span></p>
+<p>i.e. <span
+class="math inline">\(\mathrm{DPE}_{\text{semantic}}\)</span> is the
+absolute mean-return mismatch (the heuristic component in the Li–Futrell
+decomposition, tracking the N400) and <span
+class="math inline">\(\mathrm{DPE}_{\text{structural}}\)</span> is the
+full distributional Wasserstein-1 mismatch (the discrepancy component,
+tracking the P600). Computationally, N400 amplitudes are extracted via
+<code>n400_from_return_distribution()</code> (which computes mean-return
+mismatch scaled by precision and severity), while P600 amplitudes use
+<code>p600_from_precision_update()</code> (which computes
+precision-update magnitude scaled by DPE and severity). This dual
+decomposition directly mirrors the empirical finding of Li and Futrell
+<span class="citation"
 data-cites="li2023decomposition li2024shallow">[-@li2023decomposition;
 -@li2024shallow]</span>, who show that surprisal decomposes into a
 <em>heuristic</em> component tracking N400 and a <em>discrepancy</em>
 component tracking P600—precisely the semantic vs. structural split
 captured by <span
 class="math inline">\(\mathrm{DPE}_{\text{semantic}}\)</span> and <span
-class="math inline">\(\mathrm{DPE}_{\text{structural}}\)</span> above.
-The <code>erp_amplitude_profile()</code> function generates a complete
+class="math inline">\(\mathrm{DPE}_{\text{structural}}\)</span>
+above.</p>
+<p>Our framework explicitly accommodates Rabovsky et al.’s <span
+class="citation"
+data-cites="rabovsky2018modelling">[-@rabovsky2018modelling]</span>
+finding that the N400 reflects a probabilistic Bayesian belief update,
+extending it by formally equipping the N400 semantic surprise as a
+distributional prediction-error over explicit case boundaries. (The
+complementary neurobiological-timing question raised by the ROSE model
+is addressed in the Limitations subsection below, after the metrics
+discussion and before the CEREBRUM integration.)</p>
+<p>Ultimately, the <code>erp_amplitude_profile()</code> master function
+aggregates these distinct computations into a complete
 <code>ERPProfile</code> dataclass containing:</p>
 <ul>
 <li><strong>N400 amplitude</strong> (µV) and <strong>peak
 latency</strong> (ms) for each case role</li>
 <li><strong>P600 amplitude</strong> (µV) and <strong>peak
 latency</strong> (ms) for each case role</li>
-<li><strong>Time-series waveforms</strong> sampled at 1 kHz over a 1000
-ms epoch</li>
+<li><strong>Time-series waveforms</strong> sampled at 1 kHz over a 1100
+ms epoch (−200 to +900 ms)</li>
 </ul>
 <p> demonstrates predicted ERP amplitudes across all eight case roles
-under three violation conditions. A key result: because VOC→NOM is the
-most structurally inadmissible transition (morphism weight <span
-class="math inline">\(\approx 0\)</span>), it elicits the largest P600;
-while the GEN→ACC semantic mismatch, with moderate morphism weight,
-elicits a pronounced N400 but attenuated P600.</p>
+under three violation conditions. A key result: because VOC carries the
+lowest enriched precision weight in the illustration (<span
+class="math inline">\(w = 0.10\)</span>, the smallest among all eight
+roles), VOC→NOM is the most structurally inadmissible transition and
+elicits the largest P600; while GEN, with moderate precision weight
+(<span class="math inline">\(w = 0.70\)</span>), elicits a pronounced
+N400 but attenuated P600.</p>
 <figure id="fig:daif-erp-predictions">
 <img src="output/figures/daif_erp_predictions.png"
-alt="Distributional prediction error predicts graded N400/P600 amplitudes across all eight case roles. Left: simulated ERP waveforms for three violation conditions—congruent (NOM→NOM), mild (ACC→NOM), and strong (VOC→NOM)—showing component timing and amplitude scaling per –. Middle: scatter of enriched weight \pi{} versus distributional prediction error (DPE, ) for all roles, with regression line and R^2. Right: predicted versus literature-typical N400/P600 amplitudes. VOC→NOM (weight \approx 0) elicits the largest P600; GEN→ACC (moderate weight) elicits a pronounced N400 but attenuated P600. Generated programmatically from src.visualization.daif_plots.plot_erp_predictions() (amplitudes from erp_amplitude_profile() and related APIs in src/daif/prediction.py)." />
+alt="Distributional prediction error predicts graded N400/P600 amplitudes across all eight case roles. Left: illustrative Gaussian ERP waveforms for three violation conditions — congruent (NOM→NOM), mild (ACC→NOM), and strong (VOC→NOM) — with fixed template amplitudes (-1.5/3.0, -4.0/3.0, -7.0/6.0 μV N400/P600) and peaks at 380 ms / 600 ms (matching DEFAULT_N400_PEAK_MS / DEFAULT_P600_PEAK_MS in src/daif/prediction.py), shown to depict the mechanism of – rather than a calibrated simulation. Middle: scatter of enriched weight w versus scalar DPE () for all eight case roles, computed via distributional_prediction_error() in src/daif/prediction.py. Right: real DAIF-predicted magnitudes — mean N400 magnitude via n400_from_return_distribution() and mean P600 via p600_from_precision_update() across the eight roles (make_erp_prediction_data() in src/cognitive/figure_data.py) — alongside literature-typical amplitude ranges from Kutas &amp; Federmeier [-@kutas2011thirty] (N400 magnitude 3–5 μV, P600 5–8 μV, shown with error bars). Note that the model predictions are on a dimensionless DPE scale (units of log-probability × enriched weight), whereas the literature values are calibrated in μV; the comparison is therefore qualitative (relative ordering and graded response to precision) rather than a numerical match. A future calibration step would require fitting a per-subject μV-per-nat scaling constant to empirical ERP data. Generated programmatically from src.visualization.daif_plots.plot_erp_predictions()." />
 <figcaption aria-hidden="true">Distributional prediction error predicts
 graded N400/P600 amplitudes across all eight case roles.
-<strong>Left</strong>: simulated ERP waveforms for three violation
-conditions—congruent (NOM→NOM), mild (ACC→NOM), and strong
-(VOC→NOM)—showing component timing and amplitude scaling per –.
+<strong>Left</strong>: illustrative Gaussian ERP waveforms for three
+violation conditions — congruent (NOM→NOM), mild (ACC→NOM), and strong
+(VOC→NOM) — with fixed template amplitudes (<span
+class="math inline">\(-1.5/3.0\)</span>, <span
+class="math inline">\(-4.0/3.0\)</span>, <span
+class="math inline">\(-7.0/6.0\)</span> μV N400/P600) and peaks at 380
+ms / 600 ms (matching <code>DEFAULT_N400_PEAK_MS</code> /
+<code>DEFAULT_P600_PEAK_MS</code> in
+<code>src/daif/prediction.py</code>), shown to depict the
+<em>mechanism</em> of – rather than a calibrated simulation.
 <strong>Middle</strong>: scatter of enriched weight <span
-class="math inline">\(\pi{}\)</span> versus distributional prediction
-error (DPE, ) for all roles, with regression line and <span
-class="math inline">\(R^2\)</span>. <strong>Right</strong>: predicted
-versus literature-typical N400/P600 amplitudes. VOC→NOM (weight <span
-class="math inline">\(\approx 0\)</span>) elicits the largest P600;
-GEN→ACC (moderate weight) elicits a pronounced N400 but attenuated P600.
-Generated programmatically from
-<code>src.visualization.daif_plots.plot_erp_predictions()</code>
-(amplitudes from <code>erp_amplitude_profile()</code> and related APIs
-in <code>src/daif/prediction.py</code>).</figcaption>
+class="math inline">\(w\)</span> versus scalar DPE () for all eight case
+roles, computed via <code>distributional_prediction_error()</code> in
+<code>src/daif/prediction.py</code>. <strong>Right</strong>:
+<em>real</em> DAIF-predicted magnitudes — mean N400 magnitude via
+<code>n400_from_return_distribution()</code> and mean P600 via
+<code>p600_from_precision_update()</code> across the eight roles
+(<code>make_erp_prediction_data()</code> in
+<code>src/cognitive/figure_data.py</code>) — alongside
+literature-typical amplitude ranges from Kutas &amp; Federmeier <span
+class="citation" data-cites="kutas2011thirty">[-@kutas2011thirty]</span>
+(N400 magnitude 3–5 μV, P600 5–8 μV, shown with error bars). Note that
+the model predictions are on a <em>dimensionless</em> DPE scale (units
+of log-probability × enriched weight), whereas the literature values are
+calibrated in μV; the comparison is therefore qualitative (relative
+ordering and graded response to precision) rather than a numerical
+match. A future calibration step would require fitting a per-subject
+μV-per-nat scaling constant to empirical ERP data. Generated
+programmatically from
+<code>src.visualization.daif_plots.plot_erp_predictions()</code>.</figcaption>
 </figure>
 <h2 id="sec:daif-metrics">Convergence Diagnostics and Distributional
 Metrics</h2>
@@ -554,9 +916,13 @@ tools for verifying DAIF model behaviour:</p>
 <p><strong>Convergence diagnostics</strong>
 (<code>convergence_diagnostics()</code>) assess whether a free-energy
 trajectory <span class="math inline">\(\{F^{(t)}\}_{t=0}^{T}\)</span> is
-well-behaved. Given the free energy sequence produced by VMP, the
-diagnostics return:</p>
-<table>
+well-behaved. Given the free-energy sequence produced by VMP, the
+function returns a dict with the eight fields below (keys match the
+Python return value exactly):</p>
+<table id="tbl:convergence-metrics">
+<caption>Convergence diagnostic metrics for DAIF free-energy
+trajectories. Keys match <code>convergence_diagnostics()</code> in
+<code>src/daif/metrics.py</code> one-to-one.</caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 33%" />
@@ -564,35 +930,65 @@ diagnostics return:</p>
 </colgroup>
 <thead>
 <tr>
-<th style="text-align: left;">Metric</th>
+<th style="text-align: left;">Key</th>
 <th style="text-align: left;">Formula</th>
 <th style="text-align: left;">Interpretation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>is_monotone</code></td>
+<td style="text-align: left;"><code>monotone</code></td>
 <td style="text-align: left;"><span class="math inline">\(\forall t:
 F^{(t+1)} \leq F^{(t)}\)</span></td>
 <td style="text-align: left;">FE decreasing at every step</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>relative_reduction</code></td>
-<td style="text-align: left;"><span class="math inline">\((F^{(0)} -
-F^{(T)}) / \lvert F^{(0)}\rvert\)</span></td>
-<td style="text-align: left;">Fraction of initial FE eliminated</td>
+<td style="text-align: left;"><code>total_reduction</code></td>
+<td style="text-align: left;"><span class="math inline">\(F^{(0)} -
+F^{(T)}\)</span></td>
+<td style="text-align: left;">Total free energy minimised
+(absolute)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>relative_reduction_pct</code></td>
+<td style="text-align: left;"><span class="math inline">\(100\cdot
+(F^{(0)} - F^{(T)}) / \lvert F^{(0)}\rvert\)</span></td>
+<td style="text-align: left;">Fraction of initial FE eliminated, %</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>n_iterations</code></td>
+<td style="text-align: left;"><span class="math inline">\(T +
+1\)</span></td>
+<td style="text-align: left;">Number of iterations in the
+trajectory</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>converged</code></td>
 <td style="text-align: left;"><span class="math inline">\(\lvert F^{(T)}
-- F^{(T-1)}\rvert &lt; \epsilon\)</span></td>
-<td style="text-align: left;">Reached stable minimum</td>
+- F^{(T-1)}\rvert &lt; 0.01\cdot(F_{\max} - F_{\min})\)</span></td>
+<td style="text-align: left;">Reached stable minimum (within 1 % of
+range)</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>final_value</code></td>
+<td style="text-align: left;"><code>fe_range</code></td>
+<td style="text-align: left;"><span class="math inline">\((F_{\min},\,
+F_{\max})\)</span></td>
+<td style="text-align: left;">Absolute FE bounds across the
+trajectory</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>mean_step_size</code></td>
 <td style="text-align: left;"><span
-class="math inline">\(F^{(T)}\)</span></td>
-<td style="text-align: left;">Absolute FE at convergence</td>
+class="math inline">\(\tfrac{1}{T}\sum_{t} \lvert F^{(t+1)} -
+F^{(t)}\rvert\)</span></td>
+<td style="text-align: left;">Average per-iteration FE change</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>final_delta</code></td>
+<td style="text-align: left;"><span class="math inline">\(\lvert F^{(T)}
+- F^{(T-1)}\rvert\)</span></td>
+<td style="text-align: left;">Final step size at convergence or
+timeout</td>
 </tr>
 </tbody>
 </table>
@@ -620,35 +1016,241 @@ quantile levels and empirical coverage frequencies:</p>
 \end{equation}\]</span></p>
 <p>A perfectly calibrated distributional model achieves <span
 class="math inline">\(\mathrm{CE} = 0\)</span>; the DAIF implementation
-yields <span class="math inline">\(\mathrm{CE} &lt; 0.01\)</span> on all
-test cases evaluated in <code>test_daif_metrics.py</code>.</p>
+in <code>src/daif/metrics.py</code> (tested in
+<code>test_daif_metrics.py</code>) yields <span
+class="math inline">\(\mathrm{CE} &lt; 0.05\)</span> on evaluated cases
+(<strong>implemented and tested</strong>).</p>
 <p><strong>Return distribution entropy</strong>
 (<code>return_distribution_entropy()</code>) quantifies uncertainty in
 the distributional belief:</p>
 <p><span class="math display">\[\begin{equation}
-H[Z] = -\sum_{i=1}^{N_{\text{atoms}}} p_i \log p_i
+H[Z] = -\sum_{i=1}^{N_{\text{bins}}} p_i \log p_i
 \label{eq:eq-7c-entropy}
 \end{equation}\]</span></p>
-<p>This links directly to the belief trajectory in : entropy decreases
-monotonically as the distributional belief sharpens, providing a scalar
-summary of parse certainty.</p>
+<p>where the <span class="math inline">\(p_i\)</span> are obtained by
+discretising the quantile-parameterised return onto <span
+class="math inline">\(N_{\text{bins}}\)</span> equal-width bins (default
+<span class="math inline">\(N_{\text{bins}}=50\)</span> in
+<code>src/daif/metrics.py</code>) with additive <span
+class="math inline">\(\epsilon\)</span>-smoothing <span
+class="math inline">\(p_i \leftarrow (c_i + \epsilon) / (\sum_j c_j +
+N_{\text{bins}}\,\epsilon)\)</span> to keep the estimator finite when
+bins are empty. The estimator is consistent at the usual <span
+class="math inline">\(O(1/N_{\text{bins}})\)</span> discretisation rate
+as <span class="math inline">\(N_{\text{bins}} \to \infty\)</span>, and
+satisfies <span class="math inline">\(0 \le H[Z] \le \log
+N_{\text{bins}}\)</span> by direct enumeration. This links to the belief
+trajectory in : entropy decreases monotonically as the distributional
+belief sharpens, providing a scalar summary of parse certainty.</p>
+<h3 id="sec:daif-support-utils">Two Supporting Utilities Exposed by
+<code>src/daif/</code></h3>
+<p>Two further public symbols in the DAIF subpackage support the
+machinery above without requiring a separate equation:</p>
+<ul>
+<li><strong><code>distributional_epistemic_value()</code></strong>
+(<code>src/daif/policy.py</code>) measures the information-theoretic
+value of resolving uncertainty in the return distribution via the
+differential-entropy form <span
+class="math inline">\(\mathrm{EV}_{\mathrm{dist}} =
+\tfrac{1}{2}\log\bigl(\mathrm{Var}[Z]/\sigma^2_{\mathrm{ref}}\bigr)\)</span>.
+In the risk-sensitive regime (<span
+class="math inline">\(\beta_{\mathrm{risk}}&gt;0\)</span> in ) this
+function decomposes the risk term <span
+class="math inline">\(\mathrm{Var}_Z[R(\pi)]\)</span> into a positive
+“exploration premium” when the current return distribution is more
+dispersed than the reference.</li>
+<li><strong><code>categorical_return_distribution()</code></strong>
+(<code>src/daif/core.py</code>) realises the C51 projection operator
+<span class="math inline">\(\Phi\colon \mathcal{P}(\mathbb{R}) \to
+\mathcal{P}(\{z_1,\dots,z_{N_{\text{atoms}}}\})\)</span> that maps a
+quantile-parameterised return onto the fixed atomic support of Eq. <span
+class="math inline">\(\ref{eq:eq-7c-c51}\)</span>. The operator is
+<em>non-expansive</em> in <span class="math inline">\(W_1\)</span>: by
+construction <span class="math inline">\(\Phi\)</span> redistributes
+each quantile mass across at most two adjacent atoms using barycentric
+weights summing to 1, so for any two return distributions <span
+class="math inline">\(P, Q\)</span> one has <span
+class="math inline">\(W_1(\Phi P, \Phi Q) \le W_1(P, Q)\)</span> — hence
+<span class="math inline">\(\Phi\)</span> is 1-Lipschitz (and in fact
+strictly contractive whenever <span class="math inline">\(P\)</span> and
+<span class="math inline">\(Q\)</span> place mass strictly between
+atoms). This is the reason C51/DAIF interoperability preserves
+contraction bounds from .</li>
+</ul>
+<h3 id="dimensional-analysis">Dimensional Analysis</h3>
+<p>The quantities appearing in this section carry the following
+units:</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 38%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Quantity</th>
+<th style="text-align: center;">Symbol</th>
+<th style="text-align: left;">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Variational free energy</td>
+<td style="text-align: center;"><span
+class="math inline">\(F\)</span></td>
+<td style="text-align: left;">nats</td>
+</tr>
+<tr>
+<td style="text-align: left;">Return (discounted cumulative reward)</td>
+<td style="text-align: center;"><span
+class="math inline">\(Z(s,a)\)</span></td>
+<td style="text-align: left;">return units (e.g. dimensionless
+log-probability)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wasserstein distance on returns</td>
+<td style="text-align: center;"><span class="math inline">\(W_p(Z_a,
+Z_b)\)</span></td>
+<td style="text-align: left;">return units</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(\mathrm{DPE}_{\text{semantic}}\)</span></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: left;">return units (= <span
+class="math inline">\(\lvert\Delta\mathbb{E}[Z]\rvert\)</span>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(\mathrm{DPE}_{\text{structural}}\)</span></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: left;">return units (= <span
+class="math inline">\(W_1\)</span>)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Enriched weight (precision)</td>
+<td style="text-align: center;"><span
+class="math inline">\(w_c\)</span></td>
+<td style="text-align: left;">dimensionless, <span
+class="math inline">\(\in[0,1]\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Precision-update magnitude</td>
+<td style="text-align: center;"><span
+class="math inline">\(\Delta\Lambda\)</span></td>
+<td style="text-align: left;">dimensionless (weight difference)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Severity gating</td>
+<td style="text-align: center;"><span
+class="math inline">\(S_{\text{violation}}\)</span></td>
+<td style="text-align: left;">dimensionless, <span
+class="math inline">\(\in\{0,0.5,1\}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">N400 amplitude ()</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: left;">return units (<em>not</em> μV until
+calibrated)</td>
+</tr>
+<tr>
+<td style="text-align: left;">P600 amplitude ()</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: left;">return units × dimensionless <span
+class="math inline">\(s\)</span> (<em>not</em> μV until calibrated)</td>
+</tr>
+</tbody>
+</table>
+<p>Since <span class="math inline">\(Z\)</span> in our implementation is
+built from log-likelihood proxies (<code>safe_log_lik</code> in
+<code>src/daif/inference.py</code>), the return is effectively in
+<em>nats</em>, and every quantity derived from <span
+class="math inline">\(Z\)</span> is therefore dimensionally a
+free-energy-like scalar. A future ERP-calibration step would convert
+“nats” to “μV” via a per-subject scaling constant, as noted in the
+caption.</p>
+<h2 id="sec:daif-limitations">Limitations and Neurobiological Scope</h2>
+<p>Four limitations of the current DAIF implementation are recorded
+explicitly for future work:</p>
+<ol type="1">
+<li><p><strong>Mean-field approximation (cost/accuracy).</strong>
+<code>push_forward_return()</code> maintains one belief-weighted return
+distribution rather than per-state distributions <span
+class="math inline">\(Z(s)\)</span>, reducing memory from <span
+class="math inline">\(\mathcal{O}(n\cdot N_{\text{atoms}})\)</span> to
+<span class="math inline">\(\mathcal{O}(n)\)</span>. By the mean-field
+bound proved later in this section (the dominated-convergence argument
+under “B5” in the contraction analysis) the approximation error is at
+most <span class="math inline">\(\gamma\cdot R_{\max}\cdot H[q]\)</span>
+in <span class="math inline">\(W_1\)</span>, where <span
+class="math inline">\(R_{\max}\)</span> is the sup-norm of the reward
+vector. For sharp posteriors (<span class="math inline">\(H[q]\lesssim
+0.1\)</span> nats at <span class="math inline">\(\gamma=0.99\)</span>
+and unit-scale rewards) the error is below <span
+class="math inline">\(0.1\)</span> return-unit — well below the
+within-subject noise floor on ERP measurements; it degrades linearly as
+the posterior diffuses.</p></li>
+<li><p><strong>Enriched-categorical unification is a
+conjecture.</strong> The three “distributional” tracks — distributional
+semantics (), distributional RL (this section), and active-inference
+posteriors — are implemented and empirically correspond via <span
+class="math inline">\([0,1]\)</span>-enriched hom-values, but a
+<em>categorical</em> proof that they share a common enriched base
+remains open. The conjecture is stated in the opening of this section
+and is not used as a load-bearing claim elsewhere in the paper.</p></li>
+<li><p><strong>Empirical validation is narrow.</strong> Our
+case-assignment demonstrations use a single German transitive sentence
+(<em>“Der Hund jagt die Katze schnell”</em>). Cross-linguistic and
+cross-register validation is left to future work; the hooks in
+<code>make_daif_belief_trajectory_data()</code> make adding new
+sentences a single-function change. A Russian or Serbian/BCS sentence —
+say <em>Sobaka kusaet čeloveka</em> “the dog bites the man” — would be a
+particularly clean DAIF stress-test, since the unambiguous case suffixes
+(<em>-a</em> NOM.SG.F vs <em>-a</em> ACC.SG.M.ANIM after stem hardening)
+deliver an information-theoretically sharper drop in <span
+class="math inline">\(H[q]\)</span> at the case-marked noun than the
+German example, where word-final case markers compete with positional
+disambiguation and gender / number ambiguity in the determiner
+system.</p></li>
+<li><p><strong>Phase–amplitude coupling (PAC) latency gap.</strong> DAIF
+predicts ERP <em>amplitudes</em> from distributional prediction errors
+but does not predict component <em>latencies</em>. The ROSE model <span
+class="citation" data-cites="murphy2023rose">[@murphy2023rose]</span>
+argues that the structural-discrepancy (P600-analogous slow-phase)
+signal must establish a geometric “mesoscopic protectorate” before
+semantic surprise (N400-analogous rapid gamma binding) can be fully
+constrained. A principled treatment of this cross-frequency-coupling
+delay would require an explicit timing parameter at the CEREBRUM layer
+() — the present implementation keeps N400/P600 latencies as fixed
+Gaussian peaks at 380 ms and 600 ms respectively (see
+<code>DEFAULT_N400_PEAK_MS</code> and <code>DEFAULT_P600_PEAK_MS</code>
+in <code>src/daif/prediction.py</code>).</p></li>
+</ol>
 <h2 id="sec:cerebrum">CEREBRUM: Eight Cases as Functional
 Specializations</h2>
+<p>The preceding six contributions—push-forward returns, quantile TD for
+case precision, VMP message passing, epistemic policy selection, ERP
+convergence profiles, and Bethe free-energy decomposition—define a
+distributional active inference layer for sentence processing. CEREBRUM
+translates this layer into a complete computational architecture by
+assigning each of the eight traditional cases a functional role within
+the inference engine.</p>
 <h3 id="architecture-and-design-principles">Architecture and Design
 Principles</h3>
 <p>The <strong>CEREBRUM</strong> framework <span class="citation"
-data-cites="friedman2024cerebrum cerebrum2024github">[@friedman2024cerebrum;
-@cerebrum2024github]</span>—Case-Enabled Reasoning Engine with Bayesian
-Representations for Unified Modeling—provides a computational
-architecture that implements the categorical case framework within an
-active inference engine. CEREBRUM instantiates the view of Vasil et al.
-<span class="citation"
+data-cites="friedman2024cerebrum">[@friedman2024cerebrum]</span>—Case-Enabled
+Reasoning Engine with Bayesian Representations for Unified
+Modeling—provides a computational architecture that implements the
+categorical case framework within an active inference engine. CEREBRUM
+instantiates the view of Vasil et al. <span class="citation"
 data-cites="vasil2020world">[-@vasil2020world]</span> that human
 communication is itself active inference: a process of jointly
 constructing and refining generative models of shared relational
 structure.</p>
-<p>CEREBRUM’s key design principles:</p>
-<table>
+<p>CEREBRUM’s key design principles ():</p>
+<table id="tbl:cerebrum-principles">
+<caption>CEREBRUM design principles: conceptual commitments and their
+implementation in the reasoning engine.</caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -704,77 +1306,6 @@ point estimates throughout the generative cycle</td>
 <h3 id="case-roles-as-functional-specializations-in-cerebrum">Case Roles
 as Functional Specializations in CEREBRUM</h3>
 <p>CEREBRUM deploys the eight traditional cases as functional
-specializations, each with a DAIF-level extension:</p>
-<table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Case</th>
-<th style="text-align: left;">CEREBRUM Function</th>
-<th style="text-align: left;">Active Inference Role</th>
-<th style="text-align: left;">DAIF Extension</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">NOM</td>
-<td style="text-align: left;">Primary driver / agent</td>
-<td style="text-align: left;">Source of action policies</td>
-<td style="text-align: left;">Softmax policy over <span
-class="math inline">\(G{(\pi)}\)</span>; highest epistemic value</td>
-</tr>
-<tr>
-<td style="text-align: left;">ACC</td>
-<td style="text-align: left;">Primary target / patient</td>
-<td style="text-align: left;">Object of predictions</td>
-<td style="text-align: left;">Predicted distribution <span
-class="math inline">\(Z_{\text{acc}}\)</span>; error-driven update</td>
-</tr>
-<tr>
-<td style="text-align: left;">GEN</td>
-<td style="text-align: left;">Source / possessor</td>
-<td style="text-align: left;">Provider of priors</td>
-<td style="text-align: left;">Prior return distribution <span
-class="math inline">\(p(Z)\)</span></td>
-</tr>
-<tr>
-<td style="text-align: left;">DAT</td>
-<td style="text-align: left;">Recipient / goal</td>
-<td style="text-align: left;">Target of information transfer</td>
-<td style="text-align: left;">EIG maximised toward DAT state</td>
-</tr>
-<tr>
-<td style="text-align: left;">INS</td>
-<td style="text-align: left;">Instrument / means</td>
-<td style="text-align: left;">Tool for state transformation</td>
-<td style="text-align: left;">IQN risk distortion (neutral mode)</td>
-</tr>
-<tr>
-<td style="text-align: left;">LOC</td>
-<td style="text-align: left;">Context / environment</td>
-<td style="text-align: left;">Markov blanket boundary</td>
-<td style="text-align: left;">Bethe FE boundary conditions</td>
-</tr>
-<tr>
-<td style="text-align: left;">ABL</td>
-<td style="text-align: left;">Origin / cause</td>
-<td style="text-align: left;">Source of causal influence</td>
-<td style="text-align: left;">Push-forward source measure <span
-class="math inline">\(\mathbb{P}_{x_0,a_0}\)</span></td>
-</tr>
-<tr>
-<td style="text-align: left;">VOC</td>
-<td style="text-align: left;">Addressee</td>
-<td style="text-align: left;">Pragmatic pointer</td>
-<td style="text-align: left;">Lowest epistemic weight; largest P600 on
-violation</td>
-</tr>
-</tbody>
-</table>
+specializations, each with a DAIF-level extension ():</p>
 </body>
 </html>

@@ -3,9 +3,11 @@
 > **Agent operational guide** for the `cognitive_case_diagrams` project.  
 > Read this first before modifying any source, manuscript, or test file.
 
-**Publication title** (canonical): *Compositional Approaches to Linguistic Case for Cognitive Modeling* — [`manuscript/config.yaml`](manuscript/config.yaml) `paper.title`.
+**Publication title** (canonical): *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* — [`manuscript/config.yaml`](manuscript/config.yaml) `paper.title`. (Version 2.3, 2026-04-22, DOI [10.5281/zenodo.19695260](https://doi.org/10.5281/zenodo.19695260).)
 
-**Path:** This checkout is under `projects/cognitive_case_diagrams/`. Local development: run `uv run pytest` and figure scripts from the project directory.
+**Path:** `projects/cognitive_case_diagrams/` — pipeline-discoverable. Run `uv run pytest` and figure scripts from the project directory.
+
+**Versions:** The **Python package** semver is in [`pyproject.toml`](pyproject.toml) (`project.version`, e.g. **2.3.0**). The **manuscript edition** (e.g. **v2.3**, 2026-04-22) is recorded in [`manuscript/AGENTS.md`](manuscript/AGENTS.md) and [`manuscript/config.yaml`](manuscript/config.yaml). Patch bumps can track manuscript releases; they may still diverge when only one side changes.
 
 ---
 
@@ -51,7 +53,7 @@ The manuscript formalizes linguistic case systems using category theory and inte
 | §8 | Quantum POVM Case Assignment | `src/quantum/` |
 | §9b | Cognitive Security | `src/security/` |
 
-**Section naming:** In the manuscript, §7b is computational verification and §7c is DAIF results. In `src/` package comments, **`cognitive/`** is labeled **§7a** (scalar active inference) and **`daif/`** is **§7c** — see [`src/__init__.py`](src/__init__.py) import blocks and `__all__`.
+**Section naming:** The manuscript uses **§7** for scalar active inference (`07_cognitive_integration.md`), **§7b** for computational verification, **§7c** for DAIF (`07c_daif_results.md`). Package comments and docs use the same numbers — see [`src/__init__.py`](src/__init__.py) import blocks and `__all__`.
 
 ---
 
@@ -145,25 +147,25 @@ Requires the project under `projects/cognitive_case_diagrams/`.
 
 ### Individual Stages
 
-Same requirement: project path must be `projects/cognitive_case_diagrams/` for root scripts.
+Same requirement: project path must be `projects/cognitive_case_diagrams/` for root scripts. Stage names and numbers match the repository-wide 10-stage DAG documented in the root `CLAUDE.md` (clean → setup → infra tests → project tests → analysis → render → validate → LLM review → LLM translations → copy).
 
 ```bash
 # Stage 1: Environment setup
 uv run python scripts/00_setup_environment.py --project cognitive_case_diagrams
 
-# Stage 2: Tests (must pass before PDF generation)
+# Stages 2–3: Infrastructure + project tests (must pass before PDF generation)
 uv run python scripts/01_run_tests.py --project cognitive_case_diagrams
 
-# Stage 3: Analysis / figure generation
+# Stage 4: Analysis / figure generation
 uv run python scripts/02_run_analysis.py --project cognitive_case_diagrams
 
-# Stage 4: PDF rendering
+# Stage 5: PDF rendering
 uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams
 
-# Stage 5: Validation
+# Stage 6: Validation
 uv run python scripts/04_validate_output.py --project cognitive_case_diagrams
 
-# Stage 6: Copy outputs
+# Stage 9: Copy outputs (stages 7–8 are optional Ollama-backed LLM review/translation)
 uv run python scripts/05_copy_outputs.py --project cognitive_case_diagrams
 ```
 
@@ -175,6 +177,8 @@ Works from any cwd if you use the path below (repo root) or run from inside this
 uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py
 ```
 
+**§9b monoidal functor security figure:** When analysis builds `monoidal_functor_security` (`plot_monoidal_functor_security` in `src/visualization/security_plots.py`), `src.case_systems.functor` may log tensor-preservation failures (for example merges that collapse distinct roles). Those messages are intentional diagnostic output for the visualization—the figure illustrates failures— and are not treated as pipeline errors.
+
 ### Run Tests with Coverage
 
 ```bash
@@ -182,12 +186,27 @@ cd projects/cognitive_case_diagrams
 uv run pytest tests/ --cov=src --cov-report=term-missing -v
 ```
 
+### Manuscript metrics and `${variable}` injection
+
+[`src/generate_manuscript_metrics.py`](src/generate_manuscript_metrics.py) writes [`output/metrics.json`](output/metrics.json). [`scripts/inject_variables.py`](scripts/inject_variables.py) substitutes `${…}` into numbered manuscript chapters and writes [`output/manuscript/`](output/manuscript/); the PDF renderer prefers that directory when present ([`infrastructure/rendering/pipeline.py`](../../../infrastructure/rendering/pipeline.py) `_resolve_manuscript_dir`).
+
+```bash
+cd projects/cognitive_case_diagrams
+uv run pytest tests/ --cov=src --cov-report=json:coverage.json
+uv run python -m src.generate_manuscript_metrics
+uv run python scripts/inject_variables.py
+# From template repository root:
+uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams
+```
+
+`coverage.json` policy (commit or regenerate): [`tests/AGENTS.md`](tests/AGENTS.md). Placeholder catalog: [`manuscript/config.yaml`](manuscript/config.yaml).
+
 ---
 
 ## 🧪 Testing Standards
 
 ### Coverage Requirements
-- **≥ 90% line coverage** on `src/` (`uv run pytest tests/ --cov=src --cov-report=term-missing`)
+- **≥ 90%** total coverage on `src/` (line + branch; `branch = true` in `pyproject.toml`; `uv run pytest tests/ --cov=src --cov-report=term-missing`)
 - Test and file counts change over time; use `uv run pytest tests/ --collect-only -q` and `ls tests/test_*.py | wc -l`
 - Coverage enforced via `pyproject.toml` `[tool.coverage.report] fail_under = 90`
 
@@ -252,6 +271,7 @@ Files follow the `test_{package}_{module}.py` naming convention:
 | `test_visualization_plot_modules.py` | Multi-module visualization coverage |
 | `test_visualization_syntactic_sentence_diagrams.py` | `src/visualization/syntactic_sentence_diagrams.py` |
 | `test_visualization_syntactic_coverage.py` | Syntactic diagram coverage |
+| `test_property_based.py` | Algebraic property tests (composition inequality, magnitude positivity, weight bounds) |
 | `test_generate_manuscript_metrics.py` | `src/generate_manuscript_metrics.py` |
 
 ---
@@ -288,7 +308,7 @@ $$P(c \mid \rho) = \text{Tr}(E_c \rho)$$ {#eq:quantum-case}
 | `05b_magnitude_homology.md` | §5b | Magnitude Homology |
 | `06_topos_theory.md` | §6 | Topos Theory |
 | `07_cognitive_integration.md` | §7 | Cognitive Integration |
-| `07b_computational_verification.md` | §7b | Computational Verification |
+| `07b_diagrammatic_cognition.md` | §7b | Diagrammatic Cognition & ERP Predictions |
 | `07c_daif_results.md` | §7c | DAIF Results |
 | `08_quantum_active_inference.md` | §8 | Quantum Active Inference |
 | `08b_quantum_semantics.md` | §8b | Quantum Semantics |

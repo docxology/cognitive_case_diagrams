@@ -226,6 +226,56 @@ class TestBuildTheories:
         assert equiv is False
 
 
+class TestClassifyingToposMinimalTheory:
+    """Extended tests: minimal 2-object theory, Morita equality, add_axiom edge cases."""
+
+    def test_two_object_minimal_theory_topos(self):
+        """ClassifyingTopos on a pure NOM/ACC theory computes valid invariants."""
+        t = GeometricTheory(name="T_minimal", theory_type=TheoryType.TYPOLOGICAL)
+        t.add_sort("NOM")
+        t.add_sort("ACC")
+        t.add_relation("acts_on", ("NOM", "ACC"))
+        t.add_axiom(Axiom(name="id", antecedent="T", consequent="T"))
+        topos = ClassifyingTopos(theory=t)
+        assert topos.invariants["signature_shape"] == (2, 1, 1)
+        assert topos.invariants["arity_spectrum"] == [2]
+
+    def test_two_identical_two_object_theories_morita_equivalent(self):
+        """Two structurally identical minimal theories are Morita-equivalent."""
+        def _make_nom_acc():
+            t = GeometricTheory(name="T", theory_type=TheoryType.TYPOLOGICAL)
+            t.add_sort("NOM")
+            t.add_sort("ACC")
+            t.add_relation("acts_on", ("NOM", "ACC"))
+            t.add_axiom(Axiom(name="id", antecedent="T", consequent="T"))
+            return t
+        topos1 = ClassifyingTopos(theory=_make_nom_acc())
+        topos2 = ClassifyingTopos(theory=_make_nom_acc())
+        equiv, mismatches = check_morita_equivalence(topos1, topos2)
+        assert equiv is True
+        assert mismatches == []
+
+    def test_add_axiom_with_empty_string_antecedent(self):
+        """add_axiom accepts an empty-string antecedent (represents vacuous truth)."""
+        t = GeometricTheory(name="T", theory_type=TheoryType.TYPOLOGICAL)
+        ax = Axiom(name="vacuous", antecedent="", consequent="True")
+        t.add_axiom(ax)
+        assert len(t.axioms) == 1
+        assert t.axioms[0].antecedent == ""
+
+    def test_add_axiom_with_unicode_formula(self):
+        """add_axiom handles Unicode mathematical notation in antecedent."""
+        t = GeometricTheory(name="T", theory_type=TheoryType.TYPOLOGICAL)
+        ax = Axiom(
+            name="categorical_identity",
+            antecedent="∀x. id(x) ⊢ id(x)",
+            consequent="T",
+            sort_variables=["x"],
+        )
+        t.add_axiom(ax)
+        assert "∀x" in str(t.axioms[0])
+
+
 class TestBridgeTransfer:
     """Tests for inter-theoretic bridge transfer."""
 
@@ -269,3 +319,32 @@ class TestBridgeTransfer:
         for key in ["property", "source_theory", "target_theory",
                      "morita_equivalent", "transfer_possible", "mismatches"]:
             assert key in result
+
+    def test_transfer_blocked_on_mismatched_arity_spectrum(self) -> None:
+        """Two theories with the *same* sort count but different relation
+        arities must have different arity spectra, hence non-equivalent
+        classifying-topos invariants, hence the guarded ``bridge_transfer``
+        must report ``transfer_possible is False`` and cite the arity
+        spectrum in its ``mismatches`` list (soundness guard for §6)."""
+        t1 = GeometricTheory(name="T1", theory_type=TheoryType.TYPOLOGICAL)
+        t1.add_sort("A"); t1.add_sort("B"); t1.add_sort("C")
+        t1.add_relation("R", ("A", "B"))  # binary
+
+        t2 = GeometricTheory(name="T2", theory_type=TheoryType.ENRICHED)
+        t2.add_sort("A"); t2.add_sort("B"); t2.add_sort("C")
+        t2.add_relation("S", ("A", "B", "C"))  # ternary
+
+        topos1 = ClassifyingTopos(theory=t1)
+        topos2 = ClassifyingTopos(theory=t2)
+
+        # Sanity: identical sort counts, mismatched arity spectra.
+        assert len(t1.sorts) == len(t2.sorts)
+        assert t1.arity_spectrum() != t2.arity_spectrum()
+
+        result = bridge_transfer(topos1, topos2, "composition_associativity")
+        assert result["transfer_possible"] is False
+        assert result["morita_equivalent"] is False
+        # At least one mismatch message must mention the arity spectrum.
+        assert any(
+            "arity" in msg.lower() for msg in result["mismatches"]
+        ), f"Expected arity-spectrum mismatch in {result['mismatches']!r}"

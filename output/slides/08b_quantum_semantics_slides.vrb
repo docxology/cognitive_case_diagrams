@@ -1,5 +1,5 @@
-\frametitle{\(P(c\mid \rho ) = \text {Tr}(E_c\rho )\)}
-\protect\phantomsection\label{pcmidrho-texttre_crho}
+\frametitle{Case Probabilities via POVM: \(P(c\mid \rho )=\mathrm {Tr}(E_c\rho )\)}
+\protect\phantomsection\label{case-probabilities-via-povm-pcmidrhomathrmtre_crho}
 To connect TQNNs and ZX circuits to \emph{distributional semantics}, we
 reinterpret the amplitudes and correlations in these topological
 diagrams as semantic quantities. Recent work on quantum semantic
@@ -40,34 +40,65 @@ P(c \mid \rho) = \text{Tr}(E_c \rho)
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio,alt={Overlapping POVM elements produce graded case probabilities via quantum interference. (a) NOM/ACC projectors in a crisp case system: non-overlapping probability density yields deterministic assignment per . (b) Graded case assignment in a proto-role system: overlapping POVM elements create an interference pattern in the semantic belief space, realizing the {[}0,1{]}-enrichment of  as physical measurement. Rotation into a different measurement basis (a different quantum reference frame) corresponds to a different alignment system, e.g., ACC \textbackslash to ERG. Generated programmatically from src/visualization/quantum\_plots.plot\_povm\_probabilities().}]{output/figures/quantum_povm_probabilities.png}}
+\pandocbounded{\includegraphics[keepaspectratio,alt={Overlapping POVM elements produce graded case probabilities via quantum interference. Born-rule probability densities P(c \textbackslash mid \textbackslash rho) = \textbackslash mathrm\{Tr\}(E\_c \textbackslash rho) () plotted for all eight case roles over the one-dimensional cognitive state-space parameter \textbackslash theta. The NOM element is sharply localized (Tr=0.800) while ACC and DAT elements overlap with NOM in the low-\textbackslash theta region (Tr=0.100 each), creating an interference pattern in the semantic belief space --- a graded proto-role assignment realizing the {[}0,1{]}-enrichment of  as physical measurement. Non-overlapping (orthogonal) POVM elements would instead yield crisp, deterministic case assignment. Rotation into a different measurement basis (a different quantum reference frame) corresponds to a different alignment system, e.g., ACC \textbackslash to ERG. Generated programmatically from src/visualization/quantum\_plots.plot\_povm\_probabilities().}]{output/figures/quantum_povm_probabilities.png}}
 \caption{Overlapping POVM elements produce graded case probabilities via
-quantum interference. (a) NOM/ACC projectors in a crisp case system:
-non-overlapping probability density yields deterministic assignment per
-\autoref{eq:eq-8-1}. (b) Graded case assignment in a proto-role system:
-overlapping POVM elements create an interference pattern in the semantic
-belief space, realizing the \([0,1]\)-enrichment of
-\autoref{sec:enriched-categories} as physical measurement. Rotation into
-a different measurement basis (a different quantum reference frame)
-corresponds to a different alignment system, e.g., ACC \(\to\) ERG.
-Generated programmatically from
+quantum interference. Born-rule probability densities
+\(P(c \mid \rho) = \mathrm{Tr}(E_c \rho)\) (\autoref{eq:eq-8-1}) plotted
+for all eight case roles over the one-dimensional cognitive state-space
+parameter \(\theta\). The NOM element is sharply localized (Tr=0.800)
+while ACC and DAT elements overlap with NOM in the low-\(\theta\) region
+(Tr=0.100 each), creating an interference pattern in the semantic belief
+space --- a graded proto-role assignment realizing the
+\([0,1]\)-enrichment of \autoref{sec:enriched-categories} as physical
+measurement. Non-overlapping (orthogonal) POVM elements would instead
+yield crisp, deterministic case assignment. Rotation into a different
+measurement basis (a different quantum reference frame) corresponds to a
+different alignment system, e.g., ACC \(\to\) ERG. Generated
+programmatically from
 \protect\texttt{src/visualization/quantum\_plots.plot\_povm\_probabilities()}.}\label{fig:quantum-povm}
 \end{figure}
 
-For crisp case systems (NOM/ACC), the POVM elements are orthogonal
-projectors (\(E_c E_{c'} = \delta_{cc'} E_c\)), yielding deterministic
+As illustrated in \autoref{fig:quantum-povm}, crisp case systems
+(NOM/ACC) use orthogonal POVM projectors
+(\(E_c E_{c'} = \delta_{cc'} E_c\), a special POVM case in which the
+elements are one-dimensional orthogonal projectors --- usually called a
+\emph{projective} or von-Neumann measurement), yielding deterministic
 case assignment. For graded proto-roles (Dowty's
 {[}-@dowty1991thematic{]} agent/patient continuum), the POVM elements
-overlap, yielding probabilistic case assignment---precisely the quantum
-generalization of the \([0,1]\)-enrichment from
+overlap, yielding probabilistic case assignment --- precisely the
+quantum generalization of the \([0,1]\)-enrichment from
 \autoref{sec:enriched-categories}. The enriched hom-value
 \(\mathcal{C}(v, c)\) is identified with \(P(c \mid \rho_v)\), grounding
 the abstract enrichment in physical measurement theory. Fluid-S
 alignment (\autoref{sec:case-systems}) then corresponds to a
-context-dependent POVM: the measurement basis rotates depending on the
-volition feature \(\theta\), so the same noun phrase has different case
-probabilities depending on whether the agent is construing the action as
-volitional or not.
+context-dependent POVM: the measurement basis rotates by
+\(\theta = (\pi/2)(1 - p_{\text{vol}})\), so full volition
+(\(p_{\text{vol}}=1\)) leaves the computational NOM/ACC basis unchanged,
+the fully non-volitional limit (\(p_{\text{vol}}=0\)) rotates by
+\(\pi/2\) and exchanges the two projectors, and the same noun phrase
+receives different case probabilities depending on whether the agent
+construes the action as volitional.
+
+Because \(\sum_c E_c = I\) is enforced at construction in
+\texttt{CasePOVM.\_validate()},
+\(\sum_c P(c \mid \rho) = \operatorname{Tr}\!\bigl((\sum_c E_c)\rho\bigr) = \operatorname{Tr}(\rho) = 1\),
+so every POVM case-assignment is a bona-fide probability distribution
+over roles --- no extra normalisation step is required.
+
+\textbf{Implementation scope (coherence and entanglement).} The
+interference pattern in \autoref{fig:quantum-povm} is a theoretical
+illustration of what overlapping POVM elements would measure on a state
+with non-zero off-diagonal entries; the convenience constructor
+\texttt{semantic\_state()} in \texttt{src/quantum/quantum\_case.py}
+instantiates only \emph{diagonal} density matrices
+\(\rho = \operatorname{diag}(p_1,\dots,p_n)\), i.e.~classical
+probability mixtures over case roles. Fully coherent superposition
+states and multi-argument entanglement (e.g.~entangled subject--object
+POVM readouts on ditransitive predicates) are left as explicit extension
+points: the caller may pass a pre-constructed off-diagonal \(\rho\) to
+\texttt{case\_probability()} directly, but the convenience constructor
+does not build one automatically. No quantitative claim in this paper
+depends on running the framework on a non-diagonal \(\rho\).
 
 The same scalar-belief dynamics appear in
 \autoref{fig:active-inference-belief}

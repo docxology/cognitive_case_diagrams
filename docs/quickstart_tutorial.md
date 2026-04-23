@@ -29,7 +29,7 @@ uv run python -c "from src import CaseRole, CaseCategory; print('✅ src importe
 | `matplotlib` | Figure generation | ≥3.7 |
 | `pytest` | Test framework | ≥7.0 |
 | `pytest-cov` | Coverage reporting | ≥4.0 |
-| `discopy` | DisCoCat / DisCoCirc diagrams | ≥1.0 (declared in `pyproject.toml`) |
+| `discopy` | DisCoCat / DisCoCirc diagrams | ≥1.0 (in `pyproject.toml`; repository root `uv sync` also installs it via `default-groups`) |
 
 ### Optional Dependencies
 
@@ -105,10 +105,10 @@ proximity = np.array([
 ])
 
 ec = EnrichedCategory(name="English-4", roles=roles, proximity_matrix=proximity)
+# Identity axiom C(A,A)=1 is enforced in __post_init__; construction raises ValueError on violation.
 
-# Check categorical axioms
-assert ec.check_identity_axiom(), "Identity axiom violated"
-print(f"Hom(NOM, ACC) = {ec.hom_value(CaseRole.NOM, CaseRole.ACC)}")
+# Query a hom-value
+print(f"Hom(NOM, ACC) = {ec.hom(CaseRole.NOM, CaseRole.ACC)}")
 
 # Compute magnitude (effective size)
 mag = ec.magnitude()
@@ -224,17 +224,23 @@ print(f"Mean step size: {diag['mean_step_size']:.6f}")
 
 ### 5b. Risk-Distorted Inference (IQN)
 
-Run IQN with different risk attitudes:
+Run IQN with different risk attitudes. `implicit_quantile_network_update` returns an updated quantile array (not a loss dict) and requires both current/target quantile levels:
 
 ```python
 # Compare risk attitudes on the same return distribution
+Z = result.return_distribution
 for mode in ["neutral", "optimistic", "pessimistic", "CVaR"]:
-    iqn_result = implicit_quantile_network_update(
-        quantile_values=result.return_distribution.quantiles,
-        target_quantiles=result.return_distribution.quantiles * 1.05,
+    updated_quantiles = implicit_quantile_network_update(
+        current_quantiles=Z.quantiles,
+        current_levels=Z.quantile_levels,
+        target_quantiles=Z.quantiles * 1.05,
+        target_levels=Z.quantile_levels,
+        learning_rate=0.1,
+        kappa=1.0,
         risk_distortion=mode,
     )
-    print(f"  {mode:12s} → loss={iqn_result['loss']:.4f}")
+    shift = float(np.mean(updated_quantiles - Z.quantiles))
+    print(f"  {mode:12s} → mean quantile shift={shift:+.4f}")
 ```
 
 ### 5c. Wasserstein Distance & Distribution Comparisons
@@ -316,7 +322,7 @@ for role in roles:
 
 ## 7. Generate All Figures
 
-Generate the 26 publication figures:
+Generate all 30 publication figures (authoritative live count in `output/metrics.json::total_figures`):
 
 ```bash
 # From the project root
@@ -333,13 +339,12 @@ ls projects/cognitive_case_diagrams/output/figures/*.png
 ### Generate Individual Figures
 
 ```python
-from pathlib import Path
 from src.visualization import render_case_category
 from src.case_systems import standard_case_category
 
-# Render the standard case category
+# Render the standard case category (output_path is str | None).
 cat = standard_case_category()
-fig = render_case_category(cat, output_path=Path("/tmp/case_category.png"))
+fig = render_case_category(cat, output_path="/tmp/case_category.png")
 print("Figure saved to /tmp/case_category.png")
 ```
 
@@ -406,4 +411,97 @@ uv run python scripts/04_validate_output.py --project cognitive_case_diagrams
 
 ---
 
-*Last updated: 2026-03-23.*
+## Common Workflows
+
+### Run tests for a single `src/` subpackage
+
+```bash
+# §2 Case Systems only
+uv run pytest tests/test_case_systems*.py -v
+
+# §5 Enriched Categories only
+uv run pytest tests/test_enriched_cat_enriched.py -v
+
+# §7c DAIF only (all 7 modules)
+uv run pytest tests/test_daif*.py -v
+
+# §8 Quantum only
+uv run pytest tests/test_quantum_quantum_case.py -v
+```
+
+### Regenerate a Single Figure
+
+```bash
+# Run the full figure generation pipeline
+uv run python scripts/generate_diagrams.py
+
+# Or call an individual renderer directly (for example, the alignment comparison)
+uv run python -c "
+from src.visualization import render_alignment_comparison
+render_alignment_comparison(output_path='/tmp/alignment_comparison.png')
+"
+```
+
+### Check Theory–Code Parity
+
+```bash
+# Count equation labels in manuscript
+grep -r '\\label{eq:' manuscript/ | wc -l
+
+# Count implemented functions in theory map
+grep -c '✅' docs/theory_implementation_map.md
+
+# These numbers should match (or the map should document any '📋 planned' gap)
+```
+
+### Run a DAIF Convergence Experiment
+
+```python
+import numpy as np
+from src.case_systems import CaseRole
+from src.cognitive import CaseDiagramBelief
+from src.daif import (
+    distributional_case_assignment,
+    distributional_prediction_error,
+    convergence_diagnostics,
+)
+
+# 1. Prior belief over a 3-role frame (CaseDiagramBelief — not EnrichedCategory).
+roles = [CaseRole.NOM, CaseRole.ACC, CaseRole.DAT]
+prior = CaseDiagramBelief(roles=roles, probabilities=np.array([1/3, 1/3, 1/3]))
+
+# 2. Run DAIF inference (returns a DAIFResult with fe_trajectory + return_distribution).
+obs   = np.array([0.6, 0.3, 0.1])
+trans = np.array([[0.7, 0.2, 0.1], [0.1, 0.8, 0.1], [0.2, 0.2, 0.6]])
+result = distributional_case_assignment(
+    prior=prior, observation_likelihoods=obs,
+    transition_matrix=trans, n_iterations=20,
+)
+diag = convergence_diagnostics(result.fe_trajectory)
+print(f"Converged: {diag['converged']}, Final FE: {result.final_fe:.4f}")
+
+# 3. Scalar DPE (N400 proxy): precision-weighted cross-entropy at the expected role.
+dpe = distributional_prediction_error(
+    belief=result.belief, expected_role_index=roles.index(CaseRole.ACC),
+    enriched_weight=0.9,
+)
+print(f"DPE (N400 proxy): {dpe:.4f}")
+```
+
+---
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| `ModuleNotFoundError: No module named 'src'` | Run from `projects/cognitive_case_diagrams/` directory, not from `template/` root |
+| `ImportError: discopy not found` | From the **repository root**, run `uv sync` (default-groups include `discopy`). From `projects/cognitive_case_diagrams/` only, `uv sync` uses that project’s `pyproject.toml`, which lists `discopy` as a normal dependency. |
+| Test coverage < 90% | Run `uv run pytest tests/ --cov=src --cov-report=term-missing` to identify uncovered lines |
+| Figure font too small | Check `src/visualization/styles.py` — all fonts must be ≥ 16pt (ADR-003) |
+| `numpy.linalg.LinAlgError` in magnitude | The proximity matrix $Z$ is singular — check that hom-values satisfy the composition inequality |
+| Mock detected in tests | Remove it — the zero-mock policy (ADR-002) requires real mathematical computations |
+
+---
+
+*Last updated: 2026-04-23.*
+

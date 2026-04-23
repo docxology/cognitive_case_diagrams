@@ -2,10 +2,10 @@
 # Category-theoretic approaches to linguistic case systems
 
 paper:
-  title: "Compositional Approaches to Linguistic Case for Cognitive Modeling"
+  title: "Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case"
   subtitle: ""
   version: "2.3"
-  date: ""
+  date: "2026-04-22"
 
 authors:
   - name: "Daniel Ari Friedman"
@@ -15,8 +15,8 @@ authors:
     corresponding: true
 
 publication:
-  doi: ""
-  journal: ""
+  doi: "10.5281/zenodo.19695260"
+  journal: "Active Inference Journal"
   volume: ""
   pages: ""
   year: "2026"
@@ -34,6 +34,13 @@ keywords:
   - "diagrammatic reasoning"
   - "quantum NLP"
   - "cognitive security"
+  - "magnitude homology"
+  - "distributional active inference"
+  - "biolinguistics"
+  - "neuropragmatics"
+  - "ROSE model"
+  - "prompt injection"
+  - "compositional semantics"
 
 metadata:
   license: "Apache-2.0"
@@ -56,18 +63,25 @@ testing:
 
 # Manuscript Variable Injection
 # Variables below are auto-computed by src/generate_manuscript_metrics.py
-# and injected into manuscript/*.md via scripts/05_inject_variables.py.
+# and injected into manuscript/*.md via scripts/inject_variables.py.
 # In manuscript files, use ${variable_name} syntax.
 #
 # Available variables:
 #   ${total_test_count}     - Total pytest-collected test count
 #   ${total_test_files}     - Number of test_*.py files
+#   ${total_test_files_word} - English words for total_test_files (e.g. "forty-nine")
+#   ${domain_subpackages}   - Count of first-level packages under src/ (domain layers)
 #   ${daif_modules}         - Number of .py modules in src/daif/
 #   ${daif_symbols}         - Number of public symbols in daif.__all__
 #   ${daif_tests}           - Test count in test_daif*.py files
 #   ${daif_test_files}      - Number of test_daif*.py files
 #   ${daif_modules_word}    - English word for daif_modules (e.g. "seven")
-#   ${total_test_files_word} - English word for total_test_files
+#   ${total_figures}        - PNG count in output/figures/ (matches generate_diagrams.py)
+#   ${coverage_summary}     - One-line coverage blurb from coverage.json (or instructions if missing)
+#   ${coverage_percent}     - Display percent string when coverage.json exists (else empty)
+#   ${coverage_lines_covered} / ${coverage_lines_total} - Optional line totals from coverage.json
+#   ${discopy_version} / ${numpy_version} - Installed package versions (may be empty)
+#   ${discopy_version_pretty} / ${numpy_version_pretty} - Versions safe for prose
 #
-# To inject: python scripts/05_inject_variables.py
+# To inject: python scripts/inject_variables.py
 # The render pipeline auto-detects output/manuscript/ for injection.

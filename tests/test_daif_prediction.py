@@ -10,6 +10,7 @@ from src.case_systems.case_category import CaseRole
 from src.cognitive.belief import CaseDiagramBelief
 from src.daif.prediction import (
     distributional_prediction_error,
+    wasserstein_prediction_error,
     n400_from_return_distribution,
     p600_from_precision_update,
     erp_amplitude_profile,
@@ -68,6 +69,45 @@ class TestDistributionalPredictionError:
             distributional_prediction_error(three_role_belief, 0, enriched_weight=1.5)
 
 
+# --- wasserstein_prediction_error ---
+
+class TestWassersteinPredictionError:
+
+    def test_identical_distributions_zero_dpe(self, flat_return_dist):
+        """Identical distributions → DPE = 0."""
+        dpe = wasserstein_prediction_error(flat_return_dist, flat_return_dist)
+        assert dpe == pytest.approx(0.0, abs=1e-10)
+
+    def test_different_distributions_positive_dpe(self):
+        """Different distributions → positive DPE."""
+        q1 = np.linspace(0.0, 1.0, 51)
+        q2 = np.linspace(0.5, 1.5, 51)
+        tau = np.linspace(0.01, 0.99, 51)
+        dist_a = DistributionalReturn(mean=0.5, variance=0.1, quantiles=q1, quantile_levels=tau)
+        dist_b = DistributionalReturn(mean=1.0, variance=0.1, quantiles=q2, quantile_levels=tau)
+        dpe = wasserstein_prediction_error(dist_a, dist_b, enriched_weight=0.8)
+        assert dpe > 0.0
+
+    def test_enriched_weight_scales(self):
+        """DPE scales linearly with enriched weight."""
+        q1 = np.linspace(0.0, 1.0, 51)
+        q2 = np.linspace(0.5, 1.5, 51)
+        tau = np.linspace(0.01, 0.99, 51)
+        dist_a = DistributionalReturn(mean=0.5, variance=0.1, quantiles=q1, quantile_levels=tau)
+        dist_b = DistributionalReturn(mean=1.0, variance=0.1, quantiles=q2, quantile_levels=tau)
+        dpe_half = wasserstein_prediction_error(dist_a, dist_b, enriched_weight=0.5)
+        dpe_full = wasserstein_prediction_error(dist_a, dist_b, enriched_weight=1.0)
+        assert dpe_full == pytest.approx(2.0 * dpe_half, rel=1e-8)
+
+    def test_invalid_weight_raises(self):
+        """Enriched weight > 1 raises ValueError."""
+        q = np.linspace(0.0, 1.0, 51)
+        tau = np.linspace(0.01, 0.99, 51)
+        dist = DistributionalReturn(mean=0.5, variance=0.1, quantiles=q, quantile_levels=tau)
+        with pytest.raises(ValueError, match="enriched_weight"):
+            wasserstein_prediction_error(dist, dist, enriched_weight=1.5)
+
+
 # --- n400_from_return_distribution ---
 
 class TestN400FromReturnDistribution:
@@ -82,9 +122,16 @@ class TestN400FromReturnDistribution:
         n400 = n400_from_return_distribution(flat_return_dist, baseline_return=2.0)
         assert n400 < 0.0
 
-    def test_above_baseline_zero_n400(self, flat_return_dist):
-        """When E[Z] > baseline (better than expected), N400 = 0."""
+    def test_above_baseline_still_negative_n400(self, flat_return_dist):
+        """When E[Z] > baseline, N400 is still negative (absolute mismatch)."""
         n400 = n400_from_return_distribution(flat_return_dist, baseline_return=0.5)
+        assert n400 < 0.0  # Any mismatch produces negative N400
+
+    def test_congruent_severity_zero_n400(self, flat_return_dist):
+        """When violation_severity=0 (congruent), N400 = 0 regardless of mismatch."""
+        n400 = n400_from_return_distribution(
+            flat_return_dist, baseline_return=2.0, violation_severity=0.0
+        )
         assert n400 == 0.0
 
     def test_precision_scales_amplitude(self, flat_return_dist):

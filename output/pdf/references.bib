@@ -1,8 +1,7 @@
 @comment{
-  Bibliography for "A Cognitive Case for Diagrams: Category-Theoretic
-  Approaches to Linguistic Case Systems in Total Cognitive Scenario
-  Understanding". Ingested by infrastructure/rendering/latex_utils.py
-  and linked via --citeproc during Pandoc compilation.
+  Bibliography for "Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case"
+  (see manuscript/config.yaml). Copied into the PDF build and processed with Pandoc
+  citeproc; LaTeX passes use infrastructure/rendering/latex_utils.py.
 }
 
 %% ========================================================================
@@ -18,22 +17,6 @@
   year={2014},
   url={https://omer.lingsite.org/files/Polinsky-and-Preminger-Case-and-Grammatical-Relations.pdf},
   note={Routledge 2014; citation key retains ``2015'' from prior drafts and secondary citations}
-}
-
-@misc{wikipedia_case,
-  title={Grammatical case},
-  author={{Wikipedia contributors}},
-  year={2025},
-  howpublished={\url{https://en.wikipedia.org/wiki/Grammatical_case}},
-  note={Accessed 2026-03-05}
-}
-
-@misc{grammaticalfeatures_case,
-  title={Case},
-  author={{Grammatical Features Project}},
-  year={2025},
-  howpublished={\url{http://www.grammaticalfeatures.net/features/case.html}},
-  note={Accessed 2026-03-05}
 }
 
 @incollection{blake2001grammatical,
@@ -97,14 +80,6 @@
   url={https://archive.illc.uva.nl/lgc/translation/papers/Lambek.NEW.pdf}
 }
 
-@misc{sciencedirect_categorial,
-  title={Categorial Grammar --- an overview},
-  author={{ScienceDirect Topics}},
-  year={2025},
-  howpublished={\url{https://www.sciencedirect.com/topics/psychology/categorial-grammar}},
-  note={Accessed 2026-03-05}
-}
-
 @misc{song2022blog,
   title={Category Theory in Theoretical Linguistics: Categorial or categorical?},
   author={Song, Julio},
@@ -132,22 +107,6 @@
   publisher={Reidel},
   pages={221--242},
   year={1973}
-}
-
-@misc{sep_montague,
-  title={Montague Semantics},
-  author={Janssen, Theo M. V. and Zimmermann, Thomas Ede},
-  year={2021},
-  howpublished={Stanford Encyclopedia of Philosophy},
-  url={https://plato.stanford.edu/entries/montague-semantics/}
-}
-
-@phdthesis{sadrzadeh2013compositional,
-  title={Category-Theoretic Quantitative Compositional Distributional Semantics},
-  author={Sadrzadeh, Mehrnoosh},
-  school={University of Oxford},
-  year={2013},
-  url={https://arxiv.org/abs/1311.1539}
 }
 
 @article{grefenstette2015concrete,
@@ -222,29 +181,6 @@
 %% 6. Active Inference and CEREBRUM
 %% ========================================================================
 
-@misc{aii_github,
-  title={{ActiveInferenceInstitute} GitHub},
-  author={{Active Inference Institute}},
-  year={2026},
-  howpublished={\url{https://github.com/ActiveInferenceInstitute}}
-}
-
-@misc{millidge_fep,
-  title={{FEP} and Active Inference Paper Repository},
-  author={Millidge, Beren},
-  year={2025},
-  howpublished={\url{https://github.com/BerenMillidge/FEP_Active_Inference_Papers}}
-}
-
-@incollection{sag2012sbcg,
-  title={Sign-Based Construction Grammar},
-  author={Sag, Ivan A.},
-  booktitle={Sign-Based Construction Grammar},
-  publisher={CSLI Publications},
-  year={2012},
-  url={https://spot.colorado.edu/~michaeli/documents/SBCG_OUP_2013.pdf}
-}
-
 @article{friston2017active,
   title={Active inference: a process theory},
   author={Friston, Karl J. and FitzGerald, Thomas and Rigoli, Francesco and Schwartenbeck, Philipp and Pezzulo, Giovanni},
@@ -256,12 +192,22 @@
   doi={10.1162/NECO_a_00912}
 }
 
+@book{namjoshi2026fundamentals,
+  title={Fundamentals of Active Inference: Principles, Algorithms, and Applications of the {Free Energy Principle} for Engineers},
+  author={Namjoshi, Sanjeev V.},
+  publisher={MIT Press},
+  year={2026},
+  isbn={9780262050951},
+  note={576 pp., 8 $\times$ 10 in.; 213 color illus.; 24 b\&w illus. Pub.\ March 17, 2026}
+}
+
 @misc{friedman2024cerebrum,
   title={{CEREBRUM}: Case-Enabled Reasoning Engine with {B}ayesian Representations for Unified Modeling},
-  author={Friedman, Daniel Ari},
+  author={Friedman, Daniel Ari and {Active Inference Institute}},
   year={2024},
   howpublished={\url{https://github.com/ActiveInferenceInstitute/CEREBRUM}},
-  doi={10.5281/zenodo.15170907}
+  doi={10.5281/zenodo.15170907},
+  note={Open-source implementation of case-bearing active inference models. MIT License}
 }
 
 @article{coecke2010mathematical,
@@ -348,12 +294,12 @@
   url={https://arxiv.org/abs/2205.14815}
 }
 
-@article{lorenz2023lambeq,
+@article{lorenz2021lambeq,
   title={lambeq: An Efficient High-Level Python Library for Quantum {NLP}},
   author={Lorenz, Robin and Pearson, Anna and Meichanetzidis, Konstantinos and Kartsaklis, Dimitri and Coecke, Bob},
-  journal={arXiv preprint arXiv:2310.05033},
-  year={2023},
-  url={https://arxiv.org/abs/2310.05033}
+  journal={arXiv preprint arXiv:2110.04236},
+  year={2021},
+  url={https://arxiv.org/abs/2110.04236}
 }
 
 @article{meichanetzidis2020qnlp,
@@ -380,13 +326,14 @@
   note={Constructs DisCoCirc discourse circuits from CCG parse trees via iterative coreference resolution and wire merging}
 }
 
-@inproceedings{lin2025discosg,
-  title={{DiscoSG}: Towards Discourse-Level Text Scene Graph Parsing through Iterative Graph Refinement},
-  author={Lin, Shaoqing and Teng, Chong and Li, Fei and Ji, Donghong and Qu, Lizhen and Li, Zhuang},
-  booktitle={Proceedings of the Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+@misc{duneau2025comparative,
+  title={Towards a Comparative Framework for Compositional {AI} Models},
+  author={Duneau, Tiffany},
   year={2025},
-  url={https://arxiv.org/abs/2506.15583},
-  note={Discourse-level scene graph parsing with cross-sentence coreference; DiscoSG-Refiner outperforms baselines by 30--48\% SPICE}
+  eprint={2507.02940},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  note={Extends DisCoCirc pipeline work to a comparative framework for evaluating compositional AI model architectures}
 }
 
 @misc{krawchuk2025paramqnlp,
@@ -397,6 +344,7 @@
   archivePrefix={arXiv},
   primaryClass={quant-ph},
   doi={10.48550/arXiv.2505.13208},
+  url={https://arxiv.org/abs/2505.13208},
   note={Uses DisCoCirc string diagrams to generate discourse-level quantum circuits via tree-like pregroup diagrams; part of lambeq Gen II}
 }
 
@@ -404,9 +352,9 @@
   title={lambeq {G}en {II}: Scalable Compositional Models for Discourse-Level {NLP}},
   author={Krawchuk, Colin and Khatri, Nikhil and Ortega, Neil John and Kartsaklis, Dimitri},
   year={2025},
-  howpublished={Quantinuum / Cambridge Quantum},
-  url={https://arxiv.org/abs/2505.13208},
-  note={lambeq Gen II release with full DisCoCirc support; described in arXiv:2505.13208}
+  howpublished={Quantinuum blog post},
+  url={https://www.quantinuum.com/blog/lambeq-gen-ii-a-quantum-enhanced-interpretable-and-scalable-text-based-nlp-software-package},
+  note={Product announcement for lambeq Gen II with full DisCoCirc support; technical paper: Krawchuk et al., arXiv:2505.13208}
 }
 
 @misc{maele2026schema,
@@ -454,6 +402,18 @@
   publisher={ACM New York, NY, USA},
   doi={10.1145/3502719},
   note={String diagram rewriting modulo Frobenius as double-pushout hypergraph rewriting; foundational for diagram simplification}
+}
+
+@article{bornkessel2006extended,
+  author={Bornkessel, Ina and Schlesewsky, Matthias},
+  title={The Extended Argument Dependency Model: A Neurocognitive Approach to Sentence Comprehension Across Languages},
+  journal={Psychological Review},
+  volume={113},
+  number={4},
+  pages={787--821},
+  year={2006},
+  doi={10.1037/0033-295X.113.4.787},
+  note={Cross-linguistic neurocognitive model of argument-structure processing; ERP predictions for case-violation paradigms in morphologically rich languages including Russian}
 }
 
 @mastersthesis{dehuybrecht2024subcategorizing,
@@ -631,22 +591,12 @@
   primaryClass={cs.LG}
 }
 
-@misc{a2h2026protocol,
-  title={{A2H}: Agent-to-Human Protocol for {AI} Agent},
-  author={{A2H Team}},
-  year={2026},
-  eprint={2602.15831},
-  archivePrefix={arXiv},
-  url={https://arxiv.org/abs/2602.15831},
-  note={Unified protocol enabling humans to be registered, discovered, and communicated with by AI agents}
-}
-
 @misc{google2025a2a,
   title={Agent2Agent Protocol ({A2A})},
   author={{A2A Project}},
   year={2025},
   howpublished={\url{https://github.com/a2aproject/A2A}},
-  note={Open protocol for agent-to-agent communication; 146 contributors, 10 releases}
+  note={Open protocol for agent-to-agent communication}
 }
 
 @misc{anthropic2024mcp,
@@ -674,7 +624,7 @@
 }
 
 %% ========================================================================
-%% 12. Quantum Active Inference, TQNNs, ZX-Calculus
+%% 13. Quantum Active Inference, TQNNs, ZX-Calculus
 %% ========================================================================
 
 @article{fields2022tqnn,
@@ -752,16 +702,8 @@
 }
 
 %% ========================================================================
-%% 13. Active Inference and Language
+%% 14. Active Inference and Language
 %% ========================================================================
-
-@misc{cerebrum2024github,
-  title={{CEREBRUM}: Case-Enabled Reasoning Engine with Bayesian Representations Using Models},
-  author={Friedman, Daniel A. and {Active Inference Institute}},
-  year={2024},
-  howpublished={\url{https://github.com/ActiveInferenceInstitute/CEREBRUM}},
-  note={Open-source implementation of case-bearing active inference models. MIT License}
-}
 
 @article{vasil2020world,
   title={A World Unto Itself: Human Communication as Active Inference},
@@ -773,41 +715,6 @@
   doi={10.3389/fpsyg.2020.00417},
   url={https://discovery.ucl.ac.uk/id/eprint/10096443/},
   note={Active inference model of human communication as joint generative modeling}
-}
-
-@article{friston2017graphical,
-  title={The graphical brain: Belief propagation and active inference},
-  author={Friston, Karl J. and Parr, Thomas and de Vries, Bert},
-  journal={Network Neuroscience},
-  volume={1},
-  number={4},
-  pages={381--414},
-  year={2017},
-  doi={10.1162/netn_a_00018},
-  url={https://pure.tue.nl/ws/portalfiles/portal/90268394/NETN_a_00018.pdf},
-  note={Belief propagation under deep generative models for active inference}
-}
-
-@inproceedings{hale2001surprisal,
-  title={A Probabilistic {Earley} Parser as a Psycholinguistic Model},
-  author={Hale, John},
-  booktitle={Proceedings of the Second Meeting of the North American Chapter of the Association for Computational Linguistics ({NAACL})},
-  pages={159--166},
-  year={2001},
-  doi={10.3115/1073336.1073357},
-  note={Foundational surprisal theory linking processing difficulty to information-theoretic surprise}
-}
-
-@article{levy2008expectation,
-  title={Expectation-based syntactic comprehension},
-  author={Levy, Roger},
-  journal={Cognition},
-  volume={106},
-  number={3},
-  pages={1126--1177},
-  year={2008},
-  doi={10.1016/j.cognition.2007.05.006},
-  note={Unified expectation-based account of syntactic processing difficulty}
 }
 
 @inproceedings{li2023decomposition,
@@ -835,11 +742,11 @@
   author={{Quantinuum}},
   year={2025},
   howpublished={\url{https://www.quantinuum.com/blog/lambeq-gen-ii-a-quantum-enhanced-interpretable-and-scalable-text-based-nlp-software-package}},
-  note={Official release (May 22, 2025) with DisCoCircReader for discourse-level quantum circuits from full texts}
+  note={Official release (May 21, 2025) with DisCoCircReader for discourse-level quantum circuits from full texts}
 }
 
 %% ========================================================================
-%% 14. Quantum Cryptography and Semantic Security
+%% 15. Quantum Cryptography and Semantic Security
 %% ========================================================================
 
 @article{pirandola2020qkd,
@@ -867,7 +774,7 @@
 }
 
 %% ========================================================================
-%% 15. Distributional Semantics and the Distributional Hypothesis
+%% 16. Distributional Semantics and the Distributional Hypothesis
 %% ========================================================================
 
 @book{firth1957papers,
@@ -925,7 +832,7 @@
 }
 
 %% ========================================================================
-%% 16. Word Embeddings, Transformers, and Large Language Models
+%% 17. Word Embeddings, Transformers, and Large Language Models
 %% ========================================================================
 
 @inproceedings{mikolov2013efficient,
@@ -977,7 +884,7 @@
 }
 
 %% ========================================================================
-%% 17. Distributional Active Inference and Distributional RL
+%% 18. Distributional Active Inference and Distributional RL
 %% ========================================================================
 
 @misc{akgul2026distributional,
@@ -1002,7 +909,7 @@
 }
 
 %% ========================================================================
-%% 18. Missing References: Active Inference and Language
+%% 19. Additional: Active Inference and Language
 %% ========================================================================
 
 @article{friston2010free,
@@ -1051,7 +958,7 @@
 }
 
 %% ========================================================================
-%% 19. Missing References: Historical Linguistics (§2)
+%% 20. Historical Linguistics and Related Formalisms
 %% ========================================================================
 
 @article{jakobson1958morphologic,
@@ -1060,7 +967,7 @@
   journal={American Contributions to the Fourth International Congress of Slavicists},
   publisher={Mouton},
   year={1958},
-  note={Analyzes Russian verbal morphology through case oppositions (e.g., subject vs. object marking), laying groundwork for categorical views of grammatical functions as morphisms preserving distributional contexts in semantic spaces.}
+  note={Analyzes Russian nominal (declensional) morphology through case oppositions (e.g., subject vs. object marking), laying groundwork for categorical views of grammatical functions as morphisms preserving distributional contexts in semantic spaces.}
 }
 
 @book{hjelmslev1935categorie,
@@ -1121,4 +1028,102 @@
   year={2023},
   doi={10.4204/EPTCS.380.20},
   note={Formalizes open and interacting dynamical systems using Double Categorical Systems Theory (DCST)}
+}
+
+@misc{murphy2023rose,
+  title={{ROSE}: A Neurocomputational Architecture for Syntax},
+  author={Murphy, Elliot},
+  year={2023},
+  eprint={2303.08877},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  url={https://arxiv.org/abs/2303.08877},
+  doi={10.48550/arXiv.2303.08877},
+  note={Defines ROSE (Representation, Operation, Structure, Encoding) as a neurocomputational architecture linking oscillatory coding to hierarchical syntax}
+}
+
+@misc{murphy2026frege,
+  title={Frege in the Flesh: Biolinguistics and the Neural Enforcement of Syntactic Structures},
+  author={Murphy, Elliot},
+  year={2026},
+  eprint={2604.00291},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  url={https://arxiv.org/abs/2604.00291},
+  note={On MERGE, algebraic syntax, and constraints on neural mechanisms; preprint}
+}
+
+@article{bradleyvigneaux2025magnitude,
+  title={The magnitude of categories of texts enriched by language models},
+  author={Bradley, Tai-Danae and Vigneaux, Juan Pablo},
+  journal={Theory and Applications of Categories},
+  volume={44},
+  number={37},
+  pages={1256--1281},
+  year={2025},
+  url={https://arxiv.org/abs/2501.06662},
+  note={Builds text categories from LM next-token probabilities; magnitude and magnitude homology of an associated metric space}
+}
+
+@article{rabovsky2018modelling,
+  title={Modelling the N400 brain potential as change in a probabilistic representation of meaning},
+  author={Rabovsky, Milena and Hansen, Steven S and McClelland, James L},
+  journal={Nature Human Behaviour},
+  volume={2},
+  number={9},
+  pages={693--705},
+  year={2018},
+  publisher={Nature Publishing Group}
+}
+
+@article{gutierrez2026neuropragmatics,
+  title={Neuropragmatics: From classical pragmatics to neurocognitive frameworks for speech-act evaluation},
+  author={Gutierrez Cisneros, A. and others},
+  journal={Frontiers in Psychology},
+  year={2026},
+  doi={10.3389/fpsyg.2026.1745034}
+}
+
+@article{kutas2011thirty,
+  title={Thirty years and counting: Finding meaning in the {N400} component of the event-related brain potential ({ERP})},
+  author={Kutas, Marta and Federmeier, Kara D.},
+  journal={Annual Review of Psychology},
+  volume={62},
+  pages={621--647},
+  year={2011},
+  publisher={Annual Reviews},
+  doi={10.1146/annurev.psych.093008.131123}
+}
+
+@inproceedings{dabney2018distributional,
+  title={Distributional Reinforcement Learning with Quantile Regression},
+  author={Dabney, Will and Rowland, Mark and Bellemare, Marc G. and Munos, R{\'e}mi},
+  booktitle={Proceedings of the 32nd AAAI Conference on Artificial Intelligence (AAAI-18)},
+  pages={2892--2901},
+  year={2018},
+  doi={10.1609/aaai.v32i1.11791}
+}
+
+@article{yedidia2005constructing,
+  title={Constructing free-energy approximations and generalized belief propagation algorithms},
+  author={Yedidia, Jonathan S. and Freeman, William T. and Weiss, Yair},
+  journal={IEEE Transactions on Information Theory},
+  volume={51},
+  number={7},
+  pages={2282--2312},
+  year={2005},
+  publisher={IEEE},
+  doi={10.1109/TIT.2005.850085}
+}
+
+@article{kuperberg2016mean,
+  title={What do we mean by prediction in language comprehension?},
+  author={Kuperberg, Gina R. and Jaeger, T. Florian},
+  journal={Language, Cognition and Neuroscience},
+  volume={31},
+  number={1},
+  pages={32--59},
+  year={2016},
+  publisher={Taylor \& Francis},
+  doi={10.1080/23273798.2015.1102299}
 }

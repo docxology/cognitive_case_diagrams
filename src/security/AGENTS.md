@@ -2,9 +2,9 @@
 
 ## Overview
 
-The `security` subpackage implements **§9b** of the manuscript: cognitive security analysis through the lens of case theory. Adversarial prompt injection is formalized as a **decidable type violation** — a morphism that violates the grammatical type constraints of the case category.
+The `security` subpackage implements manuscript **§9b** ([`09b_cognitive_security.md`](../../manuscript/09b_cognitive_security.md)): cognitive security as **protocol-level** type checking—prompt injection as a **decidable type violation** when roles are ill-typed in the interaction category.
 
-> **Reference**: Manuscript §9b — "Cognitive Security: Case-Theoretic Defenses Against Adversarial Case-Frame Manipulation"
+> **Reference**: §9b — *Prompt Injection Is a Type Violation* (`#sec:cognitive-security`). Claims are conditional on fixed protocols, not automatic guarantees on deployed LLM APIs.
 
 ## Module Inventory
 

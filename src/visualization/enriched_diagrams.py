@@ -5,7 +5,6 @@ with proper axis labeling and identity diagonal highlighting.
 """
 
 import logging
-from pathlib import Path
 from typing import Optional
 
 import matplotlib
@@ -23,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 def render_enriched_heatmap(
     enriched: EnrichedCategory,
-    output_path: Optional[Path] = None,
+    output_path: Optional[str] = None,
     title: Optional[str] = None,
 ) -> matplotlib.figure.Figure:
     """Render the proximity matrix as an annotated heatmap.

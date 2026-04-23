@@ -1,4 +1,4 @@
-# quantum/ — §8: Quantum Case Assignment
+# quantum/ — §8: TQNNs and Quantum Semantics
 
 POVM-based quantum measurement for case role assignment. Shared categorical structure with ZX-calculus enables compilation to quantum hardware.
 

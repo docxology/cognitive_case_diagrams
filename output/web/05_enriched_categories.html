@@ -241,7 +241,17 @@
 <body>
 <h1 id="sec:enriched-categories"><span
 class="math inline">\([0,1]\)</span>-Enriched Case Categories:
-Hom-Values as Distributional Proximity, Magnitude as Complexity</h1>
+Hom-Values as Distributional Proximity</h1>
+<p><strong>Where we are in the argument.</strong> – have been working in
+a category whose morphisms are Boolean — a relation either exists
+between two case roles or it does not. This chapter upgrades that to
+<span class="math inline">\([0,1]\)</span>-enrichment so every pair of
+roles carries a <em>graded</em> hom-value <span
+class="math inline">\(\mathcal{C}(A, B) \in [0,1]\)</span> — a
+distributional proximity that doubles as the precision <span
+class="math inline">\(w_f\)</span> used throughout / for
+prediction-error weighting, and that will feed into the magnitude
+invariant of and the topos-theoretic bridge of .</p>
 <h2 id="why-binary-morphisms-are-not-enough">Why Binary Morphisms Are
 Not Enough</h2>
 <p>The categories established in —modeling case roles as objects and
@@ -259,11 +269,14 @@ discrete sets of morphisms. The framework of Bradley et al. <span
 class="citation"
 data-cites="fritz2021enriched">[-@fritz2021enriched]</span> supplies the
 key formal construction.</p>
-<h2 id="enriching-over-01cdot1">Enriching Over <span
-class="math inline">\(([0,1],\cdot,1)\)</span></h2>
+<h2
+id="enriching-over-01cdot1-identity-sub-multiplicative-composition-and-four-hom-value-readings">Enriching
+Over <span class="math inline">\(([0,1],\cdot,1)\)</span>: Identity,
+Sub-Multiplicative Composition, and Four Hom-Value Readings</h2>
 <h3
-id="hom-values-as-graded-distributional-proximity-four-linguistic-interpretations">Hom-Values
-as Graded Distributional Proximity: Four Linguistic Interpretations</h3>
+id="the-identity-and-composition-axioms-for-01-enriched-case-categories">The
+Identity and Composition Axioms for <span
+class="math inline">\([0,1]\)</span>-Enriched Case Categories</h3>
 <p>A category <span class="math inline">\(\mathcal{C}\)</span> enriched
 over the unit interval <span class="math inline">\(([0,1], \cdot,
 1)\)</span> assigns to every pair of objects <span
@@ -275,20 +288,21 @@ satisfying:</p>
 \mathcal{C}(A, C) &amp;\geq \mathcal{C}(A, B) \cdot \mathcal{C}(B, C)
 \quad \text{(Composition)} \label{eq:eq-5-2}
 \end{align}\]</span></p>
-<p>The identity axiom physically dictates that every distinct linguistic
-expression remains perfectly and maximally related to itself. The
-composition inequality imposes a strict logical boundary, demanding that
-distributional relatedness inherently composes sub-multiplicatively: if
-expression <span class="math inline">\(A\)</span> proves 80% related to
-<span class="math inline">\(B\)</span>, and <span
+<p>The identity axiom dictates that every linguistic expression remains
+maximally related to itself. The composition inequality imposes a strict
+logical boundary, demanding that distributional relatedness inherently
+composes sub-multiplicatively: if expression <span
+class="math inline">\(A\)</span> proves 80% related to <span
+class="math inline">\(B\)</span>, and <span
 class="math inline">\(B\)</span> remains 70% related to <span
 class="math inline">\(C\)</span>, the overarching algebraic structure
 formally guarantees that <span class="math inline">\(A\)</span> must be
 at least <span class="math inline">\(0.8 \times 0.7 = 56\%\)</span>
 related to <span class="math inline">\(C\)</span>.</p>
 <h3
-id="conditional-probability-proto-role-strength-cosine-similarity">Conditional
-Probability, Proto-Role Strength, Cosine Similarity</h3>
+id="four-linguistic-readings-of-the-hom-value-probability-proto-role-similarity-predictability">Four
+Linguistic Readings of the Hom-Value: Probability, Proto-Role,
+Similarity, Predictability</h3>
 <p>Bradley et al. <span class="citation"
 data-cites="fritz2021enriched">[-@fritz2021enriched]</span> originally
 interpret these numerical hom-values strictly as empirical
@@ -296,8 +310,10 @@ interpret these numerical hom-values strictly as empirical
 distributional model: <span class="math inline">\(\mathcal{C}(A, B) =
 P(\text{context} \mid A \text{ and } B \text{ co-occur})\)</span>.
 Within our customized case-theoretic application, we actively broaden
-this interpretation to capture deep grammatical phenomena:</p>
-<table>
+this interpretation to capture deep grammatical phenomena ():</p>
+<table id="tbl:hom-value-interpretations">
+<caption>Four linguistic interpretations of hom-values in <span
+class="math inline">\([0,1]\)</span>-enriched case categories.</caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 33%" />
@@ -314,7 +330,8 @@ this interpretation to capture deep grammatical phenomena:</p>
 <tr>
 <td style="text-align: left;">Conditional probability</td>
 <td style="text-align: left;">Corpus statistics</td>
-<td style="text-align: left;">P(ACC role | transitive verb context)</td>
+<td style="text-align: left;"><span class="math inline">\(P(\text{ACC
+role} \mid \text{transitive verb context})\)</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">Proto-role strength</td>
@@ -334,8 +351,32 @@ embeddings</td>
 </tr>
 </tbody>
 </table>
-<h3 id="when-composition-inequality-fails">When Composition Inequality
-Fails</h3>
+<h3
+id="when-the-composition-inequality-fails-a-worked-english-nomaccdat-example">When
+the Composition Inequality Fails: A Worked English NOM–ACC–DAT
+Example</h3>
+<p><strong>Architectural note — two decoupled number systems.</strong>
+The enriched hom-value <span class="math inline">\(\mathcal{C}(A,B) \in
+[0,1]\)</span> defined here is <em>not</em> the same scalar as the
+morphism weight <span class="math inline">\(w_f \in [0,1]\)</span> that
+appears on every <code>Morphism</code> in the <code>CaseCategory</code>
+of . The <code>CaseCategory</code> assigns <span
+class="math inline">\(w_f = 1.0\)</span> to every structurally present
+morphism (it encodes <em>admissibility</em> — a binary question dressed
+as a real to support multiplicative composition along chains, per Eq.
+<span class="math inline">\(\ref{eq:eq-2-1}\)</span>), whereas the
+<code>EnrichedCategory</code> assigns a <em>graded distributional
+proximity</em> between every pair of roles including non-adjacent ones.
+The two number systems serve different purposes and are intentionally
+decoupled in the implementation:
+<code>src/case_systems/case_category.py::standard_case_category</code>
+ships unit-weight morphisms, while
+<code>src/enriched_cat/enriched.py::standard_enriched_category</code>
+ships the full <span class="math inline">\(8 \times 8\)</span> proximity
+matrix <span class="math inline">\(Z\)</span>. When a prediction-error
+formula in or references a “weight” <span class="math inline">\(w_f =
+\mathcal{C}(A,B)\)</span>, the referent is the <em>enriched</em>
+hom-value — never the morphism weight in the case category.</p>
 <p>Our <code>EnrichedCategory</code> class implements this structure
 directly. The constructor takes a list of <code>CaseRole</code> objects
 and a NumPy proximity matrix encoding hom-values:</p>
@@ -364,25 +405,59 @@ meaningful: it tells us that the NOM→ACC→DAT chain overestimates the
 direct NOM→DAT relatedness, reflecting the typological fact that
 subject–recipient identity (e.g., in benefactive constructions) is more
 restricted than the product of agent–patient and patient–recipient
-proximities. shows the distributional relations between case roles as a
-categorical relation graph.</p>
+proximities. shows the pairwise hom-values <span
+class="math inline">\(\mathcal{C}(A,B) \in [0,1]\)</span> between case
+roles as an annotated heatmap of the proximity matrix.</p>
+<p><strong>Slavic syncretism as an empirical anchor for high
+hom-values.</strong> The fourth row of — <em>morphological
+predictability</em> — is most cleanly calibrated against Slavic case
+morphology. Where a paradigm collapses two morphological cells into one
+form, the morphological-predictability hom-value approaches its upper
+bound:</p>
+<ul>
+<li><strong>Russian masculine animate ACC = GEN</strong>
+(e.g. <em>brata</em>, <em>čeloveka</em>) ⇒ <span
+class="math inline">\(\mathcal{C}(\text{ACC}, \text{GEN}) \approx
+1\)</span> for that declension class.</li>
+<li><strong>Russian neuter NOM = ACC</strong> (e.g. <em>okno</em>
+“window” identical in subject and direct-object position) ⇒ <span
+class="math inline">\(\mathcal{C}(\text{NOM}, \text{ACC}) \approx
+1\)</span> for that paradigm.</li>
+<li><strong>Serbian/BCS dative–locative singular merger</strong> in many
+declensions (e.g. <em>gradu</em> serves both <em>prema gradu</em>
+“toward-DAT the city” and <em>u gradu</em> “in-LOC the city”) ⇒ <span
+class="math inline">\(\mathcal{C}(\text{DAT}, \text{LOC}) \approx
+1\)</span>.</li>
+</ul>
+<p>These are not modelling choices: they are <em>observed</em>
+identifications of morphological cells, supplying directly-measurable
+upper bounds on the enriched hom-values for the corresponding role
+pairs. They co-exist with low hom-values for the same role pairs under
+the <em>distributional</em> or <em>proto-role</em> readings of — a
+useful reminder that the four interpretations are projections of a
+richer multi-channel proximity, not competing definitions.</p>
 <figure id="fig:enriched-heatmap">
 <img src="output/figures/enriched_hom_matrix.png"
-alt="Core and peripheral argument complexes emerge from enriched distributional hom-values. Relation graph visualizing \mathcal{C}(A,B) \in [0,1] among all eight case roles. Strong relations (solid edges) cluster into two groups: the core argument complex (NOM–ACC–DAT, linked by transitive and transfer morphisms) and the peripheral complex (LOC–INS–ABL, linked by spatial and instrumental relations). GEN bridges both via possessive modification. Weak relations (dashed edges) connect VOC—its peripheral isolation reflects the pragmatic rather than syntactic function of direct address. These hom-values yield the similarity matrix Z () and categorical magnitude of . Generated programmatically from the EnrichedCategory class." />
+alt="Core and peripheral argument complexes emerge from enriched distributional hom-values. Annotated heatmap of the 8 \times 8 matrix with entries \mathcal{C}(A_i,A_j) \in [0,1] (YlOrRd scale; numeric labels in each cell). High-proximity blocks reveal the core argument complex (NOM–ACC–DAT: transitive and transfer morphisms) and the peripheral complex (LOC–INS–ABL: spatial and instrumental relations). GEN shows elevated proximity to both blocks via possessive modification; VOC shows high proximity to NOM (0.70, reflecting nominative-vocative morphological syncretism in many IE languages) but low proximity to the spatial-instrumental periphery (INS=0.20, LOC=0.15, ABL=0.15), reflecting its pragmatic rather than referential function. These hom-values assemble the similarity matrix Z used for categorical magnitude in  (), with axioms –. Generated programmatically from src.visualization.enriched_diagrams.render_enriched_heatmap() applied to EnrichedCategory data (see scripts/generate_diagrams.py)." />
 <figcaption aria-hidden="true">Core and peripheral argument complexes
-emerge from enriched distributional hom-values. Relation graph
-visualizing <span class="math inline">\(\mathcal{C}(A,B) \in
-[0,1]\)</span> among all eight case roles. Strong relations (solid
-edges) cluster into two groups: the <strong>core argument
-complex</strong> (NOM–ACC–DAT, linked by transitive and transfer
-morphisms) and the <strong>peripheral complex</strong> (LOC–INS–ABL,
-linked by spatial and instrumental relations). GEN bridges both via
-possessive modification. Weak relations (dashed edges) connect VOC—its
-peripheral isolation reflects the pragmatic rather than syntactic
-function of direct address. These hom-values yield the similarity matrix
-<span class="math inline">\(Z\)</span> () and categorical magnitude of .
-Generated programmatically from the <code>EnrichedCategory</code>
-class.</figcaption>
+emerge from enriched distributional hom-values. Annotated heatmap of the
+<span class="math inline">\(8 \times 8\)</span> matrix with entries
+<span class="math inline">\(\mathcal{C}(A_i,A_j) \in [0,1]\)</span>
+(YlOrRd scale; numeric labels in each cell). High-proximity blocks
+reveal the <strong>core argument complex</strong> (NOM–ACC–DAT:
+transitive and transfer morphisms) and the <strong>peripheral
+complex</strong> (LOC–INS–ABL: spatial and instrumental relations). GEN
+shows elevated proximity to both blocks via possessive modification; VOC
+shows high proximity to NOM (0.70, reflecting nominative-vocative
+morphological syncretism in many IE languages) but low proximity to the
+spatial-instrumental periphery (INS=0.20, LOC=0.15, ABL=0.15),
+reflecting its pragmatic rather than referential function. These
+hom-values assemble the similarity matrix <span
+class="math inline">\(Z\)</span> used for categorical magnitude in (),
+with axioms –. Generated programmatically from
+<code>src.visualization.enriched_diagrams.render_enriched_heatmap()</code>
+applied to <code>EnrichedCategory</code> data (see
+<code>scripts/generate_diagrams.py</code>).</figcaption>
 </figure>
 </body>
 </html>

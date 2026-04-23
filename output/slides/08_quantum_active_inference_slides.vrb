@@ -1,0 +1,42 @@
+\frametitle{Topological Quantum Neural Networks and ZX-Calculus: From Spin-Networks to Categorical Case Diagrams}
+\textbf{Where we are in the argument.} The preceding sections have
+established that categorical string diagrams---from DisCoCat's pregroup
+derivations (\autoref{sec:categorical-semantics}) through enriched
+hom-values (\autoref{sec:enriched-categories}) to topos-theoretic
+transfer (\autoref{sec:topos-theory})---provide a unified diagrammatic
+language for case-theoretic reasoning (\textbf{theoretical synthesis}).
+This section extends the framework with a literature bridge to
+topological quantum neural networks (TQNNs), the ZX-calculus, and
+sheaf-theoretic quantum semantic communication (\textbf{theoretical
+bridge to prior art}).
+
+The \texttt{src/quantum/quantum\_case.py} module implements a concrete
+POVM-based measurement model for case roles (tested in the project
+suite; see \autoref{sec:quantum-semantics}). The broader TQNN,
+ZX-rewrite, and lambeq compilation claims remain literature connections
+and proposed extensions rather than full local implementations. The
+central observation is that the same monoidal-categorical architecture
+underlies both classical DisCoCat diagrams and quantum processes.
+
+\textbf{Position relative to prior work.} Each ingredient we draw on has
+independent prior art. TQNNs as spin-network computations are due to
+Fields, Marcianò, and collaborators {[}@fields2022tqnn;
+@fields2025amplituhedra{]}; the ZX-calculus and its circuit-extraction
+theory are due to Kissinger, van de Wetering, Coecke, and the
+Picturing-Quantum-Processes school {[}@kissinger2020zx;
+@coeckekissinger2017{]}; and quantum natural language processing on
+present-day hardware has been demonstrated by the lambeq pipeline
+{[}@lorenz2021lambeq{]} and the Quantinuum quantum-NLP programme. What
+is \emph{new} in this section is none of those constructions
+individually; rather it is the \textbf{identification} that the
+\emph{same} monoidal-functorial scaffolding can carry a
+\emph{case-theoretic} payload --- in particular, that the POVM family
+\(\{E_c\}\) of \autoref{sec:quantum-semantics} can be read both as a
+Born-rule case-assignment device and as the pointer-basis selected by a
+quantum reference frame in a TQNN --- and the consequent claim that case
+assignment, ZX-rewrite verification, and DAIF-style distributional
+inference (\autoref{sec:daif-results}) are three views of one
+diagrammatic process. This is a \emph{bridge} result, not a hardware
+claim: nothing in this section asserts that fault-tolerant quantum
+hardware is required, and the \autoref{sec:daif-results} distributional
+pipeline runs entirely on classical numerics.

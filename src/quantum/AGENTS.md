@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `quantum` subpackage implements **§8** of the manuscript: quantum case assignment via Positive Operator-Valued Measures (POVMs). Case role assignment becomes quantum measurement, exploiting the shared categorical structure between DisCoCat string diagrams and ZX-calculus.
+The `quantum` subpackage implements **§8** (and **§8b** quantum semantics) of the manuscript: quantum case assignment via Positive Operator-Valued Measures (POVMs). Case role assignment becomes quantum measurement, exploiting the shared categorical structure between DisCoCat string diagrams and ZX-calculus.
 
 > **References**: Coecke et al. (2020) on TQNNs; Coecke & Duncan (2011) on ZX-calculus; lambeq pipeline (Kartsaklis et al. 2021) for PQC compilation.
 

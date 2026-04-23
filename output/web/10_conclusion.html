@@ -174,14 +174,16 @@
   type="text/javascript"></script>
 </head>
 <body>
-<h1 id="sec:conclusion">Conclusion: Eleven Formal and Computational
-Contributions</h1>
+<h1 id="sec:conclusion">Conclusion: Elevating Language Models from
+Vectors to Enriched Category Frameworks</h1>
 <h2 id="what-this-paper-actually-did-eleven-concrete-deliverables">What
 This Paper Actually Did: Eleven Concrete Deliverables</h2>
 <p>This paper developed a unified category-theoretic framework for
-linguistic case systems, synthesizing five research
-traditions—typological, type-logical, distributional,
-enriched-categorical, and topos-theoretic—and embedding the result
+linguistic case systems, synthesizing <strong>five formal
+traditions</strong>—typological, type-logical, distributional,
+enriched-categorical, and topos-theoretic—together with a <strong>sixth
+strand</strong>, the biolinguistic and neurocomputational interface
+(ROSE and related oscillatory accounts; , ), and embedding the whole
 within an active inference model of cognition. Our eleven principal
 contributions are:</p>
 <blockquote>
@@ -189,7 +191,7 @@ contributions are:</p>
 <strong>C</strong>_n_ (<em>n</em>th contribution,
 <strong>C1</strong>–<strong>C11</strong>) or <strong>F</strong>_n_
 (<em>n</em>th future direction,
-<strong>F1</strong>–<strong>F7</strong>).</p>
+<strong>F1</strong>–<strong>F8</strong>).</p>
 </blockquote>
 <h3 id="c1-case-categories-as-a-formal-algebraic-framework">C1: Case
 Categories as a Formal Algebraic Framework</h3>
@@ -233,7 +235,7 @@ alignment-sensitive meaning functors, and showed how the recent
 DisCoCirc <span class="citation"
 data-cites="defelice2022discocirc">[@defelice2022discocirc]</span> and
 QNLP <span class="citation"
-data-cites="lorenz2023lambeq">[@lorenz2023lambeq]</span> developments
+data-cites="lorenz2021lambeq">[@lorenz2021lambeq]</span> developments
 extend this analysis to discourse-level structure and quantum hardware
 respectively. We formalized the <em>compact closure axiom</em> (snake
 equation) that underpins pregroup reductions, demonstrating that the
@@ -262,10 +264,10 @@ Enriched Cases, Categorical Magnitude, and Information Theory</h3>
 data-cites="fritz2021enriched">[-@fritz2021enriched]</span> enrichment
 framework and Bradley’s <span class="citation"
 data-cites="bradley2021entropy">[-@bradley2021entropy]</span>
-information-theoretic analysis (), we showed that equipping case
+information-theoretic analysis (, ), we showed that equipping case
 categories with <span class="math inline">\([0,1]\)</span>-valued
 hom-objects yields a principled bridge between symbolic case grammar and
-statistical semantics. Categorical magnitude provides a quantitative
+statistical semantics. Categorical magnitude () provides a quantitative
 ``effective size’’ invariant for comparing case systems; magnitude
 homology <span class="citation"
 data-cites="leinster2021magnitude">[-@leinster2021magnitude]</span>
@@ -297,58 +299,55 @@ data-cites="larkin1987diagram shimojima1996reasoning giardino2017diagrammatic ma
 convenient notation but cognitively privileged representations that
 provide inferential advantages in case reasoning. When embedded in an
 active inference framework <span class="citation"
-data-cites="friston2017active">[@friston2017active]</span> and the
-CEREBRUM architecture <span class="citation"
+data-cites="namjoshi2026fundamentals">[@namjoshi2026fundamentals]</span>
+and the CEREBRUM architecture <span class="citation"
 data-cites="friedman2024cerebrum">[@friedman2024cerebrum]</span>, these
 diagrams serve as the structural core of generative models for total
 cognitive scenario understanding.</p>
-<h3 id="c7-computational-verification-and-test-suite">C7: Computational
-Verification and Test Suite</h3>
-<p>The entire framework is computationally implemented and verified
-through <strong>804 automated tests across 47 test files with ≥90% code
-coverage target</strong> (; DAIF implementation and metrics in ),
-enforced in the build configuration. The DisCoPy integration exercises
-pregroup type theory (types, words, cups, caps, swaps, normal forms,
-depth analysis) against the same algebraic structures described
-theoretically, confirming that the categorical abstractions are not just
-mathematically elegant but computationally executable. The
-<code>src/daif/</code> subpackage (7 modules, 24 symbols, 161 dedicated
-tests) provides the full distributional RL implementation: push-forward
-returns, quantile TD, variational message passing, Bethe free energy,
-ERP profile generation, policy selection, and convergence diagnostics.
-Every test uses real mathematical computations—no mocks or
-fakes—ensuring that results reflect genuine behaviour of the formal
-structures.</p>
-<h3 id="c8-quantum-active-inference-and-topological-semantic-flow">C8:
-Quantum Active Inference and Topological Semantic Flow</h3>
-<p>The framework’s categorical string diagrams were extended into their
-natural quantum generalization through topological quantum neural
-networks, the ZX-calculus, and sheaf-theoretic quantum semantic
-communication (). By demonstrating that DisCoCat derivations, ZX
-circuits, and TQNN spin-networks are all morphisms in compact closed
-monoidal categories with functorial semantics into Hilbert spaces, the
-analysis established that case assignment can be modeled as quantum
-measurement on a holographic screen—and that quantum features
-(entanglement, contextuality, discord) provide genuine advantages for
-semantic communication of relational structure.</p>
-<h3 id="c9-cognitive-security-and-case-theoretic-ai-safety">C9:
-Cognitive Security and Case-Theoretic AI Safety</h3>
-<p>The framework yielded a novel analysis of AI security through the
-lens of case theory (; compositional protocol typing in ). We
-demonstrated that prompt injection attacks—the predominant vulnerability
-in LLM-based agent systems—are structurally equivalent to <em>illicit
-case-role re-assignments</em>: adversarial text promotes itself from ACC
-(passive data) to NOM (active commander), constituting a type violation
-in the interaction grammar. This analysis led to the proposal of
-<em>case-theoretic firewalls</em> that enforce relational type
-constraints on agent communication boundaries, and <em>epistemic case
-security</em> as a framework for protecting multi-agent relational
-reasoning against belief injection, precision poisoning, and cascade
-corruption when results are transferred across Morita-equivalent
-formalizations. The compositional structure of the categorical framework
-enables local verification—each morphism can be independently
-authenticated—providing defense-in-depth that content-based filtering
-cannot achieve.</p>
+<h3
+id="c7-computational-verification-and-test-suite-implemented-and-tested">C7:
+Computational Verification and Test Suite (<strong>implemented and
+tested</strong>)</h3>
+<p>The framework is computationally implemented and verified through
+<strong>1197</strong> automated tests across <strong>64</strong> test
+files (sixty-four files). 95.96% line-and-branch coverage on
+<code>src/</code> (from <code>coverage.json</code>) The CI/build gate
+requires <strong>≥90%</strong> coverage on <code>src/</code> (see , DAIF
+in , and <code>src/generate_manuscript_metrics.py</code> for injection
+of these values at build time). The <code>src/daif/</code> subpackage (7
+modules, 25 symbols, 224 dedicated tests) provides distributional RL
+components (push-forward, quantile TD, VMP, Bethe FE, ERP profiles,
+policy selection, diagnostics). All tests use real mathematical
+computations—no mocks—ensuring results reflect genuine behaviour of the
+formal structures in <code>src/</code>. Raw manuscript sources contain
+<code>${...}</code> placeholders resolved by the metrics pipeline.</p>
+<h3
+id="c8-quantum-active-inference-and-topological-semantic-flow-theoretical-bridge">C8:
+Quantum Active Inference and Topological Semantic Flow
+(<strong>theoretical bridge</strong>)</h3>
+<p>The framework’s categorical string diagrams connect to literature on
+topological quantum neural networks, the ZX-calculus, and
+sheaf-theoretic quantum semantic communication (). The
+<code>src/quantum/</code> module implements a POVM measurement model for
+case roles (<strong>implemented and tested</strong>). The broader TQNN
+spin-networks, full ZX circuit compilation, and hardware claims
+represent a theoretical bridge rather than complete local execution in
+this repository.</p>
+<h3
+id="c9-cognitive-security-and-case-theoretic-ai-safety-specification-and-proxy-implementation">C9:
+Cognitive Security and Case-Theoretic AI Safety (<strong>specification
+and proxy implementation</strong>)</h3>
+<p>The framework provides a case-theoretic analysis of AI security (;
+see also compositional protocol typing in ). Prompt injection is
+analyzed as structurally equivalent to illicit case-role re-assignment
+(type violation in the interaction grammar; <strong>implemented as
+type-checking proxy in <code>src/security/</code> and
+<code>src/diagrams/</code></strong>). This leads to the proposal of
+case-theoretic firewalls and epistemic case security as a framework. The
+<code>src/security/cognitive_security.py</code> implements
+finite-category validation and scoring (tested). Full production
+enforcement and non-cartesian monoidal constraints remain open
+engineering targets, as detailed in the limitations section of .</p>
 <h3 id="c10-falsifiable-neurolinguistic-predictions">C10: Falsifiable
 Neurolinguistic Predictions</h3>
 <p>The integration of enriched category theory with active inference
@@ -379,9 +378,9 @@ transferable across Morita-equivalent formalizations when equivalence is
 exhibited (). The DisCoCirc extension enables discourse-level tracking
 of agent states across multi-turn dialogues, with protocol correctness
 reducing to categorical type-checking.</p>
-<h2 id="seven-open-directions">Seven Open Directions</h2>
-<p>The following seven directions
-(<strong>F1</strong>–<strong>F7</strong>) identify the most tractable
+<h2 id="sec:future-directions">Eight Open Directions</h2>
+<p>The following eight directions
+(<strong>F1</strong>–<strong>F8</strong>) identify the most tractable
 and impactful extensions of this framework:</p>
 <h3 id="f1-computational-experiments-with-discocirc-and-lambeq">F1:
 Computational Experiments with DisCoCirc and lambeq</h3>
@@ -525,6 +524,187 @@ operationalizing the typological complexity predictions of </li>
 into the CEREBRUM architecture to model individual differences in
 syntactic risk tolerance</li>
 </ul>
+<h3
+id="f8-synthesizing-biolinguistic-syntax-with-neuropragmatic-inference-via-the-rose-model">F8:
+Synthesizing Biolinguistic Syntax with Neuropragmatic Inference via the
+ROSE Model</h3>
+<p>A critical open direction is fully computationalizing the handoff
+between the rigid algebraic geometry of syntax and the highly
+associative probabilistic inference of discourse. Murphy’s
+<strong>ROSE</strong> (Representation, Operation, Structure, Encoding)
+model <span class="citation"
+data-cites="murphy2023rose">[@murphy2023rose]</span> suggests that the
+brain achieves this via cross-frequency phase-amplitude coupling (PAC),
+establishing a “mesoscopic protectorate” for formal operations. Future
+extensions should:</p>
+<ul>
+<li>Model PAC directly within CEREBRUM by assigning distinct temporal
+decay rates to syntactic operators vs. pragmatic context vectors.</li>
+<li>Simulate the export of case-marked commutative diagrams from a
+simulated “core language network” to a simulated Default Mode Network
+using Gutiérrez Cisneros et al.’s <span class="citation"
+data-cites="gutierrez2026neuropragmatics">[-@gutierrez2026neuropragmatics]</span>
+framework for speech-act evaluation.</li>
+<li>Test whether the diagrammatic free-ride inferences () predicted by
+our categorical model map onto the theta-gamma cross-frequency
+signatures observed during pragmatic garden-path recovery.</li>
+</ul>
+<h2 id="five-takeaways-one-argumentative-line-per-formal-pillar">Five
+Takeaways: One Argumentative Line per Formal Pillar</h2>
+<p>For the reader who absorbs nothing else, the argumentative line
+reduces to these five points — one per pillar of the formal
+architecture:</p>
+<ol type="1">
+<li><p><strong>Case is category-theoretic, not morphological.</strong>
+The universal fact of linguistic case is that every language wires up
+<em>who did what to whom</em>; the formal content of that wiring is
+precisely the data of a category with case roles as objects and
+grammatical relations as morphisms. Alignment typologies (nominative,
+ergative, tripartite, active-stative, fluid-S) are structure-preserving
+functors between case categories — a typological taxonomy becomes a
+proof-by-functor.</p></li>
+<li><p><strong>String diagrams make the grammar executable.</strong>
+Lambek pregroup types, compact closure, and the snake equation compile
+each sentence into a DisCoPy string diagram whose normal form is the
+sentence type <span class="math inline">\(s\)</span>; each reduction is
+a proof of well-typedness, and the reduction <em>is</em> the diagram.
+The three-sentence DisCoCirc example ships a working discourse with
+per-entity role-history ribbons showing Alice traversing NOM → ACC →
+NOM.</p></li>
+<li><p><strong>Enriched weights ground graded intuitions.</strong>
+Moving from <span class="math inline">\(\mathbf{Bool}\)</span>- to <span
+class="math inline">\([0,1]\)</span>-enrichment replaces binary
+admissibility with graded distributional proximity, makes categorical
+magnitude <span class="math inline">\(|\mathcal{C}| \approx 2.5\)</span>
+a computable summary of effective role distinctions, and gives the
+enriched weight <span class="math inline">\(w_f = \mathcal{C}(A,
+B)\)</span> used throughout / as the precision on every prediction
+error.</p></li>
+<li><p><strong>DAIF ports the whole scaffolding into active
+inference.</strong> Variational message passing, the Bethe free energy,
+and a four-term expected free energy <span
+class="math inline">\(G(\pi)\)</span> turn distributional case
+assignment into a first-principles inference loop. The N400 and P600 ERP
+amplitudes fall out of a first-order expansion <span
+class="math inline">\(\Delta F \approx -\Delta \mathbb{E}[Z] +
+\tfrac{1}{2}\Delta\Lambda\sigma_Z^{2}\)</span> — derivations, not
+empirical ansätze.</p></li>
+<li><p><strong>The same formal layers give AI-safety researchers three
+concrete handles.</strong> Type discipline on messages, decidable
+admissibility of multi-turn sequences, and graded-confidence attenuation
+() give prompt injection a type-theoretic reformulation () — an
+engineering specification for agent protocols, not a guarantee on
+untyped present-day LLM APIs.</p></li>
+</ol>
+<h2 id="what-the-paper-does-not-claim-consolidated-limitations">What the
+Paper Does <em>Not</em> Claim: Consolidated Limitations</h2>
+<p>Four limitations recur across the framework and are recorded here
+explicitly rather than left implicit in their sections of origin:</p>
+<ul>
+<li><strong>The mean-field approximation in
+<code>push_forward_return</code></strong> maintains one belief-weighted
+return distribution instead of per-state distributions <span
+class="math inline">\(Z(s)\)</span>. By the mean-field bound recorded in
+the approximation error is at most <span class="math inline">\(\gamma
+\cdot R_{\max} \cdot H[q]\)</span> in the <span
+class="math inline">\(W_1\)</span> metric — tight for sharp posteriors,
+linearly degrading as entropy grows.</li>
+<li><strong>The enriched-categorical unification is a
+conjecture.</strong> Distributional semantics, distributional RL, and
+active-inference posteriors all instantiate <span
+class="math inline">\([0,1]\)</span>-enriched structures, but a strict
+categorical proof that the three share a common enriching monoidal base
+remains open ().</li>
+<li><strong>Empirical validation is narrow.</strong> Case-assignment
+demonstrations use a single German sentence. Cross-linguistic and
+cross-register generalisation is left to future work; the hooks in
+<code>make_daif_belief_trajectory_data()</code> make adding corpora a
+one-function change.</li>
+<li><strong>ERP amplitudes are not calibrated to μV.</strong> The DAIF
+predictions are on a dimensionless return/log-probability scale;
+converting to μV would require a per-subject scaling constant fit to
+empirical ERP data. The qualitative ordering and graded precision
+response are predictions the current framework <em>does</em> make.</li>
+</ul>
+<h2 id="sec:reviewer-objections">Anticipated Objections and
+Responses</h2>
+<p>Four lines of objection stand out; we address each honestly rather
+than waiting for a reviewer.</p>
+<p><strong>Objection 1 — “The mean-field approximation throws away the
+whole point of distributional RL.”</strong> <em>Response.</em> The
+belief-weighted collapse gives <span
+class="math inline">\(\mathcal{O}(n)\)</span> memory in place of <span
+class="math inline">\(\mathcal{O}(n \cdot N_{\text{atoms}})\)</span> and
+is exact in the sharp-posterior limit. The mean-field bound recorded in
+quantifies the degradation as <span class="math inline">\(H[q]\)</span>
+grows. The alternative — maintaining per-state return distributions
+throughout a linguistic parse — would multiply the runtime of
+<code>distributional_case_assignment()</code> by a factor of <span
+class="math inline">\(n\)</span> (the role count) for a gain that
+vanishes as the posterior sharpens after the first few words of a
+sentence.</p>
+<p><strong>Objection 2 — “The enriched-categorical unification is only
+stated, never proven.”</strong> <em>Response.</em> Conceded, and flagged
+in and in the What’s New block of . Distributional semantics,
+distributional RL, and active-inference posteriors all
+<em>instantiate</em> <span class="math inline">\([0,1]\)</span>-enriched
+structure; whether they share a common enriching monoidal base in the
+strict sense of Kelly enriched-category theory is an open question. The
+repository’s tests verify the enriched axioms hold in each instance;
+they do not construct the common base functor, and the manuscript
+nowhere uses the strict unification as a load-bearing step in any
+downstream argument.</p>
+<p><strong>Objection 3 — “Cross-linguistic evidence is a single German
+sentence.”</strong> <em>Response.</em> The empirical scope reflects the
+publication’s focus on <em>specification</em> rather than <em>corpus
+study</em>. The <code>Discourse.role_reversal("Alice", "Bob")</code> and
+<code>make_daif_belief_trajectory_data()</code> interfaces accept
+arbitrary lexical heads and observation sequences; extending to Basque,
+Dyirbal, Russian, Serbian/BCS, or any other language is a one-function
+change. (in ) already shows a pregroup multilingual isomorphism across
+English / Latin / Japanese, and the Slavic discussion in extends the
+same type calculus to overtly case-marked Russian and Serbian noun
+phrases. Slavic-language ERP datasets — Bornkessel-Schlesewsky and
+colleagues’ eADM-aligned Russian case-violation paradigms in particular
+<span class="citation"
+data-cites="bornkessel2006extended">[@bornkessel2006extended]</span> —
+would provide a near-term empirical test for the precision-weighted P600
+prediction in <strong>C10</strong> / <strong>F4</strong>. The
+three-sentence Alice/Bob discourse is a proof-of-concept, not a
+typological claim.</p>
+<p><strong>Objection 4 — “The ROSE phase–amplitude coupling gap means
+you cannot predict ERP latencies.”</strong> <em>Response.</em> Conceded
+and flagged explicitly in . The current implementation keeps N400 and
+P600 <em>peak latencies</em> as fixed Gaussian peaks at 380 ms and 600
+ms respectively (see <code>DEFAULT_N400_PEAK_MS</code> /
+<code>DEFAULT_P600_PEAK_MS</code> in
+<code>src/daif/prediction.py</code>). A principled latency prediction
+would require a cross-frequency-coupling delay parameter inside the
+CEREBRUM layer; we flag this as the cleanest next research step.</p>
+<h2 id="what-to-read-next-by-reader-profile">What to Read Next, by
+Reader Profile</h2>
+<p>Readers who entered this paper from different fields will want
+different onward paths:</p>
+<ul>
+<li><strong>Linguists / typologists</strong>: skip ahead to – for the
+categorical formalisation of case and the five alignment functors; then
+for the complexity metrics that make cross-linguistic comparison
+quantitative.</li>
+<li><strong>Machine-learning researchers</strong>: first for the
+Distributional Active Inference extension of the Bellemare-Dabney-Munos
+programme to linguistic case; then for how DAIF yields falsifiable ERP
+predictions.</li>
+<li><strong>Cognitive / computational neuroscientists</strong>: for the
+active-inference framing; for the three falsifiable ERP predictions; for
+the PAC-latency gap that is the cleanest experimental entry point.</li>
+<li><strong>QNLP / quantum-semantics engineers</strong>: and for the
+POVM-based case assignment and the honest separation of implemented POVM
+machinery from literature-bridge TQNN / ZX / lambeq claims.</li>
+<li><strong>AI-safety / agent-protocol practitioners</strong>: for the
+three concrete handles (type discipline, decidable admissibility, graded
+confidence) and for prompt injection as a type violation — engineering
+specification rather than automatic guarantee on today’s APIs.</li>
+</ul>
 <h2
 id="case-categories-are-the-geometry-of-meaning-a-unifying-coda">Case
 Categories Are the Geometry of Meaning: A Unifying Coda</h2>
@@ -552,6 +732,16 @@ data-cites="akgul2026distributional">[@akgul2026distributional]</span>—confirm
 that meaning is not an atomic property of symbols but emerges from the
 relational structure of contexts, a principle that enriched category
 theory captures with mathematical precision.</p>
+<p>Crucially, <strong>this synthesis clarifies a mathematical angle on
+alignment for relational agent cognition.</strong> Moving from flat
+token streams toward <strong>explicitly typed</strong> enriched
+categorical interaction grammars lets one state <strong>when</strong>
+prompt injection corresponds to a <strong>type error relative to a fixed
+protocol</strong>—the conditional analysis in . Default LLM stacks do
+not yet enforce such protocols end-to-end; the payoff is sharper
+<strong>specification</strong> (what boundary checks would guarantee)
+and a research agenda for non-cartesian wiring, not a blanket claim that
+injection is already impossible in production systems.</p>
 <p>Ultimately, the mathematics of case alignment presents a highly
 structured formal geometry of meaning—the relational algebra through
 which cognitive agents navigate and render intelligible the structured

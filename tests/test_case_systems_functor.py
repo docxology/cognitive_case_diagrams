@@ -10,6 +10,7 @@ from src.case_systems.functor import (
     AlignmentFunctor,
     accusative_to_ergative_functor,
     tripartite_functor,
+    MonoidalFunctor,
 )
 from src.case_systems.case_category import CaseRole, Morphism, CaseCategory
 
@@ -74,6 +75,38 @@ class TestAlignmentFunctor:
         assert CaseRole.ERG in image
         assert CaseRole.ABS in image
 
+    def test_preserves_identity_fails(self):
+        """Functor logs warning and returns False when identity is not preserved."""
+        functor = accusative_to_ergative_functor()
+        # Zero mock approach: corrupt target identity generation
+        original_identity = functor.target.identity
+        
+        def bad_identity(role):
+            return Morphism(CaseRole.DAT, CaseRole.GEN, "bad", weight=0.0)
+            
+        functor.target.identity = bad_identity
+        assert not functor.preserves_identity(CaseRole.S)
+        functor.target.identity = original_identity
+
+    def test_preserves_composition_fails(self):
+        """Functor logs warning and returns False when composition is not preserved."""
+        functor = accusative_to_ergative_functor()
+        # Add required roles and bad morphisms
+        f = Morphism(CaseRole.S, CaseRole.A, "f", weight=1.0)
+        g = Morphism(CaseRole.A, CaseRole.P, "g", weight=1.0)
+        functor.source.add_morphism(f)
+        functor.source.add_morphism(g)
+        # Acc->Erg maps S->ABS, A->ERG, P->ABS
+        # Corrupt the target's compose to return something bad
+        original_compose = functor.target.compose
+        
+        def bad_compose(m1, m2):
+            return Morphism(CaseRole.DAT, CaseRole.GEN, "bad", weight=0.0)
+            
+        functor.target.compose = bad_compose
+        assert not functor.preserves_composition(f, g)
+        functor.target.compose = original_compose
+
 
 class TestAccusativeToErgative:
     """Tests for the accusative-to-ergative functor factory."""
@@ -128,3 +161,57 @@ class TestTripartiteFunctor:
         functor = tripartite_functor()
         image = functor.image_roles()
         assert len(image) == 3
+
+
+class TestMonoidalFunctor:
+    """Tests for the MonoidalFunctor tensor preservation checking."""
+
+    def test_preserves_tensor_with_injective_map(self):
+        """Injective functor preserves tensor for distinct mapped roles."""
+        source = CaseCategory("Source")
+        target = CaseCategory("Target")
+        for role in [CaseRole.NOM, CaseRole.ACC]:
+            source.add_role(role)
+        for role in [CaseRole.ERG, CaseRole.ABS]:
+            target.add_role(role)
+        functor = MonoidalFunctor(
+            name="Injective",
+            source=source, target=target,
+            object_map={CaseRole.NOM: CaseRole.ERG, CaseRole.ACC: CaseRole.ABS},
+        )
+        assert functor.preserves_tensor(CaseRole.NOM, CaseRole.ACC)
+
+    def test_preserves_tensor_fails_on_collapse(self):
+        """Non-injective functor fails tensor: distinct roles merge."""
+        source = CaseCategory("Source")
+        target = CaseCategory("Target")
+        for role in [CaseRole.S, CaseRole.P]:
+            source.add_role(role)
+        target.add_role(CaseRole.ABS)
+        # Both S and P map to ABS — tensor collapses
+        functor = MonoidalFunctor(
+            name="Collapsing",
+            source=source, target=target,
+            object_map={CaseRole.S: CaseRole.ABS, CaseRole.P: CaseRole.ABS},
+        )
+        assert not functor.preserves_tensor(CaseRole.S, CaseRole.P)
+
+    def test_preserves_tensor_unmapped_role_fails(self):
+        """Unmapped roles cannot preserve tensor."""
+        source = CaseCategory("Source")
+        target = CaseCategory("Target")
+        functor = MonoidalFunctor(name="Empty", source=source, target=target)
+        assert not functor.preserves_tensor(CaseRole.NOM, CaseRole.ACC)
+
+    def test_preserves_tensor_same_role(self):
+        """Self-tensor A ⊗ A always preserves (no collapse possible)."""
+        source = CaseCategory("Source")
+        target = CaseCategory("Target")
+        source.add_role(CaseRole.NOM)
+        target.add_role(CaseRole.ERG)
+        functor = MonoidalFunctor(
+            name="Self",
+            source=source, target=target,
+            object_map={CaseRole.NOM: CaseRole.ERG},
+        )
+        assert functor.preserves_tensor(CaseRole.NOM, CaseRole.NOM)

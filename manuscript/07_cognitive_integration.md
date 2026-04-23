@@ -1,12 +1,12 @@
 # Active Inference as a Process Theory of Case {#sec:cognitive-integration}
 
+**Where we are in the argument.** \autoref{sec:case-systems}–\autoref{sec:topos-theory} have given the framework a *structural* theory — objects, morphisms, functors, enriched weights, and topos-theoretic bridges. This chapter supplies the missing *process* theory: active inference recasts case assignment as variational Bayesian inference over a generative model whose state variable is the case-role posterior, whose precision parameters are the enriched weights of \autoref{sec:enriched-categories}, and whose free-energy descent turns "parsing a sentence" into a sequence of belief updates — the dynamics that \autoref{sec:diagrammatic-cognition} exploits to derive ERP predictions.
+
 ## Static Categories Are Not Enough
 
-The preceding sections constructed a mathematical infrastructure for analyzing case systems—categorical, type-logical, distributional, enriched, and topos-theoretic. Yet these frameworks remain *static*: they describe the structure of case grammar without explaining how a cognitive agent *deploys* that structure during real-time comprehension and production. Bridging this gap requires a dynamic *process theory* of case-marked relational reasoning.
+The preceding sections constructed a mathematical infrastructure for analyzing case systems—categorical, type-logical, distributional, enriched, and topos-theoretic. Yet these frameworks remain *static*: they describe the structure of case grammar without explaining how a cognitive agent *deploys* that structure during real-time comprehension and production. Bridging this gap requires a dynamic *process theory* of case-marked relational reasoning. Active inference [@namjoshi2026fundamentals; @friston2017active] provides exactly this missing dynamic computational layer.
 
-Active inference [@friston2017active] provides exactly this missing dynamic computational layer.
-
-## Surprise Minimization as Case Parsing
+## Surprise Minimization Drives Case-Frame Inference
 
 ### Free Energy Bounds Surprisal
 
@@ -31,7 +31,7 @@ These relational generative models find their formal articulation in recent adva
 
 Just as S-HAI explains sudden "zero-shot" behavioral remapping in novel environments by preserving the high-level schema mapping while updating the "grounding likelihoods" to new observables, a case frame enables an agent to rapidly generalize the relational structure of a complex sentence regardless of novel vocabulary pairings. The abstract string diagram is the schema; case inflection is the grounding likelihood.
 
-### Five-Step Generative Loop
+### The Five-Step Prior–Observation–Update–Prediction–Action Loop
 
 The process unfolds as follows:
 
@@ -47,6 +47,6 @@ This dynamic active inference perspective connects naturally to **situation sema
 
 ### Belief Dynamics Over Competing Case Frames
 
-\autoref{fig:active-inference-belief} shows a minimal **scalar-belief** simulation: the agent holds a `CaseDiagramBelief` over alternative alignment frames (NOM--ACC vs. ERG--ABS). As syntactic evidence arrives, variational free energy for the inconsistent frame rises and the posterior concentrates on the frame that fits the generative model---the same discrete update loop that \autoref{sec:daif-results} extends to full return distributions in DAIF. Generated programmatically from `src/visualization/active_inference_plots.plot_belief_distribution()`.
+\autoref{fig:active-inference-belief} shows a minimal **scalar-belief** simulation: the agent holds a `CaseDiagramBelief` over alternative alignment frames (NOM--ACC vs. ERG--ABS). As syntactic evidence arrives, variational free energy and entropy track the discrete update loop that \autoref{sec:daif-results} extends to full return distributions in DAIF. Generated programmatically from `src/visualization/active_inference_plots.plot_alignment_frame_belief_dynamics()` (belief trajectory from `sequential_belief_update()` in `src/cognitive/belief_updating.py`).
 
-![Variational free energy drives convergence to the correct case frame during belief updating. The agent starts with a uniform prior over possible case frames (NOM-ACC vs. ERG-ABS). As categorical evidence is sampled from a TQNN-evaluated diagram, free energy for the incorrect frame rises while the posterior for the correct frame converges to certainty. This demonstrates dynamic surprisal minimization governed by the diagrammatic structure of the generative model.](output/figures/active_inference_belief.png){#fig:active-inference-belief}
+![Variational free energy drives convergence to the correct case frame during belief updating. The agent begins with a uniform prior over possible case frames (NOM--ACC vs. ERG--ABS, $H[q] = \log 2$). **Top**: stacked $P(\text{frame})$ over evidence steps (including the prior column). **Middle**: entropy $H[q]$ in nats, with the steepest drop annotated at the most informative step. **Bottom**: variational free energy $F[q]$ after each update (per-step curve) and its running minimum $\min_{\tau\leq t} F[q_\tau]$ (non-increasing envelope), with dashed vertical markers at each evidence index (same convention as word arrivals in \autoref{fig:daif-free-energy}). Likelihoods are synthetic categorical draws consistent with a TQNN-evaluated diagram. Generated programmatically from `src/visualization/active_inference_plots.plot_alignment_frame_belief_dynamics()` (PNG from `scripts/generate_cognitive_figures.py`).](output/figures/active_inference_belief.png){#fig:active-inference-belief}

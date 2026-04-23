@@ -92,11 +92,11 @@ trajectory = sequential_belief_update(prior, [
 
 ### `prediction_error(enriched_weight, predicted, observed)`
 
-`PE(f) = π_f · |μ_predicted − μ_observed|` — P600 amplitude scales with morphism weight.
+`PE(f) = w_f · |μ_predicted − μ_observed|` — P600 amplitude scales with morphism weight.
 
 ### `p600_amplitude_ratio(weight_strong, weight_weak)`
 
-`π_strong / π_weak` — predicts the ratio of P600 ERP amplitudes.
+`w_{\mathrm{strong}} / w_{\mathrm{weak}}` — predicts the ratio of P600 ERP amplitudes.
 
 ---
 
@@ -125,7 +125,7 @@ Semantic violation proxy via magnitude change (N400).
 | Prediction | Formula | ERP Signature |
 | --------- | ------- | ------------ |
 | Case violation severity | `PE ∝ enriched_weight × deviation` | P600 amplitude |
-| P600 ratio | `π_strong / π_weak` | P600 amplitude ratio |
+| P600 ratio | `w_strong / w_weak` | P600 amplitude ratio |
 | Garden-path cost | `\|C_after\| − \|C_before\|` | Late positivity (P600) |
 | Semantic violation | `\|C_after\| − \|C_before\|` | Early negativity (N400) |
 

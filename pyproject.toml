@@ -7,12 +7,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cognitive_case_diagrams"
-version = "2.0.0"
+version = "2.3.0"
 description = "Category-theoretic formalization of linguistic case systems with DisCoPy visualizations"
 authors = [
     {name = "Daniel Ari Friedman", email = "danielarifriedman@gmail.com"}
 ]
 requires-python = ">=3.10"
+readme = "docs/README.md"
 dependencies = [
     "numpy>=1.24.0",
     "matplotlib>=3.7.0",
@@ -21,10 +22,15 @@ dependencies = [
     "discopy>=1.0.0",
 ]
 
+[project.urls]
+Repository = "https://github.com/ActiveInferenceInstitute/cognitive-case-diagrams"
+Documentation = "docs/README.md"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
+    "pytest-timeout>=2.1.0",  # required for [tool.pytest.ini_options] timeout
 ]
 
 [tool.pytest.ini_options]
@@ -33,11 +39,25 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short --strict-markers"
+timeout = 300
+filterwarnings = [
+    # DiscoPy calls plt.show() on Agg; harmless in headless runs.
+    "ignore:FigureCanvasAgg is non-interactive, and thus cannot be shown:UserWarning",
+]
 
 [tool.coverage.run]
 source = ["src"]
 branch = true
-omit = ["tests/*", "*/__init__.py", "*/test_*.py"]
+# DisCoPy / NumPy can use threads or multiprocessing; align tracer data with branch coverage.
+concurrency = ["multiprocessing", "thread"]
+omit = [
+    "tests/*",
+    "*/__init__.py",
+    "*/test_*.py",
+    # Entirely discopy-dependent; untestable without optional discopy install
+    "*/diagrams/complexity_examples.py",
+    "*/visualization/discopy_diagrams.py",
+]
 
 [tool.coverage.report]
 fail_under = 90
@@ -49,4 +69,25 @@ exclude_lines = [
     "raise NotImplementedError",
 ]
 
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "src.visualization.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["discopy.*", "discopy"]
+ignore_missing_imports = true
+
 [tool.uv]
+
+[dependency-groups]
+dev = [
+    "hypothesis>=6.151.11",
+]

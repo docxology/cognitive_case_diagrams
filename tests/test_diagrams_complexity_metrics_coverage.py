@@ -218,13 +218,13 @@ class TestAnalyzeDiagram:
 class TestSyntacticComplexityScore:
     def test_transitive_complexity(self, transitive_diagram):
         score = syntactic_complexity_score(transitive_diagram)
-        # 3 words + 0.5*2 cups + 0.25*0 caps = 4.0
-        assert score == pytest.approx(4.0)
+        # 3 words + 0.5*2 cups + 0.25*0 caps + 0.1*2 depth = 4.2
+        assert score == pytest.approx(4.2)
 
     def test_intransitive_complexity(self, intransitive_diagram):
         score = syntactic_complexity_score(intransitive_diagram)
-        # 2 words + 0.5*1 cup + 0.25*0 caps = 2.5
-        assert score == pytest.approx(2.5)
+        # 2 words + 0.5*1 cup + 0.25*0 caps + 0.1*2 depth = 2.7
+        assert score == pytest.approx(2.7)
 
     def test_identity_complexity(self, identity_diagram):
         score = syntactic_complexity_score(identity_diagram)
@@ -260,3 +260,83 @@ class TestCompareDiagrams:
         results = compare_diagrams([("single", transitive_diagram)])
         assert len(results) == 1
         assert results[0].name == "single"
+
+
+# ── Diagram depth & width edge cases ────────────────────────
+
+
+class TestDiagramDepthWidth:
+    def test_diagram_depth_transitive(self, transitive_diagram):
+        from src.diagrams.complexity_metrics import diagram_depth
+        depth = diagram_depth(transitive_diagram)
+        assert depth >= 1
+
+    def test_diagram_depth_identity(self, identity_diagram):
+        from src.diagrams.complexity_metrics import diagram_depth
+        depth = diagram_depth(identity_diagram)
+        assert depth >= 0
+
+    def test_diagram_width_transitive(self, transitive_diagram):
+        from src.diagrams.complexity_metrics import diagram_width
+        width = diagram_width(transitive_diagram)
+        assert width >= 1
+
+    def test_diagram_width_identity(self, identity_diagram):
+        from src.diagrams.complexity_metrics import diagram_width
+        width = diagram_width(identity_diagram)
+        assert width >= 0
+
+
+# ── MagnitudeHomologyMetrics ─────────────────────────────────
+
+
+class TestMagnitudeHomologyMetrics:
+    def test_dataclass_defaults(self):
+        from src.diagrams.complexity_metrics import MagnitudeHomologyMetrics
+        m = MagnitudeHomologyMetrics(base_syntactic_complexity=3.0)
+        assert m.topological_holes_1d == 0
+        assert m.estimated_decoherence_rate == 0.0
+        assert m.quantum_environment_commutes is True
+
+    def test_custom_values(self):
+        from src.diagrams.complexity_metrics import MagnitudeHomologyMetrics
+        m = MagnitudeHomologyMetrics(
+            base_syntactic_complexity=5.0,
+            topological_holes_1d=2,
+            estimated_decoherence_rate=0.3,
+            quantum_environment_commutes=False,
+        )
+        assert m.topological_holes_1d == 2
+        assert not m.quantum_environment_commutes
+
+
+class TestComputeQuantumMagnitudeHomology:
+    def test_simple_diagram(self, transitive_diagram):
+        from src.diagrams.complexity_metrics import compute_quantum_magnitude_homology
+        result = compute_quantum_magnitude_homology(transitive_diagram)
+        assert result.base_syntactic_complexity > 0
+        assert result.estimated_decoherence_rate >= 0
+
+    def test_low_noise_commutes(self, transitive_diagram):
+        from src.diagrams.complexity_metrics import compute_quantum_magnitude_homology
+        result = compute_quantum_magnitude_homology(transitive_diagram, environmental_noise=0.01)
+        assert result.quantum_environment_commutes is True
+
+    def test_high_noise_may_not_commute(self, transitive_diagram):
+        from src.diagrams.complexity_metrics import compute_quantum_magnitude_homology
+        result = compute_quantum_magnitude_homology(transitive_diagram, environmental_noise=0.95)
+        # With 2 cups and high noise, decoherence should exceed threshold
+        assert result.estimated_decoherence_rate > 0.2
+
+    def test_identity_diagram_zero_holes(self, identity_diagram):
+        from src.diagrams.complexity_metrics import compute_quantum_magnitude_homology
+        result = compute_quantum_magnitude_homology(identity_diagram)
+        assert result.topological_holes_1d == 0
+        assert result.quantum_environment_commutes is True
+
+    def test_cap_dominated_diagram_zero_holes(self, n):
+        """When caps exceed cups, holes_1d should be clamped to 0."""
+        from src.diagrams.complexity_metrics import compute_quantum_magnitude_homology
+        diag = Cap(n, n.l)
+        result = compute_quantum_magnitude_homology(diag)
+        assert result.topological_holes_1d == 0

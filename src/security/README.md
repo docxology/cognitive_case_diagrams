@@ -1,6 +1,6 @@
-# security/ — §9b: Cognitive Security
+# security/ — §9b: Prompt Injection Is a Type Violation
 
-Prompt injection and frame manipulation as decidable type violations against a finite case category (and optional enriched structure).
+Prompt injection and frame manipulation as decidable type violations against a finite case category (and optional enriched structure). Framed as a **protocol-level** analysis in [`09b_cognitive_security.md`](../../manuscript/09b_cognitive_security.md), not a guarantee on production LLM APIs.
 
 ## Quick Import
 

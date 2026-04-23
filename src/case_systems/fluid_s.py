@@ -1,6 +1,6 @@
 """Fluid-S alignment: context-dependent functors parameterized by volition.
 
-Implements the Fluid-S alignment system discussed in §2 of the manuscript,
+Implements the Fluid-S alignment system discussed in §4–5 of the manuscript,
 where the intransitive subject S receives different case marking depending
 on the speaker's construal of agentive volition. In Bats (Nakh-Daghestanian),
 'fall' takes ABS when accidental but ERG when volitional.
@@ -70,15 +70,19 @@ class FluidSFunctor:
         """Map a case role under the current volition context.
 
         Args:
-            role: Source case role (typically NOM/ACC/ERG/ABS).
+            role: Source case role.
 
         Returns:
             Target case role after Fluid-S mapping.
 
-        The mapping rules (following manuscript §2):
-            A → ERG always
-            P → ABS always
-            S → ERG if volitional, ABS if non-volitional
+        The mapping rules (following manuscript §4–5) use NOM as the
+        agent-like (ERG-proxy) surface form and ACC as the patient-like
+        (ABS-proxy) surface form, reflecting how Fluid-S languages
+        reuse existing surface cases for context-dependent marking:
+
+            S → NOM (agent-like) if volitional
+            S → ACC (patient-like) if non-volitional
+            Other roles pass through unchanged
         """
         if role == CaseRole.NOM:
             # S (intransitive subject) — context-dependent
@@ -98,7 +102,7 @@ class FluidSFunctor:
         # ACC (patient) passes through unchanged
         return role
 
-    def map_object_in_context(self, role: CaseRole, p_volitional: float) -> dict:
+    def map_object_in_context(self, role: CaseRole, p_volitional: float) -> dict[CaseRole, float]:
         """Map a case role with graded volition probability.
 
         Returns a probability distribution over target roles,
@@ -124,7 +128,7 @@ class FluidSFunctor:
             CaseRole.ACC: 1.0 - p_volitional,  # ABS-like (non-volitional)
         }
 
-    def split_probability(self, role: CaseRole) -> dict:
+    def split_probability(self, role: CaseRole) -> dict[CaseRole, float]:
         """Return case probability distribution using stored volition_probability.
 
         Convenience method using the instance's volition_probability.
@@ -167,7 +171,9 @@ class FluidSFunctor:
         Returns:
             List of (role_a, role_b) pairs that are identified.
         """
-        core_roles = [CaseRole.NOM, CaseRole.ACC]
+        core_roles = (
+            list(self.source.objects) if self.source is not None else list(CaseRole)
+        )
         kernel_pairs = []
         for i, r1 in enumerate(core_roles):
             for r2 in core_roles[i + 1:]:
@@ -221,7 +227,7 @@ def fluid_s_enriched_weight(
     """Compute the enriched morphism weight for a Fluid-S S-morphism.
 
     The enriched weight of the S-morphism under Fluid-S is the probability
-    of the agentive construal in context (manuscript §2).
+    of the agentive construal in context (manuscript §4–5).
 
     Args:
         p_volitional: Probability of volitional construal.

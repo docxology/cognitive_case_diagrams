@@ -3,6 +3,7 @@
 Single-step and sequential multi-word belief update implementing the
 five-step generative loop of active inference.
 """
+from __future__ import annotations
 
 import logging
 from typing import Sequence

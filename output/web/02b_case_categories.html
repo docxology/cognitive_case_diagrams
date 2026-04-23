@@ -176,6 +176,14 @@
 <body>
 <h1 id="sec:case-categories">Case Categories: Roles as Objects,
 Relations as Morphisms, Alignment as Functors</h1>
+<p><strong>Where we are in the argument.</strong> surveyed the
+cross-linguistic input data (five traditions, five alignment types).
+This chapter converts that data into the first formal object of the
+framework: a category whose objects are case roles, whose morphisms are
+grammatical relations, and whose alignment typologies are
+structure-preserving functors between categories — the layer on which
+every subsequent pillar (syntax, semantics, enrichment, cognitive
+inference) is built.</p>
 <h2 id="eight-case-roles-as-objects">Eight Case Roles as Objects</h2>
 <p>We define a <strong>case category</strong> <span
 class="math inline">\(\mathcal{C}\)</span> as a small category
@@ -198,16 +206,16 @@ relation label and an enriched weight <span class="math inline">\(w \in
 [0,1]\)</span>. shows the full eight-case standard category.</p>
 <figure id="fig:case-standard">
 <img src="output/figures/case_category_standard.png"
-alt="Eight case roles form a directed graph with weighted grammatical morphisms. The standard linguistic case category \mathcal{C} with objects NOM, ACC, GEN, DAT, INS, LOC, ABL, VOC and directed morphisms encoding grammatical relations. Edge labels identify relation types (transitive_action: NOM\toACC, possession: GEN\toNOM, transfer: ACC\toDAT, spatial_grounding: LOC\toACC); edge weights w \in [0,1] reflect proto-role satisfaction per Dowty’s [-@dowty1991thematic] decomposition. The enriched structure over ([0,1], \cdot, 1) ensures multiplicative weight attenuation under composition (). Generated programmatically from the CaseCategory class." />
+alt="Eight case roles form a directed graph with weighted grammatical morphisms. The standard linguistic case category \mathcal{C} with objects NOM, ACC, GEN, DAT, INS, LOC, ABL, VOC and directed morphisms encoding grammatical relations. Edge labels identify relation types (acts_on: NOM\toACC, possesses: GEN\toNOM, received_by: ACC\toDAT, located_at: NOM\toLOC); edge weights w \in [0,1] reflect proto-role satisfaction per Dowty’s [-@dowty1991thematic] decomposition. The enriched structure over ([0,1], \cdot, 1) ensures multiplicative weight attenuation under composition (). Generated programmatically from the CaseCategory class." />
 <figcaption aria-hidden="true">Eight case roles form a directed graph
 with weighted grammatical morphisms. The standard linguistic case
 category <span class="math inline">\(\mathcal{C}\)</span> with objects
 NOM, ACC, GEN, DAT, INS, LOC, ABL, VOC and directed morphisms encoding
-grammatical relations. Edge labels identify relation types
-(transitive_action: NOM<span class="math inline">\(\to\)</span>ACC,
-possession: GEN<span class="math inline">\(\to\)</span>NOM, transfer:
-ACC<span class="math inline">\(\to\)</span>DAT, spatial_grounding:
-LOC<span class="math inline">\(\to\)</span>ACC); edge weights <span
+grammatical relations. Edge labels identify relation types (acts_on:
+NOM<span class="math inline">\(\to\)</span>ACC, possesses: GEN<span
+class="math inline">\(\to\)</span>NOM, received_by: ACC<span
+class="math inline">\(\to\)</span>DAT, located_at: NOM<span
+class="math inline">\(\to\)</span>LOC); edge weights <span
 class="math inline">\(w \in [0,1]\)</span> reflect proto-role
 satisfaction per Dowty’s <span class="citation"
 data-cites="dowty1991thematic">[-@dowty1991thematic]</span>
@@ -301,21 +309,20 @@ functor identification of roles. Generated programmatically from the
 </figure>
 <figure id="fig:composition">
 <img src="output/figures/composition_triangle.png"
-alt="Morphism composition attenuates weights multiplicatively through intermediate case roles. Morphism f\colon\text{NOM}\to\text{ACC} (transitive action, w_f=0.9) and g\colon\text{ACC}\to\text{DAT} (transfer, w_g=0.7) compose to g \circ f\colon\text{NOM}\to\text{DAT} with w(g \circ f) = 0.63 per . The commutative triangle encodes that DAT assignment factors through ACC—the multiplicative attenuation reflects the typological observation that subject–recipient relations are weaker than the constituent subject–object and object–recipient links. Generated programmatically from the CaseCategory class." />
+alt="Morphism composition attenuates weights multiplicatively through intermediate case roles. Morphism f\colon\text{NOM}\to\text{ACC} (acts_on) and g\colon\text{ACC}\to\text{DAT} (received_by) compose to h = g \circ f\colon\text{NOM}\to\text{DAT} per ; in the enriched category weights multiply (e.g., w_f = 0.9, w_g = 0.7 \Rightarrow w(g \circ f) = 0.63). The commutative triangle encodes that DAT assignment factors through ACC—the multiplicative attenuation reflects the typological observation that subject–recipient relations are weaker than the constituent subject–object and object–recipient links. Generated programmatically from the CaseCategory class." />
 <figcaption aria-hidden="true">Morphism composition attenuates weights
 multiplicatively through intermediate case roles. Morphism <span
-class="math inline">\(f\colon\text{NOM}\to\text{ACC}\)</span>
-(transitive action, <span class="math inline">\(w_f=0.9\)</span>) and
-<span class="math inline">\(g\colon\text{ACC}\to\text{DAT}\)</span>
-(transfer, <span class="math inline">\(w_g=0.7\)</span>) compose to
-<span class="math inline">\(g \circ
-f\colon\text{NOM}\to\text{DAT}\)</span> with <span
-class="math inline">\(w(g \circ f) = 0.63\)</span> per . The commutative
-triangle encodes that DAT assignment factors through ACC—the
-multiplicative attenuation reflects the typological observation that
-subject–recipient relations are weaker than the constituent
-subject–object and object–recipient links. Generated programmatically
-from the <code>CaseCategory</code> class.</figcaption>
+class="math inline">\(f\colon\text{NOM}\to\text{ACC}\)</span> (acts_on)
+and <span class="math inline">\(g\colon\text{ACC}\to\text{DAT}\)</span>
+(received_by) compose to <span class="math inline">\(h = g \circ
+f\colon\text{NOM}\to\text{DAT}\)</span> per ; in the enriched category
+weights multiply (e.g., <span class="math inline">\(w_f = 0.9\)</span>,
+<span class="math inline">\(w_g = 0.7 \Rightarrow w(g \circ f) =
+0.63\)</span>). The commutative triangle encodes that DAT assignment
+factors through ACC—the multiplicative attenuation reflects the
+typological observation that subject–recipient relations are weaker than
+the constituent subject–object and object–recipient links. Generated
+programmatically from the <code>CaseCategory</code> class.</figcaption>
 </figure>
 <h2 id="graded-proto-roles-as-01-weighted-morphisms">Graded Proto-Roles
 as <span class="math inline">\([0,1]\)</span>-Weighted Morphisms</h2>
@@ -329,6 +336,27 @@ transitive action (clear agent acting on clear patient), while <span
 class="math inline">\(w = 0.4\)</span> might indicate an experiencer
 construction (“The child fears the dark”) where the nominative argument
 only weakly satisfies Proto-Agent entailments.</p>
+<p><strong>Slavic quirky case as overt evidence for sub-unit morphism
+weights.</strong> Russian and Serbian/BCS supply a sharper,
+<em>morphologically overt</em> witness for <span class="math inline">\(w
+&lt; 1\)</span>: a class of verbs that systematically refuses the
+canonical NOM <span class="math inline">\(\to\)</span> ACC arrow and
+instead routes its object through GEN, DAT, or INS. In Russian,
+<em>boyat’sja</em> “to fear” governs the genitive (<em>boyus’
+sobaki</em> “I fear the dog-GEN”, not *<em>sobaku</em>-ACC);
+<em>pomogat’</em> “to help” governs the dative (<em>pomogayu drugu</em>
+“I help the friend-DAT”); <em>upravlyat’</em> “to manage / steer”
+governs the instrumental (<em>upravlyaet mašinoj</em> “drives the
+car-INS”). Serbian/BCS shows the same pattern: <em>čestitati</em> “to
+congratulate” assigns DAT (<em>čestitam prijatelju</em> “I congratulate
+the friend-DAT”); <em>bojati se</em> “to fear” assigns GEN (<em>bojim se
+psa</em> “I fear the dog-GEN”). Each such verb supplies an enriched
+morphism whose target is <em>not</em> ACC, equivalently a NOM <span
+class="math inline">\(\to\)</span> ACC arrow whose Dowtian weight has
+been reduced to near zero — and the reduction is visible in the suffix
+on the noun, not merely hypothesised from semantics. These quirky-case
+lexemes are the cleanest empirical anchor for the graded <span
+class="math inline">\([0,1]\)</span>-enrichment we develop in .</p>
 <p>Composition of enriched morphisms multiplies weights: <span
 class="math display">\[\begin{equation}
 w(g \circ f) = w(g) \cdot w(f)
@@ -341,9 +369,9 @@ an intermediate case role. The resulting structure is a category
 enriched over <span class="math inline">\(([0,1], \cdot, 1)\)</span>—a
 connection we develop fully in .</p>
 <h2
-id="alignment-shifts-as-natural-transformations-grammar-agreement-as-functor-commutativity">Alignment
-Shifts as Natural Transformations: Grammar Agreement as Functor
-Commutativity</h2>
+id="alignment-shifts-as-natural-transformations-functor-commutativity-encodes-grammar-agreement">Alignment
+Shifts as Natural Transformations: Functor Commutativity Encodes Grammar
+Agreement</h2>
 <p>Having established that alignment systems are functors <span
 class="math inline">\(F, G: \mathcal{U} \to \mathcal{L}\)</span> from a
 universal case category to language-specific categories, a natural

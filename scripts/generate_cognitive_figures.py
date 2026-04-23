@@ -2,7 +2,7 @@
 """Generate cognitive / active inference figure group.
 
 Thin orchestrator for cognitive-domain figures:
-    1. active_inference_belief.png     — Belief distribution bar chart
+    1. active_inference_belief.png     — Scalar alignment-frame trajectory (3-panel)
     2. fluid_s_volition_landscape.png  — Fluid-S functor landscape
     3. daif_belief_trajectory.png      — DAIF sentence parse trajectory
     4. daif_free_energy_convergence.png — DAIF FE decomposition (2-panel)
@@ -24,8 +24,8 @@ import sys
 from pathlib import Path
 
 import matplotlib
-matplotlib.use("Agg")
-import numpy as np
+if not matplotlib.is_interactive():
+    matplotlib.use("Agg")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -41,107 +41,75 @@ if str(PROJECT_ROOT) not in sys.path:
 
 
 def _active_inference_belief(out: Path) -> Path:
-    from src.case_systems.case_category import CaseRole
-    from src.cognitive.belief import CaseDiagramBelief
-    from src.visualization.active_inference_plots import plot_belief_distribution
-
-    belief = CaseDiagramBelief(
-        roles=[CaseRole.NOM, CaseRole.ACC, CaseRole.DAT],
-        probabilities=np.array([0.7, 0.2, 0.1]),
+    from src.cognitive.figure_data import make_belief_trajectory_data
+    from src.visualization.active_inference_plots import (
+        plot_alignment_frame_belief_dynamics,
     )
+
+    data = make_belief_trajectory_data()
     path = out / "active_inference_belief.png"
-    plot_belief_distribution(belief, output_path=str(path))
+    plot_alignment_frame_belief_dynamics(
+        data["prior"],
+        data["trajectory"],
+        data["obs_sequence"],
+        evidence_labels=data["evidence_labels"],
+        output_path=str(path),
+    )
     return path
 
 
 def _fluid_s(out: Path) -> Path:
-    from src.case_systems.fluid_s import bats_fluid_s
+    from src.cognitive.figure_data import make_fluid_s_landscape_data
     from src.visualization.fluid_s_plots import plot_fluid_s_volition_landscape
 
-    functor = bats_fluid_s()
-    verb_names = ["sneeze", "fall", "sleep", "run", "jump"]
-    probs = [0.1, 0.2, 0.4, 0.8, 0.9]
+    data = make_fluid_s_landscape_data()
     path = out / "fluid_s_volition_landscape.png"
-    plot_fluid_s_volition_landscape([functor] * 5, probs, verb_names, output_path=str(path))
+    plot_fluid_s_volition_landscape(
+        data["functors"], data["probs"], data["verb_names"], output_path=str(path)
+    )
     return path
 
 
 def _daif_figures(out: Path) -> list[Path]:
-    from src.case_systems.case_category import CaseRole
-    from src.cognitive.belief import CaseDiagramBelief
-    from src.cognitive.belief_updating import sequential_belief_update
-    from src.daif import (
-        distributional_case_assignment,
-        distributional_prediction_error,
+    from src.cognitive.figure_data import (
+        make_daif_belief_trajectory_data,
+        make_erp_prediction_data,
+        make_free_energy_convergence_data,
     )
     from src.visualization.daif_plots import (
         plot_belief_trajectory,
-        plot_free_energy_convergence,
         plot_erp_predictions,
+        plot_free_energy_convergence,
     )
 
-    word_labels = ["Der", "Hund", "jagt", "die", "Katze", "schnell"]
-    gloss_labels = ["the.NOM", "dog.NOM", "chases", "the.ACC", "cat.ACC", "quickly"]
-    roles = [CaseRole.NOM, CaseRole.ACC, CaseRole.DAT, CaseRole.INS]
-
-    prior = CaseDiagramBelief(
-        roles=roles,
-        probabilities=np.array([0.25, 0.25, 0.25, 0.25]),
-        name="daif_prior",
-    )
-    obs_sequence = [
-        np.array([0.45, 0.20, 0.20, 0.15]),
-        np.array([0.55, 0.20, 0.15, 0.10]),
-        np.array([0.65, 0.20, 0.10, 0.05]),
-        np.array([0.70, 0.20, 0.07, 0.03]),
-        np.array([0.80, 0.12, 0.05, 0.03]),
-        np.array([0.85, 0.08, 0.04, 0.03]),
-    ]
-    trajectory = sequential_belief_update(prior, obs_sequence)
-
+    traj_data = make_daif_belief_trajectory_data()
     path_traj = out / "daif_belief_trajectory.png"
     plot_belief_trajectory(
-        trajectory,
-        word_labels=word_labels,
-        gloss_labels=gloss_labels,
+        traj_data["trajectory"],
+        word_labels=traj_data["word_labels"],
+        gloss_labels=traj_data["gloss_labels"],
         output_path=str(path_traj),
     )
 
-    # Free energy convergence — accumulate per-word FE trajectories
-    all_fe: list[float] = []
-    current = prior
-    word_boundaries: list[int] = []
-    for obs in obs_sequence:
-        word_boundaries.append(len(all_fe) + 1)
-        result = distributional_case_assignment(current, obs, n_iterations=5)
-        current = result.belief
-        all_fe.extend(result.fe_trajectory)
-
+    fe_data = make_free_energy_convergence_data()
     path_fe = out / "daif_free_energy_convergence.png"
     plot_free_energy_convergence(
-        all_fe,
-        word_boundaries=word_boundaries,
-        word_labels=word_labels,
+        fe_data["all_fe"],
+        word_boundaries=fe_data["word_boundaries"],
+        word_labels=fe_data["word_labels"],
+        kl_trajectory=fe_data.get("all_kl"),
+        loglik_trajectory=fe_data.get("all_loglik"),
         output_path=str(path_fe),
     )
 
-    # ERP predictions — all 8 case roles
-    erp_roles = [
-        CaseRole.NOM, CaseRole.ACC, CaseRole.GEN, CaseRole.DAT,
-        CaseRole.INS, CaseRole.LOC, CaseRole.ABL, CaseRole.VOC,
-    ]
-    erp_belief = CaseDiagramBelief(
-        roles=erp_roles,
-        probabilities=np.array([0.35, 0.25, 0.12, 0.10, 0.07, 0.05, 0.03, 0.03]),
-    )
-    enriched_weights = [0.95, 0.85, 0.70, 0.60, 0.45, 0.35, 0.20, 0.10]
-    erp_errors = [
-        distributional_prediction_error(erp_belief, i, w)
-        for i, w in enumerate(enriched_weights)
-    ]
+    erp_data = make_erp_prediction_data()
     path_erp = out / "daif_erp_predictions.png"
     plot_erp_predictions(
-        [r.name for r in erp_roles], enriched_weights, erp_errors,
+        erp_data["role_names"],
+        erp_data["enriched_weights"],
+        erp_data["erp_errors"],
+        n400_amplitudes=erp_data.get("n400_amplitudes"),
+        p600_amplitudes=erp_data.get("p600_amplitudes"),
         output_path=str(path_erp),
     )
 

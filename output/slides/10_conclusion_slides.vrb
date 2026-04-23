@@ -1,170 +1,56 @@
-\frametitle{Seven Open Directions}
-\protect\phantomsection\label{seven-open-directions}
-The following seven directions (\textbf{F1}--\textbf{F7}) identify the
-most tractable and impactful extensions of this framework:
+\frametitle{Anticipated Objections and Responses}
+\protect\phantomsection\label{sec:reviewer-objections}
+Four lines of objection stand out; we address each honestly rather than
+waiting for a reviewer.
 
-\begin{block}{F1: Computational Experiments with DisCoCirc and lambeq}
-\protect\phantomsection\label{f1-computational-experiments-with-discocirc-and-lambeq}
-The DisCoCirc framework {[}@defelice2022discocirc{]} offers a natural
-platform for testing our case-theoretic predictions computationally. The
-release of \textbf{lambeq Gen II} {[}@lambeq2025genii{]} with full
-DisCoCirc support makes this direction immediately tractable:
-discourse-level case role tracking---including the dynamic role
-reversals of \autoref{fig:three-sentence-discourse}---can now be
-compiled into parameterized quantum circuits (PQCs) and trained
-end-to-end. Krawchuk et al. {[}@krawchuk2025paramqnlp{]} demonstrate
-efficient generation of PQCs from large-scale texts (up to 6,410 words)
-with competitive performance on sentiment classification;
-{[}@letcher2024tight{]} and {[}@rad2024trainability{]} provide gradient
-bounds and reduced-domain initialization techniques that mitigate barren
-plateaus, making discourse-level circuit training practically feasible.
-Concrete experiments could include:
+\textbf{Objection 1 --- ``The mean-field approximation throws away the
+whole point of distributional RL.''} \emph{Response.} The
+belief-weighted collapse gives \(\mathcal{O}(n)\) memory in place of
+\(\mathcal{O}(n \cdot N_{\text{atoms}})\) and is exact in the
+sharp-posterior limit. The mean-field bound recorded in
+\autoref{sec:daif-limitations} quantifies the degradation as \(H[q]\)
+grows. The alternative --- maintaining per-state return distributions
+throughout a linguistic parse --- would multiply the runtime of
+\texttt{distributional\_case\_assignment()} by a factor of \(n\) (the
+role count) for a gain that vanishes as the posterior sharpens after the
+first few words of a sentence.
 
-\begin{itemize}
-\tightlist
-\item
-  Implementing case-marked DisCoCat models in \textbf{lambeq Gen II} and
-  evaluating them on semantic role labeling (SRL) tasks, leveraging the
-  discourse-level wiring to track case roles across sentence boundaries
-\item
-  Comparing the accuracy of alignment-specific meaning functors
-  (accusative vs.~ergative) on typologically diverse corpora
-\item
-  Measuring the categorical magnitude of empirically derived enriched
-  case categories and correlating it with typological complexity
-  measures
-\item
-  Using the \texttt{complexity\_metrics} module to quantify derivational
-  complexity across sentence types and correlating syntactic complexity
-  scores with human processing difficulty (reading times, surprisal)
-\item
-  Training lambeq Gen II circuits on case role reversal discourses using
-  reduced-domain parameter initialization {[}@rad2024trainability{]} to
-  avoid local minima
-\end{itemize}
-\end{block}
+\textbf{Objection 2 --- ``The enriched-categorical unification is only
+stated, never proven.''} \emph{Response.} Conceded, and flagged in
+\autoref{sec:daif-limitations} and in the What's New block of
+\autoref{sec:whats-new}. Distributional semantics, distributional RL,
+and active-inference posteriors all \emph{instantiate}
+\([0,1]\)-enriched structure; whether they share a common enriching
+monoidal base in the strict sense of Kelly enriched-category theory is
+an open question. The repository's tests verify the enriched axioms hold
+in each instance; they do not construct the common base functor, and the
+manuscript nowhere uses the strict unification as a load-bearing step in
+any downstream argument.
 
-\begin{block}{F2: Topos-Theoretic Grammatical Induction from Corpora}
-\protect\phantomsection\label{f2-topos-theoretic-grammatical-induction-from-corpora}
-Caramello's {[}-@caramello2023syntactic{]} syntactic learning technique
-could be applied to induce case-theoretic axioms from annotated corpora.
-The program would:
+\textbf{Objection 3 --- ``Cross-linguistic evidence is a single German
+sentence.''} \emph{Response.} The empirical scope reflects the
+publication's focus on \emph{specification} rather than \emph{corpus
+study}. The \texttt{Discourse.role\_reversal("Alice",\ "Bob")} and
+\texttt{make\_daif\_belief\_trajectory\_data()} interfaces accept
+arbitrary lexical heads and observation sequences; extending to Basque,
+Dyirbal, Russian, Serbian/BCS, or any other language is a one-function
+change. \autoref{fig:multilingual-isomorphism} (in
+\autoref{sec:categorial-grammar}) already shows a pregroup multilingual
+isomorphism across English / Latin / Japanese, and the Slavic discussion
+in \autoref{sec:case-systems} extends the same type calculus to overtly
+case-marked Russian and Serbian noun phrases. Slavic-language ERP
+datasets --- Bornkessel-Schlesewsky and colleagues' eADM-aligned Russian
+case-violation paradigms in particular {[}@bornkessel2006extended{]} ---
+would provide a near-term empirical test for the precision-weighted P600
+prediction in \textbf{C10} / \textbf{F4}. The three-sentence Alice/Bob
+discourse is a proof-of-concept, not a typological claim.
 
-\begin{enumerate}
-\tightlist
-\item
-  Extract case-labeled dependency structures from a Universal
-  Dependencies treebank
-\item
-  Construct the classifying topos of the implicit case theory
-\item
-  Read off the alignment type, morphism structure, and enriched weights
-  from the topos-theoretic axioms
-\item
-  Compare the induced theory against typological descriptions
-\end{enumerate}
-\end{block}
-
-\begin{block}{F3: Quantum Case Categories on Near-Term Hardware}
-\protect\phantomsection\label{f3-quantum-case-categories-on-near-term-hardware}
-The QNLP connection (\autoref{sec:categorical-semantics}) opens the
-possibility of implementing case categories directly as quantum
-circuits. Case roles would correspond to quantum registers, grammatical
-relations to parameterized gates, and alignment functors to circuit
-transformations. This would provide a genuinely new computational
-paradigm for grammatical inference---exploiting quantum parallelism to
-explore the space of case assignments simultaneously. Two recent results
-make this direction practically tractable: (1) Rad et al.'s
-{[}-@rad2024trainability{]} reduced-domain parameter initialization
-yields polynomial gradient decay, suppressing the barren plateau problem
-for circuits of linguistic depth; and (2) Letcher et al.'s
-{[}-@letcher2024tight{]} assumption-free gradient bounds rule out
-vanishing gradients for circuits with local observables, which includes
-the case-role measurement POVMs of \autoref{eq:eq-8-1}. Together these
-results suggest that near-term quantum hardware can support case
-category training without exponential gradient overhead.
-\end{block}
-
-\begin{block}{F4: Neural Predictive Processing and Electrophysiological
-Predictions}
-\protect\phantomsection\label{f4-neural-predictive-processing-and-electrophysiological-predictions}
-The predictive processing account of \autoref{sec:cognitive-integration}
-generates testable neuroscientific predictions:
-
-\begin{itemize}
-\tightlist
-\item
-  Case-marking violations should elicit prediction-error responses
-  (P600/N400) proportional to the enriched weight of the violated
-  morphism
-\item
-  Typologically unusual case patterns should require more precision
-  updating than expected patterns
-\item
-  Diagrammatic representations of case structure should be decodable
-  from neural activity during sentence comprehension
-\end{itemize}
-\end{block}
-
-\begin{block}{F5: Cross-Modal Case Structure in Embodied Cognition}
-\protect\phantomsection\label{f5-cross-modal-case-structure-in-embodied-cognition}
-The situation semantics connection (\autoref{sec:cognitive-integration})
-suggests extending case categories beyond language to multi-modal
-perception. Visual scene understanding also requires assigning
-relational roles---who is acting on what, where things are located, what
-instruments are being used. An active inference agent should maintain a
-unified case diagram that integrates linguistic, visual, and motor
-information, using the same categorical structure for all modalities.
-This would provide a formal account of how language grounds in
-perception and action---a key challenge for embodied AI.
-\end{block}
-
-\begin{block}{F6: Enriched Category Learning from Distributional Data}
-\protect\phantomsection\label{f6-enriched-category-learning-from-distributional-data}
-Bradley's {[}-@bradley2024ipam; -@bradley2025tea{]} program of treating
-language itself as an enriched category suggests a learning algorithm:
-estimate the enriched hom-values from corpus data and then extract the
-categorical structure that best explains the observed distributional
-patterns. Applied to case, this would yield \emph{empirically grounded}
-case categories whose objects (roles) and morphisms (relations) emerge
-from data rather than being stipulated a priori.
-\end{block}
-
-\begin{block}{F7: Extending Distributional Active Inference for
-Linguistic Agents}
-\protect\phantomsection\label{f7-extending-distributional-active-inference-for-linguistic-agents}
-The Distributional Active Inference (DAIF) framework of Akgül et al.
-{[}-@akgul2026distributional{]} has been computationally implemented in
-this paper's \texttt{src/daif/} subpackage, integrating active inference
-into distributional reinforcement learning
-{[}@bellemare2017distributional{]} via push-forward measures on
-representation paths (\autoref{sec:daif-results}). The current
-implementation models case assignment distributionally: agents maintain
-\emph{distributions over case diagrams}, sharpening beliefs through
-variational message passing as linguistic evidence accumulates. Key open
-extensions include:
-
-\begin{itemize}
-\tightlist
-\item
-  Training distributional case-assignment circuits end-to-end in
-  \textbf{lambeq Gen II} using quantile regression losses, enabling
-  gradient-based learning of the enriched weight matrix from annotated
-  corpora
-\item
-  Extending the DAIF policy selection (\texttt{G\_policy},
-  \texttt{softmax\_policy\_selection}) to multi-turn dialogue management
-  with DisCoCirc entity persistence---tracking agent state distributions
-  across sentence boundaries
-\item
-  Cross-lingual transfer of Bethe free energy convergence profiles:
-  testing whether the free energy minima differ systematically between
-  nominative-accusative and ergative-absolutive languages,
-  operationalizing the typological complexity predictions of
-  \autoref{sec:enriched-categories}
-\item
-  Integrating IQN risk distortion modes (optimistic/pessimistic/CVaR)
-  into the CEREBRUM architecture to model individual differences in
-  syntactic risk tolerance
-\end{itemize}
-\end{block}
+\textbf{Objection 4 --- ``The ROSE phase--amplitude coupling gap means
+you cannot predict ERP latencies.''} \emph{Response.} Conceded and
+flagged explicitly in \autoref{sec:daif-limitations}. The current
+implementation keeps N400 and P600 \emph{peak latencies} as fixed
+Gaussian peaks at 380 ms and 600 ms respectively (see
+\texttt{DEFAULT\_N400\_PEAK\_MS} / \texttt{DEFAULT\_P600\_PEAK\_MS} in
+\texttt{src/daif/prediction.py}). A principled latency prediction would
+require a cross-frequency-coupling delay parameter inside the CEREBRUM
+layer; we flag this as the cleanest next research step.

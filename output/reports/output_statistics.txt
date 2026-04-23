@@ -1,0 +1,35 @@
+
+OUTPUT STATISTICS REPORT
+============================================================
+
+Output Directory: /Users/4d/Documents/GitHub/template/output/cognitive_case_diagrams
+
+Total Files: 250
+Total Size: 34.84 MB
+
+Files by Category:
+  • pdf: 10 files (14.13 MB)
+  • web: 26 files (1.57 MB)
+  • slides: 177 files (6.33 MB)
+  • figures: 32 files (12.80 MB)
+  • reports: 4 files (0.02 MB)
+  • logs: 1 files (0.00 MB)
+
+Largest Files:
+  • cognitive_case_diagrams_combined.pdf: 12.97 MB (pdf)
+  • fluid_s_volition_landscape.png: 5.74 MB (figures)
+  • 06_topos_theory_slides.pdf: 0.74 MB (slides)
+  • 04b_compact_closure_complexity_slides.pdf: 0.73 MB (slides)
+  • functor_alignment.png: 0.72 MB (figures)
+
+File Types:
+  • .png: 30 file(s)
+  • .log: 27 file(s)
+  • .tex: 26 file(s)
+  • .aux: 25 file(s)
+  • .pdf: 25 file(s)
+  • .html: 25 file(s)
+  • .vrb: 23 file(s)
+  • .toc: 20 file(s)
+  • .snm: 19 file(s)
+  • .nav: 19 file(s)

@@ -1,24 +1,26 @@
 ---
 name: ccd-case-systems
-description: Linguistic case as a category — CaseRole, Morphism, CaseCategory, alignment functors, natural transformations, Fluid-S. Use for §2 manuscript code and anything that must not depend on other src subpackages.
+description: Linguistic case formally typed as an analytic category — CaseRole, Morphism, AlignmentFunctor, MonoidalFunctor, Natural Transformations. Crucial for §2 core topology, downstream §7c DAIF alignment, and §9b adversarial injection formal verification.
 ---
 
 # `src/case_systems/`
 
 ## When to use
 
-- Defining or comparing case inventories, morphisms, or cross-linguistic alignment functors.
-- Verifying a natural transformation with `NaturalTransformation.naturality_holds()` (complete components required).
-- Fluid-S / volition-scoped alignment without pulling in diagrams or cognitive modules.
+- Defining, comparing, or mathematically grading case inventories and cross-linguistic functors.
+- Evaluating **DAIF Surprisal (N400/P600)** using `CaseCategory.assess_daif_surprisal()`.
+- Validating adversarial NLP topological bindings (`ACC -> NOM`) via `src.security.cognitive_security.CaseFrameValidator.validate_assignment()`.
+- Checking Fibrational F(A⊗B) tensor preservation with `MonoidalFunctor` against multi-turn chain-of-thought hijacking.
+- Verifying a natural transformation with `NaturalTransformation.naturality_holds()`.
 
 ## Primary imports
 
 ```python
 from src.case_systems import (
     CaseRole, Morphism, CaseCategory,
-    standard_case_category, minimal_case_category, introductory_case_category,
+    standard_case_category, minimal_case_category,
     accusative_alignment, ergative_alignment, tripartite_alignment, active_stative_alignment,
-    AlignmentFunctor, accusative_to_ergative_functor, tripartite_functor,
+    AlignmentFunctor, MonoidalFunctor, accusative_to_ergative_functor,
     ComponentMorphism, NaturalTransformation, IdentityNaturalTransformation, compose_transformations,
     FluidSFunctor, VolitionContext,
 )

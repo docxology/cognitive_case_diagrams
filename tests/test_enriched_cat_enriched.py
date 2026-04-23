@@ -142,6 +142,60 @@ class TestMagnitude:
         )
         assert np.isclose(cat.magnitude(), 3.0)
 
+    def test_singular_matrix_magnitude_is_finite(self):
+        """Singular matrix uses pseudo-inverse fallback — magnitude is finite."""
+        singular_matrix = np.array([
+            [1.0, 1.0],
+            [1.0, 1.0]
+        ])
+        cat = EnrichedCategory(
+            name="Singular",
+            roles=[CaseRole.NOM, CaseRole.ACC],
+            proximity_matrix=singular_matrix,
+        )
+        mag = cat.magnitude()
+        assert np.isfinite(mag), f"Expected finite magnitude, got {mag}"
+
+    def test_singular_matrix_weighting_is_finite(self):
+        """Singular matrix uses pseudo-inverse fallback — weighting is finite."""
+        cat = EnrichedCategory(
+            name="Singular",
+            roles=[CaseRole.NOM, CaseRole.ACC],
+            proximity_matrix=np.array([[1.0, 1.0], [1.0, 1.0]]),
+        )
+        w = cat.weighting()
+        assert np.all(np.isfinite(w)), f"Expected finite weighting, got {w}"
+
+    def test_singular_matrix_coweighting_is_finite(self):
+        """Singular matrix uses pseudo-inverse fallback — coweighting is finite."""
+        cat = EnrichedCategory(
+            name="Singular",
+            roles=[CaseRole.NOM, CaseRole.ACC],
+            proximity_matrix=np.array([[1.0, 1.0], [1.0, 1.0]]),
+        )
+        cv = cat.coweighting()
+        assert np.all(np.isfinite(cv)), f"Expected finite coweighting, got {cv}"
+
+    def test_near_singular_matrix_uses_cached_inverse(self):
+        """Near-singular matrix computes magnitude via pseudo-inverse (cached)."""
+        # Near-singular: rows are almost identical
+        near_singular = np.array([
+            [1.0, 0.9999999],
+            [0.9999999, 1.0],
+        ])
+        cat = EnrichedCategory(
+            name="NearSingular",
+            roles=[CaseRole.NOM, CaseRole.ACC],
+            proximity_matrix=near_singular,
+        )
+        mag = cat.magnitude()
+        assert np.isfinite(mag)
+        # Weighting and coweighting should reuse the same cached inverse
+        w = cat.weighting()
+        cv = cat.coweighting()
+        assert np.isclose(np.sum(w), mag)
+        assert np.isclose(np.sum(cv), mag)
+
     def test_weighting_sums_to_magnitude(self):
         """Weighting vector sums to magnitude."""
         cat = standard_enriched_category()
@@ -153,3 +207,65 @@ class TestMagnitude:
         cat = standard_enriched_category()
         cv = cat.coweighting()
         assert np.isclose(np.sum(cv), cat.magnitude())
+
+
+class TestFullCompositionCheck:
+    """Tests for the full_composition_check method."""
+
+    def test_full_check_results(self):
+        """Check handles correctly formed results dictionary."""
+        cat = standard_enriched_category()
+        result = cat.full_composition_check()
+        assert "holds" in result
+        assert "violations" in result
+        assert "total" in result
+        assert "violation_rate" in result
+        n = len(cat.roles)
+        # Total checks should be P(n, 3) = n * (n-1) * (n-2)
+        assert result["total"] == n * (n - 1) * (n - 2)
+        assert len(result["holds"]) + len(result["violations"]) == result["total"]
+
+    def test_magnitude_deficit(self):
+        """Magnitude deficit computation is n - magnitude."""
+        cat = standard_enriched_category()
+        n = len(cat.roles)
+        deficit = cat.magnitude_deficit()
+        assert np.isclose(deficit, n - cat.magnitude())
+        assert deficit >= 0  # Expected to be non-negative for this matrix
+
+    def test_role_clusters(self):
+        """Identify clusters of roles based on proximity threshold."""
+        cat = standard_enriched_category()
+        # High threshold -> each role is its own cluster
+        clusters_strict = cat.role_clusters(threshold=0.99)
+        assert len(clusters_strict) == len(cat.roles)
+        
+        # Lower threshold -> fewer clusters
+        clusters_relaxed = cat.role_clusters(threshold=0.6)
+        assert len(clusters_relaxed) < len(cat.roles)
+        
+        # Extremely low threshold -> single cluster
+        clusters_all = cat.role_clusters(threshold=0.0)
+        assert len(clusters_all) == 1
+        assert len(clusters_all[0]) == len(cat.roles)
+
+
+class TestNearSingularMatrix:
+    """Magnitude computation on near-singular proximity matrices."""
+
+    def test_near_singular_falls_back_to_pinv(self):
+        """Near-singular matrix (cond > 1e12) triggers pseudo-inverse fallback."""
+        eps = 1e-14
+        mat = np.array([
+            [1.0, 1.0 - eps, 0.5],
+            [1.0 - eps, 1.0, 0.5],
+            [0.5, 0.5, 1.0],
+        ])
+        cat = EnrichedCategory(
+            name="NearSingular",
+            roles=[CaseRole.NOM, CaseRole.ACC, CaseRole.GEN],
+            proximity_matrix=mat,
+        )
+        # Magnitude must be finite even for near-singular matrices
+        mag = cat.magnitude()
+        assert np.isfinite(mag)

@@ -2,129 +2,120 @@
 
 ## Overview
 
-The `diagrams` subpackage implements **§3–§4c** of the manuscript: DisCoCat string diagrams, diagram complexity metrics (manuscript §4b / `04b_compact_closure_complexity.md`), DisCoCirc discourse via `Discourse` in `string_diagram.py` (§4c), and ditransitive sentence structures. This is the core computational linguistics layer connecting categorical grammar to natural language.
+The `diagrams` subpackage implements **§3–4** of the manuscript: DisCoCat string diagrams, diagram complexity metrics (§4b), DisCoCirc discourse (§4c), and ditransitive sentence structures. This is the core computational linguistics layer connecting categorical grammar to natural language.
 
 ## Module Inventory
 
-Line coverage: `uv run pytest tests/ --cov=src --cov-report=term-missing` (project root).
-
 | Module | Key Exports | § |
 |--------|-------------|---|
-| `string_diagram.py` | `Sentence`, `Discourse`, `Wire`, `Box`, string parsers; multi-sentence discourse / entity wires | §3–§4c |
-| `complexity_metrics.py` | `DiagramMetrics`, `box_count()`, `cup_count()`, `word_count()`, `normal_form_steps()` | §4b |
-| `complexity_examples.py` | `build_complexity_examples()` — canonical DisCoPy diagrams for complexity figures | §4b |
-| `ditransitive.py` | `DitransitiveSentence`, `ThreeParticipantFrame` | §3 |
+| `string_diagram.py` | `Sentence`, `Discourse`, `Wire`, `Box`; DisCoPy integration (`create_discopy_*`, `create_word_diagram_*`, `create_tensor_semantics`) | §3–4 |
+| `complexity_metrics.py` | `DiagramMetrics`, `diagram_depth()`, `diagram_width()`, `syntactic_complexity_score()`, `compute_quantum_magnitude_homology()` | §4b |
+| `complexity_examples.py` | `build_complexity_examples()` — 10 canonical DisCoPy diagrams for complexity figures | §4b |
+| `ditransitive.py` | `DitransitiveSentence`, `create_ditransitive()`, `create_discopy_ditransitive()` | §3 |
 
-## `string_diagram.py` — `Sentence` and `Discourse`
+## `string_diagram.py` — Native + DisCoPy Integration
 
-### DisCoCat Sentence Representation
+### Native Representations
 
-A `Sentence` encodes a sentence as a DisCoCat string diagram:
-- Each word is a `Box` with a pregroup type
-- Types compose via cups (identity contractions) and caps
-- The grammatical type of a sentence reduces to `s` (sentence)
+A `Sentence` encodes a sentence as a DisCoCat string diagram with case-role metadata:
 
 ```python
-sent = Sentence(
-    words=["John", "sees", "Mary"],
-    case_roles=[CaseRole.NOM, None, CaseRole.ACC],
-    type_string="n s n",   # Pregroup type before reduction
-)
+sent = Sentence.transitive("Alice", "chases", "Bob")
+sent.case_assignments  # {"Alice": CaseRole.NOM, "Bob": CaseRole.ACC}
+sent.num_boxes         # 3 (2 nouns + 1 verb)
+sent.codomain_type     # "s"
 ```
 
-**Key operations**:
-
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `type_reduce()` | `str` | Reduce pregroup type → canonical type string |
-| `as_discopy()` | `discopy.grammar.Diagram` | Convert to real DisCoPy diagram object |
-| `complexity()` | `DiagramMetrics` | Compute all complexity metrics |
-| `to_normal_form()` | `Sentence` | Apply cup reductions to normal form |
-| `wires()` | `list[Wire]` | All connecting wires between boxes |
-
-### DisCoCirc Discourse Representation
-
-A `Discourse` extends sentences to multi-sentence discourse via entity state wires (DisCoCirc; manuscript §4c):
+A `Discourse` extends to multi-sentence text with persistent entity wires (DisCoCirc):
 
 ```python
-discourse = Discourse(
-    sentences=[sent1, sent2, sent3],
-    entity_ids={"John": 0, "Mary": 1},
-)
-# Entity wires persist across sentences: John's state in sent1 feeds into sent2
+disc = Discourse.two_sentence("Alice", "chases", "Bob", "Bob", "runs")
+disc.role_reversal_entities()     # entities with changing case roles
+
+# For ACC→NOM hijacking detection (§9b), use CaseFrameValidator:
+from src.security.cognitive_security import CaseFrameValidator
+validator = CaseFrameValidator()
+final = {e: roles[-1] for e, roles in disc.role_history.items()}
+violations = validator.validate_assignment(final)
 ```
 
-**Key concepts**:
-- **State wires**: persistent entity representations flowing between sentences
-- **Case role reversal**: passive constructions reorder argument wires
-- **Discourse entanglement**: later sentences constrain earlier entity interpretations
+### DisCoPy Integration — Base Functions (`discopy.rigid`)
 
-### Discopy Integration
+These use `discopy.rigid.Box` and manual Cup placement:
 
-When `discopy >= 1.0.0` is installed, `Sentence.as_discopy()` generates real DisCoPy diagram objects that can be further composed, rendered, or compiled to quantum circuits via lambeq.
+| Function | Returns | Description |
+|----------|---------|-------------|
+| `create_discopy_transitive(subj, verb, obj)` | `rigid.Diagram` | SVO sentence |
+| `create_discopy_intransitive(subj, verb)` | `rigid.Diagram` | SV sentence |
+| `create_discopy_passive(subj, verb, agent)` | `rigid.Diagram` | Passive voice |
+| `create_discopy_snake_equation()` | 3-tuple | Compact closure axiom (left, id, right) |
+| `create_discopy_composition(subj, verb, obj)` | 2-tuple | Pre/post-contraction |
+| `create_discopy_multilingual(translations)` | `dict[str, Diagram]` | 6-language isomorphism |
+| `create_discopy_complex_transitive()` | `rigid.Diagram` | 9-word complex sentence |
 
-## `complexity_metrics.py` — `DiagramMetrics`
+### DisCoPy Integration — Extended Functions (`discopy.grammar.pregroup`)
 
-### Complexity Invariants
+These use `grammar.pregroup.Word` and `eager_parse` for proper lexical entries with automatic Cup placement:
 
-The manuscript §4b defines complexity metrics for string diagrams as publishing standards:
+| Function | Returns | Description |
+|----------|---------|-------------|
+| `create_word_diagram_transitive(subj, verb, obj)` | `pregroup.Diagram` | Word-based SVO via eager_parse |
+| `create_word_diagram_intransitive(subj, verb)` | `pregroup.Diagram` | Word-based SV via eager_parse |
+| `create_swap_passive(subj, verb, agent)` | `pregroup.Diagram` | Passivization via Swap morphism |
+| `create_word_diagram_ditransitive(subj, verb, io, do)` | `pregroup.Diagram` | 4-word ditransitive via eager_parse |
 
-| Metric | Formula | Interpretation |
-|--------|---------|---------------|
-| `box_count` | `\|{boxes}\|` | Word complexity (number of semantic units) |
-| `cup_count` | `\|{cups}\|` | Contraction depth (syntactic dependency density) |
-| `word_count` | `\|{words}\|` | Surface form length |
-| `normal_form_steps` | `n_reductions` | Abstractness (steps to canonical form) |
-| `complexity_score` | Weighted combination | Single-number complexity index |
+### DisCoPy Integration — Tensor Semantics (`discopy.tensor`)
+
+Implements the DisCoCat meaning functor F: Preg → FVect:
 
 ```python
-metrics = DiagramMetrics(sentence=sent)
-print(f"Box count: {metrics.box_count()}")
-print(f"Cup count: {metrics.cup_count()}")
-print(f"Score: {metrics.complexity_score():.3f}")
+from src.diagrams.string_diagram import create_tensor_semantics
+diagram, meaning = create_tensor_semantics("Alice", "chases", "Bob")
+# meaning.shape == (4,) — sentence meaning vector in FVect
 ```
 
-**Categorical magnitude** of a sentence can be approximated via:
-```
-|sent| ≈ box_count - cup_count (net diagram size)
-```
+## `complexity_metrics.py` — Metrics & Quantum Bounds
 
-### Normal Form Comparison
+### Complexity Metrics
+
+All metrics operate on real DisCoPy `rigid.Diagram` objects:
+
+| Function | Returns | Description |
+|----------|---------|-------------|
+| `count_boxes(diagram)` | `int` | Total box count |
+| `count_words(diagram)` | `int` | Lexical boxes (excluding Cup/Cap) |
+| `count_cups(diagram)` | `int` | Cup contractions |
+| `count_caps(diagram)` | `int` | Cap expansions |
+| `diagram_depth(diagram)` | `int` | Sequential layers (`diagram.depth()`) |
+| `diagram_width(diagram)` | `int` | Max parallel wires (`diagram.width`) |
+| `syntactic_complexity_score(diagram)` | `float` | `words + 0.5*cups + 0.25*caps + 0.1*depth` |
+| `analyze_diagram(diagram, name)` | `DiagramMetrics` | All metrics in one call |
+| `compare_diagrams(diagrams)` | `list[DiagramMetrics]` | Multi-diagram comparison |
+
+### Quantum Magnitude Homology (§5b)
 
 ```python
-before = sentence.complexity()
-after = sentence.to_normal_form().complexity()
-reduction = before.complexity_score() - after.complexity_score()
-# reduction > 0 → non-trivial simplification available
+metrics = compute_quantum_magnitude_homology(diagram, environmental_noise=0.05)
+metrics.quantum_environment_commutes  # True if decoherence < 0.25 threshold
 ```
 
-## `ditransitive.py` — `DitransitiveSentence`
-
-### Three-Participant Frames
-
-Ditransitive sentences have three core arguments:
+## `ditransitive.py` — Three-Argument Verbs
 
 ```python
-frame = DitransitiveSentence(
-    agent=("John", CaseRole.NOM),
-    theme=("book", CaseRole.ACC),
-    recipient=("Mary", CaseRole.DAT),
-    verb="gave",
-)
-# Encodes: John [NOM] gave the book [ACC] to Mary [DAT]
+ds = DitransitiveSentence(subject="Alice", verb="gave",
+                          direct_object="book", indirect_object="Bob")
+ds.case_assignments  # {"Alice": NOM, "Bob": DAT, "book": ACC}
+ds.num_arguments     # 3
 ```
 
-**Dative alternation** (syntactic transformation preserving meaning):
-```python
-double_object = frame.dative_alternation()
-# → "John gave Mary the book" — different surface, same semantic frame
-```
+DisCoPy integration: `create_discopy_ditransitive()` builds `n.r @ s @ n.l @ n.l` verb type with 3 cups.
 
-## Connecting to the Quantum Layer
+## DisCoPy API Surface Used
 
-The string diagram framework connects directly to §8 via:
-1. DisCoPy sentence diagrams → lambeq → Parameterized Quantum Circuit (PQC)
-2. PQC operates on Hilbert space ℋ^n ⊗ ... ⊗ ℋ^n (one qudit per case role)
-3. Case role assignment = POVM measurement on the output state
-
-The **PQC trainability** results (manuscript §4c, discourse / QNLP) — barren plateau bounds for IQP/Sim4 ansätze — address gradient scaling for discourse-level circuits.
+| DisCoPy Module | Classes/Functions | Purpose |
+|----------------|-------------------|---------|
+| `discopy.rigid` | `Ty`, `Box`, `Cup`, `Cap`, `Id`, `Diagram` | Base pregroup diagrams |
+| `discopy.grammar.pregroup` | `Word`, `eager_parse`, `Swap`, `Cup` | Proper lexical entries, automatic parsing |
+| `discopy.tensor` | `Box`, `Cup`, `Id`, `Dim`, `.eval()` | Semantic evaluation (F: Preg → FVect) |
+| `discopy.drawing` | `Equation` | Multi-panel diagram rendering |
+| `Diagram` methods | `.normal_form()`, `.depth()`, `.width`, `.boxes`, `.dom`, `.cod` | Metrics and verification |

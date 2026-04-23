@@ -14,6 +14,7 @@ case assignment — the quantum generalization of [0,1]-enrichment.
 
 All computations use real numpy matrix operations — no mocks.
 """
+from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
@@ -38,7 +39,7 @@ class CasePOVM:
         elements: Dictionary mapping CaseRole to POVM element (numpy array).
         dimension: Hilbert space dimension.
     """
-    roles: list
+    roles: list[CaseRole]
     elements: dict = field(default_factory=dict)
     dimension: int = 2
     name: str = "povm"
@@ -77,15 +78,18 @@ class CasePOVM:
             )
         logger.info("POVM validated: %d elements, dimension %d", len(self.roles), self.dimension)
 
-    def is_complete(self) -> bool:
+    def is_complete(self, atol: float = 1e-10) -> bool:
         """Check whether POVM elements sum to identity.
 
+        Args:
+            atol: Absolute tolerance for the completeness check.
+
         Returns:
-            True if ∑ E_c = I within numerical tolerance.
+            True if ∑ E_c = I within the given tolerance.
         """
         total = sum(self.elements[r] for r in self.roles)
         identity = np.eye(self.dimension, dtype=np.complex128)
-        return bool(np.allclose(total, identity, atol=1e-10))
+        return bool(np.allclose(total, identity, atol=atol))
 
 
 def case_probability(
@@ -111,7 +115,7 @@ def case_probability(
     return float(prob)
 
 
-def crisp_case_povm(roles: list, dimension: int = None) -> CasePOVM:
+def crisp_case_povm(roles: list, dimension: int | None = None) -> CasePOVM:
     """Create a POVM with orthogonal projectors for deterministic case.
 
     For crisp case systems (NOM/ACC), the POVM elements are orthogonal
@@ -197,6 +201,33 @@ def fluid_s_povm(
 
     where θ = (π/2)(1 - p_volitional): fully volitional = no rotation.
 
+    Note on "graded". At every value of ``p_volitional`` the two
+    projectors remain *mutually orthogonal* (E_NOM · E_ACC = 0), so
+    each individual POVM here is formally crisp / projective. What
+    varies continuously with ``p_volitional`` is the *basis* in which
+    the measurement is performed — and therefore the probabilities
+    returned by ``case_probability()`` on a fixed density matrix.
+    Example: with ρ = diag(0.7, 0.3), case probabilities shift from
+    P(NOM) = 0.7 at p_vol = 1.0 through P(NOM) = 0.5 at p_vol = 0.5
+    to P(NOM) = 0.3 at p_vol = 0.0 — a graded *assignment* (not
+    graded *elements*) realised by a rotated orthogonal POVM
+    (see §8b glossary entry "Graded / context-dependent POVM").
+
+    Numeric self-check (exact arithmetic):
+
+    >>> import numpy as np
+    >>> povm_half = fluid_s_povm(p_volitional=0.5)
+    >>> theta = np.pi / 4
+    >>> # mutual orthogonality at p_vol=0.5
+    >>> float(np.linalg.norm(
+    ...     povm_half.elements[CaseRole.NOM] @ povm_half.elements[CaseRole.ACC]
+    ... )) < 1e-12
+    True
+    >>> rho = np.diag([0.7 + 0j, 0.3 + 0j])
+    >>> # at p_vol=0.5 the basis is rotated 45°, so P(NOM)=P(ACC)=0.5
+    >>> abs(case_probability(povm_half.elements[CaseRole.NOM], rho) - 0.5) < 1e-12
+    True
+
     Args:
         p_volitional: Probability of volitional construal in [0,1].
         dimension: Hilbert space dimension (default 2).
@@ -228,21 +259,37 @@ def fluid_s_povm(
 
 def semantic_state(
     weights: dict,
-    dimension: int = None,
-    roles: list = None,
+    dimension: int | None = None,
+    roles: list | None = None,
 ) -> np.ndarray:
-    """Create a density matrix encoding a noun phrase's semantic state.
+    """Create a diagonal (classical-mixture) density matrix for a noun phrase.
 
-    The density matrix ρ encodes the NP's distributional semantic state
-    in the Hilbert space of case roles.
+    Constructs ρ = diag(p₁, ..., pₙ), representing a *classical*
+    probability mixture over case roles with zero quantum coherence
+    (all off-diagonal entries are zero). Input weights are normalised
+    to trace 1, so the caller need not pre-normalise — but the
+    dictionary MUST be non-negative and have strictly positive sum.
+
+    For states with genuine quantum coherence or entanglement
+    (required for the interference panel illustrated in §8b,
+    Fig. fig:quantum-povm (b)), construct the density matrix
+    directly using outer products of superposition state vectors
+    and pass the resulting ρ to ``case_probability()``. This
+    convenience constructor deliberately does not build such ρ.
 
     Args:
-        weights: Dictionary mapping CaseRole → weight (non-negative, sum to 1).
+        weights: Dictionary mapping CaseRole → non-negative weight.
+            Need not be pre-normalised; this function divides by the
+            sum to ensure Tr(ρ) = 1.
         dimension: Hilbert space dimension (defaults to len(weights)).
         roles: Ordered list of roles for indexing.
 
     Returns:
-        Density matrix (d×d numpy array, trace 1, positive semidefinite).
+        Density matrix (d×d numpy array, trace 1, positive
+        semidefinite, diagonal).
+
+    Raises:
+        ValueError: If the weight sum is not strictly positive.
     """
     if roles is None:
         roles = list(weights.keys())

@@ -1,4 +1,4 @@
-# manuscript/ — Research Manuscript
+# docs/manuscript/ — Research Manuscript
 
 Research manuscript for *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* (v2.3, 2026-04-22, [open-access version on Zenodo (record 19695260)](https://doi.org/10.5281/zenodo.19695260)); see [`config.yaml`](config.yaml) for canonical metadata (`paper.version`, authors, keywords).
 
@@ -10,8 +10,8 @@ Section files open with an `#` title and section anchor. `preamble.md` supplies 
 |--------|---------|
 | Refresh metrics + inject `${…}` | From `projects/cognitive_case_diagrams/`: `uv run pytest tests/ --cov=src --cov-report=json` then `uv run python -m src.generate_manuscript_metrics` then `uv run python scripts/inject_variables.py` (writes `output/manuscript/` for PDF stage) |
 | Render PDF | `uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams` (prefers `output/manuscript/` when present) |
-| Validate Markdown | From repo root: `uv run python -m infrastructure.validation.cli markdown projects/cognitive_case_diagrams/manuscript/` |
-| Check citations | `grep -r '??' manuscript/` |
+| Validate Markdown | From repo root: `uv run python -m infrastructure.validation.cli markdown docs/manuscript/` |
+| Check citations | `grep -r '??' docs/manuscript/` |
 
 ## Chapter Map
 

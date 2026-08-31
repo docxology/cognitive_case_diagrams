@@ -11,7 +11,7 @@ Public API for all `src/` packages in the `cognitive_case_diagrams` project.
 
 ## Manuscript metrics helper (`src.generate_manuscript_metrics`)
 
-Not one of the nine domain subpackages: a **build-time** module at [`../src/generate_manuscript_metrics.py`](../src/generate_manuscript_metrics.py). It collects test counts, DAIF figures, domain package counts, optional **coverage totals** from `coverage.json` (produce with `uv run pytest tests/ --cov=src --cov-report=json`), installed **NumPy/DisCoPy** versions, and English-word forms for counts; then writes `output/metrics.json` for `${…}` substitution in manuscript Markdown (see [`../manuscript/11c_automated_test_inventory.md`](../manuscript/11c_automated_test_inventory.md) and [`../manuscript/config.yaml`](../manuscript/config.yaml)).
+Not one of the nine domain subpackages: a **build-time** module at [`../src/generate_manuscript_metrics.py`](../src/generate_manuscript_metrics.py). It collects test counts, DAIF figures, domain package counts, optional **coverage totals** from `coverage.json` (produce with `uv run pytest tests/ --cov=src --cov-report=json`), installed **NumPy/DisCoPy** versions, and English-word forms for counts; then writes `output/metrics.json` for `${…}` substitution in manuscript Markdown (see [`manuscript/11c_automated_test_inventory.md`](manuscript/11c_automated_test_inventory.md) and [`../docs/manuscript/config.yaml`](../docs/manuscript/config.yaml)).
 
 ```bash
 cd projects/cognitive_case_diagrams

@@ -446,7 +446,7 @@ render_alignment_comparison(output_path='/tmp/alignment_comparison.png')
 
 ```bash
 # Count equation labels in manuscript
-grep -r '\\label{eq:' manuscript/ | wc -l
+grep -r '\\label{eq:' docs/manuscript/ | wc -l
 
 # Count implemented functions in theory map
 grep -c '✅' docs/theory_implementation_map.md

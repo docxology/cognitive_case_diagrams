@@ -15,7 +15,7 @@ This project lives at **`projects/cognitive_case_diagrams/`** and is pipeline-di
 | What | Where | Meaning |
 |------|--------|--------|
 | **Python package** | [`pyproject.toml`](pyproject.toml) `project.version` | Semver for the installable `cognitive_case_diagrams` package (currently **2.3.0**). |
-| **Manuscript / paper** | [`manuscript/AGENTS.md`](manuscript/AGENTS.md) authorship block, [`manuscript/config.yaml`](manuscript/config.yaml) | Research edition (currently **v2.3**, dated **2026-04-22**, DOI `10.5281/zenodo.19695260`). Bump this when the PDF content or metadata release changes independently of API semver. |
+| **Manuscript / paper** | [`docs/manuscript/AGENTS.md`](docs/manuscript/AGENTS.md) authorship block, [`docs/manuscript/config.yaml`](docs/manuscript/config.yaml) | Research edition (currently **v2.3**, dated **2026-04-22**, DOI `10.5281/zenodo.19695260`). Bump this when the PDF content or metadata release changes independently of API semver. |
 
 They are intentionally separate: code releases can patch without a full manuscript revision, and manuscript edits do not always require a package version bump.
 
@@ -58,7 +58,7 @@ uv run pytest projects/cognitive_case_diagrams/tests/
 uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py
 
 # Validate markdown (from repository root)
-uv run python -m infrastructure.validation.cli markdown projects/cognitive_case_diagrams/manuscript/
+uv run python -m infrastructure.validation.cli markdown docs/manuscript/
 ```
 
 Do not run `uv sync --group rendering` from `projects/cognitive_case_diagrams/` — those groups are defined only on the **template root** `pyproject.toml`. From this folder use plain `uv sync` (DisCoPy is a normal dependency here).
@@ -84,7 +84,7 @@ cd ../..   # template root
 uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams
 ```
 
-Use `scripts/inject_variables.py --dry-run` to print metrics without writing `output/manuscript/`. See [`manuscript/README.md`](manuscript/README.md) and [`docs/api_reference.md`](docs/api_reference.md).
+Use `scripts/inject_variables.py --dry-run` to print metrics without writing `output/manuscript/`. See [`docs/manuscript/README.md`](docs/manuscript/README.md) and [`docs/api_reference.md`](docs/api_reference.md).
 
 ## Project Structure
 
@@ -94,7 +94,7 @@ cognitive_case_diagrams/
 ├── README.md                    # This file
 ├── pyproject.toml               # Package config + test/coverage settings
 ├── docs/                        # Technical reference documentation
-├── manuscript/                  # Research manuscript (24 section .md + config.yaml + preamble.md + references.bib)
+├── docs/manuscript/                  # Research manuscript (24 section .md + config.yaml + preamble.md + references.bib)
 │   ├── 00_abstract.md           # Abstract
 │   ├── 01_introduction.md       # §1 Introduction
 │   ├── 01a_research_questions.md       # §1a Research Questions
@@ -151,14 +151,14 @@ cognitive_case_diagrams/
 
 ## Test & Coverage Status
 
-Latest snapshot (authoritative source: [`output/metrics.json`](../../output/cognitive_case_diagrams/metrics.json)):
+Latest snapshot (authoritative source: [`output/metrics.json`](output/metrics.json)):
 
 | Metric | Value | How to verify |
 |--------|-------|----------------|
-| Total tests | **1,207** across **64** test files | `cd projects/cognitive_case_diagrams && uv run pytest tests/ --collect-only -q` |
+| Total tests | **1,197** across **64** test files (as of 2026-08-31, verified by `uv run pytest tests/ --collect-only -q`) | same command; regenerate before re-quoting |
 | DAIF-specific tests | **224** across **8** files | `uv run pytest tests/test_daif*.py --collect-only -q` |
 | Line + branch coverage | **95.96%** (3510/3604 lines, 789/876 branches) | `uv run pytest tests/ --cov=src --cov-report=term-missing` (≥90% enforced in `pyproject.toml`) |
-| Figures | **30** PNGs in `output/cognitive_case_diagrams/figures/` | `ls output/cognitive_case_diagrams/figures/*.png \| wc -l` |
+| Figures | **30** PNGs in `output/figures/` | `ls output/figures/*.png \| wc -l` |
 | Policy | **Zero mocks** — all real computations | see `tests/AGENTS.md` |
 
 ## Key Dependencies

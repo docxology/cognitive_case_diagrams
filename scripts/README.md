@@ -27,7 +27,7 @@ uv run python -m src.generate_manuscript_metrics
 uv run python scripts/inject_variables.py
 ```
 
-Then render PDF from the template repository root: `uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams` (uses `output/manuscript/` when present). See [`manuscript/README.md`](../manuscript/README.md) and [`tests/AGENTS.md`](../tests/AGENTS.md) (optional commit policy for `coverage.json`).
+Then render PDF from the template repository root: `uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams` (uses `output/manuscript/` when present). See [`docs/manuscript/README.md`](../docs/manuscript/README.md) and [`tests/AGENTS.md`](../tests/AGENTS.md) (optional commit policy for `coverage.json`).
 
 ## Quick Commands
 

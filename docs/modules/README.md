@@ -1,6 +1,6 @@
 # docs/modules/ — Per-Module Technical Reference
 
-Detailed documentation for each of the 9 `src/` subpackages, organized by manuscript section. Section numbers match [`manuscript/AGENTS.md`](../../manuscript/AGENTS.md) and [`../README.md`](../README.md#canonical-manuscript--src-map).
+Detailed documentation for each of the 9 `src/` subpackages, organized by manuscript section. Section numbers match [`docs/manuscript/AGENTS.md`](../../docs/manuscript/AGENTS.md) and [`../README.md`](../README.md#canonical-manuscript--src-map).
 
 ## Module Index
 

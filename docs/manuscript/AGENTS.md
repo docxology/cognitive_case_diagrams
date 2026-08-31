@@ -1,8 +1,8 @@
-# 🤖 AGENTS.md — manuscript/
+# 🤖 AGENTS.md — docs/manuscript/
 
 ## Overview
 
-The `manuscript/` directory contains the complete research manuscript *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* (`config.yaml` `paper.title`) in Pandoc-compatible Markdown. Current edition: **v2.3**, dated **2026-04-22**, [open-access version on Zenodo (record 19695260)](https://doi.org/10.5281/zenodo.19695260). The manuscript is rendered to PDF via the pipeline using `scripts/03_render_pdf.py`.
+The `docs/manuscript/` directory contains the complete research manuscript *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* (`config.yaml` `paper.title`) in Pandoc-compatible Markdown. Current edition: **v2.3**, dated **2026-04-22**, [open-access version on Zenodo (record 19695260)](https://doi.org/10.5281/zenodo.19695260). The manuscript is rendered to PDF via the pipeline using `scripts/03_render_pdf.py`.
 
 ## File Inventory
 
@@ -70,7 +70,7 @@ P(c \mid \rho) = \text{Tr}(E_c \rho)
 ![Case category structure with 8 objects (NOM, ACC, GEN, DAT, INS, LOC, ABL, VOC) and governing morphisms.](output/figures/case_category_standard.png){#fig:case-standard}
 ```
 
-**Figure path roots (important for editors).** Image paths like `output/figures/...png` are **project-root–relative** under `projects/cognitive_case_diagrams/`, not relative to the individual `manuscript/*.md` file. Pandoc and the PDF renderer add `--resource-path` entries for the manuscript directory and for `output/figures/`; the template’s `infrastructure/rendering/_pdf_figure_paths.py` rewrites `output/figures/` and related prefixes for XeLaTeX. If a Markdown preview shows a broken image, set the working tree to `projects/cognitive_case_diagrams/` or add that folder (and `output/figures/`) as a preview resource root.
+**Figure path roots (important for editors).** Image paths like `output/figures/...png` are **project-root–relative** under `projects/cognitive_case_diagrams/`, not relative to the individual `docs/manuscript/*.md` file. Pandoc and the PDF renderer add `--resource-path` entries for the manuscript directory and for `output/figures/`; the template’s `infrastructure/rendering/_pdf_figure_paths.py` rewrites `output/figures/` and related prefixes for XeLaTeX. If a Markdown preview shows a broken image, set the working tree to `projects/cognitive_case_diagrams/` or add that folder (and `output/figures/`) as a preview resource root.
 
 ### Section Cross-References
 ```markdown
@@ -122,7 +122,7 @@ The "Source" column links to the manuscript file holding the cited `\label{eq:�
 
 ```bash
 # Validate manuscript markdown (from repository root)
-uv run python -m infrastructure.validation.cli markdown projects/cognitive_case_diagrams/manuscript/
+uv run python -m infrastructure.validation.cli markdown docs/manuscript/
 ```
 
 ## Editing Guidelines

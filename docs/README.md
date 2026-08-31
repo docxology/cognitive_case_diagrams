@@ -4,7 +4,7 @@ Technical reference documentation for the `cognitive_case_diagrams` project.
 
 ## Canonical manuscript ↔ `src/` map
 
-Section numbers follow [`manuscript/AGENTS.md`](../manuscript/AGENTS.md) (same as [`theory_implementation_map.md`](theory_implementation_map.md)). Each `src/` subpackage aligns to one primary section (lettered files such as §2b, §4c, §7c are subordinate to their parent §).
+Section numbers follow [`docs/manuscript/AGENTS.md`](manuscript/AGENTS.md) (same as [`theory_implementation_map.md`](theory_implementation_map.md)). Each `src/` subpackage aligns to one primary section (lettered files such as §2b, §4c, §7c are subordinate to their parent §).
 
 | `src/` package | Manuscript § (primary) |
 |----------------|-------------------------|
@@ -164,9 +164,9 @@ Canonical counts, verified as of 2026-04-22 (v2.3 release):
 
 | Metric | Count | Source of Truth |
 |--------|-------|-----------------|
-| Manuscript sections | 24 `.md` section files | `manuscript/config.yaml` chapter list |
+| Manuscript sections | 24 `.md` section files | `docs/manuscript/config.yaml` chapter list |
 | Publication figures | **30** PNGs | `output/cognitive_case_diagrams/figures/` + `docs/manuscript_figure_index.md`; authoritative live count in `output/metrics.json::total_figures` |
-| BibTeX entries | **106** keys | `manuscript/references.bib` (live count: `grep -c '^@' manuscript/references.bib`) |
+| BibTeX entries | **106** keys | `docs/manuscript/references.bib` (live count: `grep -c '^@' docs/manuscript/references.bib`) |
 | Total tests | **1,207** | `output/metrics.json::total_test_count` |
 | Test files | **64** | `tests/test_*.py` (authoritative live count in `output/metrics.json::total_test_files`) |
 | `src/` subpackages | **9** | `case_systems`, `cognitive`, `daif`, `diagrams`, `enriched_cat`, `quantum`, `security`, `topos_theory`, `visualization` |
@@ -179,8 +179,8 @@ Canonical counts, verified as of 2026-04-22 (v2.3 release):
 | `src/` line + branch coverage | **95.96%** (3510/3604 lines, 789/876 branches) | `output/metrics.json::coverage_percent` |
 | Glossary terms | 117 (table rows) | `docs/glossary.md` |
 | ADR count | 12 | `docs/AGENTS.md` (ADR-001 through ADR-012) |
-| `\autoref{}` cross-references | 104 | `manuscript/*.md` grep |
-| Notation appendix sections | 11 (A–K) | `manuscript/11b_notation.md` |
+| `\autoref{}` cross-references | 104 | `docs/manuscript/*.md` grep |
+| Notation appendix sections | 11 (A–K) | `docs/manuscript/11b_notation.md` |
 | Installed DisCoPy / NumPy | **1.2.2 / 2.4.4** | `output/metrics.json::discopy_version`, `numpy_version` |
 
 ## Design Philosophy

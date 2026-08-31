@@ -24,7 +24,7 @@ Verification baseline (this date): 1197 tests / 64 files (`uv run pytest tests/ 
 
 ## Major
 
-- [ ] In-flight `manuscript/ -> docs/manuscript/` relocation is uncommitted in the working tree (old files deleted, new docs/manuscript/ untracked). Until committed, every doc referencing manuscript paths resolves only against the worktree, not HEAD. **Deferred to owner** — committing half of someone else's relocation from a fleet agent risks landing it incomplete; owner should finish/commit the move. — git status (39 deletions + docs/manuscript/ untracked)
+- [x] In-flight `manuscript/ -> docs/manuscript/` relocation LANDED (owner-authorized 2026-08-31): commit cdb051f, 29 renames + doc cross-reference refresh; TODO.md/REVIEW_LOG disclosure updated
 - [x] No backlog file existed -> TODO.md created (this file). Canonical home for next-actions going forward. — TODO.md
 
 ## Done-policy

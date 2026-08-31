@@ -27,3 +27,9 @@ Other findings:
 - Link checker re-run: 0 broken relative links in tracked docs (AGENTS.md monorepo-path link annotated, not left silently broken).
 - Commit strategy: ONLY clean-at-dispatch files edited this pass are committed. Pre-dirty files (AGENTS.md, README.md, docs/AGENTS.md, docs/README.md, docs/api_reference.md, docs/extension_guide.md, docs/modules/README.md, scripts/README.md) carry owner edits from the in-flight relocation — fixes applied but left UNCOMMITTED to avoid sweeping owner work into a fleet commit. docs/manuscript/11c_automated_test_inventory.md fix also left uncommitted (file is part of the owner's uncommitted relocation).
 - Push: origin/main per brief.
+
+## Round 2 — 2026-08-31 (fleet continuation)
+- Owner authorized landing the deferred manuscript relocation. Commit `cdb051f`: 29 renames `manuscript/ -> docs/manuscript/` (verified rename-detection, byte-identical content except the two intended edits) + cross-reference refresh in 13 docs. Fixed last 5 `projects/cognitive_case_diagrams/manuscript/` command-path references (docs/manuscript/{README,AGENTS}.md, README.md, docs/extension_guide.md, AGENTS.md troubleshooting) to `docs/manuscript/`.
+- Commit `de7eee8`: TODO.md Major marked done; disclosure updated.
+- Link checker re-run post-relocation: 0 unexpected broken links (remaining flags = documented renderer-relative `output/figures/` convention + AGENTS.md monorepo-path link annotated Round 1).
+- All TODO.md items now `[x]`; no open backlog. Fast gate: full pytest run in progress on external drive (collection verified: 1197 tests / 64 files).

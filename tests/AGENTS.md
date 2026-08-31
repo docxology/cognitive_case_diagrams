@@ -45,7 +45,7 @@ On some **macOS** environments, pytest may print `(rm_rf) … Directory not empt
 
 **Coverage artifacts:**
 
-- **Do not commit** binary/aggregate noise: `.coverage`, `.coverage.*`, `coverage.xml`, `htmlcov/` (see repository root [`.gitignore`](../../../.gitignore)).
+- **Do not commit** binary/aggregate noise: `.coverage`, `.coverage.*`, `coverage.xml`, `htmlcov/` (ignored by this repo's `.gitignore`).
 - **`coverage.json`** (project root, from `uv run pytest tests/ --cov=src --cov-report=json`): consumed by [`src/generate_manuscript_metrics.py`](../src/generate_manuscript_metrics.py) for real `${coverage_*}` / `${coverage_summary}` manuscript placeholders. Treat it as **optional to commit**: committing pins reproducible injected percentages for PDF/HTML builds; omitting it means each author regenerates JSON before `generate_manuscript_metrics` + `scripts/inject_variables.py`. It is not the same as `.coverage` (never commit the latter).
 
 If `pytest-cov` teardown fails with *Can't combine statement coverage data with branch data*, delete `.coverage*` in this project directory and re-run with explicit project config (isolates from other working trees):
@@ -217,8 +217,8 @@ uv run pytest tests/ --cov=src --cov-report=term-missing -v
 # Single file
 uv run pytest tests/test_daif_core.py -v
 
-# Via pipeline (only after promoting project to projects/cognitive_case_diagrams/)
-uv run python scripts/01_run_tests.py --project cognitive_case_diagrams
+# Via pipeline — template monorepo root only (script does not exist in this standalone checkout)
+uv run python scripts/pipeline/stage_01_test.py --project-only --project cognitive_case_diagrams
 ```
 
 ## conftest.py

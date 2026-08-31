@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `security` subpackage implements manuscript **§9b** ([`09b_cognitive_security.md`](../../manuscript/09b_cognitive_security.md)): cognitive security as **protocol-level** type checking—prompt injection as a **decidable type violation** when roles are ill-typed in the interaction category.
+The `security` subpackage implements manuscript **§9b** ([`09b_cognitive_security.md`](../../docs/manuscript/09b_cognitive_security.md)): cognitive security as **protocol-level** type checking—prompt injection as a **decidable type violation** when roles are ill-typed in the interaction category.
 
 > **Reference**: §9b — *Prompt Injection Is a Type Violation* (`#sec:cognitive-security`). Claims are conditional on fixed protocols, not automatic guarantees on deployed LLM APIs.
 

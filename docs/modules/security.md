@@ -1,7 +1,7 @@
 # Module: `security` — Prompt Injection Is a Type Violation (§9b)
 
 > **Package**: `src.security`
-> **Manuscript**: §9b [`09b_cognitive_security.md`](../../manuscript/09b_cognitive_security.md) (`#sec:cognitive-security`)
+> **Manuscript**: §9b [`09b_cognitive_security.md`](../../docs/manuscript/09b_cognitive_security.md) (`#sec:cognitive-security`)
 > **Dependencies**: `case_systems`, `enriched_cat`
 > **Test files**: `tests/test_security*.py`
 
@@ -9,7 +9,7 @@
 
 ## Purpose
 
-The `security` package formalizes **prompt injection as decidable categorical type violation** under a fixed interaction protocol. The core insight (§9b): case frames impose categorical type constraints on linguistic input, and an adversarial prompt injection attempts to insert an ill-typed case assignment that violates the categorical composition rules. Detection is decidable because type-checking in a finite category is decidable. This is a **specification-level** story aligned with [`09b_cognitive_security.md`](../../manuscript/09b_cognitive_security.md), not an automatic guarantee on deployed LLM APIs.
+The `security` package formalizes **prompt injection as decidable categorical type violation** under a fixed interaction protocol. The core insight (§9b): case frames impose categorical type constraints on linguistic input, and an adversarial prompt injection attempts to insert an ill-typed case assignment that violates the categorical composition rules. Detection is decidable because type-checking in a finite category is decidable. This is a **specification-level** story aligned with [`09b_cognitive_security.md`](../../docs/manuscript/09b_cognitive_security.md), not an automatic guarantee on deployed LLM APIs.
 
 Key capabilities:
 

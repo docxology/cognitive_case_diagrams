@@ -2,7 +2,7 @@
 
 ## Overview
 
-Publication-quality matplotlib figures for *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* ([`manuscript/config.yaml`](../../manuscript/config.yaml) `paper.title`). Orchestrator: [`scripts/generate_diagrams.py`](../../scripts/generate_diagrams.py). Inventory: [`docs/manuscript_figure_index.md`](../../docs/manuscript_figure_index.md).
+Publication-quality matplotlib figures for *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* ([`manuscript/config.yaml`](../../docs/manuscript/config.yaml) `paper.title`). Orchestrator: [`scripts/generate_diagrams.py`](../../scripts/generate_diagrams.py). Inventory: [`docs/manuscript_figure_index.md`](../../docs/manuscript_figure_index.md).
 
 **Public surface:** import from `src.visualization` — names are listed in [`__init__.py`](__init__.py) `__all__`. When `discopy` is installed, DisCoPy render helpers are also exported.
 

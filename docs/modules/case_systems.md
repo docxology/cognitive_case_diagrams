@@ -94,7 +94,7 @@ def compose(self, f: Morphism, g: Morphism) -> Morphism:
 | `tripartite_functor()` | factory | Injective S→ABS, A→ERG, P→ACC |
 | `MonoidalFunctor` | class | Monoidal functor with `preserves_tensor(role_a, role_b) -> bool` for tensor-preservation checks used in the §9b **protocol-level** security story (specification target, not a deployed-API guarantee). |
 
-`AlignmentFunctor.preserves_composition` compares composed weights to ensure functorial weight preservation. `MonoidalFunctor` extends this to tensor preservation checks that flag illicit role merges consistent with the prompt-injection analysis in [`09b_cognitive_security.md`](../../manuscript/09b_cognitive_security.md).
+`AlignmentFunctor.preserves_composition` compares composed weights to ensure functorial weight preservation. `MonoidalFunctor` extends this to tensor preservation checks that flag illicit role merges consistent with the prompt-injection analysis in [`09b_cognitive_security.md`](../../docs/manuscript/09b_cognitive_security.md).
 
 ### `natural_transformation.py` — Inter-Alignment Maps
 

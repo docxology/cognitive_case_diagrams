@@ -24,7 +24,7 @@ from src.security import (
 
 ## Manuscript
 
-§9b ([`09b_cognitive_security.md`](../../manuscript/09b_cognitive_security.md)).
+§9b ([`09b_cognitive_security.md`](../../docs/manuscript/09b_cognitive_security.md)).
 
 ## See also
 

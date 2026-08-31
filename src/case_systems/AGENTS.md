@@ -75,7 +75,7 @@ functor = AlignmentFunctor(name="F", source=source_cat, target=target_cat, objec
 2. Composition preservation: `F(g ∘ f) = F(g) ∘ F(f)`
 
 ### Tensor preservation (`MonoidalFunctor`)
-`MonoidalFunctor` implements **specification-level** checks that tensor structure is preserved under the alignment map—so illicit merges of distinct case roles (the categorical signature of prompt-injection patterns in [`09b_cognitive_security.md`](../../manuscript/09b_cognitive_security.md)) can be flagged in a protocol story. It is **not** a guarantee on production LLM APIs; see `preserves_tensor()` in `functor.py` and empirical motivation (e.g. ARLAS 2025) in §9b.
+`MonoidalFunctor` implements **specification-level** checks that tensor structure is preserved under the alignment map—so illicit merges of distinct case roles (the categorical signature of prompt-injection patterns in [`09b_cognitive_security.md`](../../docs/manuscript/09b_cognitive_security.md)) can be flagged in a protocol story. It is **not** a guarantee on production LLM APIs; see `preserves_tensor()` in `functor.py` and empirical motivation (e.g. ARLAS 2025) in §9b.
 
 ```python
 functor = AlignmentFunctor(name="F", source=source_cat, target=target_cat, object_map={...})

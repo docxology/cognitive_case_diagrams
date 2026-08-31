@@ -2,7 +2,7 @@
 
 Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case*. Maps mathematical notation, linguistic terminology, and cognitive science concepts to their Python implementations.
 
-> Cross-reference: See [`11b_notation.md`](../manuscript/11b_notation.md) for the full mathematical notation table (sections A–K).
+> Cross-reference: See [`11b_notation.md`](manuscript/11b_notation.md) for the full mathematical notation table (sections A–K).
 
 ---
 
@@ -191,5 +191,5 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 
 ---
 
-*Last updated: 2026-04-22. For mathematical notation details, see [Appendix B — Notation Reference](../manuscript/11b_notation.md).*
+*Last updated: 2026-04-22. For mathematical notation details, see [Appendix B — Notation Reference](manuscript/11b_notation.md).*
 

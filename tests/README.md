@@ -15,8 +15,8 @@ uv run pytest tests/ --cov=src --cov-report=json:coverage.json
 # Run single test file
 uv run pytest tests/test_daif_core.py -v
 
-# Via template root orchestrator
-uv run python scripts/01_run_tests.py --project cognitive_case_diagrams
+# From the template monorepo root only (script does not exist in this standalone checkout):
+uv run python scripts/pipeline/stage_01_test.py --project-only --project cognitive_case_diagrams
 ```
 
 ## Naming Convention

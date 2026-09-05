@@ -1,8 +1,8 @@
-# 🤖 AGENTS.md — manuscript/
+# 🤖 AGENTS.md — docs/manuscript/
 
 ## Overview
 
-The `manuscript/` directory contains the complete research manuscript *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* (`config.yaml` `paper.title`) in Pandoc-compatible Markdown. Current edition: **v2.3**, dated **2026-04-22**, [open-access version on Zenodo (record 19695260)](https://doi.org/10.5281/zenodo.19695260). The manuscript is rendered to PDF via the pipeline using `scripts/03_render_pdf.py`.
+The `docs/manuscript/` directory contains the complete research manuscript *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* (`config.yaml` `paper.title`) in Pandoc-compatible Markdown. Current edition: **v2.3**, dated **2026-04-22**, [open-access version on Zenodo (record 19695260)](https://doi.org/10.5281/zenodo.19695260). The manuscript is rendered to PDF by the template monorepo's pipeline stage `scripts/pipeline/stage_03_render.py`, run from the template root with `--project ongoing/ActiveInference/cognitive_case_diagrams`.
 
 ## File Inventory
 
@@ -70,7 +70,7 @@ P(c \mid \rho) = \text{Tr}(E_c \rho)
 ![Case category structure with 8 objects (NOM, ACC, GEN, DAT, INS, LOC, ABL, VOC) and governing morphisms.](output/figures/case_category_standard.png){#fig:case-standard}
 ```
 
-**Figure path roots (important for editors).** Image paths like `output/figures/...png` are **project-root–relative** under `projects/cognitive_case_diagrams/`, not relative to the individual `manuscript/*.md` file. Pandoc and the PDF renderer add `--resource-path` entries for the manuscript directory and for `output/figures/`; the template’s `infrastructure/rendering/_pdf_figure_paths.py` rewrites `output/figures/` and related prefixes for XeLaTeX. If a Markdown preview shows a broken image, set the working tree to `projects/cognitive_case_diagrams/` or add that folder (and `output/figures/`) as a preview resource root.
+**Figure path roots (important for editors).** Image paths like `output/figures/...png` are **project-root–relative** — that is, relative to the project root that holds `src/`, `docs/`, `scripts/`, and `output/` — not relative to the individual `docs/manuscript/*.md` file. Pandoc and the PDF renderer add `--resource-path` entries for the manuscript directory and for `output/figures/`; the template’s `infrastructure/rendering/_pdf_figure_paths.py` rewrites `output/figures/` and related prefixes for XeLaTeX. If a Markdown preview shows a broken image, set the working tree to the project root or add that folder (and `output/figures/`) as a preview resource root.
 
 ### Section Cross-References
 ```markdown
@@ -98,15 +98,15 @@ The "Source" column links to the manuscript file holding the cited `\label{eq:�
 | [Categorical Semantics](04_categorical_semantics.md#sec:categorical-semantics) | Meaning functor $F: \mathbf{Preg} \to \mathbf{FVect}$ | `eq:eq-4-1` |
 | [Categorical Semantics](04_categorical_semantics.md#sec:categorical-semantics) | Compositional sentence meaning (tensor + cups) | `eq:eq-4-2` |
 | [Compact Closure & Complexity](04b_compact_closure_complexity.md#sec:compact-closure-complexity) | Snake equation: $(\varepsilon_n \otimes 1_n) \circ (1_n \otimes \eta_n) = 1_n$ | `eq:eq-4-3` |
-| [Compact Closure & Complexity](04b_compact_closure_complexity.md#sec:compact-closure-complexity) | Syntactic complexity: $\kappa(D) = w_b\lvert D\rvert_\text{box} + w_c\lvert D\rvert_\text{cup} + w_d \cdot \text{depth}(D)$ | `eq:eq-4-4` |
+| [Compact Closure & Complexity](04b_compact_closure_complexity.md#sec:compact-closure-complexity) | Syntactic complexity: $\text{complexity}(D) = w_w\lvert D\rvert_\text{words} + w_c\lvert D\rvert_\text{cup} + w_a\lvert D\rvert_\text{cap} + w_d \cdot \text{depth}(D)$ | `eq:eq-4-4` |
 | [Enriched Categories](05_enriched_categories.md#sec:enriched-categories) | $[0,1]$ composition inequality | `eq:eq-5-2` |
-| [Magnitude Homology](05b_magnitude_homology.md#sec:magnitude-homology) | Categorical magnitude $\|\mathcal{C}\| = \sum_{i,j}(Z^{-1})_{ij}$ | `eq:eq-5-3` |
+| [Magnitude Homology](05b_magnitude_homology.md#sec:magnitude-homology) | Categorical magnitude $\lvert\mathcal{C}\rvert = \sum_{i,j}(Z^{-1})_{ij}$ | `eq:eq-5-3` |
 | [Diagrammatic Cognition](07b_diagrammatic_cognition.md#sec:diagrammatic-cognition) | Precision-weighted PE: $\text{PE}(f) \propto w_f \cdot \lvert\mu_\text{predicted} - \mu_\text{observed}\rvert$ | `eq:pe-precision-error` |
 | [DAIF: Push-Forward](07c_daif_results.md#sec:daif-pushforward) | Push-forward Bellman: $\int_{\mathcal{S}^{\mathbb{N}_+}} R \circ f \, d(\mathbf{S}_{\#} \mathbb{P})$ | `eq:eq-7-1` |
 | [DAIF: Quantile TD](07c_daif_results.md#sec:daif-quantile) | QR-DQN Huber loss: $\mathcal{L}_{\text{QR}}(\theta) = \frac{1}{NN'}\sum_{ij} \rho_{\tau_i}^{\kappa}(\delta_{ij})$ | `eq:eq-7c-qr` |
 | [DAIF: VMP](07c_daif_results.md#sec:daif-vmp) | VMP update: $q^{(t+1)}(c_k) \propto q^{(t)}(c_k) \cdot \exp\!\bigl(w_k \cdot o_k\bigr)$ | `eq:eq-7c-vmp` |
-| [DAIF: VMP](07c_daif_results.md#sec:daif-vmp) | Bethe FE: $F_{\text{Bethe}} = -\sum_k q(c_k)\log p(c_k) + \sum_k q\log q - \sum_{t,k} q\log p(o_t\|c_k)$ | `eq:eq-7c-bethe` |
-| [DAIF: Policy](07c_daif_results.md#sec:daif-policy) | EFE + risk: $G(\pi) = -\mathbb{E}[\log p(o)] + D_{\text{KL}}(q(s\|\pi)\|p(s)) + \beta_{\mathrm{risk}}\cdot\text{risk}$ | `eq:eq-7c-g` |
+| [DAIF: VMP](07c_daif_results.md#sec:daif-vmp) | Bethe FE: $F_{\text{Bethe}} = -\sum_k q(c_k)\log p(c_k) + \sum_k q\log q - \sum_{t,k} q\log p(o_t\mid c_k)$ | `eq:eq-7c-bethe` |
+| [DAIF: Policy](07c_daif_results.md#sec:daif-policy) | Four-term EFE: $G(\pi) = \mathcal{A} - \mathcal{E} - \gamma\mathcal{P} + \beta_{\mathrm{risk}}\mathcal{R}$ — ambiguity, epistemic value, pragmatic value, risk | `eq:eq-7c-g` |
 | [DAIF: ERP](07c_daif_results.md#sec:daif-erp) | DPE: $\mathrm{DPE}(o,q) = w_f \cdot W_1(Z_{\text{pred}}, Z_{\text{obs}})$ | `eq:eq-7c-dpe` |
 | [DAIF: Metrics](07c_daif_results.md#sec:daif-metrics) | Return entropy: $H[Z] = -\sum_i p_i \log p_i$ | `eq:eq-7c-entropy` |
 | [Quantum Semantics](08b_quantum_semantics.md#sec:quantum-semantics) | Quantum case: $P(c\mid\rho) = \mathrm{Tr}(E_c \rho)$ | `eq:eq-8-1` |
@@ -121,8 +121,11 @@ The "Source" column links to the manuscript file holding the cited `\label{eq:�
 ## Rendering
 
 ```bash
-# Validate manuscript markdown (from repository root)
-uv run python -m infrastructure.validation.cli markdown projects/cognitive_case_diagrams/manuscript/
+# Validate manuscript markdown.
+# The infrastructure package ships with the template monorepo, not with this
+# project, so run this from the template root and point it at the project.
+uv run python -m infrastructure.validation.cli markdown \
+  projects/ongoing/ActiveInference/cognitive_case_diagrams/docs/manuscript/
 ```
 
 ## Editing Guidelines

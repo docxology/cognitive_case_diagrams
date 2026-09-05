@@ -1,5 +1,5 @@
 {
-  "total_test_count": "1197",
+  "total_test_count": "1201",
   "total_test_files": "64",
   "daif_modules": "7",
   "daif_symbols": "25",
@@ -13,11 +13,19 @@
   "numpy_version": "2.4.4",
   "discopy_version_pretty": "1.2.2",
   "numpy_version_pretty": "2.4.4",
-  "coverage_percent": "95.96",
-  "coverage_percent_raw": "95.96",
-  "coverage_lines_covered": "3510",
-  "coverage_lines_total": "3604",
-  "coverage_branches_covered": "789",
-  "coverage_branches_total": "876",
-  "coverage_summary": "95.96% line-and-branch coverage on ``src/`` (from ``coverage.json``)"
+  "coverage_percent": "95.79",
+  "coverage_percent_raw": "95.79",
+  "coverage_lines_covered": "3514",
+  "coverage_lines_total": "3613",
+  "coverage_branches_covered": "784",
+  "coverage_branches_total": "874",
+  "coverage_summary": "95.79% line-and-branch coverage on ``src/`` (from ``coverage.json``)",
+  "enriched_magnitude": "2.50",
+  "enriched_magnitude_deficit": "5.50",
+  "enriched_object_count": "8",
+  "enriched_z_condition": "92",
+  "topos_standard_sorts": "8",
+  "topos_standard_relations": "8",
+  "topos_minimal_sorts": "3",
+  "topos_minimal_relations": "3"
 }

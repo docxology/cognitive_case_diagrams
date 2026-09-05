@@ -5,11 +5,12 @@ Created 2026-08-31 by the agent-ergonomics fleet pass (commit `bda0e01`; the dat
 `REVIEW_LOG_2026-08-31.md` scratch report was removed in `98cec35` — the evidence lives in
 those commits and in `cdb051f`).
 
-Verification baseline (2026-09-04): 1197 tests / 64 files (`uv run pytest tests/ --collect-only -q`);
-30 PNGs in `output/figures/`; 24 numbered manuscript sections in `docs/manuscript/`.
-Coverage: read `output/metrics.json` → `coverage_percent`. Do **not** copy a percentage into prose —
-the committed value predates the `[tool.coverage.run] omit` cleanup in `pyproject.toml` and is stale
-until the metrics file is regenerated.
+Verification baseline: read `output/metrics.json` (`total_test_count`, `total_test_files`,
+`daif_tests`, `coverage_percent`, `total_figures`) — regenerate it with
+`uv run python -m src.generate_manuscript_metrics` before quoting any number.
+Do **not** copy a count or percentage into prose: a hardcoded value goes stale
+the next time anyone adds a test or touches `src/`. The structural constants
+below (24 numbered sections in `docs/manuscript/`) are verified on 2026-09-04.
 
 ## Minor
 
@@ -36,8 +37,7 @@ until the metrics file is regenerated.
 ## Open
 
 - [x] Git tag `v2.3.0` now anchors the DOI'd release (created and pushed 2026-09-04, annotated, pointing at the remediated tree). `git describe --tags` resolves; Zenodo record `10.5281/zenodo.19695260` traces to `ae5a86f`. — repository metadata
-- [x] Regenerate `output/metrics.json`. Regenerated 2026-09-04: 95.79% line+branch (fresh `coverage.json` over the post-omit-cleanup scope), plus the new `enriched_*` / `topos_*` keys. — output/metrics.json
-- [x] Tracking policy for the untracked `output/**/AGENTS.md` and `output/**/README.md` pairs: committed all of them on 2026-09-04 (17 files incl. `output/manuscript/MANUSCRIPT_STATUS.md` and the `.checkpoints/` pair), matching the existing `output/manuscript/` convention. — output/
+- [x] Tracking policy for the untracked `output/**/AGENTS.md` and `output/**/README.md` pairs: committed all of them on 2026-09-04 (19 files incl. `output/manuscript/MANUSCRIPT_STATUS.md` and the `.checkpoints/` pair), matching the existing `output/manuscript/` convention. — output/
 - [x] `LICENSE` and `CITATION.cff` committed 2026-09-04. — LICENSE, CITATION.cff
 - [x] Repo-wide sweeps re-run 2026-09-04 for all three classes (test-count literals, legacy mirrored-output figure paths, monorepo-context Quick Start commands). Verification: the DoD grep over all `*.md` returns no matches. — repo-wide
 

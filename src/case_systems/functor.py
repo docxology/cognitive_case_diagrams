@@ -224,7 +224,7 @@ class MonoidalFunctor(AlignmentFunctor):
     specified so that disallowed wire manipulations (e.g., merging roles that must stay
     distinct) are detectable. This class implements **specification-level** tensor checks
     aligned with the case-theoretic analysis of prompt injection in
-    ``manuscript/09b_cognitive_security.md``; it does **not** secure a deployed LLM API
+    ``docs/manuscript/09b_cognitive_security.md``; it does **not** secure a deployed LLM API
     by itself. Multi-turn context attacks remain an open systems problem; see empirical
     motivation in adversarial LLM-agent work (e.g. ARLAS 2025, cited in §9b).
 

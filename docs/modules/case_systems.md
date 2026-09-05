@@ -100,7 +100,7 @@ def compose(self, f: Morphism, g: Morphism) -> Morphism:
 
 | Symbol | Type | Description |
 | ------ | ---- | ----------- |
-| `ComponentMorphism` | `@dataclass(frozen=True)` | Single component α_A: F(A)→G(A) |
+| `ComponentMorphism` | `@dataclass` | Single component α_A: F(A)→G(A); `weight: float = 1.0` is the enriched weight (§4–5), composed multiplicatively |
 | `NaturalTransformation` | class | Collection of components with `naturality_holds()` / `verify_naturality()` |
 | `IdentityNaturalTransformation` | class | id: F ⇒ F |
 | `compose_transformations()` | function | Vertical composition β ∘ α |

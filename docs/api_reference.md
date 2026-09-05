@@ -127,6 +127,21 @@ class NaturalTransformation:
     def verify_naturality(*, rel_tol: float = 1e-9, abs_tol: float = 1e-9) -> bool  # alias
 ```
 
+**`ComponentMorphism`** (component α_A of a natural transformation):
+```python
+@dataclass
+class ComponentMorphism:
+    object_name: CaseRole      # the object A this component is defined on
+    source_image: CaseRole     # F(A)
+    target_image: CaseRole     # G(A)
+    weight: float = 1.0        # enriched weight in [0,1] (§4–5)
+
+    def as_morphism() -> Morphism
+```
+> **Enriched composition:** `compose_transformations()` builds composite components with
+> `weight = w(α_A) · w(β_A)` and raises `ValueError` on functor mismatch or componentwise
+> incomposability (`α_A.target != β_A.source`).
+
 Checks naturality on morphisms in ``source_functor.source`` whose endpoints lie in the functor’s ``object_map``; requires ``is_complete()``.
 
 ```python

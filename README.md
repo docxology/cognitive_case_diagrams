@@ -168,8 +168,8 @@ Latest snapshot (authoritative source: [`output/metrics.json`](output/metrics.js
 
 | Metric | Value | How to verify |
 |--------|-------|----------------|
-| Total tests | **1,197** across **64** test files (as of 2026-08-31, verified by `uv run pytest tests/ --collect-only -q`) | same command; regenerate before re-quoting |
-| DAIF-specific tests | **224** across **8** files | `uv run pytest tests/test_daif*.py --collect-only -q` |
+| Total tests | see [`output/metrics.json`](output/metrics.json) → `total_test_count` / `total_test_files` — regenerate before quoting; a hardcoded count goes stale the next time anyone adds a test | `uv run pytest tests/ --collect-only -q` |
+| DAIF-specific tests | see [`output/metrics.json`](output/metrics.json) → `daif_tests` | `uv run pytest tests/test_daif*.py --collect-only -q` |
 | Line + branch coverage | see [`output/metrics.json`](output/metrics.json) → `coverage_percent` / `coverage_summary` — regenerate before quoting, the committed value goes stale as soon as `src/` or the coverage config changes | `uv run pytest tests/ --cov=src --cov-report=term-missing`; the ≥90% floor is `[tool.coverage.report] fail_under = 90`, applied on any `--cov` run (this repository ships no CI workflow) |
 | Figures | **30** PNGs in `output/figures/` | `ls output/figures/*.png \| wc -l` |
 | Policy | **Zero mocks** — all real computations | see `tests/AGENTS.md` |

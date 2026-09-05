@@ -11,7 +11,7 @@
 
 The `topos_theory` package formalizes the **inter-theoretic translation** machinery that enables the project's central synthesis. Following Caramello's bridge technique, it axiomatizes case-theoretic frameworks as geometric theories, constructs their classifying toposes, and checks Morita equivalence to enable property transfer between theories.
 
-The key insight: Meaning-Text Theory (Mel'čuk) and categorial grammar (Lambek) can be axiomatized as geometric theories whose classifying toposes are Morita-equivalent — meaning any invariant property proved in one framework transfers automatically to the other.
+The key insight: Meaning-Text Theory (Mel'čuk) and categorial grammar (Lambek) can be axiomatized as geometric theories whose classifying toposes are *conjectured* Morita-equivalent — under which any invariant property proved in one framework would transfer automatically to the other. What the code supplies is a screen, not the equivalence: `check_morita_equivalence()` tests necessary conditions only (see [Bridge Transfer](#bridge-transfer) below).
 
 ---
 
@@ -85,10 +85,15 @@ On construction (`__post_init__`), computes topos-theoretic invariants:
 ### Bridge Transfer
 
 ```python
+# Not re-exported from the package __init__ — import from the module:
+from src.topos_theory.topos import bridge_transfer
+
 def bridge_transfer(source_topos, target_topos, property_name) -> dict:
 ```
 
-Checks Morita equivalence and, if satisfied, reports that the named property transfers. Returns a dict with `morita_equivalent`, `transfer_possible`, and any `mismatches`.
+Runs `check_morita_equivalence()` and, when the necessary conditions hold, reports that the named property is *not ruled out* for transfer. Returns a dict with `property`, `source_theory`, `target_theory`, `morita_equivalent`, `transfer_possible`, `necessary_conditions_only` (always `True`), and any `mismatches`.
+
+> **Necessary conditions only.** `check_morita_equivalence()` compares the signature shape (sorts, relations, axioms — exactly) and the arity spectrum. A `True` result means "not ruled out", never "equivalent": two signatures can agree on every invariant computed here and still classify different theories. Establishing $E_{T_1} \simeq E_{T_2}$ requires exhibiting the equivalence of classifying toposes, which this module does not do — so `transfer_possible` licenses *attempting* a transfer, not asserting its validity.
 
 ---
 
@@ -116,9 +121,9 @@ print(f"Enriched: {len(T_enr.sorts)} sorts, {len(T_enr.axioms)} axioms")
 E_typ = ClassifyingTopos(theory=T_typ)
 E_enr = ClassifyingTopos(theory=T_enr)
 
-# 3. Check Morita equivalence
-equivalent, mismatches = check_morita_equivalence(E_typ, E_enr)
-print(f"Morita equivalent: {equivalent}")
+# 3. Check the necessary conditions for Morita equivalence
+not_ruled_out, mismatches = check_morita_equivalence(E_typ, E_enr)
+print(f"Morita equivalence not ruled out: {not_ruled_out}")
 if mismatches:
     for m in mismatches:
         print(f"  Mismatch: {m}")
@@ -133,8 +138,8 @@ if mismatches:
 | Geometric sequent: $\varphi \vdash_x \psi$ | `Axiom.__str__()` | Geometric axiom format |
 | Signature invariant | `GeometricTheory.signature_invariant()` | Morita necessary condition |
 | Arity spectrum | `GeometricTheory.arity_spectrum()` | Morita necessary condition |
-| $E_{T_1} \simeq E_{T_2}$ | `check_morita_equivalence()` | Topos equivalence check |
-| Bridge transfer | `bridge_transfer()` | Inter-theoretic property transfer |
+| $E_{T_1} \simeq E_{T_2}$ | `check_morita_equivalence()` | Necessary-condition screen for topos equivalence (never sufficient) |
+| Bridge transfer | `bridge_transfer()` | Inter-theoretic property transfer, gated on that screen |
 
 ---
 

@@ -28,7 +28,10 @@ where $E_c$ are POVM elements for each case role and $\rho$ is the semantic dens
 ```text
 quantum/
 ├── __init__.py        # 6 exported symbols
-└── quantum_case.py    # CasePOVM, case_probability, POVM constructors
+├── quantum_case.py    # CasePOVM, case_probability, POVM constructors
+└── figure_data.py     # Plot-ready data factories for the §8 / §9b figures
+                       #   (make_quantum_povm_example, make_security_violations_example,
+                       #    make_monoidal_functor_example)
 ```
 
 ### Dependency Position
@@ -137,7 +140,7 @@ graded = graded_case_povm([CaseRole.NOM, CaseRole.ACC], overlap)
 - **Upstream**: [`case_systems`](case_systems.md) — `CaseRole` objects
 - **Theory map**: [theory_implementation_map.md](../theory_implementation_map.md) §8
 - **Visualization**: [`visualization`](visualization.md) — `quantum_plots.py`
-- **Figures**: [manuscript_figure_index.md](../manuscript_figure_index.md) — Figures 24–25
+- **Figures**: [manuscript_figure_index.md](../manuscript_figure_index.md) — Figure 18 (`quantum_povm_probabilities.png`, via `plot_povm_probabilities()`)
 - **Glossary**: [glossary.md](../glossary.md) — POVM, density matrix, Born rule
 
 ---

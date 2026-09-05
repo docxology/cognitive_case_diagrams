@@ -53,7 +53,7 @@ Annotated bibliography for *Cognitive Diagrams: Reviewing Categorical Accounts o
 ### DisCoCirc (Discourse-Level)
 
 - **de Felice & Coecke (2020)** — *Discourse in Categorical Compositional Relational Semantics*. Empirical DisCoCat parsing of case-marked sentences.
-- **de Felice, Meichanetzidis & Coecke (2022)** — **DisCoCirc paper**. Introduces discourse circuits with persistent entity wires. Core reference for §4c, realized by `Discourse` and `create_discopy_discocirc_discourse()` in `src.diagrams` / `src.visualization.discopy_diagrams`.
+- **de Felice, Meichanetzidis & Coecke (2022)** — **DisCoCirc paper**. Introduces discourse circuits with persistent entity wires. Core reference for §4c, realized by `Discourse` and `render_discopy_discocirc_discourse()` in `src.diagrams` / `src.visualization.discopy_diagrams`.
 - **Duneau (2021)** — MSc dissertation on constructing DisCoCirc circuits from CCG parse trees. Practical pipeline reference.
 - **de Huybrecht (2024)** — Extends DisCoCat with subcategorization frames for light verb constructions.
 
@@ -88,7 +88,7 @@ Annotated bibliography for *Cognitive Diagrams: Reviewing Categorical Accounts o
 
 ### Caramello's Program
 
-- **Caramello (2016)** — *The Theory of Topos-Theoretic Bridges: A Conceptual Introduction*. Founding paper of the bridge technique. Core reference for `bridge_transfer()`.
+- **Caramello (2016)** — *The Theory of Topos-Theoretic Bridges: A Conceptual Introduction*. Founding paper of the bridge technique. Core reference for `bridge_transfer()` — which implements the *gating* step only: `check_morita_equivalence()` tests necessary conditions (signature shape, arity spectrum), so a positive result licenses attempting a transfer rather than asserting one.
 - **Caramello (2021)** — Five-year update on the bridge programme. Extended applications.
 - **Caramello (2023)** — *Syntactic Learning via Topos Theory*. Applies bridges to learning syntactic structures from data. Foundation for F2 (future direction).
 
@@ -120,7 +120,7 @@ Annotated bibliography for *Cognitive Diagrams: Reviewing Categorical Accounts o
 - **Bellemare, Dabney & Munos (2017)** — *A Distributional Perspective on Reinforcement Learning*. Founding paper of distributional RL (C51 algorithm). Conceptual ancestor of `push_forward_return()` and `categorical_return_distribution()`. Introduced the insight that modelling the full return distribution, not just expected returns, yields superior policy learning.
 - **Dabney et al. (2018a)** — *Distributional Reinforcement Learning with Quantile Regression*. Introduces QR-DQN: learns quantile locations via asymmetric Huber loss $\rho_\tau^\kappa(\delta)$. Direct foundation for `quantile_td_update()`. The quantile approach avoids C51's fixed-atom discretization artifacts.
 - **Dabney et al. (2018b)** — *Implicit Quantile Networks for Distributional Reinforcement Learning*. Introduces IQN: samples $\tau \sim U(0,1)$ and learns the full quantile function with risk distortion. Foundation for `implicit_quantile_network_update()` and the four risk modes (neutral, optimistic, pessimistic, CVaR).
-- **Rowland et al. (2023)** — *An Analysis of Quantile Temporal-Difference Learning*. Theoretical convergence guarantees for quantile TD methods. Validates the fixed-point properties used by `distributional_bellman_operator()`.
+- **Rowland et al. (2023)** — *An Analysis of Quantile Temporal-Difference Learning*. Theoretical convergence guarantees for quantile TD methods. Background for the quantile machinery in `src/daif/quantile.py`. Note that `distributional_bellman_operator()` does **not** inherit those guarantees: it is a forward belief push-forward, not a value backup, and does not converge to the Bellman fixed point (see its docstring in `src/daif/core.py`).
 
 ### Active Inference Bridge
 

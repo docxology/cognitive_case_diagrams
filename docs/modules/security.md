@@ -15,7 +15,7 @@ Key capabilities:
 
 1. **Type violation detection**: identify morphisms not licensed by the case category
 2. **Injection scoring**: quantify severity of case-frame injection attempts
-3. **Topological robustness**: magnitude-based perturbation bounds
+3. **Topological robustness**: magnitude-based robustness summary $\lvert\mathcal{C}\rvert / n$
 4. **Semantic integrity**: enriched composition inequality as an integrity invariant
 
 ---
@@ -49,8 +49,8 @@ enriched_cat →↗
 | `CaseFrameValidator` | class | Validates case frames against categorical constraints |
 | `detect_type_violation()` | function | Identifies ill-typed case assignments |
 | `injection_score()` | function | Quantifies severity of case-frame injection |
-| `topological_robustness()` | function | Magnitude-based robustness measure |
-| `semantic_integrity_check()` | function | Validates enriched composition inequality across a frame |
+| `topological_robustness()` | function | Normalized magnitude $\lvert\mathcal{C}\rvert / n$ as a robustness summary |
+| `semantic_integrity_check()` | function | Returns the enriched triples violating the composition inequality |
 
 ### `TypeViolation`
 
@@ -79,9 +79,9 @@ On initialization, builds the set of valid `(source, target)` morphism pairs fro
 
 **`injection_score(violations)`**: Computes an aggregate severity score from a list of `TypeViolation` objects. Higher scores indicate more severe injection attempts.
 
-**`topological_robustness(enriched_cat)`**: Uses categorical magnitude to compute a perturbation bound — small perturbations in the input cannot change the case assignment unless they cross a type boundary. Based on the categorical adversarial perturbation theorem.
+**`topological_robustness(enriched)`**: Returns the normalized categorical magnitude $R = \lvert\mathcal{C}\rvert / n$, where $n$ is the number of roles. Higher magnitude means more distinct relational structure, and so more "surface area" for detecting type violations. $R$ is bounded in $(0, 1]$ **only** for hom-matrices that satisfy the composition inequality $\mathcal{C}(A,C) \geq \mathcal{C}(A,B)\cdot\mathcal{C}(B,C)$; `EnrichedCategory._validate()` does not enforce that axiom, so a user-supplied proximity matrix can return $R > 1$ (the function logs a warning when it does). This is a summary statistic, not a proved perturbation bound.
 
-**`semantic_integrity_check(enriched_cat, frame)`**: Checks that all case assignments in a frame satisfy the enriched composition inequality. A violated inequality indicates semantic incoherence.
+**`semantic_integrity_check(enriched)`**: Checks $\mathcal{C}(A,C) \geq \mathcal{C}(A,B)\cdot\mathcal{C}(B,C)$ over all distinct triples of the enriched category and returns the `list[tuple[CaseRole, CaseRole, CaseRole]]` of triples that violate it — empty when the category is coherent. It takes no case-frame argument.
 
 ---
 
@@ -113,10 +113,9 @@ print(f"VOC→NOM: {violation}")  # TypeViolation detected
 robustness = topological_robustness(enriched)
 print(f"Topological robustness: {robustness:.4f}")
 
-# 5. Semantic integrity
-frame = [(CaseRole.NOM, CaseRole.ACC), (CaseRole.ACC, CaseRole.DAT)]
-integrity = semantic_integrity_check(enriched, frame)
-print(f"Integrity: {integrity}")
+# 5. Semantic integrity — returns the list of composition-inequality violations
+violating_triples = semantic_integrity_check(enriched)
+print(f"Composition-inequality violations: {len(violating_triples)}")
 ```
 
 ---
@@ -127,7 +126,7 @@ print(f"Integrity: {integrity}")
 | -------- | -------- | ----------- |
 | Type violation decidability | `detect_type_violation()` | Finite category → decidable type checking |
 | Injection severity | `injection_score()` | Weighted aggregate of violation severity |
-| Magnitude perturbation bound | `topological_robustness()` | $\Delta \text{output} \leq f(\|\mathcal{C}\|, \epsilon)$ |
+| Normalized magnitude | `topological_robustness()` | $R = \lvert\mathcal{C}\rvert / n$ — in $(0,1]$ only when the composition inequality holds |
 | Composition inequality integrity | `semantic_integrity_check()` | $\mathcal{C}(A,C) \geq \mathcal{C}(A,B) \cdot \mathcal{C}(B,C)$ |
 
 ---
@@ -137,6 +136,7 @@ print(f"Integrity: {integrity}")
 - **Upstream**: [`case_systems`](case_systems.md), [`enriched_cat`](enriched_cat.md)
 - **Theory map**: [theory_implementation_map.md](../theory_implementation_map.md) (§9b security row)
 - **Visualization**: [`visualization`](visualization.md) — `security_plots.py`
+- **Figures**: [manuscript_figure_index.md](../manuscript_figure_index.md) — Figure 19 (`security_type_violations.png`, via `plot_case_interaction_graph()`) and Figure 19b (`monoidal_functor_security.png`, via `plot_monoidal_functor_security()`)
 - **Literature**: [literature_guide.md](../literature_guide.md) — Adversarial Robustness section
 - **Glossary**: [glossary.md](../glossary.md) — prompt injection, type violation, robustness
 

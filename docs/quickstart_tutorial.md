@@ -11,8 +11,9 @@ Get up and running with the `cognitive_case_diagrams` codebase in under 10 minut
 ## 1. Environment Setup
 
 ```bash
-# Navigate to the project directory
-cd /path/to/template/projects/cognitive_case_diagrams
+# Navigate to the project directory (the standalone clone root, or
+# <template>/projects/ongoing/ActiveInference/cognitive_case_diagrams inside the monorepo)
+cd /path/to/cognitive_case_diagrams
 
 # Install dependencies with uv (creates .venv automatically)
 uv sync --extra dev
@@ -326,14 +327,13 @@ Generate all 30 publication figures (authoritative live count in `output/metrics
 
 ```bash
 # From the project root
-cd /path/to/template
+cd /path/to/cognitive_case_diagrams
 
 # Generate all figures via the thin orchestrator
-uv run --project projects/cognitive_case_diagrams --extra dev \
-    python projects/cognitive_case_diagrams/scripts/generate_diagrams.py
+uv run --extra dev python scripts/generate_diagrams.py
 
-# Figures are saved to projects/cognitive_case_diagrams/output/figures/
-ls projects/cognitive_case_diagrams/output/figures/*.png
+# Figures are saved to output/figures/
+ls output/figures/*.png
 ```
 
 ### Generate Individual Figures
@@ -352,48 +352,51 @@ print("Figure saved to /tmp/case_category.png")
 
 ## 8. Run the Test Suite
 
+All of these run from the project root (`uv sync --extra dev` first).
+
 ```bash
 # Full test suite with coverage (counts change over time)
-uv run --project projects/cognitive_case_diagrams --extra dev \
-    python -m pytest tests/ --cov=src --cov-report=term-missing -v
+uv run --extra dev python -m pytest tests/ --cov=src --cov-report=term-missing -v
 
 # Run tests for a specific package
-uv run --project projects/cognitive_case_diagrams --extra dev \
-    python -m pytest tests/test_enriched_cat_enriched.py -v
+uv run --extra dev python -m pytest tests/test_enriched_cat_enriched.py -v
 
 # Run DAIF tests only
-uv run --project projects/cognitive_case_diagrams --extra dev \
-    python -m pytest tests/test_daif_*.py -v
+uv run --extra dev python -m pytest tests/test_daif_*.py -v
 
 # Quick smoke test (no coverage)
-uv run --project projects/cognitive_case_diagrams --extra dev \
-    python -m pytest tests/ -x -q
+uv run --extra dev python -m pytest tests/ -x -q
 ```
 
 ### Coverage Requirements
 
-Thresholds are in `pyproject.toml` (`fail_under = 90` on `src/`). Current line coverage: run  
-`uv run pytest tests/ --cov=src --cov-report=term-missing` from `projects/cognitive_case_diagrams/`.  
+Thresholds are in `pyproject.toml` (`fail_under = 90` on `src/`). For the current
+line coverage, run `uv run pytest tests/ --cov=src --cov-report=term-missing` from
+the project root; the last recorded figure is `output/metrics.json::coverage_percent`.  
 Per-subpackage reports: e.g. `--cov=src/daif`, `--cov=src/visualization`.
 
 ---
 
 ## 9. Run the Full Pipeline
 
-Execute the complete build pipeline (tests → analysis → PDF → validation). The active project path is **`projects/cognitive_case_diagrams/`** (template root `./run.sh --project cognitive_case_diagrams`).
+Execute the complete build pipeline (tests → analysis → PDF → validation). The pipeline
+lives in the `docxology/template` engine, which is **not** bundled with the standalone
+repository; run it from a template checkout. There the project sits at
+`projects/ongoing/ActiveInference/cognitive_case_diagrams/`, and the lifecycle-qualified
+name accepted by `--project` is `ongoing/ActiveInference/cognitive_case_diagrams`.
 
 ```bash
-# From the repository root
+# From the template root
 cd /path/to/template
 
-# Full pipeline (9 stages) — after promotion to projects/
-./run.sh --project cognitive_case_diagrams
+# Full pipeline — stage count is whatever scripts/pipeline/stage_*.py holds
+./run.sh --project ongoing/ActiveInference/cognitive_case_diagrams
 
-# Or individual stages:
-uv run python scripts/01_run_tests.py --project cognitive_case_diagrams
-uv run python scripts/02_run_analysis.py --project cognitive_case_diagrams
-uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams
-uv run python scripts/04_validate_output.py --project cognitive_case_diagrams
+# Or individual stages (the numbered scripts/0N_*.py entry points no longer exist):
+uv run python scripts/pipeline/stage_01_test.py     --project ongoing/ActiveInference/cognitive_case_diagrams
+uv run python scripts/pipeline/stage_02_analysis.py --project ongoing/ActiveInference/cognitive_case_diagrams
+uv run python scripts/pipeline/stage_03_render.py   --project ongoing/ActiveInference/cognitive_case_diagrams
+uv run python scripts/pipeline/stage_04_validate.py --project ongoing/ActiveInference/cognitive_case_diagrams
 ```
 
 ---
@@ -494,8 +497,8 @@ print(f"DPE (N400 proxy): {dpe:.4f}")
 
 | Problem | Solution |
 |---------|----------|
-| `ModuleNotFoundError: No module named 'src'` | Run from `projects/cognitive_case_diagrams/` directory, not from `template/` root |
-| `ImportError: discopy not found` | From the **repository root**, run `uv sync` (default-groups include `discopy`). From `projects/cognitive_case_diagrams/` only, `uv sync` uses that project’s `pyproject.toml`, which lists `discopy` as a normal dependency. |
+| `ModuleNotFoundError: No module named 'src'` | Run from the project root (the directory holding `src/` and `tests/`), not from the `template/` root |
+| `ImportError: discopy not found` | From the **template root**, run `uv sync` (default-groups include `discopy`). From the project root, `uv sync` uses this project’s own `pyproject.toml`, which lists `discopy` as a normal dependency. |
 | Test coverage < 90% | Run `uv run pytest tests/ --cov=src --cov-report=term-missing` to identify uncovered lines |
 | Figure font too small | Check `src/visualization/styles.py` — all fonts must be ≥ 16pt (ADR-003) |
 | `numpy.linalg.LinAlgError` in magnitude | The proximity matrix $Z$ is singular — check that hom-values satisfy the composition inequality |

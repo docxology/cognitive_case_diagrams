@@ -5,7 +5,7 @@
 
 **Publication title** (canonical): *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* — [`docs/manuscript/config.yaml`](docs/manuscript/config.yaml) `paper.title`. (Version 2.3, 2026-04-22, DOI [10.5281/zenodo.19695260](https://doi.org/10.5281/zenodo.19695260).)
 
-**Path:** `projects/cognitive_case_diagrams/` — pipeline-discoverable. Run `uv run pytest` and figure scripts from the project directory.
+**Path:** this repository **is** the project — run `uv run pytest` and the figure scripts from its root. Inside the private `docxology/template` monorepo the same tree is linked at `projects/ongoing/ActiveInference/cognitive_case_diagrams/`, and pipeline commands there take `--project ongoing/ActiveInference/cognitive_case_diagrams`. No flat `projects/<repo-name>/` path exists anywhere.
 
 **Versions:** The **Python package** semver is in [`pyproject.toml`](pyproject.toml) (`project.version`, e.g. **2.3.0**). The **manuscript edition** (e.g. **v2.3**, 2026-04-22) is recorded in [`docs/manuscript/AGENTS.md`](docs/manuscript/AGENTS.md) and [`docs/manuscript/config.yaml`](docs/manuscript/config.yaml). Patch bumps can track manuscript releases; they may still diverge when only one side changes.
 
@@ -65,7 +65,7 @@ cognitive_case_diagrams/
 ├── README.md               ← Quick start
 ├── pyproject.toml          ← Package config + test/coverage settings
 ├── docs/                   ← Technical reference documentation
-├── docs/manuscript/             ← Research manuscript (Pandoc Markdown)
+│   └── manuscript/         ← Research manuscript (Pandoc Markdown)
 ├── output/                 ← Generated artifacts (figures, PDFs, reports)
 ├── scripts/                ← Thin orchestrators (NO scientific logic here)
 ├── src/                    ← All scientific business logic (Layer 2)
@@ -85,7 +85,7 @@ cognitive_case_diagrams/
 
 **CRITICAL**: `scripts/` are **thin orchestrators** only. They:
 - Import domain logic from `src/`
-- Import utilities from `infrastructure/`
+- Optionally import utilities from the template monorepo's `infrastructure/` package — guarded, with a local fallback, since it is not importable from a standalone clone (see `scripts/inject_variables.py` and `scripts/generate_diagrams.py`)
 - Handle I/O and rendering
 - Contain **NO** scientific, mathematical, or statistical logic
 
@@ -139,19 +139,18 @@ See each directory's own **AGENTS.md** and **README.md** for detailed documentat
 
 ### Run Full Pipeline
 
-Requires the project under `projects/cognitive_case_diagrams/`.
+`run.sh` is part of the `docxology/template` engine, not of this repository. From the **template monorepo root**, with this project linked in at `projects/ongoing/ActiveInference/cognitive_case_diagrams/`:
 
 ```bash
-./run.sh --project cognitive_case_diagrams
+./run.sh --project ongoing/ActiveInference/cognitive_case_diagrams
 ```
 
 ### Individual Stages
 
-**Note (2026-08-31, verified):** the numbered root scripts referenced earlier here (`scripts/01_run_tests.py`, `scripts/03_render_pdf.py`, …) exist only in the **template monorepo root**, not in this repository — running them from this checkout fails with "No such file or directory". From the monorepo checkout use its canonical `scripts/pipeline/stage_*.py` entry points (see the monorepo root `CLAUDE.md`); from this standalone checkout use the local commands below.
+**Note (verified 2026-09-04):** no numbered root scripts exist — no `scripts/0N_run_*`, `scripts/0N_render_*` or similar — anywhere, neither in this repository nor at the template monorepo root. Earlier revisions of this file claimed such scripts lived at the monorepo root; that claim was wrong. The real engine entry points are `scripts/pipeline/stage_*.py` at the template root (`stage_01_test.py`, `stage_02_analysis.py`, `stage_03_render.py`, `stage_04_validate.py`, …), each taking `--project ongoing/ActiveInference/cognitive_case_diagrams`. From this standalone checkout use the local commands below.
 
 ```bash
-# From THIS project directory (standalone checkout):
-cd projects/cognitive_case_diagrams        # or this repo root if standalone
+# From THIS repository root (standalone checkout):
 
 # Tests with coverage
 uv run pytest tests/ --cov=src --cov-report=term-missing -v
@@ -166,32 +165,39 @@ uv run python scripts/inject_variables.py
 
 ### Generate Figures Only
 
-Works from any cwd if you use the path below (repo root) or run from inside this project with `uv run python scripts/generate_diagrams.py`.
+From this repository root:
 
 ```bash
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py
+uv run python scripts/generate_diagrams.py
+```
+
+From the template monorepo root, prefix the linked project path:
+
+```bash
+uv run python projects/ongoing/ActiveInference/cognitive_case_diagrams/scripts/generate_diagrams.py
 ```
 
 **§9b monoidal functor security figure:** When analysis builds `monoidal_functor_security` (`plot_monoidal_functor_security` in `src/visualization/security_plots.py`), `src.case_systems.functor` may log tensor-preservation failures (for example merges that collapse distinct roles). Those messages are intentional diagnostic output for the visualization—the figure illustrates failures— and are not treated as pipeline errors.
 
 ### Run Tests with Coverage
 
+From this repository root:
+
 ```bash
-cd projects/cognitive_case_diagrams
 uv run pytest tests/ --cov=src --cov-report=term-missing -v
 ```
 
 ### Manuscript metrics and `${variable}` injection
 
-[`src/generate_manuscript_metrics.py`](src/generate_manuscript_metrics.py) writes [`output/metrics.json`](output/metrics.json). [`scripts/inject_variables.py`](scripts/inject_variables.py) substitutes `${…}` into numbered manuscript chapters and writes [`output/manuscript/`](output/manuscript/); the PDF renderer prefers that directory when present ([`infrastructure/rendering/pipeline.py`](../../../infrastructure/rendering/pipeline.py) `_resolve_manuscript_dir`).
+[`src/generate_manuscript_metrics.py`](src/generate_manuscript_metrics.py) writes [`output/metrics.json`](output/metrics.json). [`scripts/inject_variables.py`](scripts/inject_variables.py) substitutes `${…}` into numbered manuscript chapters and writes [`output/manuscript/`](output/manuscript/); the PDF renderer prefers that directory when present. That preference is implemented in the template engine, not here: `infrastructure/rendering/_manuscript_source.py` defines `resolve_manuscript_dir`, which `infrastructure/rendering/pipeline.py` imports as `_resolve_manuscript_dir`. Neither file ships in this repository — see [`_manuscript_source.py` in `docxology/template`](https://github.com/docxology/template/blob/main/infrastructure/rendering/_manuscript_source.py).
 
 ```bash
-cd projects/cognitive_case_diagrams
+# From this repository root:
 uv run pytest tests/ --cov=src --cov-report=json:coverage.json
 uv run python -m src.generate_manuscript_metrics
 uv run python scripts/inject_variables.py
-# From template repository root:
-uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams
+# From the template monorepo root:
+uv run python scripts/pipeline/stage_03_render.py --project ongoing/ActiveInference/cognitive_case_diagrams
 ```
 
 `coverage.json` policy (commit or regenerate): [`tests/AGENTS.md`](tests/AGENTS.md). Placeholder catalog: [`docs/manuscript/config.yaml`](docs/manuscript/config.yaml).
@@ -203,7 +209,8 @@ uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams
 ### Coverage Requirements
 - **≥ 90%** total coverage on `src/` (line + branch; `branch = true` in `pyproject.toml`; `uv run pytest tests/ --cov=src --cov-report=term-missing`)
 - Test and file counts change over time; use `uv run pytest tests/ --collect-only -q` and `ls tests/test_*.py | wc -l`
-- Coverage enforced via `pyproject.toml` `[tool.coverage.report] fail_under = 90`
+- The floor is declared as `[tool.coverage.report] fail_under = 90` in `pyproject.toml` and enforced on **any** `--cov` run (pytest exits non-zero below it) and by the template pipeline's per-project coverage gate. This repository ships **no** CI workflow — there is no `.github/`, tox, nox, Makefile, or pre-commit config — so do not describe the floor as CI-enforced.
+- Current measured values live in [`output/metrics.json`](output/metrics.json) (`coverage_percent`, `coverage_summary`); regenerate before quoting a percentage anywhere.
 
 ### Zero-Mock Policy (ABSOLUTE PROHIBITION)
 **Never use** `MagicMock`, `unittest.mock.patch`, `mocker.patch`, or any mock framework.
@@ -216,7 +223,7 @@ All tests must use real objects:
 
 ### Test File → Source Module Mapping (`tests/test_*.py`)
 
-Files follow the `test_{package}_{module}.py` naming convention:
+Files follow the `test_{package}_{module}.py` naming convention. The table below is **representative, not exhaustive** — it names 48 of the suite's test files. The complete per-package inventory is [`tests/AGENTS.md`](tests/AGENTS.md); the on-disk truth is `ls tests/test_*.py`, and the count is [`output/metrics.json`](output/metrics.json) `total_test_files`.
 
 | Test File | Source Module |
 |-----------|--------------|
@@ -355,7 +362,7 @@ Documentation must be kept in sync with code. When adding a new class or functio
 1. Implement function in `src/visualization/{module}.py`
 2. Export from `src/visualization/__init__.py`
 3. Call from `scripts/generate_diagrams.py`
-4. Add tests in `tests/test_plot_modules.py` or `tests/test_visualization.py`
+4. Add tests in `tests/test_visualization_plot_modules.py` (or the module-specific `tests/test_visualization_<module>.py`)
 5. Add figure caption reference in the appropriate manuscript section
 
 ### Troubleshooting
@@ -365,5 +372,5 @@ Documentation must be kept in sync with code. When adding a new class or functio
 | Coverage below 90% | Check `--cov-report=term-missing`; add tests for uncovered lines |
 | Hanging tests | Add `--timeout=30` flag; check for blocking matplotlib calls |
 | Import errors | Ensure `pythonpath = ["src"]` in `pyproject.toml`; run from project root |
-| PDF render fails | Check `preamble.md` include order; validate with `uv run python -m infrastructure.validation.cli markdown docs/manuscript/` (monorepo root: `projects/cognitive_case_diagrams/docs/manuscript/`) |
+| PDF render fails | Check `preamble.md` include order; validate from the template monorepo root with `uv run python -m infrastructure.validation.cli markdown projects/ongoing/ActiveInference/cognitive_case_diagrams/docs/manuscript/` (the `infrastructure` package is not bundled in this repository) |
 | `CasePOVM.name` error | All `CasePOVM` instances have `name: str = "povm"` default field |

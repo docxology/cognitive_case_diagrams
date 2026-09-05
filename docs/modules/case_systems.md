@@ -58,7 +58,7 @@ MonoidalFunctor (functor.py) → security topology enforcement
 | `CaseCategory` | `@dataclass` | Category with `objects`, `morphisms`, `compose()`, `identity()` |
 | `standard_case_category()` | factory | 8-case system with 8 canonical morphisms |
 | `minimal_case_category()` | factory | 3-role transitive triangle (NOM, ACC, INS) |
-| `introductory_case_category()` | factory | 4-role category for manuscript Figure 1 |
+| `introductory_case_category()` | factory | 4-role category (NOM, ACC, INS, VOC) for manuscript Figure 2 (`fig:case-minimal`) |
 | `accusative_alignment()` | `→ dict` | {S,A}→NOM, P→ACC |
 | `ergative_alignment()` | `→ dict` | {S,P}→ABS, A→ERG |
 | `tripartite_alignment()` | `→ dict` | S→ABS, A→ERG, P→ACC (injective) |
@@ -115,7 +115,7 @@ Quantifies over `source_functor.source.morphisms` whose endpoints lie in `object
 
 | Symbol | Type | Description |
 | ------ | ---- | ----------- |
-| `VolitionContext` | `Enum` | Enumerates volition categories (`VOLITIONAL`, `NONVOLITIONAL`, `NEUTRAL`) used by `FluidSFunctor` |
+| `VolitionContext` | `Enum` | Binary volition context used by `FluidSFunctor`: `VOLITIONAL`, `NON_VOLITIONAL` |
 | `FluidSFunctor` | `@dataclass` | Context-dependent functor with `map_object()`, `map_object_in_context()`, `split_probability()`, `map_morphism()`, `kernel()` |
 | `create_fluid_s_functor()` | factory | General constructor |
 | `bats_fluid_s()` | factory | Batsbi (Tsova-Tush) Fluid-S exemplar — returns `(volitional, nonvolitional)` functor pair |
@@ -175,7 +175,7 @@ assert acc[CaseRole.P] == CaseRole.ACC
 - **Theory mapping**: [theory_implementation_map.md](../theory_implementation_map.md) §2
 - **API signatures**: [api_reference.md](../api_reference.md) §2
 - **Glossary**: [glossary.md](../glossary.md) — CaseRole, Morphism, Functor, Natural Transformation
-- **Figures**: [manuscript_figure_index.md](../manuscript_figure_index.md) — Figures 1–5
+- **Figures**: [manuscript_figure_index.md](../manuscript_figure_index.md) — Figures 1–5, plus Figure 16 (Fluid-S volition landscape)
 - **Extension guide**: [extension_guide.md](../extension_guide.md) — adding new case roles or alignment types
 - **Downstream**: [`enriched_cat`](enriched_cat.md), [`cognitive`](cognitive.md), [`diagrams`](diagrams.md)
 

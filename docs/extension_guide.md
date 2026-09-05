@@ -258,10 +258,15 @@ def expectation_propagation_case_assignment(
     diag = convergence_diagnostics(fe_trajectory)
     logger.info("EP converged=%s after %d iterations", diag["converged"], diag["n_iterations"])
 
+    # `converged` is NOT a constructor argument — it is a read-only property on
+    # DAIFResult derived as `convergence_iteration < len(fe_trajectory)`. Passing
+    # it raises TypeError. Note also that setting `convergence_iteration` to the
+    # total iteration count (as `diag["n_iterations"]` does when the loop runs to
+    # completion) makes `.converged` False; pass the iteration at which the
+    # convergence threshold was actually met.
     return DAIFResult(
         belief=...,
         fe_trajectory=fe_trajectory,
-        converged=diag["converged"],
         convergence_iteration=diag["n_iterations"],
         return_distribution=...,
         diagnostics=diag,
@@ -346,7 +351,7 @@ def sic_case_povm(roles: list[CaseRole]) -> CasePOVM:
 """Publication figures for {domain}."""
 import matplotlib.pyplot as plt
 from pathlib import Path
-from .styles import FONT_SIZE_LABEL, FONT_SIZE_TITLE, FIGURE_DPI, FIGURE_SIZE_DEFAULT
+from .styles import FONT_SIZE_LABEL, FONT_SIZE_TITLE, FIGURE_DPI, DEFAULT_FIGSIZE
 
 def render_my_figure(
     data: MyData,
@@ -355,9 +360,9 @@ def render_my_figure(
 ) -> plt.Figure:
     """Render my figure. Returns matplotlib Figure.
 
-    All fonts ≥ 16pt (ADR-003). Export at 150 DPI.
+    All fonts ≥ 16pt (ADR-003). Export at 300 DPI.
     """
-    fig, ax = plt.subplots(figsize=FIGURE_SIZE_DEFAULT)
+    fig, ax = plt.subplots(figsize=DEFAULT_FIGSIZE)
     ax.set_title(title, fontsize=FONT_SIZE_TITLE)
     # ... plot logic ...
 
@@ -371,17 +376,17 @@ def render_my_figure(
 Before committing any figure:
 
 - [ ] **Font floor**: All text ≥ 16pt (`FONT_SIZE_LABEL = 16`)
-- [ ] **DPI**: Export at 150 DPI (`FIGURE_DPI = 150`)
-- [ ] **Figure size**: Standard (10, 8) unless justified
+- [ ] **DPI**: Export at 300 DPI (`FIGURE_DPI = 300`)
+- [ ] **Figure size**: Standard (10, 8) — `DEFAULT_FIGSIZE` — unless justified
 - [ ] **Colorblind-safe**: Avoid red-green only distinctions
 - [ ] **Caption**: Must exactly describe what is visually shown
 - [ ] **Output path**: Saves to `output/figures/` via `generate_diagrams.py`
-- [ ] **Test**: Add test in `tests/test_plot_modules.py` verifying file creation
+- [ ] **Test**: Add test in `tests/test_visualization_plot_modules.py` verifying file creation
 
 ### 3. Register in `generate_diagrams.py`
 
 ```python
-# projects/cognitive_case_diagrams/scripts/generate_diagrams.py
+# scripts/generate_diagrams.py (relative to the project root)
 from src.visualization.my_plots import render_my_figure
 
 # In generate_all_diagrams():
@@ -490,7 +495,7 @@ class TestMyFunction:
 
 - `src/` coverage threshold: **90%** (set in `pyproject.toml`)
 - Add `# pragma: no cover` only for truly unreachable runtime safety guards
-- Check current line coverage: `uv run pytest tests/ --cov=src --cov-report=term` (from `projects/cognitive_case_diagrams/`)
+- Check current line coverage: `uv run pytest tests/ --cov=src --cov-report=term` (run from the project root); the last recorded figure is `output/metrics.json::coverage_percent`
 
 ```toml
 # pyproject.toml
@@ -522,8 +527,10 @@ When adding any new module, figure, or section, ensure:
 3. **AGENTS.md updated**: Module table, API section, theory connection
 4. **README.md updated**: Quick reference table
 5. **Figures render**: `python scripts/generate_diagrams.py` completes without error
-6. **Markdown validates**: `python -m infrastructure.validation.cli markdown docs/manuscript/`
-7. **PDF renders**: `python scripts/03_render_pdf.py --project cognitive_case_diagrams`
+6. **Markdown validates**: `uv run python -m infrastructure.validation.cli markdown projects/ongoing/ActiveInference/cognitive_case_diagrams/docs/manuscript/`
+7. **PDF renders**: `uv run python scripts/pipeline/stage_03_render.py --project ongoing/ActiveInference/cognitive_case_diagrams`
+
+Steps 1–5 run from the project root. Steps 6–7 need the `docxology/template` engine, which is not bundled with the standalone repository; run them from the template checkout, where this project resolves as `ongoing/ActiveInference/cognitive_case_diagrams`.
 
 ---
 

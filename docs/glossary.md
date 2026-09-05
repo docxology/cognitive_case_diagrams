@@ -20,7 +20,7 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 | **Monoidal functor** | A functor preserving tensor structure: $F(A\otimes B)=F(A)\otimes F(B)$. In its *non-cartesian* reading, models constraints on copying/discarding wires — a **specification-level** hook for the protocol analysis of prompt injection in §9b (not a deployed-API guarantee) | `MonoidalFunctor.preserves_tensor()` | §9b |
 | **Enriched category** | A category whose hom-sets are objects in a monoidal category (here, [0,1]) | `EnrichedCategory` | §5 |
 | **Classifying topos** | The canonical topos associated with a geometric theory | `ClassifyingTopos` | §6 |
-| **Morita equivalence** | When two theories share the same classifying topos | `check_morita_equivalence()` | §6 |
+| **Morita equivalence** | When two theories share the same classifying topos. The code checks *necessary conditions only* — a `True` result means "not ruled out", not "equivalent" | `check_morita_equivalence()` | §6 |
 
 ## Enriched Category Theory
 
@@ -30,7 +30,7 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 | **Identity axiom** | $\mathcal{C}(A,A) = 1$ — self-similarity is maximal | `EnrichedCategory.__post_init__` / `_validate()` (enforced at construction) | §5 |
 | **Composition inequality** | $\mathcal{C}(A,C) \geq \mathcal{C}(A,B) \cdot \mathcal{C}(B,C)$ | `check_composition_inequality()` | §5 |
 | **Categorical magnitude** | $\|\mathcal{C}\| = \sum_{ij}(Z^{-1})_{ij}$ — the "effective size" of a category | `EnrichedCategory.magnitude()` | §5 |
-| **Magnitude homology** | The Leinster–Shulman graded homological invariant $H_k(\mathcal{C})$ that categorifies magnitude from a scalar to a sequence of homology groups, revealing topological structure (clustering, holes) beyond the scalar magnitude | `MagnitudeHomologyMetrics` | §5b |
+| **Magnitude homology** | The Leinster–Shulman graded homological invariant $H_k(\mathcal{C})$ that categorifies magnitude from a scalar to a sequence of homology groups. That is the *theoretical target*; the implemented dataclass does not compute homology groups — it records `base_syntactic_complexity`, `topological_holes_1d`, `estimated_decoherence_rate` and `quantum_environment_commutes` as a scalar proxy for the graded structure | `MagnitudeHomologyMetrics` | §5b |
 | **Quantum magnitude homology** | Magnitude homology corrected for quantum decoherence: $\|\mathcal{C}\|_q = \|\mathcal{C}\|(1-\lambda)$, where $\lambda$ is the decoherence penalty bounding classical–quantum comparison (see §5b; LM-enriched magnitude homology in Bradley and Vigneaux 2025) | `compute_quantum_magnitude_homology()` | §5b |
 | **Similarity matrix** $Z$ | The proximity matrix whose entries are hom-values | `proximity_matrix` (ndarray) | §5 |
 
@@ -71,9 +71,11 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 | **Snake equation** | The zigzag identity $\varepsilon \circ \eta = \text{id}$ proving coherence | `render_discopy_snake()` | §4b |
 | **DisCoCat** | Categorical Compositional Distributional Semantics | `create_tensor_semantics()` / `create_word_diagram_transitive()` | §4 |
 | **Meaning functor** | $F: \mathbf{Preg} \to \mathbf{FVect}$ mapping grammar to vector spaces | DisCoPy functor | §4 |
-| **DisCoCirc** | Discourse-level extension of DisCoCat with persistent entity wires | `Discourse` / `create_discopy_discocirc_discourse()` | §4c |
+| **DisCoCirc** | Discourse-level extension of DisCoCat with persistent entity wires | `Discourse` / `render_discopy_discocirc_discourse()` | §4c |
 | **Entity wire** | A persistent noun wire that carries state across sentence boundaries | §4c (manuscript) | §4c |
-| **Complexity score** | $c = w_b \cdot \#\text{boxes} + w_c \cdot \#\text{cups} + w_d \cdot \text{depth}$ | `syntactic_complexity_score()` | §4b |
+| **Complexity score** | $c = w_\text{words}\cdot\#\text{words} + w_\text{cups}\cdot\#\text{cups} + w_\text{caps}\cdot\#\text{caps} + w_\text{depth}\cdot\text{depth}$, with default weights $1.0 / 0.5 / 0.25 / 0.1$ (all four exposed as keyword arguments) | `syntactic_complexity_score()` | §4b |
+| **Lambek calculus** | The residuated type logic of Lambek (1958) from which pregroup grammar descends; concatenation with left and right residuals $\backslash$, $/$ | DisCoPy `Ty` (pregroup quotient) | §3 |
+| **lambeq** | The Quantinuum QNLP toolkit (Lorenz et al. 2023) that compiles pregroup derivations into parameterised quantum circuits; an optional dependency, not installed by default | §4c (manuscript) | §4c |
 
 ## Active Inference & Cognitive Science
 
@@ -91,6 +93,8 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 | **Garden-path** | A sentence that requires reanalysis mid-parse | `magnitude_reanalysis_cost()` | §7 |
 | **Generative model** | The internal model an agent uses to predict sensory input | §7 (manuscript) | §7 |
 | **Precision** | The inverse variance of a distribution; controls the weight of prediction errors | $w_f$ in `prediction_error()` | §7 |
+| **Attention** (transformer) | The softmax-weighted token-mixing operation of the transformer architecture. The project's core thesis is that DisCoCat is the algebraic formalisation of the compositional structure attention learns from data — see [`theory_implementation_map.md`](theory_implementation_map.md) | §4, §10 (manuscript) | §4 |
+| **Transformer** | The attention-based sequence architecture underlying contemporary LLMs; the empirical target the categorical account is meant to explain rather than replace | §10 (manuscript) | §10 |
 
 ## Distributional Active Inference (DAIF)
 
@@ -106,7 +110,8 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 | **DPE** | Distributional Prediction Error: $\pi \cdot (-\log q[\text{role}])$ | `distributional_prediction_error()` | §7c |
 | **ERP profile** | Synthetic N400 + P600 waveform with baseline correction | `ERPProfile`, `erp_amplitude_profile()` | §7c |
 | **G-policy** | $G(\pi) + \beta \cdot \text{Var}[Z]$ — EFE with distributional risk | `G_policy()` | §7c |
-| **DAIFResult** | Complete inference result: belief, FE trajectory, convergence, diagnostics | `DAIFResult` | §7c |
+| **DAIFResult** | Complete inference result: belief, FE trajectory, convergence, diagnostics. Note `converged` is a read-only property derived from `convergence_iteration < len(fe_trajectory)`, not a constructor argument | `DAIFResult` | §7c |
+| **Mean-field approximation** | The project's headline DAIF trade-off: one belief-weighted return distribution $\bar z = q^\top(R + \gamma T^\top q)$ instead of a separate $Z(s)$ per state, reducing memory from $\mathcal{O}(n \cdot N_\text{atoms})$ to $\mathcal{O}(n)$; exact as $q \to \delta_{s^{*}}$, with $W_1$ error bounded by $\gamma \cdot R_\text{max} \cdot H[q]$ (see [`theory_implementation_map.md`](theory_implementation_map.md), limitations row) | `push_forward_return()` | §7c |
 
 ## Distributional RL Foundations
 
@@ -117,7 +122,7 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 | **IQN** | Implicit Quantile Network: samples $\tau \sim U(0,1)$ and learns quantile functions with risk distortion (Dabney et al. 2018b) | `implicit_quantile_network_update()` | §7c |
 | **Huber loss** | $L_\kappa(\delta) = \frac{1}{2}\delta^2$ if $|\delta| \leq \kappa$, else $\kappa(|\delta| - \frac{1}{2}\kappa)$; smooths quantile objectives | `quantile_td_update(kappa=...)` | §7c |
 | **Risk distortion** | Transforms quantile levels $\tau$ to shape the agent's risk attitude (neutral, optimistic, pessimistic, CVaR) | `implicit_quantile_network_update(risk_distortion=...)` | §7c |
-| **Distributional Bellman** | $\mathcal{T}Z(s) \stackrel{D}{=} R + \gamma Z(s')$ — the distributional analogue of the Bellman equation | `distributional_bellman_operator()` | §7c |
+| **Distributional Bellman** | $\mathcal{T}Z(s) \stackrel{D}{=} R + \gamma Z(s')$ — the distributional analogue of the Bellman equation. The implemented function is a *forward* belief push-forward returning $R + \gamma(T^\top q_k)$ at each step, **not** a value backup: it does not converge to the fixed point $Z^{*} = \mathcal{T}Z^{*}$ and must not be cited as a value function | `distributional_bellman_operator()` | §7c |
 | **Categorical projection** | $\Phi$: projects a continuous return distribution onto $n$ discrete atoms (C51-style) | `categorical_return_distribution()` | §7c |
 | **Reward vector** | Per-role immediate rewards $R \in \mathbb{R}^n$ used in the push-forward return | `push_forward_return(reward_vector=...)` | §7c |
 | **Transition matrix** | Row-stochastic $T \in [0,1]^{n \times n}$ encoding role-to-role transition probabilities | `push_forward_return(transition_matrix=...)` | §7c |
@@ -132,7 +137,7 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 | **Surprisal decomposition** | Li & Futrell (2024): decomposes total surprisal into shallow (lexical/N400) and deep (structural/P600) components | `n400_from_return_distribution()`, `p600_from_precision_update()` | §7c |
 | **Calibration error** | Mean $|\text{empirical coverage}(\tau) - \tau|$ — how well predicted quantiles match observed frequencies | `quantile_coverage()` | §7c |
 | **Monotone convergence** | Whether free energy decreases at every DAIF iteration (ideal convergence) | `convergence_diagnostics()["monotone"]` | §7c |
-| ***assess\_daif\_surprisal*** | Instance method on `CaseCategory` that returns N400 (shallow/semantic) and P600 (deep/structural) surprisal estimates for a given morphism, implementing the Li & Futrell (2024) decomposition: N400 ~ `1 - morphism.weight`, P600 ~ variance across co-occurring role weights | `CaseCategory.assess_daif_surprisal()` | §7c |
+| ***assess\_daif\_surprisal*** | Instance method on `CaseCategory` that returns N400 (shallow/semantic) and P600 (deep/structural) surprisal estimates for a given morphism, implementing the Li & Futrell (2024) decomposition. Returns the keys `N400_amplitude` and `P600_amplitude`, computed as N400 = $\lvert$`predicted_weight` − `observed.weight`$\rvert$ and P600 = 1.0 when no morphism of the category licenses the observed source→target pair, else 0.0 (a binary licensing flag, not a variance) | `CaseCategory.assess_daif_surprisal()` | §7c |
 
 ## Quantum Semantics
 
@@ -144,6 +149,8 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 | **Graded / context-dependent POVM** | A POVM family $\{E_c^{(\lambda)}\}$ parametrised by a context variable $\lambda$ (here $p_{\text{vol}}$), so that case probabilities $P(c\mid\rho)$ vary continuously with $\lambda$ even when the underlying state $\rho$ is fixed. In this project's Fluid-S implementation the elements remain *mutually orthogonal* one-dimensional projectors at every $\lambda$ (so each individual POVM is still crisp in the formal sense), but the measurement *basis* is rotated through $\theta = (\pi/2)(1 - p_{\text{vol}})$, giving graded case assignment as a function of context. Genuinely *overlapping* POVM elements ($E_c E_{c'} \neq 0$) would be a stricter notion; none of the functions currently ship a graded POVM in that stricter sense — callers who need true element overlap must construct the density matrix and elements directly. | `fluid_s_povm()` in `src/quantum/quantum_case.py` | §8b |
 | **Case probability** | $P(c|\rho) = \text{Tr}(E_c \rho)$ — probability of case assignment | `case_probability()` | §8 |
 | **Density matrix** | $\rho$: a quantum state representing semantic content | `semantic_state()` | §8 |
+| **Entanglement** | Non-separability of a joint state: $\rho_{AB} \neq \sum_i p_i\,\rho_A^{(i)}\otimes\rho_B^{(i)}$. In the DisCoCat reading, cups entangle noun and verb wires so sentence meaning is not the product of word meanings | §8 (manuscript) | §8 |
+| **Contextuality** | The impossibility of assigning outcome values to all measurements independently of which compatible set is measured together; the quantum-semantic account of why case assignment can depend on the measurement context $\lambda$ | §8 (manuscript) | §8 |
 | **ZX-calculus** | A graphical calculus for quantum circuits using Z and X spiders | §8 (manuscript) | §8 |
 | **TQNN** | Topological Quantum Neural Network — QNN on spin-networks | §8 (manuscript) | §8 |
 | **Holographic screen** | A boundary on which quantum measurements are projected | §8 (manuscript) | §8 |
@@ -154,8 +161,10 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 |------|-----------|------|----|
 | **Geometric theory** | A first-order theory with specific axiom forms (geometric sequents) | `GeometricTheory` | §6 |
 | **Classifying topos** | The canonical topos $\mathcal{E}_\mathbb{T}$ associated with a theory $\mathbb{T}$ | `ClassifyingTopos` | §6 |
-| **Morita equivalence** | Two theories with equivalent classifying toposes | `check_morita_equivalence()` | §6 |
-| **Bridge transfer** | Moving theorems between Morita-equivalent theories | `bridge_transfer()` | §6 |
+| **Sheaf** | A presheaf on a site satisfying the gluing condition: compatible local sections over a covering family glue to a unique global section. Sheaves on a site are the objects of a Grothendieck topos | §6 (manuscript) | §6 |
+| **Subobject classifier** | The object $\Omega$ representing the subobject functor, so subobjects of $X$ correspond to maps $X \to \Omega$; the topos-internal truth-value object, generally Heyting rather than Boolean | §6 (manuscript) | §6 |
+| **Morita equivalence** | Two theories with equivalent classifying toposes | `check_morita_equivalence()` (necessary conditions only — signature shape and arity spectrum, compared exactly; `True` means "not ruled out") | §6 |
+| **Bridge transfer** | Moving theorems between Morita-equivalent theories. Gated on the necessary-conditions check above, so a positive transfer result is a candidate, not a proof; the `necessary_conditions_only: True` key in the returned dict makes this explicit | `bridge_transfer()` | §6 |
 
 ## Cognitive Security
 
@@ -164,7 +173,7 @@ Comprehensive term reference for *Cognitive Diagrams: Reviewing Categorical Acco
 | **Type violation** | An illicit case-role reassignment (e.g., ACC→NOM promotion) | `TypeViolation` | §9b |
 | **Injection score** | Aggregate severity of detected type violations | `injection_score()` | §9b |
 | **Case-theoretic firewall** | Under a fixed interaction protocol, validators that reject morphisms violating relational type constraints (engineering target; see §9b) | `CaseFrameValidator` | §9b |
-| **Topological robustness** | Magnitude-based metric for resistance to adversarial perturbation | `topological_robustness()` | §9b |
+| **Topological robustness** | Magnitude-based metric for resistance to adversarial perturbation, $R = \lvert\mathcal{C}\rvert / n$. Bounded in $(0, 1]$ only for hom-matrices satisfying the composition inequality, which `EnrichedCategory` does not enforce — a user-supplied proximity matrix can return $R > 1$, and the function warns when it does | `topological_robustness()` | §9b |
 | **Prompt injection** | An adversarial attack promoting data (ACC) to command (NOM) status. Detected via `CaseFrameValidator.validate_assignment()` over per-entity role assignments | `CaseFrameValidator` | §9b |
 
 ## Discourse and Compositionality

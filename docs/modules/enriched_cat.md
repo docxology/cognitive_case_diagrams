@@ -61,10 +61,10 @@ case_systems → enriched_cat → topos_theory
 | `hom(source, target)` | `float` | Distributional proximity $\mathcal{C}(A,B) \in [0,1]$ |
 | `check_composition_inequality(a, b, c)` | `bool` | $\mathcal{C}(A,C) \geq \mathcal{C}(A,B) \cdot \mathcal{C}(B,C)$ |
 | `magnitude()` | `float` | $\|\mathcal{C}\| = \sum_{i,j} (Z^{-1})_{ij}$ |
-| `weighting()` | `np.ndarray` | Column sums of $Z^{-1}$ |
-| `coweighting()` | `np.ndarray` | Row sums of $Z^{-1}$ |
+| `weighting()` | `np.ndarray` | Row sums of $Z^{-1}$ — the solution $w$ of $Zw = \mathbf{1}$ |
+| `coweighting()` | `np.ndarray` | Column sums of $Z^{-1}$ — the solution $v$ of $vZ = \mathbf{1}$ |
 | `magnitude_deficit()` | `float` | $n - \|\mathcal{C}\|$ |
-| `full_composition_check()` | `dict` | Tests all triples; returns `holds`, `violations`, `violation_rate` |
+| `full_composition_check()` | `dict` | Tests all triples; returns `holds`, `violations`, `total`, `violation_rate` |
 | `role_clusters(threshold)` | `list[set]` | BFS clustering of roles with $\mathcal{C}(A,B) \geq \theta$ |
 
 ### Axiom Validation (`__post_init__`)
@@ -148,7 +148,7 @@ print(f"Violations: {len(result['violations'])}/{result['total']}")
 - **Downstream**: [`topos_theory`](topos_theory.md), [`cognitive`](cognitive.md) (reanalysis), [`security`](security.md)
 - **Theory map**: [theory_implementation_map.md](../theory_implementation_map.md) §5–§5b
 - **Visualization**: [`visualization`](visualization.md) — `enriched_diagrams.py`
-- **Figures**: [manuscript_figure_index.md](../manuscript_figure_index.md) — Figures 14–16
+- **Figures**: [manuscript_figure_index.md](../manuscript_figure_index.md) — Figure 15 (`enriched_hom_matrix.png`, via `render_enriched_heatmap()`)
 
 ---
 

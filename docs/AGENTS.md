@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `docs/` directory contains technical reference documentation for the `cognitive_case_diagrams` project (*Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case*, v2.3 / 2026-04-22, [`../docs/manuscript/config.yaml`](../docs/manuscript/config.yaml) `paper.title`). This is the central hub for developer-facing deep dives, API references, theory-to-code mappings, architectural decision records, and extension guides.
+The `docs/` directory contains technical reference documentation for the `cognitive_case_diagrams` project (*Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case*, v2.3 / 2026-04-22, [`docs/manuscript/config.yaml`](manuscript/config.yaml) `paper.title`). This is the central hub for developer-facing deep dives, API references, theory-to-code mappings, architectural decision records, and extension guides.
 
 ## Contents
 
@@ -11,7 +11,7 @@ The `docs/` directory contains technical reference documentation for the `cognit
 | [`architecture_overview.md`](architecture_overview.md) | Package dependency graph, data flow, design principles |
 | [`theory_implementation_map.md`](theory_implementation_map.md) | Maps each theoretical concept to its Python implementation |
 | [`api_reference.md`](api_reference.md) | Full public API reference for all `src/` modules |
-| [`glossary.md`](glossary.md) | 117 term rows (table glossary): math ↔ linguistics ↔ code ↔ distributional RL |
+| [`glossary.md`](glossary.md) | Table glossary: math ↔ linguistics ↔ code ↔ distributional RL |
 | [`literature_guide.md`](literature_guide.md) | Annotated bibliography (five pillars + extensions + sixth-strand synthesis via §7–§7b) |
 | [`manuscript_figure_index.md`](manuscript_figure_index.md) | Index of all manuscript figures and their generation scripts |
 | [`extension_guide.md`](extension_guide.md) | How to add new case systems, diagram types, or ML integrations |
@@ -41,7 +41,7 @@ Each `src/` subpackage maps directly to a manuscript section (`§2` → `case_sy
 All tests use real mathematical objects. No `MagicMock`, no `patch`. This ensures tests reflect actual computational behavior, not mocked expectations. See `tests/AGENTS.md` for details.
 
 ### ADR-003: Visualization Accessibility
-All figure fonts must meet the 16pt floor (`FONT_SIZE_FLOOR = 16` in `src/visualization/styles.py`). Export at 150 DPI. This is a hard requirement for publication readability.
+All figure fonts must meet the 16pt floor (`FONT_SIZE_FLOOR = 16` in `src/visualization/styles.py`). Export at `FIGURE_DPI = 300`, the value the same module enforces. This is a hard requirement for publication readability.
 
 ### ADR-004: CasePOVM Name Field
 `CasePOVM` carries a `name: str = "povm"` field used by `quantum_plots.py` to generate default output filenames. Always set a descriptive name when constructing named POVMs.
@@ -74,18 +74,18 @@ Alignment functors (`accusative_alignment()`, `ergative_alignment()`, `tripartit
 
 - Theory ↔ Code: See [`theory_implementation_map.md`](theory_implementation_map.md) and individual module `AGENTS.md` files
 - Architecture: See [`architecture_overview.md`](architecture_overview.md) for dependency graph and data flow
-- Test coverage: run `uv run pytest tests/ --cov=src` from `projects/cognitive_case_diagrams/` (≥90% line coverage on `src/` required; see `tests/AGENTS.md` for policy)
+- Test coverage: run `uv run pytest tests/ --cov=src` from this project root (`projects/ongoing/ActiveInference/cognitive_case_diagrams/` inside the template monorepo) — ≥90% line coverage on `src/` required; see `tests/AGENTS.md` for policy
 - DAIF subpackage: `src/daif/AGENTS.md` (7 modules, 25 public symbols in `daif.__all__`; `tests/test_daif*.py`)
 - Manuscript: `docs/manuscript/AGENTS.md`
 - Source API: `src/AGENTS.md`
-- Terms: [`glossary.md`](glossary.md) (117 term rows across 12 domains)
+- Terms: [`glossary.md`](glossary.md) (term rows grouped by domain section; the file itself is the count of record)
 - Literature: [`literature_guide.md`](literature_guide.md) (106 BibTeX entries in `docs/manuscript/references.bib`; five pillars plus extensions and sixth-strand reading synthesis)
 
 ## Documentation Changelog
 
 | Date | Change |
 |------|--------|
-| 2026-04-22 | v2.3 release sync: canonical title corrected across all AGENTS/README files to match `config.yaml` (`Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case`); DOI `10.5281/zenodo.19695260` propagated; `cognitive/` module count corrected 6→7 (ADR-005); `quantum/` module count corrected 1→2; `visualization/` module count corrected 13/14→15; scripts inventory includes `01_generate_manuscript_metrics.py` and `generate_category_unpacking_figures.py`; figure count reaffirmed at 30; pipeline stage numbering aligned to the 10-stage root DAG |
+| 2026-04-22 | v2.3 release sync: canonical title corrected across all AGENTS/README files to match `config.yaml` (`Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case`); DOI `10.5281/zenodo.19695260` propagated; `cognitive/` module count corrected 6→7 (ADR-005); `quantum/` module count corrected 1→2; `visualization/` module count corrected 13/14→15; scripts inventory includes `01_generate_manuscript_metrics.py` and `generate_category_unpacking_figures.py`; figure count reaffirmed at 30; pipeline stage numbering aligned to the engine's `scripts/pipeline/stage_*.py` DAG at the template monorepo root (the stage inventory lives there, not in this doc) |
 | 2026-04-10 | Manuscript section files: removed redundant per-file `**Version**` / `**Status**` lines; edition single-sourced in `config.yaml`; updated [`docs/manuscript/README.md`](manuscript/README.md) |
 | 2026-04-09 | Glossary table row count set to **117** (`docs/README.md`, hub bullets); `coverage.json` ignored at repo root |
 | 2026-04-09 | Bibliography inventory aligned to **101** `@` entries in `docs/manuscript/references.bib` (manuscript AGENTS, `docs/README.md`, `literature_guide.md`) |

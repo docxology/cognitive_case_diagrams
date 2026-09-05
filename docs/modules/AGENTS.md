@@ -1,8 +1,10 @@
-# projects/cognitive_case_diagrams/docs/modules/ — Per-Module Reference Hub
+# docs/modules/ — Per-Module Reference Hub
 
 ## Purpose
 
-Documentation hub for the 9 source-level subpackages of `projects/cognitive_case_diagrams/src/`. Each subpackage gets one Markdown reference file in this directory; the [`README.md`](README.md) is the human-facing index, and this `AGENTS.md` is the agent-facing description of how the hub is structured and maintained.
+Documentation hub for the 9 source-level subpackages of this project's `src/`
+(the project lives at `projects/ongoing/ActiveInference/cognitive_case_diagrams/`
+inside the template monorepo, and is the repository root in a standalone clone). Each subpackage gets one Markdown reference file in this directory; the [`README.md`](README.md) is the human-facing index, and this `AGENTS.md` is the agent-facing description of how the hub is structured and maintained.
 
 ## Files
 

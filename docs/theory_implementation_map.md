@@ -22,7 +22,7 @@ The foundation of the framework: linguistic case systems formalized as categorie
 | Naturality square $G(f)\circ\alpha_A = \alpha_B\circ F(f)$ | `src.case_systems.natural_transformation` | `NaturalTransformation.naturality_holds()` (alias `verify_naturality`) | ✅ | Quantifies over `source_functor.source.morphisms` whose endpoints lie in `object_map`; requires `is_complete()` |
 | Fluid-S alignment | `src.case_systems.fluid_s` | `FluidSFunctor` | ✅ | `map_object`, `split_probability`, `map_morphism`, `kernel()`, `create_fluid_s_functor()` |
 | Eq. `eq-2-1`: $w(g \circ f)=w(g)\cdot w(f)$ | `src.case_systems.case_category` | `CaseCategory.compose()` | ✅ | weight multiplication in `compose()` |
-| DAIF surprisal (N400/P600) on morphism | `src.case_systems.case_category` | `CaseCategory.assess_daif_surprisal()` | ✅ | Returns `{"n400", "p600"}` per Li & Futrell (2024); shallow = semantic surprise, deep = structural discrepancy (§7c) |
+| DAIF surprisal (N400/P600) on morphism | `src.case_systems.case_category` | `CaseCategory.assess_daif_surprisal()` | ✅ | Returns `{"N400_amplitude", "P600_amplitude"}` per Li & Futrell (2024); shallow = semantic surprise, deep = structural discrepancy (§7c) |
 | Prompt injection detect (ACC→NOM) | `src.security.cognitive_security` | `CaseFrameValidator.validate_assignment()` | ✅ | Decidable graph check on `Mor(C_protocol)` (§9b); replaces legacy `CaseCategory.detect_prompt_injection()` |
 
 ---
@@ -106,21 +106,21 @@ Magnitude as a **complexity invariant** for case systems, and its connection to 
 | Role clusters by proximity | `src.enriched_cat.enriched` | `EnrichedCategory.role_clusters()` | ✅ | Threshold-based grouping |
 | Magnitude < n indicates redundancy | `src.enriched_cat.enriched` | `EnrichedCategory.magnitude()` | ✅ | $\|\mathcal{C}\| < n$ means roles overlap |
 | Enriched hom-proximity heatmap | `src.visualization.enriched_diagrams` | `render_enriched_heatmap()` | ✅ | Fig. 15 in manuscript |
-| Magnitude homology invariant $H_k(\mathcal{C})$ (Leinster-Shulman) | `src.diagrams.complexity_metrics` | `MagnitudeHomologyMetrics` | ✅ | Graded homological invariant extending magnitude; `classical_magnitude`, `homology_groups: list[dict]` |
-| Quantum-bounded magnitude homology $\|\mathcal{C}\|_q = \|\mathcal{C}\|(1-\lambda)$ | `src.diagrams.complexity_metrics` | `compute_quantum_magnitude_homology()` | ✅ | Applies decoherence penalty $\lambda$ per §5b caveat (Bradley and Vigneaux 2025 LM-enriched homology) |
+| Magnitude homology invariant $H_k(\mathcal{C})$ (Leinster-Shulman) | `src.diagrams.complexity_metrics` | `MagnitudeHomologyMetrics` | 🔄 | Graded homology is the theoretical target, not the implemented object: the dataclass records `base_syntactic_complexity: float`, `topological_holes_1d: int`, `estimated_decoherence_rate: float`, `quantum_environment_commutes: bool` — a scalar complexity, a 1-D hole count and a decoherence estimate, with no $H_k$ sequence |
+| Quantum decoherence proxy for magnitude homology | `src.diagrams.complexity_metrics` | `compute_quantum_magnitude_homology()` | 🔄 | Computes no $\|\mathcal{C}\|_q$ value: it returns the real syntactic complexity score, a `cups − caps` hole proxy, and `min(1.0, noise · 1.5^holes)` checked against an unsourced 0.25 threshold — illustrative constants, not the $\|\mathcal{C}\|(1-\lambda)$ formula of the §5b caveat |
 
 ---
 
 ## §6 Topos Theory
 
-Caramello's bridge technique: when two case-theoretic formalizations have Morita-equivalent classifying toposes, theorems transfer automatically between them.
+Caramello's bridge technique: when two case-theoretic formalizations have Morita-equivalent classifying toposes, theorems transfer automatically between them. The module implements the *invariant screen* for that technique — necessary conditions that can rule equivalence out — not a proof that it holds.
 
 | Manuscript Element | Module | Class / Function | Status | Notes |
 |---|---|---|---|---|
 | Geometric theory | `src.topos_theory.topos` | `GeometricTheory` | ✅ | `name`, `axioms`, `sorts` |
 | Classifying topos | `src.topos_theory.topos` | `ClassifyingTopos` | ✅ | `theory`, `invariants` |
-| Morita equivalence (eq. `eq-6-1`) | `src.topos_theory.topos` | `check_morita_equivalence()` | ✅ | Checks shared interpretations |
-| Bridge transfer | `src.topos_theory.topos` | `bridge_transfer()` | ✅ | Data transfer between equivalent theories |
+| Morita equivalence (eq. `eq-6-1`) | `src.topos_theory.topos` | `check_morita_equivalence()` | 🔄 | **Necessary conditions only**: compares signature shape (sorts, relations, axioms) exactly plus the arity spectrum. A `True` means "not ruled out", never "equivalent" — exhibiting an equivalence of classifying toposes is out of scope for the module |
+| Bridge transfer | `src.topos_theory.topos` | `bridge_transfer()` | 🔄 | Attempts transfer between theories that pass the necessary-condition gate above; the returned dict carries `necessary_conditions_only: True`, so a successful transfer licenses attempting the inference, not asserting its validity |
 
 ---
 
@@ -153,7 +153,7 @@ The distributional extension: agents maintain the parameterised cumulative densi
 | DAIF inference result | `src.daif.types` | `DAIFResult` | ✅ | Exposes explicit `fe_trajectory` for diagnosing factor graph convergence |
 | ERP waveform profile | `src.daif.types` | `ERPProfile` | ✅ | Struct binding peak $\mu$ times to voltage deflections |
 | Push-forward return (Eq. 7-1) $Z = R + \gamma T^\top q$ | `src.daif.core` | `push_forward_return()` | ✅ | Fixed-point step returning $L^1$ optimal $\tau$-quantiles via 1D sort |
-| Multi-step Bellman iteration $T^n Z_0$ | `src.daif.core` | `distributional_bellman_operator()` | ✅ | Contraction mapping enforcing contractive bound $\gamma < 1$ |
+| Multi-step belief push-forward | `src.daif.core` | `distributional_bellman_operator()` | 🔄 | Forward recursion over beliefs, **not** a value backup: step $k$ returns the distribution of $R + \gamma (T^\top q_k)$. It does not converge to the Bellman fixed point $Z^* = TZ^*$; read the output as a discounted one-step return under an evolving belief, never as a value function (see the module docstring for the worked counterexample) |
 | C51 categorical projection $\Phi Z$ | `src.daif.core` | `categorical_return_distribution()` | ✅ | Linearly interpolates quantiles onto $N$ fixed voltage supports |
 | Quantile Huber loss $\rho^\kappa_\tau$ (Eq. 7-2) | `src.daif.quantile` | `quantile_td_update()` | ✅ | Differentiable transition bridging absolute and $L^2$ distances via threshold $\kappa$ |
 | IQN risk-distorted update | `src.daif.quantile` | `implicit_quantile_network_update()` | ✅ | Applies non-linear functions to index $\tau$: neutral / optimistic / pessimistic / CVaR |
@@ -209,7 +209,7 @@ Adversarial injections interpreted formally as algebraic type violations rather 
 | Type-violation detection | `src.security.cognitive_security` | `detect_type_violation()` | ✅ | Validates invariant mapping $\phi : \text{ACC} \to \text{NOM}$ |
 | Injection scoring | `src.security.cognitive_security` | `injection_score()` | ✅ | Integrates total mass of unmapped morphisms |
 | Case frame validation | `src.security.cognitive_security` | `CaseFrameValidator` | ✅ | Intersects empirical graph with permitted grammar limits |
-| Topological robustness | `src.security.cognitive_security` | `topological_robustness()` | ✅ | Expresses security state as subset magnitude $\|\mathcal{C}\|_\text{secure}$ |
+| Topological robustness | `src.security.cognitive_security` | `topological_robustness()` | ✅ | Returns $R = \lvert\mathcal{C}\rvert / n$. Bounded in $(0, 1]$ **only** for hom-matrices satisfying the composition inequality $\mathcal{C}(A,C) \geq \mathcal{C}(A,B)\cdot\mathcal{C}(B,C)$; `EnrichedCategory._validate` does not enforce that axiom, so a user-supplied matrix can yield $R > 1$ (the function logs a warning when it does) |
 | Semantic integrity | `src.security.cognitive_security` | `semantic_integrity_check()` | ✅ | Asserts identity constraints on $Z$ trace matrices |
 
 ---
@@ -242,12 +242,13 @@ To independently verify that every theory-to-code mapping above is correct:
 
 ### Step 1: Run the Full Test Suite
 
+From the project root (the directory holding `src/`, `tests/` and `pyproject.toml`):
+
 ```bash
-cd projects/cognitive_case_diagrams
 uv run pytest tests/ --cov=src -v
 ```
 
-This runs all 64 test files (authoritative live count in `output/metrics.json::total_test_files`). Coverage must exceed 90 % on `src/` (currently 95.96 %). Every row in the tables above has at least one corresponding `assert` in the test suite.
+This runs every `tests/test_*.py` file (authoritative live count in `output/metrics.json::total_test_files`; 64 as of this revision). Coverage must exceed the 90 % floor on `src/` declared by `[tool.coverage.report] fail_under = 90` in `pyproject.toml`; the measured figure is `output/metrics.json::coverage_percent` — read it there rather than quoting a number from prose. Every row in the tables above has at least one corresponding `assert` in the test suite.
 
 ### Step 2: Verify Specific Equations
 
@@ -276,9 +277,29 @@ ls -la output/figures/*.png | wc -l  # Should match output/metrics.json::total_f
 
 ### Traceability Invariant
 
-The mapping enforces a **bidirectional traceability invariant**: every manuscript equation must have a Python implementation, and every public function in `src/` must trace back to a manuscript equation (or to a utility/visualization role documented in `api_reference.md`). This invariant is maintained by ADR-007.
+The mapping states a **bidirectional traceability invariant**: every manuscript equation must have a Python implementation, and every public function in `src/` must trace back to a manuscript equation (or to a utility/visualization role documented in [`api_reference.md`](api_reference.md)). ADR-007 records the intent.
+
+The invariant is currently a **convention, not a gate** — nothing in the test suite
+checks it, and it has drifted before. Verify it by hand with:
+
+```bash
+uv run python - <<'PY'
+import importlib, pathlib, re
+docs = "\n".join(p.read_text() for p in pathlib.Path("docs").rglob("*.md"))
+for pkg in ("case_systems", "diagrams", "enriched_cat", "topos_theory",
+            "cognitive", "daif", "quantum", "security", "visualization"):
+    mod = importlib.import_module(f"src.{pkg}")
+    missing = [n for n in mod.__all__
+               if not re.search(rf"\b{re.escape(n)}\b", docs)]
+    print(pkg, "undocumented:", missing)
+PY
+```
+
+Making this real means turning that check into a test asserting, for each package's
+`__all__`, that every symbol appears by word-boundary match in `api_reference.md`,
+this file, or `docs/manuscript/*.md`.
 
 ---
 
-*Last updated: 2026-04-22 — All 9 subpackages fully mapped with ✅ status; 25 DAIF symbols across 7 modules; figure-to-code traceability complete for all 30 figures (including the three pedagogical unpacking companions for §3 / §4b / §4c); Appendix notation → code symbol mapping.*
+*Scope: all 9 `src/` subpackages are mapped; the DAIF layer covers `daif_symbols` public symbols across `daif_modules` modules (live values in `output/metrics.json`, currently 25 across 7). Figure-to-code traceability covers every figure in `output/figures/` (`output/metrics.json::total_figures`), including the three pedagogical unpacking companions for §3 / §4b / §4c. Most rows are ✅; the 🔄 rows above mark places where the code implements a screen or an approximation rather than the full theoretical object, and each says which.*
 

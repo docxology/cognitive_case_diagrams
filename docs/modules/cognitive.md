@@ -30,7 +30,11 @@ cognitive/
 ├── belief_updating.py   # Single-step and sequential Bayesian update
 ├── prediction_error.py  # Precision-weighted PE, P600 amplitude ratio
 ├── action_selection.py  # Expected free energy for production
-└── reanalysis.py        # Magnitude-based reanalysis cost, N400 proxy
+├── reanalysis.py        # Magnitude-based reanalysis cost, N400 proxy
+└── figure_data.py       # Plot-ready data factories for the §7 / §7c figures
+                         #   (make_belief_trajectory_data, make_fluid_s_landscape_data,
+                         #    make_daif_belief_trajectory_data,
+                         #    make_free_energy_convergence_data, make_erp_prediction_data)
 ```
 
 ### Dependency Position
@@ -136,7 +140,8 @@ pe = prediction_error(enriched_weight=0.9, predicted=0.7, observed=0.05)
 | $F = D_{KL} - \mathbb{E}[\ln p(\mathbf{o} \mid s)]$ | `variational_free_energy()` | Variational free energy (§7) |
 | $q' \propto p(\mathbf{o} \mid s) \cdot q(s)$ | `update_belief()` | Bayesian update |
 | $G(\pi)$ | `expected_free_energy()` | Expected free energy for action selection |
-| Reanalysis cost $= 1 - \mathcal{C}(A,B)$ | `magnitude_reanalysis_cost()` | Magnitude-based N400 proxy |
+| $\Delta\lvert\mathcal{C}\rvert = \lvert\,\lvert\mathcal{C}_\text{after}\rvert - \lvert\mathcal{C}_\text{before}\rvert\,\rvert$ | `magnitude_reanalysis_cost()` | Magnitude-based reanalysis (P600) cost |
+| $\Delta\lvert\mathcal{C}\rvert_\text{semantic}$ | `n400_amplitude_proxy()` | Magnitude-based N400 proxy for semantic violations |
 
 ---
 
@@ -146,7 +151,7 @@ pe = prediction_error(enriched_weight=0.9, predicted=0.7, observed=0.05)
 - **Upstream**: [`case_systems`](case_systems.md) — provides `CaseRole` objects
 - **Theory map**: [theory_implementation_map.md](../theory_implementation_map.md) §7
 - **API**: [api_reference.md](../api_reference.md) (`src.cognitive` — §7)
-- **Figures**: [manuscript_figure_index.md](../manuscript_figure_index.md) — Figures 18–20
+- **Figures**: [manuscript_figure_index.md](../manuscript_figure_index.md) — Figure 17 (`active_inference_belief.png`, via `plot_alignment_frame_belief_dynamics()`); the DAIF panels 17b–17d belong to [`daif`](daif.md)
 
 ---
 

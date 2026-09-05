@@ -134,7 +134,9 @@ The isolation layers prevent non-linear interference between the distinct semant
 
 1. **Symbolic Manifold**: Handles invariant algebraic topologies. `diagrams` acts strictly on discrete variables ($N_C \in \mathbb{N}$ cups and boxes), outputting deterministic adjacency graphs.
 2. **Probabilistic Manifold**: Encompasses `cognitive` and `daif`. The transition from symbolic to probabilistic assumes Bayesian exchangeability, translating rigid types into probability simplices ($\sum P(x) = 1$) and mapping prediction errors into the $L^1$-Wasserstein margin.
-3. **Quantum Manifold**: Handled exclusively by `quantum/`. Case systems transit via Weyl-Heisenberg displacement operators, requiring symmetric informationally complete positive operator-valued measures (SIC-POVMs) to output density matrix predictions. This ensures algebraic equivalence to bounded state operators.
+3. **Quantum Manifold**: Handled exclusively by `quantum/`. Case systems transit through POVMs over density matrices built by `semantic_state()`: `crisp_case_povm()` supplies rank-1 projective effects, `graded_case_povm()` and `fluid_s_povm()` supply context-rotated graded effects, `CasePOVM.is_complete()` checks the normalization $\sum_c E_c = I$, and `case_probability()` returns $P(c\mid\rho) = \mathrm{Tr}(E_c \rho)$. This keeps the layer algebraically equivalent to bounded state operators.
+
+> **Not implemented.** Symmetric informationally complete POVMs (SIC-POVMs) and Weyl-Heisenberg displacement operators appear nowhere in `src/`. They are a prospective extension only — see the recipe in [`extension_guide.md`](extension_guide.md).
 
 ---
 
@@ -219,7 +221,7 @@ All project tests use real mathematical objects. `MagicMock`, `patch`, and all m
 
 ### 3. Visualization Accessibility (ADR-003)
 
-All figure fonts must meet the 16pt floor (`FONT_SIZE_FLOOR = 16`). Figures export at 150 DPI with a default size of (10, 8). Colorblind-safe palettes are preferred.
+All figure fonts must meet the 16pt floor (`FONT_SIZE_FLOOR = 16`). Figures export at `FIGURE_DPI = 300` with `DEFAULT_FIGSIZE = (10, 8)` — both defined in `src/visualization/styles.py`, which is the value of record. Colorblind-safe palettes are preferred.
 
 ### 4. Thin Orchestrator Pattern
 
@@ -241,29 +243,28 @@ The project follows the template's Two-Layer Architecture:
 
 | Layer | Location | Purpose |
 |-------|----------|---------|
-| **Layer 1** (Infrastructure) | `infrastructure/` (repo root) | Generic build/validation tools shared across all projects |
-| **Layer 2** (Project Logic) | `projects/cognitive_case_diagrams/src/` | All domain-specific scientific computation |
-| **Orchestration** | `scripts/` (repo root) + `projects/.../scripts/` | Pipeline stages and figure generation |
+| **Layer 1** (Infrastructure) | `infrastructure/` (template monorepo root) | Generic build/validation tools shared across all projects |
+| **Layer 2** (Project Logic) | `projects/ongoing/ActiveInference/cognitive_case_diagrams/src/` | All domain-specific scientific computation |
+| **Orchestration** | `scripts/pipeline/` (template monorepo root) + this project's `scripts/` | Pipeline stages and figure generation |
 
 ### Pipeline Stages
 
-The full build pipeline runs 9 stages (displayed as `[1/9]` to `[9/9]`):
+The stage inventory is owned by the engine, not by this document: each stage is one `scripts/pipeline/stage_*.py` orchestrator at the template monorepo root, and the count is whatever that directory holds. The stages this project exercises are:
 
-1. **Environment Setup** — Verify Python, dependencies, DisCoPy
-2. **Infrastructure Tests** — Run infrastructure test suite (≥60% coverage)
-3. **Project Tests** — Run `tests/` suite (≥90% line coverage on `src/`; counts via `pytest --collect-only`)
-4. **Analysis** — Execute `scripts/generate_diagrams.py` (30 figures; authoritative count in `output/metrics.json::total_figures`)
-5. **PDF Rendering** — Pandoc → LaTeX → PDF
-6. **Validation** — Check unresolved refs, missing citations, structure
-7. **LLM Review** — Optional AI-powered manuscript analysis
-8. **LLM Translations** — Optional multi-language abstract generation
-9. **Copy Outputs** — Final deliverables to `output/cognitive_case_diagrams/`
+1. **`stage_00_setup.py`** — Verify Python version, dependencies, and build tools
+2. **`stage_01_test.py`** — Run the infrastructure suite (≥60% coverage) then this project's `tests/` suite (≥90% line coverage on `src/`; counts via `pytest --collect-only`)
+3. **`stage_02_analysis.py`** — Discover and run this project's `scripts/*.py` (figure generation; authoritative figure count in `output/metrics.json::total_figures`)
+4. **`stage_03_render.py`** — Pandoc → LaTeX → PDF (plus web and slides formats when enabled)
+5. **`stage_04_validate.py`** — Validate the generated PDFs, markdown formatting, and file integrity
+6. **`stage_05_copy.py`** — Copy this project's `output/` tree up to the template monorepo root `output/`
+
+Later stages (LLM review, executive report, provenance, ebook, metadata, and the rest) are optional engine extras; consult `scripts/pipeline/` in the template monorepo for the live list rather than a number recorded here.
 
 ---
 
 ## Test Architecture
 
-All 64 test files (authoritative live count in `output/metrics.json::total_test_files`) follow the `test_{package}_{module}.py` naming convention:
+All 64 test files (authoritative live count in `output/metrics.json::total_test_files`) follow the `test_{package}_{module}.py` naming convention. The tree below is a representative selection, not the full inventory — `tests/AGENTS.md` carries that:
 
 ```text
 tests/
@@ -294,7 +295,7 @@ tests/
 ├── test_topos_theory_topos.py             # §6: GeometricTheory, Morita equiv
 ├── test_quantum_quantum_case.py           # §8: POVM, case_probability
 ├── test_security_cognitive_security.py    # §9b: TypeViolation, injection
-├── test_visualization_*.py (12+ files)    # All visualization modules
+├── test_visualization_*.py (16 files)     # All visualization modules
 ├── test_cross_module_coverage.py          # Edge case coverage
 └── conftest.py                            # Shared fixtures + matplotlib Agg
 ```
@@ -319,7 +320,7 @@ A typical end-to-end computation flows through the following stages:
 
 6. **Quantum Formulation** (`quantum`): Construct POVM effects $\{E_c\}$ for case assignment. Compute case probabilities $P(c|\rho) = \text{Tr}(E_c \rho)$ from density matrices. The POVM normalization $\sum_c E_c = I$ ensures a valid probability distribution.
 
-7. **Visualization** (`visualization`): Render all computations as publication figures at 150 DPI with 16pt minimum font. Each figure script imports from the upstream computation packages and produces deterministic PNG output.
+7. **Visualization** (`visualization`): Render all computations as publication figures at 300 DPI with 16pt minimum font. Each figure script imports from the upstream computation packages and produces deterministic PNG output.
 
 ## Theoretical Dependency Rationale
 
@@ -339,22 +340,26 @@ The DAG structure of package imports is not arbitrary — it encodes the logical
 
 ## Build Pipeline Integration
 
-The `cognitive_case_diagrams` project integrates with the template's 9-stage pipeline:
+The `cognitive_case_diagrams` project is driven by the engine's stage orchestrators at the template monorepo root. Run them from that root, with the lifecycle-qualified project name:
 
-| Stage | Script | What happens for this project |
-|-------|--------|-------------------------------|
-| 0 | Clean | Removes `output/figures/*.png` and `output/pdf/` |
-| 1 | Setup | Verifies Python ≥ 3.11, `uv` available, dependencies installed |
-| 2 | Infra tests | Runs `tests/infra_tests/` (template infrastructure) |
-| 3 | Project tests | Runs all test files in `tests/test_*.py` (≥90% coverage enforced; current counts in `output/metrics.json`) |
-| 4 | Analysis | Executes `scripts/generate_diagrams.py` → all figures in `output/figures/` (30 PNGs as of this revision; authoritative count in `output/metrics.json::total_figures` and the registry written by the script) |
-| 5 | PDF render | Runs `scripts/03_render_pdf.py` → combined PDF |
-| 6 | Validation | Checks PDF exists, figures embedded, metadata correct |
-| 7 | LLM review | Optional Ollama-based manuscript review |
-| 8 | LLM translation | Optional multi-language abstract generation |
-| 9 | Copy outputs | Copies to `output/cognitive_case_diagrams/` |
+```bash
+uv run python scripts/pipeline/stage_01_test.py --project ongoing/ActiveInference/cognitive_case_diagrams
+uv run python scripts/pipeline/stage_02_analysis.py --project ongoing/ActiveInference/cognitive_case_diagrams
+uv run python scripts/pipeline/stage_03_render.py --project ongoing/ActiveInference/cognitive_case_diagrams
+uv run python scripts/pipeline/stage_04_validate.py --project ongoing/ActiveInference/cognitive_case_diagrams
+```
 
-The `generate_manuscript_metrics.py` script runs during stage 4 to inject dynamic variables (`${DAIF_MODULES}`, `${TEST_COUNT}`, `${FIGURE_COUNT}`) into the manuscript, ensuring all stated counts are computed at build time.
+| Stage script | What happens for this project |
+|--------------|-------------------------------|
+| `stage_00_setup.py` | Verifies Python ≥ 3.11, `uv` available, dependencies installed |
+| `stage_01_test.py` | Runs `tests/infra_tests/` (template infrastructure, ≥60%) then all test files in `tests/test_*.py` (≥90% coverage enforced; current counts in `output/metrics.json`) |
+| `stage_02_analysis.py` | Discovers and runs this project's `scripts/*.py` (`generate_diagrams.py` and its companions) → all figures in `output/figures/` (30 PNGs as of this revision; authoritative count in `output/metrics.json::total_figures` and the registry written by the script) |
+| `stage_03_render.py` | Pandoc → LaTeX → combined PDF |
+| `stage_04_validate.py` | Validates the generated PDFs, checks markdown formatting and file integrity, writes a validation report |
+| `stage_05_copy.py` | Copies this project's `output/` tree up to the template monorepo root `output/` |
+| `stage_06_llm_review.py` and later | Optional engine extras — see `scripts/pipeline/` in the template monorepo |
+
+The `generate_manuscript_metrics.py` script writes `output/metrics.json`, and `scripts/inject_variables.py` substitutes those keys into the manuscript — `${daif_modules}`, `${total_test_count}`, `${total_figures}`, and the rest — so all stated counts are computed at build time. Every key is lower-case; `output/metrics.json` is the authoritative list.
 
 ---
 

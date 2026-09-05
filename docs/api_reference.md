@@ -11,15 +11,22 @@ Public API for all `src/` packages in the `cognitive_case_diagrams` project.
 
 ## Manuscript metrics helper (`src.generate_manuscript_metrics`)
 
-Not one of the nine domain subpackages: a **build-time** module at [`../src/generate_manuscript_metrics.py`](../src/generate_manuscript_metrics.py). It collects test counts, DAIF figures, domain package counts, optional **coverage totals** from `coverage.json` (produce with `uv run pytest tests/ --cov=src --cov-report=json`), installed **NumPy/DisCoPy** versions, and English-word forms for counts; then writes `output/metrics.json` for `${…}` substitution in manuscript Markdown (see [`manuscript/11c_automated_test_inventory.md`](manuscript/11c_automated_test_inventory.md) and [`../docs/manuscript/config.yaml`](../docs/manuscript/config.yaml)).
+Not one of the nine domain subpackages: a **build-time** module at [`../src/generate_manuscript_metrics.py`](../src/generate_manuscript_metrics.py). It collects test counts, DAIF figures, domain package counts, optional **coverage totals** from `coverage.json` (produce with `uv run pytest tests/ --cov=src --cov-report=json`), installed **NumPy/DisCoPy** versions, and English-word forms for counts; then writes `output/metrics.json` for `${…}` substitution in manuscript Markdown (see [`manuscript/11c_automated_test_inventory.md`](manuscript/11c_automated_test_inventory.md) and [`manuscript/config.yaml`](manuscript/config.yaml)).
+
+All commands below run from the project root (the directory holding `src/`, `tests/` and `pyproject.toml`):
 
 ```bash
-cd projects/cognitive_case_diagrams
 uv run pytest tests/ --cov=src --cov-report=json   # refresh coverage.json at project root
 uv run python -m src.generate_manuscript_metrics   # writes output/metrics.json
-uv run python -m src.generate_manuscript_metrics --dry-run
+uv run python -m src.generate_manuscript_metrics --dry-run   # prints to stdout, writes nothing
 uv run python scripts/inject_variables.py          # writes output/manuscript/*.md
 ```
+
+The test count comes from a real `pytest --collect-only` subprocess. If that
+subprocess fails or times out the module **raises** rather than falling back to an
+estimate, so a broken collect can never ship a wrong `total_test_count`. The
+collection timeout defaults to 900 s and is overridable via the
+`CCD_COLLECT_TIMEOUT` environment variable.
 
 Public entrypoints: `collect_metrics()`, `write_metrics()` (see module docstring).
 
@@ -55,13 +62,19 @@ class Morphism:
 
 ### `CaseCategory`
 ```python
+@dataclass
 class CaseCategory:
-    objects: set[CaseRole]
-    morphisms: list[Morphism]
+    name: str                                        # required positional field
+    objects: set[CaseRole] = field(default_factory=set)
+    morphisms: list[Morphism] = field(default_factory=list)
 
     def compose(self, f: Morphism, g: Morphism) -> Morphism  # w(g∘f)=w(f)·w(g)
     def is_well_formed(self) -> bool
 ```
+
+`name` is the first dataclass field and has no default, so direct construction is
+`CaseCategory(name="MySystem", objects={...}, morphisms=[...])`; prefer the factory
+functions below.
 
 **Factory functions:**
 ```python
@@ -91,6 +104,12 @@ class AlignmentFunctor:
     def image_roles() -> set[CaseRole]
 ```
 
+**Prebuilt functors:**
+```python
+def accusative_to_ergative_functor() -> AlignmentFunctor  # S,A,P → accusative → ergative grouping
+def tripartite_functor() -> AlignmentFunctor              # S→ABS, A→ERG, P→ACC (injective, no neutralization)
+```
+
 ### `NaturalTransformation`
 ```python
 @dataclass
@@ -109,6 +128,17 @@ class NaturalTransformation:
 ```
 
 Checks naturality on morphisms in ``source_functor.source`` whose endpoints lie in the functor’s ``object_map``; requires ``is_complete()``.
+
+```python
+class IdentityNaturalTransformation(NaturalTransformation):
+    def __init__(self, functor: AlignmentFunctor) -> None
+    # id_F: F ⇒ F — each component α_A is the identity morphism on F(A)
+
+def compose_transformations(
+    alpha: NaturalTransformation, beta: NaturalTransformation
+) -> NaturalTransformation
+    # Vertical composition β ∘ α: F ⇒ H, given α: F ⇒ G and β: G ⇒ H
+```
 
 ### `FluidSFunctor`
 ```python
@@ -163,14 +193,18 @@ assert erg[CaseRole.S] == CaseRole.ABS
 
 ### `MonoidalFunctor` (tensor checks; §9b protocol narrative)
 ```python
-class MonoidalFunctor:
+@dataclass
+class MonoidalFunctor(AlignmentFunctor):
     """Tensor-preservation checks on case-alignment maps (cf. §9b).
 
     Used in the **specification-level** analysis of prompt injection under a
     Categorical Communication Protocol—not as a guarantee on production LLM APIs."""
-    source_category: CaseCategory
-    target_category: CaseCategory
-    object_map: dict[CaseRole, CaseRole]
+    # Inherited from AlignmentFunctor — there are no source_category /
+    # target_category attributes:
+    #   name: str
+    #   source: CaseCategory
+    #   target: CaseCategory
+    #   object_map: dict[CaseRole, CaseRole]
 
     def preserves_tensor(role_a: CaseRole, role_b: CaseRole) -> bool
     # Returns False if tensor structure collapses or morphisms are missing —
@@ -205,6 +239,10 @@ For categorical type-checking and prompt-injection detection, use
 ### `string_diagram` — Native Representations
 
 ```python
+@dataclass
+class AtomicType:
+    name: str        # atomic pregroup type, e.g. "n" (noun) or "s" (sentence)
+
 class Sentence:
     text: str
     boxes: list[Box]
@@ -299,8 +337,13 @@ def compute_normal_form(diagram: Diagram) -> Diagram
 def is_in_normal_form(diagram: Diagram) -> bool
 def diagrams_equal(d1: Diagram, d2: Diagram) -> bool  # via normal form
 def analyze_diagram(diagram: Diagram, name: str) -> DiagramMetrics
-def syntactic_complexity_score(diagram: Diagram) -> float
-# Formula: words + 0.5*cups + 0.25*caps + 0.1*depth
+def syntactic_complexity_score(
+    diagram: Diagram,
+    w_words: float = 1.0, w_cups: float = 0.5,
+    w_caps: float = 0.25, w_depth: float = 0.1,
+) -> float
+# Formula: w_words*words + w_cups*cups + w_caps*caps + w_depth*depth
+# Defaults give: words + 0.5*cups + 0.25*caps + 0.1*depth
 def compare_diagrams(diagrams: list[tuple[str, Diagram]]) -> list[DiagramMetrics]
 
 @dataclass
@@ -329,16 +372,20 @@ class EnrichedCategory:
     proximity_matrix: np.ndarray           # $N_C \times N_C$ matrix, entries $Z_{ij} \in [0,1]$
 
     def hom(source: CaseRole, target: CaseRole) -> float
-    def check_composition_inequality(a, b, c: CaseRole, *, rel_tol: float = 1e-9) -> bool
+    def check_composition_inequality(a: CaseRole, b: CaseRole, c: CaseRole) -> bool
     def magnitude() -> float               # ∑ᵢⱼ (Z⁻¹)ᵢⱼ , bounded by $\mathcal{O}(N_C^3)$
-    def weighting() -> np.ndarray          # column sums of Z⁻¹
-    def coweighting() -> np.ndarray        # row sums of Z⁻¹
-    def magnitude_deficit() -> float        # n − |C|
+    def weighting() -> np.ndarray          # w solving Zw = 1 — ROW sums of Z⁻¹
+    def coweighting() -> np.ndarray        # v solving vZ = 1 — COLUMN sums of Z⁻¹
+    def magnitude_deficit() -> float        # n − |C| (signed; negative when |C| > n)
     def full_composition_check() -> dict    # {"holds", "violations", "violation_rate", "total"}
     def role_clusters(threshold: float = 0.6) -> list[set[CaseRole]]
 ```
 
 > **Identity axiom** $\mathcal{C}(A,A) = 1$ is enforced inside `__post_init__` via `_validate()` at construction time (raises `ValueError` otherwise); no separate `check_identity_axiom()` method is exposed.
+
+> **Weighting vs. coweighting**: `weighting()` solves $Zw = \mathbf{1}$, i.e. $w = Z^{-1}\mathbf{1}$ — the **row** sums of $Z^{-1}$. `coweighting()` solves $vZ = \mathbf{1}$, i.e. $v = \mathbf{1}^{\top}Z^{-1}$ — the **column** sums. The two coincide for symmetric hom-matrices (including `STANDARD_PROXIMITY_MATRIX`), so the distinction only shows on asymmetric ones.
+
+> **No tolerance parameter**: `check_composition_inequality()` takes three roles and nothing else — the comparison is exact. `_validate()` does **not** enforce the composition inequality at construction, so a user-supplied proximity matrix can violate it; use `full_composition_check()` to survey all triples.
 
 **Factory / module constants:**
 ```python
@@ -418,7 +465,11 @@ class ClassifyingTopos:
 def check_morita_equivalence(
     topos1: ClassifyingTopos, topos2: ClassifyingTopos
 ) -> tuple[bool, list[str]]
-    # Returns (equivalent, mismatches) — necessary (not sufficient) invariant check.
+    # Returns (not_ruled_out, mismatches). NECESSARY CONDITIONS ONLY: signature
+    # shape (sorts, relations, axioms) compared exactly, plus arity spectrum.
+    # True means "not ruled out", never "equivalent" — establishing equivalence
+    # requires exhibiting an equivalence of classifying toposes, which this
+    # module does not do.
 
 def build_typological_theory(
     category: CaseCategory, alignment_name: str = "typological"
@@ -429,7 +480,12 @@ def build_enriched_theory(enriched_cat: EnrichedCategory) -> GeometricTheory
 def bridge_transfer(
     source_topos: ClassifyingTopos, target_topos: ClassifyingTopos,
     property_name: str,
-) -> dict
+) -> dict[str, object]
+    # Keys: property, source_theory, target_theory, morita_equivalent,
+    #       transfer_possible, necessary_conditions_only, mismatches
+    # `necessary_conditions_only` is always True: the gate is
+    # check_morita_equivalence(), so a successful transfer licenses *attempting*
+    # the inference, never asserting its validity.
 ```
 
 ---
@@ -582,9 +638,16 @@ def push_forward_return(
 
 def distributional_bellman_operator(
     belief, transition_matrix, reward_vector,
-    gamma=0.99, n_steps=10, n_quantiles=51
+    gamma=0.99, n_steps=10, n_quantiles=51,
+    convergence_tol: float | None = None,
 ) -> list[DistributionalReturn]
-    # Multi-step Bellman iteration Tⁿ Z₀ → Z*
+    # Multi-step *belief push-forward*: step k returns the distribution of
+    # R + γ (T^⊤ q_k), where q_k is the belief propagated forward k times.
+    # This is a FORWARD recursion over beliefs, NOT a value backup, and it does
+    # NOT converge to the Bellman fixed point Z* = T Z*. Read the output as a
+    # discounted one-step return under an evolving belief; do not cite it as a
+    # value function. `convergence_tol` stops early when the change in mean
+    # between successive steps falls below it.
     # Time complexity $\mathcal{O}(T \cdot N_C \log N_C)$
 
 def categorical_return_distribution(
@@ -612,12 +675,13 @@ Z = push_forward_return(belief, trans, reward, gamma=0.99, n_quantiles=51)
 print(f"Return mean={Z.mean:.3f}, std={Z.std():.3f}")
 print(f"95% CI = {Z.ci(alpha=0.05)}")
 
-# Multi-step Bellman iteration for convergence to Z*
+# Multi-step belief push-forward (NOT a value backup — see the caveat above)
 trajectory = distributional_bellman_operator(belief, trans, reward, n_steps=10)
-# trajectory[-1] is the converged return distribution
+# trajectory[-1] is the return distribution under the ten-step-propagated belief,
+# not a Bellman fixed point Z*.
 ```
 
-> **Connection to RL**: `push_forward_return()` implements the distributional Bellman operator from Bellemare et al. (2017), extended to case role distributions per §7c.
+> **Connection to RL**: `push_forward_return()` follows the distributional Bellman push-forward of Bellemare et al. (2017), extended to case role distributions per §7c. Obtaining a fixed point would require the backup `z ← R + γ (T @ z)` seeded at `z = R`; that is a different algorithm and is deliberately not implemented here.
 
 ### `quantile` — Quantile TD Learning
 ```python
@@ -823,7 +887,7 @@ class CasePOVM:
     dimension: int
     name: str = "povm"
 
-    def is_complete(tolerance: float = 1e-10) -> bool
+    def is_complete(atol: float = 1e-10) -> bool   # Σ E_c = I; keyword is `atol`, not `tolerance`
 ```
 
 ### Module Functions
@@ -894,6 +958,10 @@ def detect_type_violation(category: CaseCategory, source: CaseRole,
                           target: CaseRole) -> TypeViolation | None
 def injection_score(violations: list[TypeViolation]) -> float
 def topological_robustness(enriched: EnrichedCategory) -> float
+    # R = |C| / n. Bounded in (0, 1] ONLY for hom-matrices satisfying the
+    # composition inequality C(A,C) ≥ C(A,B)·C(B,C). EnrichedCategory._validate
+    # does not enforce that axiom, so a user-supplied proximity matrix can
+    # return R > 1; the function warns when it does.
 def semantic_integrity_check(enriched: EnrichedCategory) -> list[tuple]  # violated triples
 ```
 
@@ -929,50 +997,69 @@ if bad is not None:
 
 ## `src.visualization` — All Render Functions
 
-Most render functions share the signature pattern:
+Render functions share an argument pattern — positional data, then
+`output_path`, `title`, and keyword options — but **not** a single return type.
+Three conventions coexist, so read the Returns column before chaining a call:
+
+- **`Figure`** — returns the live `matplotlib.figure.Figure`; the caller saves or closes it.
+- **`str`** — writes via `savefig(...)` and returns the output path string.
+- **`None`** — the `discopy_diagrams` renderers draw and save as a side effect only.
+
 ```python
 def render_*(
     data_or_args,
-    output_path: Path | None = None,
+    output_path: ... = None,
     title: str = "...",
     **kwargs,
-) -> plt.Figure
+) -> plt.Figure | str | None      # per-function; see the Returns column below
 ```
 
-| Function | Module | Description |
-|----------|--------|-------------|
-| `render_case_category()` | `category_diagrams` | NetworkX graph with case role nodes |
-| `render_alignment_comparison()` | `category_diagrams` | 3-panel accusative/ergative/tripartite |
-| `render_composition_triangle()` | `category_diagrams` | Morphism composition triangle |
-| `render_functor_diagram()` | `functor_diagrams` | Dual-panel category with functor arrows |
-| `render_enriched_heatmap()` | `enriched_diagrams` | [0,1]-enriched proximity heatmap |
-| `render_complexity_comparison()` | `complexity_plots` | Grouped bar chart of diagram complexity |
-| `render_normal_form_comparison()` | `complexity_plots` | Original vs normal form bar chart |
-| `render_syntactic_complexity_radar()` | `complexity_plots` | Radar chart of complexity dimensions |
-| `render_discopy_transitive()` | `discopy_diagrams` | DisCoPy transitive sentence |
-| `render_discopy_composition()` | `discopy_diagrams` | DisCoPy functor composition |
-| `render_discopy_snake()` | `discopy_diagrams` | Snake equation contraction |
-| `render_discopy_passive()` | `discopy_diagrams` | Passive sentence diagram |
-| `render_discopy_sentence_progression()` | `discopy_diagrams` | Progressive complexity panel |
-| `render_discopy_multilingual()` | `discopy_diagrams` | Cross-linguistic comparison |
-| `render_discopy_ditransitive()` | `discopy_diagrams` | 3-argument sentence diagram |
-| `render_discopy_discocirc_discourse()` | `discopy_diagrams` | DisCoCirc discourse circuit |
-| `render_discopy_three_sentence_discourse()` | `discopy_diagrams` | Multi-sentence discourse |
-| `render_discocat_sentence()` | `string_diagrams` | Manual string diagram |
-| `render_discourse_diagram()` | `string_diagrams` | Discourse-level diagram |
-| `render_discocirc_discourse()` | `string_diagrams` | DisCoCirc circuit rendering |
-| `render_three_sentence_discourse()` | `string_diagrams` | 3-sentence discourse rendering |
-| `render_syntactic_panel()` | `syntactic_sentence_diagrams` | Syntactic tree panel |
-| `plot_belief_distribution()` | `active_inference_plots` | Case role belief bar chart (snapshot) |
-| `plot_alignment_frame_belief_dynamics()` | `active_inference_plots` | §7 scalar alignment-frame trajectory (3-panel) |
-| `plot_povm_probabilities()` | `quantum_plots` | POVM measurement bar chart |
-| `plot_type_violations()` | `security_plots` | Severity-colored violation bars |
-| `plot_fluid_s_volition_landscape()` | `fluid_s_plots` | 2D volition–agentivity heatmap |
-| `plot_belief_trajectory()` | `daif_plots` | DAIF belief + return trajectory |
-| `plot_free_energy_convergence()` | `daif_plots` | Free energy convergence curve |
-| `plot_erp_predictions()` | `daif_plots` | Synthetic N400 + P600 waveforms |
-| `render_pregroup_reduction_unpacking()` | `category_unpacking` | Four-panel pregroup reduction walkthrough (Fig 23) |
-| `render_discocirc_entity_persistence()` | `category_unpacking` | DisCoCirc entity-persistence role-history ribbon (Fig 24) |
-| `render_snake_equation_unpacking()` | `category_unpacking` | Three-panel snake-equation visual derivation (Fig 25) |
+| Function | Module | Returns | Description |
+|----------|--------|---------|-------------|
+| `render_case_category()` | `category_diagrams` | `Figure` | NetworkX graph with case role nodes |
+| `render_alignment_comparison()` | `category_diagrams` | `Figure` | 3-panel accusative/ergative/tripartite |
+| `render_composition_triangle()` | `category_diagrams` | `Figure` | Morphism composition triangle |
+| `render_functor_diagram()` | `functor_diagrams` | `Figure` | Dual-panel category with functor arrows |
+| `render_enriched_heatmap()` | `enriched_diagrams` | `Figure` | [0,1]-enriched proximity heatmap |
+| `render_complexity_comparison()` | `complexity_plots` | `str` | Grouped bar chart of diagram complexity |
+| `render_normal_form_comparison()` | `complexity_plots` | `str` | Original vs normal form bar chart |
+| `render_syntactic_complexity_radar()` | `complexity_plots` | `str` | Radar chart of complexity dimensions |
+| `render_discopy_transitive()` | `discopy_diagrams` | `None` | DisCoPy transitive sentence |
+| `render_discopy_composition()` | `discopy_diagrams` | `None` | DisCoPy functor composition |
+| `render_discopy_snake()` | `discopy_diagrams` | `None` | Snake equation contraction |
+| `render_discopy_passive()` | `discopy_diagrams` | `None` | Passive sentence diagram |
+| `render_discopy_sentence_progression()` | `discopy_diagrams` | `None` | Progressive complexity panel |
+| `render_discopy_multilingual()` | `discopy_diagrams` | `None` | Cross-linguistic comparison |
+| `render_discopy_ditransitive()` | `discopy_diagrams` | `None` | 3-argument sentence diagram |
+| `render_discopy_discocirc_discourse()` | `discopy_diagrams` | `None` | DisCoCirc discourse circuit |
+| `render_discopy_three_sentence_discourse()` | `discopy_diagrams` | `None` | Multi-sentence discourse |
+| `get_diagram_metrics()` | `discopy_diagrams` | `dict` | Structural readout of a DisCoPy diagram: `n_boxes`, `dom_type`, `cod_type`, `n_wires` |
+| `render_discocat_sentence()` | `string_diagrams` | `Figure` | Manual string diagram |
+| `render_discourse_diagram()` | `string_diagrams` | `Figure` | Discourse-level diagram |
+| `render_discocirc_discourse()` | `string_diagrams` | `Figure` | DisCoCirc circuit rendering |
+| `render_three_sentence_discourse()` | `string_diagrams` | `Figure` | 3-sentence discourse rendering |
+| `render_syntactic_panel()` | `syntactic_sentence_diagrams` | `str` | Syntactic tree panel |
+| `plot_belief_distribution()` | `active_inference_plots` | `str` | Case role belief bar chart (snapshot) |
+| `plot_alignment_frame_belief_dynamics()` | `active_inference_plots` | `str` | §7 scalar alignment-frame trajectory (3-panel) |
+| `plot_povm_probabilities()` | `quantum_plots` | `str` | POVM measurement bar chart |
+| `plot_type_violations()` | `security_plots` | `str` | Severity-colored violation bars |
+| `plot_monoidal_functor_security()` | `security_plots` | `str` | Dual-panel §9b protocol figure: functor object-map graph with the blocked ACC→NOM promotion edge |
+| `plot_fluid_s_volition_landscape()` | `fluid_s_plots` | `str` | 2D volition–agentivity heatmap |
+| `plot_belief_trajectory()` | `daif_plots` | `str` | DAIF belief + return trajectory |
+| `plot_free_energy_convergence()` | `daif_plots` | `str` | Free energy convergence curve |
+| `plot_erp_predictions()` | `daif_plots` | `str` | Synthetic N400 + P600 waveforms |
+| `render_pregroup_reduction_unpacking()` | `category_unpacking` | `str` | Four-panel pregroup reduction walkthrough (Fig 23) |
+| `render_discocirc_entity_persistence()` | `category_unpacking` | `str` | DisCoCirc entity-persistence role-history ribbon (Fig 24) |
+| `render_snake_equation_unpacking()` | `category_unpacking` | `str` | Three-panel snake-equation visual derivation (Fig 25) |
 
-*All functions above are re-exported from `src.visualization` (see `src/visualization/__init__.py::__all__`). Last updated: 2026-04-23.*
+**Exported style constants** (`styles`, also re-exported from `src.visualization`):
+
+```python
+CASE_COLORS: dict[str, str]   # per-case-role hue map, chosen for luminance contrast
+FONT_SIZE_FLOOR: int = 16     # minimum font size any figure may use
+```
+
+The full authoritative export list is `src/visualization/__init__.py::__all__`; the
+table plus the two constants above cover it. Return types are those declared by
+`inspect.signature(...).return_annotation` on the live modules — regenerate the
+Returns column from that rather than editing it by hand.

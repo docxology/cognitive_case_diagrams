@@ -50,4 +50,7 @@ case_systems (§2) ──┬──→ diagrams (§3–§4c)
 
 ---
 
-*Last updated: 2026-04-22 (v2.3 release). 9 domain subpackages documented; 1207 tests / 64 files / 30 figures / 95.96% line+branch coverage.*
+*Last updated: 2026-04-22 (v2.3 release). 9 domain subpackages documented. Live
+test, figure, and coverage counts are generated, not transcribed here — read
+`output/metrics.json` (`total_test_count`, `total_test_files`, `total_figures`,
+`coverage_percent`).*

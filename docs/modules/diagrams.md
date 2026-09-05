@@ -23,7 +23,7 @@ The `diagrams` package implements the **string-diagrammatic** representations ce
 
 ```text
 diagrams/
-├── __init__.py            # Public API: 13 exported symbols
+├── __init__.py            # Public API: 14 exported symbols (`__all__`)
 ├── string_diagram.py      # Native: AtomicType, Wire, Box, Sentence, Discourse
 │                          # DisCoPy base: create_discopy_*(rigid.Box)
 │                          # DisCoPy extended: create_word_diagram_*(grammar.pregroup.Word)
@@ -107,11 +107,11 @@ For discourse-level prompt-injection detection (§9b cognitive security), feed p
 | `count_caps(diagram)` | function | Cap expansions |
 | `diagram_depth(diagram)` | function | `diagram.depth()` — sequential layers |
 | `diagram_width(diagram)` | function | `diagram.width` — max parallel wires |
-| `syntactic_complexity_score(diagram)` | function | `words + 0.5*cups + 0.25*caps + 0.1*depth` |
+| `syntactic_complexity_score(diagram, w_words=1.0, w_cups=0.5, w_caps=0.25, w_depth=0.1)` | function | Configurable weighted sum, default `words + 0.5*cups + 0.25*caps + 0.1*depth` |
 | `analyze_diagram(diagram, name)` | function | Comprehensive `DiagramMetrics` |
 | `compare_diagrams(diagrams)` | function | Multi-diagram comparison |
-| `MagnitudeHomologyMetrics` | `@dataclass` | Quantum environment bounds (§5b) |
-| `compute_quantum_magnitude_homology(diagram, noise)` | function | Decoherence safety bounds |
+| `MagnitudeHomologyMetrics` | `@dataclass` | Four fields only — `base_syntactic_complexity`, `topological_holes_1d`, `estimated_decoherence_rate`, `quantum_environment_commutes`. It holds no homology groups and no magnitude scalar; Leinster–Shulman magnitude homology is the theoretical target (§5b), not the implemented object |
+| `compute_quantum_magnitude_homology(diagram, noise)` | function | Coarse decoherence proxy: `cups − caps` clamped at 0, plus `min(1, noise·1.5**holes)` vs an unsourced 0.25 threshold — computes no homology and no magnitude |
 
 ### `ditransitive.py` — Three-Argument Verbs
 
@@ -184,6 +184,17 @@ score = syntactic_complexity_score(diagram)
 | `discopy.tensor` | `Box`, `Cup`, `Id`, `Dim`, `.eval()` | `create_tensor_semantics()` |
 | `discopy.drawing` | `Equation` | `visualization/discopy_diagrams.py` |
 | `Diagram` methods | `.normal_form()`, `.depth()`, `.width`, `.boxes`, `.dom`, `.cod` | Complexity metrics |
+
+---
+
+## Related Documentation
+
+- **Upstream**: [`case_systems`](case_systems.md) — provides `CaseRole` for case assignment
+- **Downstream**: [`visualization`](visualization.md) — `string_diagrams.py`, `complexity_plots.py`, `discopy_diagrams.py`
+- **Theory map**: [theory_implementation_map.md](../theory_implementation_map.md) §3–§4c
+- **API signatures**: [api_reference.md](../api_reference.md) (`src.diagrams`)
+- **Figures**: [manuscript_figure_index.md](../manuscript_figure_index.md) — Figures 6–14, 20–21, 23–25
+- **Glossary**: [glossary.md](../glossary.md) — DisCoCat, DisCoCirc, pregroup, cup/cap, normal form
 
 ---
 

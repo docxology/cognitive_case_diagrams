@@ -18,7 +18,7 @@ Key advances over scalar active inference:
 3. **Distributional prediction errors** that decompose into N400 and P600 components
 4. **ERP waveform synthesis** predicting specific electrophysiological signatures
 
-The package comprises 7 tightly-coupled modules totalling ~75 KB of production code — the largest `src/` subpackage.
+The package comprises 7 tightly-coupled modules totalling ~78 KB of production code — the largest domain subpackage (only the cross-cutting `visualization/` is bigger).
 
 ---
 
@@ -71,7 +71,7 @@ types → core → quantile → inference → prediction → policy
 | Symbol | Signature | Description |
 | ------ | --------- | ----------- |
 | `push_forward_return()` | `(belief, T, R, γ, n_q) → DistributionalReturn` | One-step: $Z = R + \gamma T^\top q$ with quantile representation |
-| `distributional_bellman_operator()` | `(belief, T, R, γ, n, n_q) → list[DR]` | Multi-step Bellman iteration $Z_k = \mathcal{T} Z_{k-1}$ |
+| `distributional_bellman_operator()` | `(belief, T, R, γ, n_steps, n_q, convergence_tol=None) → list[DR]` | Multi-step **forward belief push-forward**: step $k$ returns the distribution of $R + \gamma T^\top q_k$ for the belief propagated forward $k$ times. It is a forward recursion over beliefs, not a value backup, and does **not** converge to the Bellman fixed point $Z^* = \mathcal{T}Z^*$ — read it as a discounted one-step return under an evolving belief, never as a value function |
 | `categorical_return_distribution()` | `(DR, v_min, v_max, n_atoms) → (atoms, probs)` | C51 projection of quantile distribution onto fixed categorical support |
 
 The push-forward operator computes:
@@ -119,7 +119,7 @@ and constructs a quantile representation by interpolating over the role-weighted
 
 | Symbol | Signature | Description |
 | ------ | --------- | ----------- |
-| `convergence_diagnostics()` | `(result) → dict` | `converged`, `n_iterations`, `final_fe`, `fe_trajectory` |
+| `convergence_diagnostics()` | `(fe_trajectory, min_iterations=3) → dict` | Takes the trajectory itself (e.g. `result.fe_trajectory`), not the `DAIFResult`; returns `monotone`, `total_reduction`, `relative_reduction`, `n_iterations`, `converged`, `fe_range`, `mean_step_size` |
 | `distributional_kl()` | `(Z1, Z2) → float` | KL divergence between two DistributionalReturns |
 | `quantile_coverage()` | `(predicted, actual) → dict` | Calibration: actual coverage at each predicted quantile level |
 | `return_distribution_entropy()` | `(Z) → float` | Shannon entropy of the categorical projection |
@@ -174,7 +174,7 @@ print(f"N400={erp.n400_amplitude:.3f} μV, P600={erp.p600_amplitude:.3f} μV")
 | Equation | Function | Description |
 | -------- | -------- | ----------- |
 | $Z(s) = R + \gamma T^\top q$ | `push_forward_return()` | Distributional Bellman (§7c; theory map Eq. 7-1) |
-| $Z_k = \mathcal{T} Z_{k-1}$ | `distributional_bellman_operator()` | Multi-step Bellman contraction |
+| $Z_k = R + \gamma T^\top q_k$ | `distributional_bellman_operator()` | Multi-step forward belief push-forward (not a Bellman contraction — no fixed point) |
 | $W_p(Z_1, Z_2)$ | `wasserstein_return_distance()` | Wasserstein distance between returns |
 | $\text{DPE}(Z, o)$ | `distributional_prediction_error()` | Distributional prediction error |
 | $G(\pi) = \mathbb{E}_q[D_{KL}] + H[q_\pi]$ | `G_policy()` | Expected free energy under distributional beliefs |

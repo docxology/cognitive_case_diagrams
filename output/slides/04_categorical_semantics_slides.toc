@@ -1,1 +1,0 @@
-\beamer@sectionintoc {1}{Categorical Distributional Semantics (DisCoCat): Composing Vector Spaces via Type Derivations}{1}{0}{1}

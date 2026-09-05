@@ -1,1 +1,0 @@
-\beamer@sectionintoc {1}{Categorical Communication Protocols: Composing Agent Interactions via Typed Case Morphisms}{1}{0}{1}

@@ -15,10 +15,9 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from matplotlib.patches import FancyArrowPatch
 import numpy as np
 
-from .styles import mathtext_safe_arrows
+from .styles import FIGURE_DPI, mathtext_safe_arrows
 
 logger = logging.getLogger(__name__)
 
@@ -143,7 +142,6 @@ def _draw_tree_panel(
         xm = (x1 + x2) / 2
         # Arc height proportional to distance
         dist = abs(x2 - x1)
-        y_top = y_word + 0.18 + 0.18 * dist
         # Draw as bezier via FancyArrowPatch
         ax.annotate(
             "",
@@ -226,12 +224,12 @@ def render_syntactic_panel(
         col = idx % n_cols
 
         # Tree subplot: top portion of this panel block
-        ax_tree = fig.add_axes([
+        ax_tree = fig.add_axes((
             col / n_cols + 0.01,
             1.0 - (row_block + 1) / n_rows_of_panels + 0.22 / n_rows_of_panels,
             1 / n_cols - 0.02,
             0.60 / n_rows_of_panels,
-        ])
+        ))
         _draw_tree_panel(
             ax_tree,
             panel["words"],
@@ -245,12 +243,12 @@ def render_syntactic_panel(
         )
 
         # Type string subplot: bottom portion of this panel block
-        ax_type = fig.add_axes([
+        ax_type = fig.add_axes((
             col / n_cols + 0.01,
             1.0 - (row_block + 1) / n_rows_of_panels + 0.01 / n_rows_of_panels,
             1 / n_cols - 0.02,
             0.20 / n_rows_of_panels,
-        ])
+        ))
         ax_type.text(
             0.5, 0.70,
             panel["type_str"],
@@ -299,7 +297,7 @@ def render_syntactic_panel(
 
     fig.savefig(
         output_path,
-        dpi=200,
+        dpi=FIGURE_DPI,
         bbox_inches="tight",
         facecolor="white",
     )

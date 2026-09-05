@@ -1,1 +1,0 @@
-\beamer@sectionintoc {1}{Magnitude and Magnitude Homology: Effective Role Count, Lawvere Similarity Spaces, and Language as Enriched Category}{1}{0}{1}

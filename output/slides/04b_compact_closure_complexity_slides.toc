@@ -1,1 +1,0 @@
-\beamer@sectionintoc {1}{Compact Closure: Snake Equation, Valency, and Four Complexity Metrics}{1}{0}{1}

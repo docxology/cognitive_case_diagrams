@@ -24,6 +24,8 @@ from typing import Iterator, Optional
 
 import matplotlib.pyplot as plt
 
+from .styles import FIGURE_DPI
+
 from ..diagrams.string_diagram import (
     create_discopy_transitive,
     create_discopy_complex_transitive,
@@ -37,11 +39,12 @@ from ..diagrams.string_diagram import (
 logger = logging.getLogger(__name__)
 
 
-def _resolve_path(output_path: Optional[str], default_name: str) -> Path:
+def _resolve_path(output_path: Optional[str | Path], default_name: str) -> Path:
     """Resolve output path, using a default filename if None."""
     if output_path is None:
-        output_path = Path(default_name)
-        logger.debug("No output_path provided, using default: %s", output_path)
+        resolved = Path(default_name)
+        logger.debug("No output_path provided, using default: %s", resolved)
+        return resolved
     return Path(output_path)
 
 # Standard draw kwargs for consistent, publication-quality output.
@@ -51,7 +54,12 @@ DRAW_KWARGS = dict(fontsize=22, margins=(0.15, 0.15), nodesize=1.2, draw_types=T
 
 @contextmanager
 def _glyph_safe_rc() -> Iterator[None]:
-    """Prefer DejaVu for DisCoPy text so Unicode math symbols survive savefig."""
+    """Prefer DejaVu for DisCoPy text so Unicode math symbols survive savefig.
+    Also pins ``savefig.dpi`` to ``FIGURE_DPI``: discopy's ``draw(path=...)``
+    ignores the ``dpi`` kwarg and falls back to matplotlib's default 100 dpi,
+    so every DisCoPy figure would otherwise render below the 300-dpi
+    publication standard (§ADR-003).
+    """
     with plt.rc_context(
         {
             "font.family": "sans-serif",
@@ -62,12 +70,13 @@ def _glyph_safe_rc() -> Iterator[None]:
                 "Liberation Sans",
                 "sans-serif",
             ],
+            "savefig.dpi": FIGURE_DPI,
         }
     ):
         yield
 
 
-def render_discopy_transitive(  # pragma: no cover
+def render_discopy_transitive(
     output_path: Optional[str] = None,
 ) -> None:
     """Render a DisCoPy complex transitive sentence diagram.
@@ -86,7 +95,7 @@ def render_discopy_transitive(  # pragma: no cover
     logger.info("Saved DisCoPy transitive to %s", resolved)
 
 
-def render_discopy_composition(  # pragma: no cover
+def render_discopy_composition(
     subject: str = "Alice",
     verb: str = "chases",
     obj: str = "Bob",
@@ -115,7 +124,7 @@ def render_discopy_composition(  # pragma: no cover
     logger.info("Saved DisCoPy composition to %s", resolved)
 
 
-def render_discopy_snake(  # pragma: no cover
+def render_discopy_snake(
     output_path: Optional[str] = None,
 ) -> None:
     """Render the snake equation (compact closure axiom).
@@ -136,7 +145,7 @@ def render_discopy_snake(  # pragma: no cover
     logger.info("Saved DisCoPy snake equations to %s", resolved)
 
 
-def render_discopy_passive(  # pragma: no cover
+def render_discopy_passive(
     output_path: Optional[str] = None,
 ) -> None:
     """Render a passive voice diagram.
@@ -154,7 +163,7 @@ def render_discopy_passive(  # pragma: no cover
     logger.info("Saved DisCoPy passive to %s", resolved)
 
 
-def render_discopy_sentence_progression(  # pragma: no cover
+def render_discopy_sentence_progression(
     output_path: Optional[str] = None,
 ) -> None:
     """Render a progression of sentence complexities.
@@ -179,7 +188,7 @@ def render_discopy_sentence_progression(  # pragma: no cover
     logger.info("Saved sentence progression to %s", resolved)
 
 
-def render_discopy_multilingual(  # pragma: no cover
+def render_discopy_multilingual(
     output_path: Optional[str] = None,
 ) -> None:
     """Render 'Alice chases Bob' across 6 languages.
@@ -205,7 +214,7 @@ def render_discopy_multilingual(  # pragma: no cover
     logger.info("Saved multilingual diagrams to %s", resolved)
 
 
-def render_discopy_ditransitive(  # pragma: no cover
+def render_discopy_ditransitive(
     output_path: Optional[str] = None,
 ) -> None:
     """Render a ditransitive sentence diagram.
@@ -239,7 +248,7 @@ def render_discopy_ditransitive(  # pragma: no cover
     logger.info("Saved ditransitive diagram to %s", resolved)
 
 
-def render_discopy_discocirc_discourse(  # pragma: no cover
+def render_discopy_discocirc_discourse(
     output_path: Optional[str] = None,
 ) -> None:
     """Render a two-sentence discourse using DisCoPy diagrams.
@@ -262,7 +271,7 @@ def render_discopy_discocirc_discourse(  # pragma: no cover
     logger.info("Saved DisCoPy discourse to %s", resolved)
 
 
-def render_discopy_three_sentence_discourse(  # pragma: no cover
+def render_discopy_three_sentence_discourse(
     output_path: Optional[str] = None,
 ) -> None:
     """Render three-sentence role reversal using DisCoPy diagrams.
@@ -288,7 +297,7 @@ def render_discopy_three_sentence_discourse(  # pragma: no cover
     logger.info("Saved three-sentence discourse to %s", resolved)
 
 
-def get_diagram_metrics(diagram) -> dict:  # pragma: no cover
+def get_diagram_metrics(diagram) -> dict:
     """Extract structural metrics from a DisCoPy diagram.
 
     Args:

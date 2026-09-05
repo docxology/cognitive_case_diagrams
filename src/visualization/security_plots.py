@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
-from ..security.cognitive_security import TypeViolation
+from ..security.cognitive_security import TypeViolation, detect_type_violation, injection_score
 from .styles import (
     FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_LABEL,
     DEFAULT_FIGSIZE, FIGURE_DPI,
@@ -24,6 +24,29 @@ from .styles import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _protocol_category():
+    """Build the §9b protocol category ``C_protocol`` from eq:eq-9-1.
+
+    The manuscript fixes the protocol's licensed morphisms explicitly
+    (``docs/manuscript/09b_cognitive_security.md``): every message is a typed
+    morphism User_NOM -> Model_INS -> Webpage_ACC -> Output_DAT, and detection
+    of prompt injection is "checking whether all morphisms in the evaluation
+    trace are well-typed members of Mor(C_protocol) — a decidable graph check".
+    Declaring those edges as a real :class:`CaseCategory` lets the figure's
+    verdicts be computed by the tested ``detect_type_violation`` detector
+    instead of hand-drawn.
+    """
+    from ..case_systems.case_category import CaseCategory, CaseRole, Morphism
+
+    protocol = CaseCategory(name="C_protocol")
+    for role in (CaseRole.NOM, CaseRole.INS, CaseRole.ACC, CaseRole.DAT):
+        protocol.add_role(role)
+    protocol.add_morphism(Morphism(CaseRole.NOM, CaseRole.INS, "f_request"))
+    protocol.add_morphism(Morphism(CaseRole.INS, CaseRole.ACC, "g_summarize"))
+    protocol.add_morphism(Morphism(CaseRole.ACC, CaseRole.DAT, "h_deliver"))
+    return protocol
 
 
 def plot_type_violations(
@@ -164,8 +187,25 @@ def plot_case_interaction_graph(
 
     _draw_main_edges(ax_top)
     _draw_nodes(ax_top)
-    ax_top.text(0.97, 0.92, "✓", fontsize=22, color="#16a34a", ha="right", va="top",
-                fontweight="bold")
+    from ..case_systems.case_category import CaseRole
+
+    # Chain roles in display order — real CaseRole enums for the detector,
+    # matching the display labels in `nodes` (User=NOM, Model=INS, Webpage=ACC,
+    # Output=DAT per eq:eq-9-1).
+    chain_roles = [CaseRole.NOM, CaseRole.INS, CaseRole.ACC, CaseRole.DAT]
+    protocol = _protocol_category()
+    legit_violations = [
+        detect_type_violation(protocol, source, target)
+        for source, target in zip(chain_roles, chain_roles[1:])
+    ]
+    legit_commutes = not any(v is not None for v in legit_violations)
+    ax_top.text(
+        0.97, 0.92,
+        "✓" if legit_commutes else "✗",
+        fontsize=22,
+        color="#16a34a" if legit_commutes else COLOR_SEVERITY_HIGH,
+        ha="right", va="top", fontweight="bold",
+    )
     ax_top.set_title("Legitimate Interaction — diagram commutes",
                      fontsize=FONT_SIZE_LABEL, pad=8, color="#16a34a")
 
@@ -190,11 +230,21 @@ def plot_case_interaction_graph(
         ha="center", va="bottom", fontsize=FONT_SIZE_FLOOR - 1,
         color=COLOR_SEVERITY_HIGH, fontstyle="italic",
     )
-    ax_bot.text(0.97, 0.92, "✗", fontsize=22, color=COLOR_SEVERITY_HIGH,
-                ha="right", va="top", fontweight="bold")
+    # The illicit ACC→INS arc: verdict from the real detector, not hand-drawn.
+    injection_violation = detect_type_violation(protocol, CaseRole.ACC, CaseRole.INS)
+    injection_violations = [injection_violation] if injection_violation else []
+    score = injection_score(injection_violations)
+    ax_bot.text(
+        0.97, 0.92, "✗" if injection_violations else "✓",
+        fontsize=22,
+        color=COLOR_SEVERITY_HIGH if injection_violations else "#16a34a",
+        ha="right", va="top", fontweight="bold",
+    )
     ax_bot.text(
         0.5, 0.04,
-        mathtext_safe_arrows("ACC→NOM: type violation — diagram does not commute"),
+        mathtext_safe_arrows(
+            f"injection score {score:.2f} — diagram does not commute"
+        ),
         ha="center", va="bottom", fontsize=FONT_SIZE_FLOOR - 1,
         color=COLOR_SEVERITY_HIGH, fontweight="bold",
         bbox=dict(boxstyle="round", facecolor="#fff3f3",

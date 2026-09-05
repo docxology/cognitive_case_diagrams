@@ -1,1 +1,0 @@
-\beamer@sectionintoc {1}{\([0,1]\)-Enriched Case Categories: Hom-Values as Distributional Proximity}{1}{0}{1}

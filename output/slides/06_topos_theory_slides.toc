@@ -1,1 +1,0 @@
-\beamer@sectionintoc {1}{Topos-Theoretic Bridges: Transferring Results Across Case-Theoretic Frameworks}{1}{0}{1}

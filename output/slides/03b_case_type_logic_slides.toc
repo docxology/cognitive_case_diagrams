@@ -1,1 +1,0 @@
-\beamer@sectionintoc {1}{Case Subscripts, Passivization, and the Curry--Howard Proof}{1}{0}{1}

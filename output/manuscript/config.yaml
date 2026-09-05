@@ -47,12 +47,15 @@ metadata:
   language: "en"
 
 llm:
+  # Disabled 2026-09-04 by author decision (Daniel Ari Friedman): this
+  # publication opts OUT of automated LLM-generated reviews and translations.
+  # Re-enable deliberately if that changes.
   reviews:
-    enabled: true
+    enabled: false
     types:
       - executive_summary
   translations:
-    enabled: true
+    enabled: false
     languages:
       - zh
 
@@ -82,6 +85,8 @@ testing:
 #   ${coverage_lines_covered} / ${coverage_lines_total} - Optional line totals from coverage.json
 #   ${discopy_version} / ${numpy_version} - Installed package versions (may be empty)
 #   ${discopy_version_pretty} / ${numpy_version_pretty} - Versions safe for prose
-#
+#   ${paper_version}        - Publication edition from paper.version (e.g. "2.3")
+#   ${paper_doi}            - DOI from publication.doi (canonical short form)
+#   ${paper_repo_url}       - Repository URL from pyproject [project.urls]
 # To inject: python scripts/inject_variables.py
 # The render pipeline auto-detects output/manuscript/ for injection.

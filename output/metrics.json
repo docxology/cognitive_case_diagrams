@@ -1,5 +1,5 @@
 {
-  "total_test_count": "1208",
+  "total_test_count": "1212",
   "total_test_files": "64",
   "daif_modules": "7",
   "daif_symbols": "25",
@@ -13,6 +13,9 @@
   "numpy_version": "2.4.4",
   "discopy_version_pretty": "1.2.2",
   "numpy_version_pretty": "2.4.4",
+  "paper_version": "2.3",
+  "paper_doi": "10.5281/zenodo.19695260",
+  "paper_repo_url": "https://github.com/docxology/cognitive_case_diagrams",
   "coverage_percent": "95.79",
   "coverage_percent_raw": "95.79",
   "coverage_lines_covered": "3514",

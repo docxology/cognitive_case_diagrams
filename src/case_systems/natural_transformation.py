@@ -274,7 +274,11 @@ def compose_transformations(
         The composite natural transformation F ⇒ H.
 
     Raises:
-        ValueError: If alpha's target functor differs from beta's source functor.
+        ValueError: If alpha's target functor differs from beta's source
+            functor, or if some component pair is not composable
+            (α_A's target image must equal β_A's source image). The
+            composite component weight is the enriched product
+            ``w(α_A) · w(β_A)``.
     """
     if alpha.target_functor.name != beta.source_functor.name:
         raise ValueError(
@@ -292,10 +296,19 @@ def compose_transformations(
         if role in beta.components:
             alpha_comp = alpha.components[role]
             beta_comp = beta.components[role]
+            # Componentwise composability: α_A must land where β_A starts.
+            if alpha_comp.target_image != beta_comp.source_image:
+                raise ValueError(
+                    f"Cannot compose at {role.name}: α target image "
+                    f"({alpha_comp.target_image.name}) != β source image "
+                    f"({beta_comp.source_image.name})"
+                )
+            # Enriched composition (§4–5): w(β_A ∘ α_A) = w(α_A) · w(β_A).
             composite.components[role] = ComponentMorphism(
                 object_name=role,
                 source_image=alpha_comp.source_image,
                 target_image=beta_comp.target_image,
+                weight=alpha_comp.weight * beta_comp.weight,
             )
 
     logger.info(

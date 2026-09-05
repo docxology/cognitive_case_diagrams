@@ -380,6 +380,47 @@ def _number_to_word(n: int) -> str:
     return str(n)
 
 
+def _read_publication_metadata(root: Path) -> dict[str, str]:
+    """Parse DOI / version / repo URL from ``docs/manuscript/config.yaml``.
+
+    Falls back to empty strings when the file or a key is missing — the
+    manuscript's ``${paper_*}`` variables render the empty string rather than
+    a stale hand-typed literal. Never raises: a missing key is a provenance
+    gap the author fixes in config.yaml, not a metrics-run failure.
+    """
+    cfg_path = root / "docs" / "manuscript" / "config.yaml"
+    out = {"version": "", "doi": "", "repo_url": ""}
+    if not cfg_path.is_file():
+        return out
+    try:
+        import yaml
+
+        cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
+    except (OSError, yaml.YAMLError):
+        return out
+    paper = cfg.get("paper") or {}
+    publication = cfg.get("publication") or {}
+    doi = str(publication.get("doi") or paper.get("doi") or "").strip()
+    # Canonical short form: 10.5281/zenodo.19695260 (strip resolver prefix).
+    if doi.startswith("https://doi.org/"):
+        doi = doi[len("https://doi.org/"):]
+    out["doi"] = doi
+    out["version"] = str(paper.get("version") or "").strip()
+
+    # Repo URL: pyproject [project.urls] is the authoritative source (it was
+    # already corrected to the real remote during remediation).
+    try:
+        import tomllib
+
+        pyproject = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
+        out["repo_url"] = str(
+            (pyproject.get("project", {}).get("urls", {}) or {}).get("Repository", "")
+        ).strip()
+    except (OSError, ValueError, TypeError):
+        pass
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
@@ -414,6 +455,11 @@ def collect_metrics(
     discopy_v = _optional_distribution_version("discopy")
     numpy_v = _optional_distribution_version("numpy")
 
+    # Publication metadata: parsed from docs/manuscript/config.yaml so the
+    # DOI/version/URL in prose resolve from the canonical source instead of
+    # hand-maintained literals that can drift.
+    pub = _read_publication_metadata(root)
+
     metrics: dict[str, str] = {
         # Numeric strings
         "total_test_count": str(total_tests),
@@ -432,6 +478,10 @@ def collect_metrics(
         "numpy_version": numpy_v,
         "discopy_version_pretty": discopy_v if discopy_v else "not resolved (install ``discopy``)",
         "numpy_version_pretty": numpy_v if numpy_v else "not resolved",
+        # Publication metadata (from config.yaml / pyproject; empty if unresolved)
+        "paper_version": pub["version"],
+        "paper_doi": pub["doi"],
+        "paper_repo_url": pub["repo_url"],
     }
 
     cov = _read_coverage_totals(root)

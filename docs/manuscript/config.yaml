@@ -47,12 +47,15 @@ metadata:
   language: "en"
 
 llm:
+  # Disabled 2026-09-04 by author decision (Daniel Ari Friedman): this
+  # publication opts OUT of automated LLM-generated reviews and translations.
+  # Re-enable deliberately if that changes.
   reviews:
-    enabled: true
+    enabled: false
     types:
       - executive_summary
   translations:
-    enabled: true
+    enabled: false
     languages:
       - zh
 

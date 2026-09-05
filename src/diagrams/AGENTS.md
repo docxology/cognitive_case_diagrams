@@ -9,7 +9,7 @@ The `diagrams` subpackage implements **§3–4** of the manuscript: DisCoCat str
 | Module | Key Exports | § |
 |--------|-------------|---|
 | `string_diagram.py` | `Sentence`, `Discourse`, `Wire`, `Box`; DisCoPy integration (`create_discopy_*`, `create_word_diagram_*`, `create_tensor_semantics`) | §3–4 |
-| `complexity_metrics.py` | `DiagramMetrics`, `diagram_depth()`, `diagram_width()`, `syntactic_complexity_score()`, `compute_quantum_magnitude_homology()` | §4b |
+| `complexity_metrics.py` | `DiagramMetrics`, `diagram_depth()`, `diagram_width()`, `syntactic_complexity_score()`, `compute_pqc_decoherence_proxy()` | §4b |
 | `complexity_examples.py` | `build_complexity_examples()` — 10 canonical DisCoPy diagrams for complexity figures | §4b |
 | `ditransitive.py` | `DitransitiveSentence`, `create_ditransitive()`, `create_discopy_ditransitive()` | §3 |
 
@@ -95,7 +95,7 @@ All metrics operate on real DisCoPy `rigid.Diagram` objects:
 ### Quantum Magnitude Homology (§5b)
 
 ```python
-metrics = compute_quantum_magnitude_homology(diagram, environmental_noise=0.05)
+metrics = compute_pqc_decoherence_proxy(diagram, environmental_noise=0.05)
 metrics.quantum_environment_commutes  # True if the cup/cap proxy decoherence < 0.25
 ```
 

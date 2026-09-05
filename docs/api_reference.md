@@ -353,7 +353,7 @@ class MagnitudeHomologyMetrics:
     estimated_decoherence_rate: float
     quantum_environment_commutes: bool
 
-def compute_quantum_magnitude_homology(
+def compute_pqc_decoherence_proxy(
     diagram: Diagram,
     environmental_noise: float = 0.05,
 ) -> MagnitudeHomologyMetrics

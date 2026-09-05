@@ -312,31 +312,31 @@ class TestMagnitudeHomologyMetrics:
 
 class TestComputeQuantumMagnitudeHomology:
     def test_simple_diagram(self, transitive_diagram):
-        from src.diagrams.complexity_metrics import compute_quantum_magnitude_homology
-        result = compute_quantum_magnitude_homology(transitive_diagram)
+        from src.diagrams.complexity_metrics import compute_pqc_decoherence_proxy
+        result = compute_pqc_decoherence_proxy(transitive_diagram)
         assert result.base_syntactic_complexity > 0
         assert result.estimated_decoherence_rate >= 0
 
     def test_low_noise_commutes(self, transitive_diagram):
-        from src.diagrams.complexity_metrics import compute_quantum_magnitude_homology
-        result = compute_quantum_magnitude_homology(transitive_diagram, environmental_noise=0.01)
+        from src.diagrams.complexity_metrics import compute_pqc_decoherence_proxy
+        result = compute_pqc_decoherence_proxy(transitive_diagram, environmental_noise=0.01)
         assert result.quantum_environment_commutes is True
 
     def test_high_noise_may_not_commute(self, transitive_diagram):
-        from src.diagrams.complexity_metrics import compute_quantum_magnitude_homology
-        result = compute_quantum_magnitude_homology(transitive_diagram, environmental_noise=0.95)
+        from src.diagrams.complexity_metrics import compute_pqc_decoherence_proxy
+        result = compute_pqc_decoherence_proxy(transitive_diagram, environmental_noise=0.95)
         # With 2 cups and high noise, decoherence should exceed threshold
         assert result.estimated_decoherence_rate > 0.2
 
     def test_identity_diagram_zero_holes(self, identity_diagram):
-        from src.diagrams.complexity_metrics import compute_quantum_magnitude_homology
-        result = compute_quantum_magnitude_homology(identity_diagram)
+        from src.diagrams.complexity_metrics import compute_pqc_decoherence_proxy
+        result = compute_pqc_decoherence_proxy(identity_diagram)
         assert result.topological_holes_1d == 0
         assert result.quantum_environment_commutes is True
 
     def test_cap_dominated_diagram_zero_holes(self, n):
         """When caps exceed cups, holes_1d should be clamped to 0."""
-        from src.diagrams.complexity_metrics import compute_quantum_magnitude_homology
+        from src.diagrams.complexity_metrics import compute_pqc_decoherence_proxy
         diag = Cap(n, n.l)
-        result = compute_quantum_magnitude_homology(diag)
+        result = compute_pqc_decoherence_proxy(diag)
         assert result.topological_holes_1d == 0

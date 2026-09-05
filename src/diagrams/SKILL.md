@@ -24,7 +24,7 @@ from src.diagrams import (
 # Magnitude-homology helpers are not re-exported by the package __init__;
 # import them from the module directly.
 from src.diagrams.complexity_metrics import (
-    MagnitudeHomologyMetrics, compute_quantum_magnitude_homology,
+    MagnitudeHomologyMetrics, compute_pqc_decoherence_proxy,
 )
 ```
 

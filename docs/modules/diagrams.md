@@ -111,7 +111,7 @@ For discourse-level prompt-injection detection (§9b cognitive security), feed p
 | `analyze_diagram(diagram, name)` | function | Comprehensive `DiagramMetrics` |
 | `compare_diagrams(diagrams)` | function | Multi-diagram comparison |
 | `MagnitudeHomologyMetrics` | `@dataclass` | Four fields only — `base_syntactic_complexity`, `topological_holes_1d`, `estimated_decoherence_rate`, `quantum_environment_commutes`. It holds no homology groups and no magnitude scalar; Leinster–Shulman magnitude homology is the theoretical target (§5b), not the implemented object |
-| `compute_quantum_magnitude_homology(diagram, noise)` | function | Coarse decoherence proxy: `cups − caps` clamped at 0, plus `min(1, noise·1.5**holes)` vs an unsourced 0.25 threshold — computes no homology and no magnitude |
+| `compute_pqc_decoherence_proxy(diagram, noise)` | function | Coarse decoherence proxy: `cups − caps` clamped at 0, plus `min(1, noise·1.5**holes)` vs an unsourced 0.25 threshold — computes no homology and no magnitude |
 
 ### `ditransitive.py` — Three-Argument Verbs
 

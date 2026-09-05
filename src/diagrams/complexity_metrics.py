@@ -344,14 +344,14 @@ class MagnitudeHomologyMetrics:
     estimated_decoherence_rate: float = 0.0
     quantum_environment_commutes: bool = True
 
-def compute_quantum_magnitude_homology(
+def compute_pqc_decoherence_proxy(
     diagram: "Diagram", 
     environmental_noise: float = 0.05
 ) -> MagnitudeHomologyMetrics:
     """Coarse PQC-decoherence proxy — computes NO homology and NO magnitude.
 
-    Despite the name, this function does not compute magnitude homology (or
-    magnitude) of ``diagram``. It returns:
+    This function does not compute magnitude homology (or magnitude) of
+    ``diagram``; the name states what it actually estimates. It returns:
 
     - ``base_syntactic_complexity``: the real :func:`syntactic_complexity_score`.
     - ``topological_holes_1d``: ``count_cups(diagram) - count_caps(diagram)``,

@@ -107,7 +107,7 @@ Magnitude as a **complexity invariant** for case systems, and its connection to 
 | Magnitude < n indicates redundancy | `src.enriched_cat.enriched` | `EnrichedCategory.magnitude()` | ✅ | $\|\mathcal{C}\| < n$ means roles overlap |
 | Enriched hom-proximity heatmap | `src.visualization.enriched_diagrams` | `render_enriched_heatmap()` | ✅ | Fig. 15 in manuscript |
 | Magnitude homology invariant $H_k(\mathcal{C})$ (Leinster-Shulman) | `src.diagrams.complexity_metrics` | `MagnitudeHomologyMetrics` | 🔄 | Graded homology is the theoretical target, not the implemented object: the dataclass records `base_syntactic_complexity: float`, `topological_holes_1d: int`, `estimated_decoherence_rate: float`, `quantum_environment_commutes: bool` — a scalar complexity, a 1-D hole count and a decoherence estimate, with no $H_k$ sequence |
-| Quantum decoherence proxy for magnitude homology | `src.diagrams.complexity_metrics` | `compute_quantum_magnitude_homology()` | 🔄 | Computes no $\|\mathcal{C}\|_q$ value: it returns the real syntactic complexity score, a `cups − caps` hole proxy, and `min(1.0, noise · 1.5^holes)` checked against an unsourced 0.25 threshold — illustrative constants, not the $\|\mathcal{C}\|(1-\lambda)$ formula of the §5b caveat |
+| Quantum decoherence proxy for magnitude homology | `src.diagrams.complexity_metrics` | `compute_pqc_decoherence_proxy()` | 🔄 | Computes no $\|\mathcal{C}\|_q$ value: it returns the real syntactic complexity score, a `cups − caps` hole proxy, and `min(1.0, noise · 1.5^holes)` checked against an unsourced 0.25 threshold — illustrative constants, not the $\|\mathcal{C}\|(1-\lambda)$ formula of the §5b caveat |
 
 ---
 

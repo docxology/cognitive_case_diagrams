@@ -2,6 +2,8 @@
 
 Orchestration scripts for the `cognitive_case_diagrams` project. No scientific logic here — all computation is delegated to `src/`.
 
+Every command below runs from the **project root** (the parent of this `scripts/`). Inside the template monorepo that root is `projects/ongoing/ActiveInference/cognitive_case_diagrams/`; pipeline `--project` flags take the lifecycle-qualified name `ongoing/ActiveInference/cognitive_case_diagrams`.
+
 ## Files
 
 | Script | Purpose |
@@ -21,41 +23,49 @@ Orchestration scripts for the `cognitive_case_diagrams` project. No scientific l
 [`inject_variables.py`](inject_variables.py) reads [`output/metrics.json`](../output/metrics.json) produced by [`src/generate_manuscript_metrics.py`](../src/generate_manuscript_metrics.py). Real **`${coverage_*}`** values require a fresh **`coverage.json`** at the project root:
 
 ```bash
-cd projects/cognitive_case_diagrams
+cd projects/ongoing/ActiveInference/cognitive_case_diagrams
 uv run pytest tests/ --cov=src --cov-report=json:coverage.json
 uv run python -m src.generate_manuscript_metrics
 uv run python scripts/inject_variables.py
 ```
 
-Then render PDF from the template repository root: `uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams` (uses `output/manuscript/` when present). See [`docs/manuscript/README.md`](../docs/manuscript/README.md) and [`tests/AGENTS.md`](../tests/AGENTS.md) (optional commit policy for `coverage.json`).
+Then render the PDF from the template repository root:
+
+```bash
+uv run python scripts/pipeline/stage_03_render.py \
+  --project ongoing/ActiveInference/cognitive_case_diagrams
+```
+
+Rendering uses `output/manuscript/` when it contains `.md` files. See [`docs/manuscript/README.md`](../docs/manuscript/README.md) and [`tests/AGENTS.md`](../tests/AGENTS.md) (`coverage.json` is gitignored; `output/metrics.json` is the committed derived artifact).
 
 ## Quick Commands
 
 ```bash
-# From repository root — generate all 30 figures
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py
+# From the project root — generate all 30 figures
+uv run python scripts/generate_diagrams.py
 
 # Single domain (faster iteration)
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain cognitive
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain daif               # alias for cognitive
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain category
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain category_unpacking # pedagogical PNGs
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain discopy
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain quantum
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain syntactic
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain strings
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain enriched          # alias for strings
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --list
+uv run python scripts/generate_diagrams.py --domain cognitive
+uv run python scripts/generate_diagrams.py --domain daif                # alias for cognitive
+uv run python scripts/generate_diagrams.py --domain category
+uv run python scripts/generate_diagrams.py --domain category_unpacking  # pedagogical PNGs
+uv run python scripts/generate_diagrams.py --domain discopy
+uv run python scripts/generate_diagrams.py --domain quantum
+uv run python scripts/generate_diagrams.py --domain syntactic
+uv run python scripts/generate_diagrams.py --domain strings
+uv run python scripts/generate_diagrams.py --domain enriched            # alias for strings
+uv run python scripts/generate_diagrams.py --list
 
 # Manuscript injection (run pytest + generate_manuscript_metrics first — see section above)
-uv run python projects/cognitive_case_diagrams/scripts/inject_variables.py
-uv run python projects/cognitive_case_diagrams/scripts/inject_variables.py --dry-run
+uv run python scripts/inject_variables.py
+uv run python scripts/inject_variables.py --dry-run   # reports only; writes nothing
 
 # Or run each sub-script directly
-uv run python projects/cognitive_case_diagrams/scripts/generate_discopy_figures.py
+uv run python scripts/generate_discopy_figures.py
 
-# Via template root pipeline stage 2
-uv run python scripts/02_run_analysis.py --project cognitive_case_diagrams
+# Via template root pipeline stage 2 (run from the template repository root)
+uv run python scripts/pipeline/stage_02_analysis.py \
+  --project ongoing/ActiveInference/cognitive_case_diagrams
 ```
 
 ## Thin Orchestrator Rule

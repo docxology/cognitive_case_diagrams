@@ -2,7 +2,9 @@
 
 ## Overview
 
-The `scripts/` directory contains **thin orchestrators** for the `cognitive_case_diagrams` project. These scripts coordinate the full workflow — from environment setup through analysis, figure generation, PDF rendering, and output validation — by delegating all scientific computation to this project's `src/` under `projects/cognitive_case_diagrams/src/`.
+The `scripts/` directory contains **thin orchestrators** for the `cognitive_case_diagrams` project. These scripts coordinate the full workflow — from environment setup through analysis, figure generation, PDF rendering, and output validation — by delegating all scientific computation to this project's own `src/`.
+
+Every command below runs from the **project root** (the directory containing this `scripts/`). Inside the template monorepo that root is `projects/ongoing/ActiveInference/cognitive_case_diagrams/`, and the lifecycle-qualified name accepted by pipeline `--project` flags is `ongoing/ActiveInference/cognitive_case_diagrams`.
 
 `__init__.py` marks `scripts` as a package so `import scripts.<module>` resolves here (not the repository-level `scripts/` package) when the project directory is on `PYTHONPATH`. Stage 02 discovery skips `__init__.py` (see `discover_analysis_scripts` in infrastructure).
 
@@ -26,7 +28,7 @@ The `scripts/` directory contains **thin orchestrators** for the `cognitive_case
 
 Injection is **downstream** of metrics collection:
 
-1. **`uv run pytest tests/ --cov=src --cov-report=json:coverage.json`** (from `projects/cognitive_case_diagrams/`) — writes root `coverage.json` for `${coverage_*}` / `${coverage_summary}`.
+1. **`uv run pytest tests/ --cov=src --cov-report=json:coverage.json`** (from the project root) — writes `coverage.json` for `${coverage_*}` / `${coverage_summary}`.
 2. **`uv run python -m src.generate_manuscript_metrics`** — writes `output/metrics.json` (also records test counts, DAIF counts, NumPy/DisCoPy versions).
 3. **`uv run python scripts/inject_variables.py`** — substitutes `${…}` into numbered `docs/manuscript/*.md` and copies ancillaries to `output/manuscript/`.
 
@@ -37,25 +39,26 @@ PDF rendering then prefers `output/manuscript/` when it contains `.md` files. Op
 The primary entry point. Delegates to per-domain sub-scripts via `importlib`. Supports selective domain regeneration and short aliases:
 
 ```bash
-# All domains (30 figures — 27 core + 3 pedagogical unpackings):
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py
+# All domains (30 figures — 27 core + 3 pedagogical unpackings), from the project root:
+uv run python scripts/generate_diagrams.py
 
 # Single domain (canonical name or alias):
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain cognitive
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain daif            # alias for cognitive
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain category
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain category_unpacking  # pedagogical unpacking PNGs
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain discopy
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain quantum
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain syntactic
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain strings
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --domain enriched       # alias for strings
+uv run python scripts/generate_diagrams.py --domain cognitive
+uv run python scripts/generate_diagrams.py --domain daif                # alias for cognitive
+uv run python scripts/generate_diagrams.py --domain category
+uv run python scripts/generate_diagrams.py --domain category_unpacking  # pedagogical unpacking PNGs
+uv run python scripts/generate_diagrams.py --domain discopy
+uv run python scripts/generate_diagrams.py --domain quantum
+uv run python scripts/generate_diagrams.py --domain syntactic
+uv run python scripts/generate_diagrams.py --domain strings
+uv run python scripts/generate_diagrams.py --domain enriched            # alias for strings
 
 # List available domains and aliases:
-uv run python projects/cognitive_case_diagrams/scripts/generate_diagrams.py --list
+uv run python scripts/generate_diagrams.py --list
 
-# Via pipeline stage 2 (project must live under projects/cognitive_case_diagrams/):
-uv run python scripts/02_run_analysis.py --project cognitive_case_diagrams
+# Via pipeline stage 2, from the template monorepo root:
+uv run python scripts/pipeline/stage_02_analysis.py \
+  --project ongoing/ActiveInference/cognitive_case_diagrams
 ```
 
 ## Per-Domain Sub-Scripts
@@ -64,10 +67,10 @@ Each sub-script is **self-contained** and **independently runnable**:
 
 ```bash
 # Regenerate only cognitive/DAIF figures (fast iteration):
-uv run python projects/cognitive_case_diagrams/scripts/generate_cognitive_figures.py
+uv run python scripts/generate_cognitive_figures.py
 
 # Custom output directory:
-uv run python projects/cognitive_case_diagrams/scripts/generate_category_figures.py --output /tmp/test_out/
+uv run python scripts/generate_category_figures.py --output /tmp/test_out/
 ```
 
 Each sub-script also exposes a `run(out: Path) -> list[Path]` function importable by `generate_diagrams.py`.

@@ -108,7 +108,7 @@ The `build_typological_theory()` function constructs a geometric theory $\mathbb
 - **Function symbols**: the morphisms with their source/target pairs
 - **Axioms**: identity morphism existence, composition closure, and alignment constraints
 
-For the standard 8-case category, this yields a theory with 8 sorts and approximately 15 function symbols. The minimal 3-case category produces a theory with 3 sorts and 5 function symbols. Our `build_enriched_theory()` function further annotates the geometric theory with $[0,1]$-valued hom weights from the enriched structure of \autoref{sec:enriched-categories}.
+For the standard 8-case category, this yields a theory with ${topos_standard_sorts} sorts and ${topos_standard_relations} relation symbols. The minimal 3-case category produces a theory with ${topos_minimal_sorts} sorts and ${topos_minimal_relations} relation symbols. Our `build_enriched_theory()` function further annotates the geometric theory with $[0,1]$-valued hom weights from the enriched structure of \autoref{sec:enriched-categories}.
 
 ### `ClassifyingTopos` Invariants and the Morita Equivalence Check
 

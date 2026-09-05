@@ -14,6 +14,8 @@ authors = [
 ]
 requires-python = ">=3.10"
 readme = "docs/README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 dependencies = [
     "numpy>=1.24.0",
     "matplotlib>=3.7.0",
@@ -23,8 +25,9 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/ActiveInferenceInstitute/cognitive-case-diagrams"
-Documentation = "docs/README.md"
+# Must match the actual git remote (`git remote -v`), not an aspirational org.
+Repository = "https://github.com/docxology/cognitive_case_diagrams"
+Documentation = "https://github.com/docxology/cognitive_case_diagrams/blob/main/docs/README.md"
 
 [project.optional-dependencies]
 dev = [
@@ -32,6 +35,41 @@ dev = [
     "pytest-cov>=4.1.0",
     "pytest-timeout>=2.1.0",  # required for [tool.pytest.ini_options] timeout
 ]
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = ["output/", ".venv/"]
+
+[tool.ruff.lint]
+# F: pyflakes (real defects: unused imports/variables); E402/E702/E741 are
+# triaged to per-file ignores below rather than globally silenced.
+select = ["F"]
+ignore = [
+    # __init__.py re-export chains are intentional public API surfaces.
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Re-export modules: unused imports are the public API.
+"__init__.py" = ["F401"]
+# scripts inject sys.path before imports by design (standalone fallback pattern).
+"scripts/inject_variables.py" = ["E402"]
+"tests/conftest.py" = ["E402"]
+"tests/test_visualization_syntactic_sentence_diagrams.py" = ["E402"]
+# Exercised-call sites bind figures/results without asserting on them.
+"tests/test_visualization_*" = ["F841"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["output/", "scripts/"]
+
+[[tool.mypy.overrides]]
+module = ["discopy.*", "matplotlib.*", "matplotlib", "networkx.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
@@ -54,10 +92,13 @@ omit = [
     "tests/*",
     "*/__init__.py",
     "*/test_*.py",
-    # Entirely discopy-dependent; untestable without optional discopy install
-    "*/diagrams/complexity_examples.py",
-    "*/visualization/discopy_diagrams.py",
 ]
+# NOTE: diagrams/complexity_examples.py and visualization/discopy_diagrams.py were
+# previously omitted here as "untestable without optional discopy install". That
+# justification was false — discopy is a REQUIRED dependency of this package (see
+# [project.dependencies]), and both modules are exercised by passing test files
+# (tests/test_diagrams_complexity_examples.py, tests/test_visualization_discopy_diagrams.py).
+# Excluding them made the headline coverage number cover less code than it claimed.
 
 [tool.coverage.report]
 fail_under = 90
@@ -69,25 +110,15 @@ exclude_lines = [
     "raise NotImplementedError",
 ]
 
-[tool.mypy]
-python_version = "3.10"
-warn_return_any = false
-warn_unused_configs = true
-disallow_untyped_defs = false
-check_untyped_defs = true
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "src.visualization.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["discopy.*", "discopy"]
-ignore_missing_imports = true
-
 [tool.uv]
 
 [dependency-groups]
+# uv syncs this group by default. The test toolchain must live here, not only in
+# [project.optional-dependencies], or `uv sync && uv run pytest` silently resolves
+# to whatever pytest happens to be on PATH under a different interpreter.
 dev = [
     "hypothesis>=6.151.11",
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-timeout>=2.1.0",
 ]

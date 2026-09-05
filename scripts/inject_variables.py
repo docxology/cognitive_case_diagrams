@@ -2,11 +2,12 @@
 """Manuscript variable injection script for cognitive_case_diagrams.
 
 Reads ``output/metrics.json`` produced by ``generate_manuscript_metrics.py``
-and performs ``${variable}`` substitution in every numbered manuscript chapter,
-writing rendered copies to ``output/manuscript/``.
+and performs ``${variable}`` substitution in every numbered manuscript chapter
+under ``docs/manuscript/``, writing rendered copies to ``output/manuscript/``.
 
-The pipeline hook in ``scripts/03_render_pdf.py`` automatically renders
-from ``output/manuscript/`` when that directory contains ``.md`` files.
+The monorepo render stage (``scripts/pipeline/stage_03_render.py`` at the
+template root) automatically renders from ``output/manuscript/`` when that
+directory contains ``.md`` files.
 
 Usage:
     python scripts/inject_variables.py
@@ -34,8 +35,27 @@ _REPO_ROOT = _PROJECT_ROOT.parent.parent
 sys.path.insert(0, str(_REPO_ROOT))
 sys.path.insert(0, str(_PROJECT_ROOT))
 
-from infrastructure.core.logging.utils import get_logger, log_success
-from infrastructure.core.logging.pipeline_logging import log_header
+# The template monorepo's ``infrastructure`` package is only importable when this
+# project is reached through the monorepo checkout. Standalone runs fall back to
+# stdlib logging — same pattern as ``scripts/generate_diagrams.py``.
+try:
+    from infrastructure.core.logging.utils import get_logger, log_success
+    from infrastructure.core.logging.pipeline_logging import log_header
+except ImportError:  # pragma: no cover - exercised only outside the monorepo
+    import logging
+
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+    def get_logger(name: str) -> logging.Logger:
+        return logging.getLogger(name)
+
+    def log_success(message: str, lg: "logging.Logger") -> None:
+        lg.info(f"✅ {message}")
+
+    def log_header(title: str, lg: "logging.Logger") -> None:
+        lg.info(f"\n{'=' * 70}\n{title}\n{'=' * 70}")
+
+
 from src.generate_manuscript_metrics import collect_metrics, write_metrics
 
 # Use the template's inject_metrics infrastructure if available,
@@ -90,6 +110,23 @@ except ImportError:
 logger = get_logger(__name__)
 
 
+def resolve_manuscript_dir(project_root: Path) -> Path:
+    """Return the directory holding the numbered manuscript chapters.
+
+    Mirrors ``infrastructure.core.project_paths.resolve_source_manuscript_dir``
+    without importing it, so standalone checkouts resolve identically:
+    ``docs/manuscript/`` is canonical, ``manuscript/`` is the legacy fallback
+    retained for pre-relocation trees.
+    """
+    canonical = project_root / "docs" / "manuscript"
+    if any(canonical.glob("[0-9]*.md")):
+        return canonical
+    legacy = project_root / "manuscript"
+    if any(legacy.glob("[0-9]*.md")):
+        return legacy
+    return canonical
+
+
 def main() -> int:
     """Execute manuscript variable injection."""
     parser = argparse.ArgumentParser(
@@ -102,12 +139,21 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    manuscript_dir = _PROJECT_ROOT / "manuscript"
+    manuscript_dir = resolve_manuscript_dir(_PROJECT_ROOT)
     output_dir = _PROJECT_ROOT / "output"
     rendered_dir = output_dir / "manuscript"
     metrics_path = output_dir / "metrics.json"
 
     log_header("MANUSCRIPT VARIABLE INJECTION", logger)
+
+    chapters = sorted(manuscript_dir.glob("[0-9]*.md"))
+    if not chapters:
+        logger.error(
+            f"No numbered manuscript chapters under {manuscript_dir} — "
+            "refusing to render an empty manuscript."
+        )
+        return 1
+    logger.info(f"Manuscript source: {manuscript_dir} ({len(chapters)} chapters)")
 
     # Step 1: Collect metrics
     logger.info("Collecting metrics from project structure...")
@@ -116,13 +162,16 @@ def main() -> int:
     for key in sorted(metrics.keys()):
         logger.info(f"  ${{{key}}} = {metrics[key]}")
 
+    if args.dry_run:
+        logger.info(
+            f"[DRY RUN] Would write {metrics_path} and inject into "
+            f"{len(chapters)} chapters under {manuscript_dir}"
+        )
+        return 0
+
     # Step 2: Write metrics.json
     write_metrics(metrics, metrics_path)
     logger.info(f"Wrote metrics to {metrics_path}")
-
-    if args.dry_run:
-        logger.info("[DRY RUN] Would inject into manuscript files")
-        return 0
 
     # Step 3: Render all chapters with substitution
     logger.info(f"Injecting variables into manuscript → {rendered_dir}")
@@ -130,8 +179,17 @@ def main() -> int:
     logger.info(f"Wrote {len(written)} files to {rendered_dir}")
 
     # Step 4: Verify no unresolved ${...} in critical files
+    rendered_chapters = sorted(rendered_dir.glob("[0-9]*.md"))
+    if len(rendered_chapters) != len(chapters):
+        logger.error(
+            f"Rendered {len(rendered_chapters)} chapters into {rendered_dir} but "
+            f"{len(chapters)} were expected from {manuscript_dir} — refusing to "
+            "report success on a partial render."
+        )
+        return 1
+
     unresolved_total = 0
-    for out_file in sorted(rendered_dir.glob("[0-9]*.md")):
+    for out_file in rendered_chapters:
         content = out_file.read_text(encoding="utf-8")
         remaining = _UNRESOLVED_VAR_RE.findall(content)
         if remaining:

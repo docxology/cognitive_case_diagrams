@@ -39,6 +39,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger("generate_discopy_figures")
 
+# Per-figure/per-section failures from the most recent run() call. The
+# dispatcher (scripts/generate_diagrams.py) reads this after calling run()
+# so a partial failure inside this domain is not reported as a full success.
+LAST_FAILURES: list[str] = []
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "output" / "figures"
 
@@ -55,6 +60,7 @@ def run(out: Path) -> list[Path]:
     Returns:
         List of paths to generated files (empty if discopy not installed).
     """
+    LAST_FAILURES.clear()
     try:
         import discopy  # noqa: F401
     except ImportError:
@@ -100,6 +106,7 @@ def run(out: Path) -> list[Path]:
             logger.info("  ✓ %s", fname)
         except Exception as exc:
             logger.error("  ✗ %s: %s", fname, exc)
+            LAST_FAILURES.append(fname)
 
     # ── Complexity comparison ─────────────────────────────────────────────
     try:
@@ -120,6 +127,7 @@ def run(out: Path) -> list[Path]:
         logger.info("  ✓ complexity_comparison.png")
     except Exception as exc:
         logger.error("  ✗ complexity_comparison.png: %s", exc)
+        LAST_FAILURES.append("complexity_comparison.png")
 
     return outputs
 
@@ -135,7 +143,12 @@ def main() -> int:
     args = parser.parse_args()
     outputs = run(args.output)
     logger.info("Generated %d DisCoPy figures", len(outputs))
-    return 0
+    if LAST_FAILURES:
+        logger.error(
+            "%d DisCoPy figure(s) failed to render: %s",
+            len(LAST_FAILURES), ", ".join(LAST_FAILURES),
+        )
+    return 1 if LAST_FAILURES else 0
 
 
 if __name__ == "__main__":

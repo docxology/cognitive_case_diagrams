@@ -20,8 +20,10 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 import subprocess
 import sys
+from functools import lru_cache
 from importlib import metadata
 from pathlib import Path
 
@@ -44,36 +46,66 @@ def _count_test_files(tests_dir: Path) -> int:
     return len(list(tests_dir.glob("test_*.py")))
 
 
+@lru_cache(maxsize=8)
+def _count_collected_tests_cached(project_root_str: str) -> int:
+    """Memoised backing store for :func:`_count_collected_tests`.
+
+    Collection spawns a full nested pytest run (minutes on this suite). The
+    count cannot change within a single process, so callers that build metrics
+    repeatedly — the test module does so four times — pay for it once.
+    """
+    return _count_collected_tests_uncached(Path(project_root_str))
+
+
 def _count_collected_tests(project_root: Path) -> int:
+    """Run ``pytest --collect-only -q`` and count collected test items."""
+    return _count_collected_tests_cached(str(project_root))
+
+
+def _count_collected_tests_uncached(project_root: Path) -> int:
     """Run ``pytest --collect-only -q`` and count collected test items.
 
-    Falls back to a regex-based scan if pytest is unavailable.
+    Raises rather than guessing. A regex scan of ``def test_`` cannot see
+    parametrization and undercounts this suite by 8, so a silent fallback would
+    publish a wrong number into the manuscript abstract with no error. If pytest
+    is not importable in this interpreter, that is a broken environment and the
+    metrics run must fail loudly.
     """
+    # Collection imports matplotlib and discopy across 64 modules; on slower or
+    # network/external storage this takes minutes, so the ceiling is generous and
+    # overridable rather than a value that turns a slow disk into a wrong number.
+    timeout_s = float(os.environ.get("CCD_COLLECT_TIMEOUT", "900"))
     try:
         result = subprocess.run(
             [sys.executable, "-m", "pytest", str(project_root / "tests"), "--collect-only", "-q"],
             capture_output=True,
             text=True,
             cwd=str(project_root),
-            timeout=120,
+            timeout=timeout_s,
         )
-        # Last meaningful line is like "727 tests collected in 0.32s"
-        for line in reversed(result.stdout.strip().splitlines()):
-            if "collected" in line:
-                parts = line.split()
-                for part in parts:
-                    if part.isdigit():
-                        return int(part)
-    except (subprocess.SubprocessError, OSError, ValueError):
-        pass
+    except (subprocess.SubprocessError, OSError) as exc:
+        raise RuntimeError(
+            f"pytest --collect-only could not be executed with {sys.executable}: {exc}"
+        ) from exc
 
-    # Fallback: count ``def test_`` in all test files
-    count = 0
-    for tf in (project_root / "tests").glob("test_*.py"):
-        content = tf.read_text(encoding="utf-8", errors="replace")
-        count += content.count("\ndef test_")
-        count += content.count("\n    def test_")  # methods in classes
-    return count
+    # rc 0 = tests collected, rc 5 = no tests collected; anything else is a failure.
+    if result.returncode not in (0, 5):
+        raise RuntimeError(
+            f"pytest --collect-only failed (rc={result.returncode}) with "
+            f"{sys.executable}: {result.stderr.strip() or result.stdout.strip()}"
+        )
+
+    # Last meaningful line is like "727 tests collected in 0.32s"
+    for line in reversed(result.stdout.strip().splitlines()):
+        if "collected" in line:
+            for part in line.split():
+                if part.isdigit():
+                    return int(part)
+
+    raise RuntimeError(
+        "pytest --collect-only produced no 'collected' line; cannot determine the "
+        f"test count. stdout: {result.stdout.strip()[:400]!r}"
+    )
 
 
 def _count_daif_modules(daif_dir: Path) -> int:
@@ -100,20 +132,137 @@ def _count_daif_symbols(daif_dir: Path) -> int:
 
 
 def _count_daif_tests(tests_dir: Path) -> int:
-    """Count test items in ``test_daif*.py`` files via AST scanning."""
-    count = 0
-    for tf in sorted(tests_dir.glob("test_daif*.py")):
-        tree = ast.parse(tf.read_text(encoding="utf-8"))
-        for node in ast.walk(tree):
-            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                if node.name.startswith("test_"):
-                    count += 1
-    return count
+    """Count collected test items in ``test_daif*.py`` files.
+
+    Uses the same real ``pytest --collect-only`` collection as
+    ``${total_test_count}`` (an AST ``def test_`` scan cannot see
+    parametrization, so it undercounts; two different counters for the same
+    quantity is how ``${daif_tests}`` drifted from ``${total_test_count}``).
+    """
+    daif_files = tuple(str(p) for p in sorted(tests_dir.glob("test_daif*.py")))
+    if not daif_files:
+        return 0
+    return _count_collected_tests_in_paths(daif_files, cwd=str(_PROJECT_ROOT))
+
+
+@lru_cache(maxsize=8)
+def _count_collected_tests_in_paths_cached(paths_joined: str, cwd: str) -> int:
+    """Memoised collector for an explicit list of test files."""
+    return _count_collected_tests_in_paths_uncached(
+        tuple(paths_joined.split("\x1f")), cwd,
+    )
+
+
+def _count_collected_tests_in_paths(paths: tuple[str, ...], cwd: str) -> int:
+    """Collect the given test files and return the collected-item count."""
+    return _count_collected_tests_in_paths_cached("\x1f".join(paths), cwd)
+
+
+def _count_collected_tests_in_paths_uncached(paths: tuple[str, ...], cwd: str) -> int:
+    """Run ``pytest --collect-only -q`` on ``paths`` and count collected items.
+
+    Raises rather than guessing — same policy as
+    :func:`_count_collected_tests_uncached`.
+    """
+    timeout_s = float(os.environ.get("CCD_COLLECT_TIMEOUT", "900"))
+    try:
+        result = subprocess.run(
+            [sys.executable, "-m", "pytest", *paths, "--collect-only", "-q"],
+            capture_output=True,
+            text=True,
+            cwd=cwd,
+            timeout=timeout_s,
+        )
+    except (subprocess.SubprocessError, OSError) as exc:
+        raise RuntimeError(
+            f"pytest --collect-only could not be executed with {sys.executable}: {exc}"
+        ) from exc
+    if result.returncode not in (0, 5):
+        raise RuntimeError(
+            f"pytest --collect-only failed (rc={result.returncode}) with "
+            f"{sys.executable}: {result.stderr.strip() or result.stdout.strip()}"
+        )
+    # Summary line: "54 tests collected in 15.51s"
+    for line in reversed(result.stdout.strip().splitlines()):
+        if "collected" in line:
+            for part in line.split():
+                if part.isdigit():
+                    return int(part)
+    raise RuntimeError(
+        "pytest --collect-only produced no 'collected' line; cannot determine "
+        f"the test count for {len(paths)} file(s). stdout: {result.stdout.strip()[:400]!r}"
+    )
 
 
 def _count_daif_test_files(tests_dir: Path) -> int:
     """Count ``test_daif*.py`` files."""
     return len(list(tests_dir.glob("test_daif*.py")))
+
+
+def _enriched_metrics() -> dict[str, str]:
+    """Compute the §5b enriched-category quantities the manuscript quotes.
+
+    These were typed into ``docs/manuscript/05b_magnitude_homology.md`` as
+    literals (2.50 / 5.50 / "condition number ~ 9.5"). The first two matched the
+    code to 2 dp; the third did not match any norm — ``numpy.linalg.cond`` on the
+    standard Z is ~92, not 9.5. Emitting all three here makes the printed values
+    whatever the code computes, so they cannot drift again.
+
+    Returns an empty dict if the domain package cannot be imported, so a failure
+    here degrades one section rather than aborting the whole metrics run.
+    """
+    try:
+        import numpy as np
+
+        from src.enriched_cat.enriched import standard_enriched_category
+
+        cat = standard_enriched_category()
+        z = np.asarray(cat.proximity_matrix, dtype=float)
+        return {
+            "enriched_magnitude": f"{cat.magnitude():.2f}",
+            "enriched_magnitude_deficit": f"{cat.magnitude_deficit():.2f}",
+            "enriched_object_count": str(len(cat.roles)),
+            # 2-norm condition number, the numpy default.
+            "enriched_z_condition": f"{np.linalg.cond(z):.0f}",
+        }
+    except Exception as exc:  # pragma: no cover - degraded-import path
+        print(
+            f"warning: enriched metrics unavailable ({exc}); "
+            "${enriched_*} variables will not resolve",
+            file=sys.stderr,
+        )
+        return {}
+
+
+def _topos_metrics() -> dict[str, str]:
+    """Compute the §6 signature sizes the manuscript quotes.
+
+    The prose claimed "approximately 15 function symbols" for the standard
+    8-case theory and 5 for the minimal one; the builder emits one relation per
+    morphism, giving 8 and 3. The API calls them ``relation_symbols``.
+    """
+    try:
+        from src.case_systems.case_category import (
+            minimal_case_category,
+            standard_case_category,
+        )
+        from src.topos_theory.topos import build_typological_theory
+
+        std = build_typological_theory(standard_case_category())
+        mini = build_typological_theory(minimal_case_category())
+        return {
+            "topos_standard_sorts": str(len(std.sorts)),
+            "topos_standard_relations": str(len(std.relation_symbols)),
+            "topos_minimal_sorts": str(len(mini.sorts)),
+            "topos_minimal_relations": str(len(mini.relation_symbols)),
+        }
+    except Exception as exc:  # pragma: no cover - degraded-import path
+        print(
+            f"warning: topos metrics unavailable ({exc}); "
+            "${topos_*} variables will not resolve",
+            file=sys.stderr,
+        )
+        return {}
 
 
 def _count_domain_subpackages(src_dir: Path) -> int:
@@ -169,7 +318,8 @@ def _read_coverage_totals(project_root: Path) -> dict[str, str]:
     pct = out.get("coverage_percent") or out.get("coverage_percent_raw", "")
     if pct:
         out["coverage_summary"] = (
-            f"{pct}% line-and-branch coverage on ``src/`` (from ``coverage.json``)"
+            f"{pct}% line-and-branch coverage on ``src/`` (measured; see "
+            "``output/metrics.json`` and ``tests/AGENTS.md`` for provenance)"
         )
     return out
 
@@ -288,11 +438,18 @@ def collect_metrics(
     if cov:
         metrics.update(cov)
     else:
-        metrics["coverage_summary"] = (
-            "coverage metrics not on disk—run "
-            "``uv run pytest tests/ --cov=src --cov-report=json`` to write ``coverage.json``"
+        # Fail loudly instead of injecting a build instruction where the
+        # coverage number belongs in the published abstract.
+        raise RuntimeError(
+            "coverage.json not found in project root — the manuscript abstract "
+            "quotes ${coverage_percent} / ${coverage_summary} and must not render "
+            "a build instruction in its place. Generate it first with:\n"
+            "  uv run pytest tests/ --cov=src --cov-report=json:coverage.json"
         )
-        metrics["coverage_percent"] = ""
+
+    # Domain-computed quantities the manuscript quotes in §5b and §6.
+    metrics.update(_enriched_metrics())
+    metrics.update(_topos_metrics())
 
     return metrics
 

@@ -20,6 +20,11 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+# Per-figure/per-section failures from the most recent run() call. The
+# dispatcher (scripts/generate_diagrams.py) reads this after calling run()
+# so a partial failure inside this domain is not reported as a full success.
+LAST_FAILURES: list[str] = []
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "output" / "figures"
 
@@ -29,6 +34,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 def run(out: Path) -> list[Path]:
     """Generate the three category-unpacking figures into *out* directory."""
+    LAST_FAILURES.clear()
     from src.visualization.category_unpacking import (
         render_pregroup_reduction_unpacking,
         render_discocirc_entity_persistence,
@@ -51,6 +57,7 @@ def run(out: Path) -> list[Path]:
             paths.append(path)
         except Exception as exc:  # pragma: no cover — defensive
             logger.error("  ✗ %s: %s", name, exc)
+            LAST_FAILURES.append(name)
     return paths
 
 
@@ -64,7 +71,12 @@ def main() -> int:
     )
     args = parser.parse_args()
     outputs = run(args.output)
-    return 0 if outputs else 1
+    if LAST_FAILURES:
+        logger.error(
+            "%d category-unpacking figure(s) failed to render: %s",
+            len(LAST_FAILURES), ", ".join(LAST_FAILURES),
+        )
+    return 0 if outputs and not LAST_FAILURES else 1
 
 
 if __name__ == "__main__":

@@ -10,8 +10,9 @@ Domain sub-scripts (also callable independently):
     scripts/generate_cognitive_figures.py  — DAIF, active inference, Fluid-S
     scripts/generate_quantum_figures.py    — quantum POVM, cognitive security
     scripts/generate_syntactic_figures.py  — syntactic case panel
+    scripts/generate_category_unpacking_figures.py — pedagogical unpacking panels
 
-Canonical Outputs (27 total):
+Canonical Outputs (30 PNGs total, plus enriched_magnitude.txt):
     Category domain (5):
         case_category_standard.png, case_category_minimal.png,
         composition_triangle.png, alignment_comparison.png, functor_alignment.png
@@ -33,6 +34,9 @@ Canonical Outputs (27 total):
         monoidal_functor_security.png
     Syntactic domain (1):
         syntactic_case_panel.png
+    Unpacking domain (3):
+        pregroup_reduction_unpacking.png, discocirc_entity_persistence.png,
+        snake_equation_unpacking.png
 
 Usage::
 
@@ -56,13 +60,13 @@ Usage::
 import argparse
 import json
 import logging
+import re
 import sys
 from pathlib import Path
 
 import matplotlib
 if not matplotlib.is_interactive():
     matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 
 # Graceful infrastructure import
 try:
@@ -107,8 +111,15 @@ _DOMAIN_ALIASES: dict[str, str] = {
 }
 
 
+# Per-figure failures from the inline "strings" domain, read by run_domain().
+# Mirrors the LAST_FAILURES convention the per-domain sub-scripts use, so this
+# handler cannot silently drop figures while reporting success either.
+STRINGS_LAST_FAILURES: list[str] = []
+
+
 def _generate_string_enriched(out: Path) -> list[Path]:
     """Generate string diagram and enriched category figures (inline)."""
+    STRINGS_LAST_FAILURES.clear()
     from src.diagrams.string_diagram import Sentence
     from src.enriched_cat.enriched import standard_enriched_category
     from src.visualization.string_diagrams import (
@@ -128,6 +139,7 @@ def _generate_string_enriched(out: Path) -> list[Path]:
         logger.info("  ✓ string_diagram_discocat.png")
     except Exception as exc:
         logger.error("  ✗ string_diagram_discocat.png: %s", exc)
+        STRINGS_LAST_FAILURES.append("string_diagram_discocat.png")
 
     try:
         path = out / "discourse_string_diagram.png"
@@ -136,6 +148,7 @@ def _generate_string_enriched(out: Path) -> list[Path]:
         logger.info("  ✓ discourse_string_diagram.png")
     except Exception as exc:
         logger.error("  ✗ discourse_string_diagram.png: %s", exc)
+        STRINGS_LAST_FAILURES.append("discourse_string_diagram.png")
 
     try:
         cat = standard_enriched_category()
@@ -156,13 +169,14 @@ def _generate_string_enriched(out: Path) -> list[Path]:
         logger.info("  ✓ enriched_hom_matrix.png + enriched_magnitude.txt")
     except Exception as exc:
         logger.error("  ✗ enriched figures: %s", exc)
+        STRINGS_LAST_FAILURES.append("enriched_hom_matrix.png + enriched_magnitude.txt")
 
     return outputs
 
 
 # ── Main dispatcher ─────────────────────────────────────────────────────────
 
-def run_domain(domain: str, out: Path) -> list[Path]:
+def run_domain(domain: str, out: Path) -> tuple[list[Path], list[str]]:
     """Run a single named domain's figure generation.
 
     Accepts canonical domain keys *or* their short aliases (e.g. ``"daif"``
@@ -174,13 +188,17 @@ def run_domain(domain: str, out: Path) -> list[Path]:
         out:    Output directory.
 
     Returns:
-        List of generated file paths.
+        Tuple of (generated file paths, per-figure failure identifiers).
+        The failure list is read from the domain module's ``LAST_FAILURES``
+        (empty for the "strings" domain, which has no such module) so a
+        domain that only partially rendered is not reported as a full
+        success.
     """
     # Resolve alias first
     resolved = _DOMAIN_ALIASES.get(domain, domain)
 
     if resolved == "strings":
-        return _generate_string_enriched(out)
+        return _generate_string_enriched(out), list(STRINGS_LAST_FAILURES)
 
     if resolved not in DOMAINS:
         raise ValueError(
@@ -191,7 +209,9 @@ def run_domain(domain: str, out: Path) -> list[Path]:
     module_name = DOMAINS[resolved]
     import importlib
     mod = importlib.import_module(module_name)
-    return mod.run(out)
+    paths = mod.run(out)
+    failures = list(getattr(mod, "LAST_FAILURES", []))
+    return paths, failures
 
 
 def main() -> int:
@@ -242,7 +262,9 @@ def main() -> int:
     logger.info("=" * 60)
 
     if args.domain == "all":
-        domains_to_run = list(DOMAINS.keys()) + ["strings"]
+        # "strings" is already a key of DOMAINS; appending it again ran that
+        # handler twice and inflated the reported figure total to 35.
+        domains_to_run = list(DOMAINS.keys())
     else:
         domains_to_run = [args.domain]
 
@@ -252,9 +274,21 @@ def main() -> int:
     for domain in domains_to_run:
         logger.info("[%s]", domain)
         try:
-            paths = run_domain(domain, out)
+            paths, failures = run_domain(domain, out)
             all_outputs.extend(paths)
             logger.info("  → %d figure(s) generated", len(paths))
+            if failures:
+                logger.warning(
+                    "  → %d figure(s) in domain '%s' failed to render: %s",
+                    len(failures), domain, ", ".join(failures),
+                )
+                errors.append((
+                    domain,
+                    RuntimeError(
+                        f"{len(failures)} figure(s) failed to render: "
+                        f"{', '.join(failures)}"
+                    ),
+                ))
         except Exception as exc:
             logger.error("  → FAILED: %s", exc)
             errors.append((domain, exc))
@@ -278,25 +312,87 @@ def main() -> int:
     return 0
 
 
+# ``![caption](output/figures/<name>.png){#fig:<label>}`` — captures the image
+# filename and the Pandoc label the manuscript actually uses for it.
+_FIGURE_LABEL_RE = re.compile(
+    r"\]\((?:[^)]*/)?(?P<filename>[\w.-]+\.(?:png|pdf|svg))\)\{#(?P<label>fig:[\w:.-]+)\}"
+)
+
+
+def _manuscript_figure_labels(project_root: Path) -> dict[str, str]:
+    """Map figure filename -> the Pandoc label the manuscript assigns it.
+
+    The manuscript is the authority for its own cross-reference labels. Deriving
+    them from filenames instead (``fig:` + stem.replace('_','-')``) produced
+    ``fig:case-category-standard`` where the manuscript writes ``fig:case-standard``,
+    so 20 of 30 labels failed the shared publication gate's
+    "Unregistered figure reference" check.
+    """
+    manuscript_dir = project_root / "docs" / "manuscript"
+    if not manuscript_dir.is_dir():
+        manuscript_dir = project_root / "manuscript"
+    labels: dict[str, str] = {}
+    for md in sorted(manuscript_dir.glob("*.md")):
+        for m in _FIGURE_LABEL_RE.finditer(md.read_text(encoding="utf-8")):
+            labels[m.group("filename")] = m.group("label")
+    return labels
+
+
 def _write_figure_registry(paths: list[Path], out_dir: Path) -> None:
     """Write figure_registry.json consumed by the PDF rendering pipeline."""
+    project_root = Path(__file__).resolve().parent.parent
+    manuscript_labels = _manuscript_figure_labels(project_root)
+
     seen: set[str] = set()
     registry: list[dict] = []
+    unlabelled: list[str] = []
     for p in paths:
         if p.suffix not in {".png", ".pdf", ".svg"}:
             continue
         if p.name in seen:
             continue
         seen.add(p.name)
+        label = manuscript_labels.get(p.name)
+        if label is None:
+            # Not referenced by the manuscript — keep the derived slug so the
+            # entry still round-trips, and say so rather than failing silently.
+            label = f"fig:{p.stem.replace('_', '-')}"
+            unlabelled.append(p.name)
+        try:
+            rel = p.resolve().relative_to(project_root)
+        except ValueError:
+            rel = p
         registry.append({
             "filename": p.name,
-            "path": str(p),
-            "label": f"fig:{p.stem.replace('_', '-')}",
+            # Project-relative: absolute paths embedded the author's home
+            # directory in a repo that ships to GitHub and Zenodo.
+            "path": str(rel),
+            "label": label,
             "generated_by": "scripts/generate_diagrams.py",
         })
     dest = out_dir / "figure_registry.json"
-    dest.write_text(json.dumps(registry, indent=2) + "\n", encoding="utf-8")
-    logger.info("Wrote figure registry: %s (%d entries)", dest, len(registry))
+    # Merge with the existing registry instead of replacing it: a
+    # ``--domain X`` run regenerates only X's figures, and wholesale
+    # replacement would drop the other domains' entries from the manifest the
+    # PDF pipeline consumes. Newly rendered figures win on filename clashes.
+    existing: dict[str, dict] = {}
+    if dest.exists():
+        try:
+            for entry in json.loads(dest.read_text(encoding="utf-8")):
+                filename = entry.get("filename")
+                if isinstance(filename, str):
+                    existing[filename] = entry
+        except (json.JSONDecodeError, AttributeError):
+            logger.warning("Existing figure registry unreadable — rebuilding it.")
+    merged = {**existing, **{e["filename"]: e for e in registry}}
+    merged_list = sorted(merged.values(), key=lambda e: e["filename"])
+    dest.write_text(json.dumps(merged_list, indent=2) + "\n", encoding="utf-8")
+    logger.info("Wrote figure registry: %s (%d entries)", dest, len(merged_list))
+    if unlabelled:
+        logger.warning(
+            "%d figure(s) carry no manuscript label (supplementary or orphaned): %s",
+            len(unlabelled), ", ".join(sorted(unlabelled)),
+        )
 
 
 if __name__ == "__main__":

@@ -33,6 +33,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger("generate_category_figures")
 
+# Per-figure/per-section failures from the most recent run() call. The
+# dispatcher (scripts/generate_diagrams.py) reads this after calling run()
+# so a partial failure inside this domain is not reported as a full success.
+LAST_FAILURES: list[str] = []
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "output" / "figures"
 
@@ -49,6 +54,7 @@ def run(out: Path) -> list[Path]:
     Returns:
         List of paths to generated files.
     """
+    LAST_FAILURES.clear()
     from src.case_systems.case_category import (
         CaseRole,
         introductory_case_category,
@@ -106,6 +112,7 @@ def run(out: Path) -> list[Path]:
             logger.info("  ✓ %s", fname)
         except Exception as exc:
             logger.error("  ✗ %s: %s", fname, exc)
+            LAST_FAILURES.append(fname)
 
     return outputs
 
@@ -121,7 +128,12 @@ def main() -> int:
     args = parser.parse_args()
     outputs = run(args.output)
     logger.info("Generated %d category figures", len(outputs))
-    return 0
+    if LAST_FAILURES:
+        logger.error(
+            "%d category figure(s) failed to render: %s",
+            len(LAST_FAILURES), ", ".join(LAST_FAILURES),
+        )
+    return 1 if LAST_FAILURES else 0
 
 
 if __name__ == "__main__":

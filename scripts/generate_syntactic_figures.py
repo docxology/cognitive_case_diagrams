@@ -28,6 +28,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger("generate_syntactic_figures")
 
+# Per-figure/per-section failures from the most recent run() call. The
+# dispatcher (scripts/generate_diagrams.py) reads this after calling run()
+# so a partial failure inside this domain is not reported as a full success.
+LAST_FAILURES: list[str] = []
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "output" / "figures"
 
@@ -44,6 +49,7 @@ def run(out: Path) -> list[Path]:
     Returns:
         List containing the generated path.
     """
+    LAST_FAILURES.clear()
     from src.visualization.syntactic_sentence_diagrams import render_syntactic_panel
 
     out.mkdir(parents=True, exist_ok=True)
@@ -54,6 +60,7 @@ def run(out: Path) -> list[Path]:
         return [path]
     except Exception as exc:
         logger.error("  ✗ syntactic_case_panel.png: %s", exc)
+        LAST_FAILURES.append("syntactic_case_panel.png")
         return []
 
 
@@ -68,7 +75,12 @@ def main() -> int:
     args = parser.parse_args()
     outputs = run(args.output)
     logger.info("Generated %d syntactic figure(s)", len(outputs))
-    return 0
+    if LAST_FAILURES:
+        logger.error(
+            "%d syntactic figure(s) failed to render: %s",
+            len(LAST_FAILURES), ", ".join(LAST_FAILURES),
+        )
+    return 1 if LAST_FAILURES else 0
 
 
 if __name__ == "__main__":

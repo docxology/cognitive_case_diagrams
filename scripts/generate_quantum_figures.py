@@ -32,6 +32,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger("generate_quantum_figures")
 
+# Per-figure/per-section failures from the most recent run() call. The
+# dispatcher (scripts/generate_diagrams.py) reads this after calling run()
+# so a partial failure inside this domain is not reported as a full success.
+LAST_FAILURES: list[str] = []
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "output" / "figures"
 
@@ -48,6 +53,7 @@ def run(out: Path) -> list[Path]:
     Returns:
         List of paths to generated files.
     """
+    LAST_FAILURES.clear()
     from src.quantum.figure_data import (
         make_monoidal_functor_example,
         make_quantum_povm_example,
@@ -67,6 +73,7 @@ def run(out: Path) -> list[Path]:
         logger.info("  ✓ %s", path.name)
     except Exception as exc:
         logger.error("  ✗ quantum_povm_probabilities.png: %s", exc)
+        LAST_FAILURES.append("quantum_povm_probabilities.png")
 
     # ── Security: case interaction graph (§9b figure) ────────────────────
     try:
@@ -76,6 +83,7 @@ def run(out: Path) -> list[Path]:
         logger.info("  ✓ %s", path.name)
     except Exception as exc:
         logger.error("  ✗ security_type_violations.png: %s", exc)
+        LAST_FAILURES.append("security_type_violations.png")
 
     # ── Security Phase 2: MonoidalFunctor tensor preservation (§9b) ──────
     # NOTE: monoidal_functor_security.png is not yet referenced in the manuscript;
@@ -88,6 +96,7 @@ def run(out: Path) -> list[Path]:
         logger.info("  ✓ %s", path.name)
     except Exception as exc:
         logger.error("  ✗ monoidal_functor_security.png: %s", exc)
+        LAST_FAILURES.append("monoidal_functor_security.png")
 
     return outputs
 
@@ -103,7 +112,12 @@ def main() -> int:
     args = parser.parse_args()
     outputs = run(args.output)
     logger.info("Generated %d quantum/security figures", len(outputs))
-    return 0
+    if LAST_FAILURES:
+        logger.error(
+            "%d quantum/security figure(s) failed to render: %s",
+            len(LAST_FAILURES), ", ".join(LAST_FAILURES),
+        )
+    return 1 if LAST_FAILURES else 0
 
 
 if __name__ == "__main__":

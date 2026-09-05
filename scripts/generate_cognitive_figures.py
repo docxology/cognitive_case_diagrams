@@ -33,6 +33,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger("generate_cognitive_figures")
 
+# Per-figure/per-section failures from the most recent run() call. The
+# dispatcher (scripts/generate_diagrams.py) reads this after calling run()
+# so a partial failure inside this domain is not reported as a full success.
+LAST_FAILURES: list[str] = []
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "output" / "figures"
 
@@ -125,6 +130,7 @@ def run(out: Path) -> list[Path]:
     Returns:
         List of paths to generated files.
     """
+    LAST_FAILURES.clear()
     out.mkdir(parents=True, exist_ok=True)
     outputs: list[Path] = []
 
@@ -139,6 +145,7 @@ def run(out: Path) -> list[Path]:
             logger.info("  ✓ %s", path.name)
         except Exception as exc:
             logger.error("  ✗ %s: %s", name, exc)
+            LAST_FAILURES.append(name)
 
     try:
         paths = _daif_figures(out)
@@ -147,6 +154,7 @@ def run(out: Path) -> list[Path]:
             logger.info("  ✓ %s", p.name)
     except Exception as exc:
         logger.error("  ✗ daif_figures: %s", exc)
+        LAST_FAILURES.append("daif_figures")
 
     return outputs
 
@@ -162,7 +170,12 @@ def main() -> int:
     args = parser.parse_args()
     outputs = run(args.output)
     logger.info("Generated %d cognitive figures", len(outputs))
-    return 0
+    if LAST_FAILURES:
+        logger.error(
+            "%d cognitive figure(s)/section(s) failed to render: %s",
+            len(LAST_FAILURES), ", ".join(LAST_FAILURES),
+        )
+    return 1 if LAST_FAILURES else 0
 
 
 if __name__ == "__main__":

@@ -88,7 +88,7 @@ All metrics operate on real DisCoPy `rigid.Diagram` objects:
 | `count_caps(diagram)` | `int` | Cap expansions |
 | `diagram_depth(diagram)` | `int` | Sequential layers (`diagram.depth()`) |
 | `diagram_width(diagram)` | `int` | Max parallel wires (`diagram.width`) |
-| `syntactic_complexity_score(diagram)` | `float` | `words + 0.5*cups + 0.25*caps + 0.1*depth` |
+| `syntactic_complexity_score(diagram, w_words=1.0, w_cups=0.5, w_caps=0.25, w_depth=0.1)` | `float` | `w_words·words + w_cups·cups + w_caps·caps + w_depth·depth` — the four weights are tunable kwargs, and the term is **words** (lexical boxes), not total boxes |
 | `analyze_diagram(diagram, name)` | `DiagramMetrics` | All metrics in one call |
 | `compare_diagrams(diagrams)` | `list[DiagramMetrics]` | Multi-diagram comparison |
 
@@ -96,8 +96,15 @@ All metrics operate on real DisCoPy `rigid.Diagram` objects:
 
 ```python
 metrics = compute_quantum_magnitude_homology(diagram, environmental_noise=0.05)
-metrics.quantum_environment_commutes  # True if decoherence < 0.25 threshold
+metrics.quantum_environment_commutes  # True if the cup/cap proxy decoherence < 0.25
 ```
+
+`MagnitudeHomologyMetrics` holds exactly four fields —
+`base_syntactic_complexity: float`, `topological_holes_1d: int`,
+`estimated_decoherence_rate: float`, `quantum_environment_commutes: bool`. It
+records a scalar complexity, a 1-D hole count and a decoherence estimate; it does
+**not** hold graded homology groups. Treat the Leinster–Shulman graded invariant
+as the theoretical target this class gestures at, not the implemented object.
 
 ## `ditransitive.py` — Three-Argument Verbs
 

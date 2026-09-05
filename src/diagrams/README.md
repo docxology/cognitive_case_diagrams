@@ -25,10 +25,10 @@ from src.diagrams.string_diagram import (
 | `Sentence` | DisCoCat string diagram with case-role metadata |
 | `Sentence.transitive(subj, verb, obj)` | Factory for SVO sentences |
 | `Discourse` | Multi-sentence DisCoCirc circuit with entity persistence |
-| `DiagramMetrics` | `box_count`, `cup_count`, `depth`, `width`, `is_normal_form` |
+| `DiagramMetrics` | `name`, `box_count`, `word_count`, `cup_count`, `cap_count`, `is_normal_form`, `normal_form_box_count`, `dom_type`, `cod_type`, `depth`, `width` |
 | `diagram_depth(diagram)` | Sequential layers via `diagram.depth()` |
 | `diagram_width(diagram)` | Max parallel wires via `diagram.width` |
-| `syntactic_complexity_score(diagram)` | `words + 0.5*cups + 0.25*caps + 0.1*depth` |
+| `syntactic_complexity_score(diagram, w_words=1.0, w_cups=0.5, w_caps=0.25, w_depth=0.1)` | `words + 0.5*cups + 0.25*caps + 0.1*depth` with tunable weights |
 | `create_word_diagram_*(...)` | Word-based diagrams via `grammar.pregroup.eager_parse` |
 | `create_tensor_semantics(...)` | DisCoCat meaning functor evaluation in `discopy.tensor` |
 | `DitransitiveSentence` | Three-argument frame (NOM, ACC, DAT) |

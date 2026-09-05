@@ -69,7 +69,7 @@ def plot_belief_trajectory(
         return ""
 
     n_steps = len(trajectory)
-    steps = np.arange(1, n_steps + 1)
+    steps = np.arange(1, n_steps + 1).tolist()
 
     if word_labels is None:
         word_labels = DEFAULT_SENTENCE_WORDS[:n_steps]

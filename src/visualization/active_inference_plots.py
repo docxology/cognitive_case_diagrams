@@ -119,7 +119,7 @@ def plot_alignment_frame_belief_dynamics(
     ax1.set_xticks(x_prior)
     ax1.set_xticklabels(xtick_labels, fontsize=FONT_SIZE_FLOOR, fontstyle="italic")
 
-    x_steps = np.arange(1, n_steps + 1)
+    x_steps = np.arange(1, n_steps + 1).tolist()
     ax2 = fig.add_subplot(gs[1])
     ax2.plot(
         x_steps,

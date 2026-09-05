@@ -9,7 +9,6 @@ from typing import Optional
 
 import matplotlib
 import matplotlib.pyplot as plt
-import numpy as np
 
 from ..enriched_cat.enriched import EnrichedCategory
 from .styles import (

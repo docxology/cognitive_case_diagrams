@@ -604,7 +604,7 @@ def create_swap_passive(subject: str, verb: str, agent: str):
     Returns:
         A discopy.grammar.pregroup.Diagram with explicit Swap.
     """
-    from discopy.grammar.pregroup import Word, Ty, Cup, eager_parse
+    from discopy.grammar.pregroup import Word, Ty, eager_parse
 
     n = Ty('n')
     s = Ty('s')
@@ -683,7 +683,6 @@ def create_tensor_semantics(
         Tuple of (tensor_diagram, meaning_vector) where meaning_vector
         is a numpy array of shape (sentence_dim,).
     """
-    import numpy as np
     from discopy.tensor import Box as TBox, Cup as TCup, Id as TId, Dim
 
     N = Dim(noun_dim)

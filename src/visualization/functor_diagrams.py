@@ -298,7 +298,7 @@ def _draw_category_panel(
             continue
         xs = [p[0] for p in pts]
         ys = [p[1] for p in pts]
-        cx, cy = np.mean(xs), np.mean(ys)
+        cx, cy = float(np.mean(xs)), float(np.mean(ys))
         halo_r = (
             max(
                 max(abs(x - cx) for x in xs),

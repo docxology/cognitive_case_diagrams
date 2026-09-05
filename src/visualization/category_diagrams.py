@@ -12,11 +12,11 @@ import matplotlib
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from ..case_systems.case_category import CaseCategory, CaseRole, Morphism
+from ..case_systems.case_category import CaseCategory, CaseRole
 from .styles import (
     CASE_COLORS, FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_LABEL,
-    DEFAULT_FIGSIZE, COMPARISON_FIGSIZE, SQUARE_FIGSIZE, FIGURE_DPI,
-    COLOR_EDGE, COLOR_TEXT, COLOR_NEUTRAL,
+    COMPARISON_FIGSIZE, SQUARE_FIGSIZE, FIGURE_DPI,
+    COLOR_TEXT, COLOR_NEUTRAL,
     mathtext_safe_arrows,
 )
 
@@ -305,11 +305,11 @@ def render_alignment_comparison(
             G.add_edge(s, t)
 
         # Position: sources on left, targets on right
-        pos = {}
+        pos: dict[str, tuple[float, float]] = {}
         for i, s in enumerate(sources):
-            pos[s] = (-1, -i)
+            pos[s] = (-1.0, -float(i))
         for i, t in enumerate(targets):
-            pos[t] = (1, -i * (len(sources) - 1) / max(len(targets) - 1, 1))
+            pos[t] = (1.0, -float(i) * (len(sources) - 1) / max(len(targets) - 1, 1))
 
         source_colors = [CASE_COLORS.get(s, COLOR_NEUTRAL) for s in sources]
         target_colors = [CASE_COLORS.get(t, COLOR_NEUTRAL) for t in targets]

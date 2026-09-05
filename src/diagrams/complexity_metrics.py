@@ -23,7 +23,9 @@ from dataclasses import dataclass
 logger = logging.getLogger(__name__)
 
 try:
-    from discopy.rigid import Ty, Box, Cup, Cap, Id, Diagram
+    # Availability probe: importing these names is the DISCOPY_AVAILABLE test.
+    # Ty/Box/Id are re-imported lazily inside functions that need them.
+    from discopy.rigid import Ty, Box, Cup, Cap, Id, Diagram  # noqa: F401
     DISCOPY_AVAILABLE = True
 except ImportError:
     DISCOPY_AVAILABLE = False
@@ -346,18 +348,27 @@ def compute_quantum_magnitude_homology(
     diagram: "Diagram", 
     environmental_noise: float = 0.05
 ) -> MagnitudeHomologyMetrics:
-    """Calculate categorical magnitude invariants inside non-classical parameters.
-    
-    Porting syntactic logic into Parameterized Quantum Circuits (lambeq Gen II)
-    triggers severe structural shear forces if the 1-dimensional homological
-    holes fail to commute against quantum decoherence (\autoref{sec:magnitude-homology}).
-    
+    """Coarse PQC-decoherence proxy — computes NO homology and NO magnitude.
+
+    Despite the name, this function does not compute magnitude homology (or
+    magnitude) of ``diagram``. It returns:
+
+    - ``base_syntactic_complexity``: the real :func:`syntactic_complexity_score`.
+    - ``topological_holes_1d``: ``count_cups(diagram) - count_caps(diagram)``,
+      clamped at 0 — a coarse structural proxy, not a homology computation.
+    - ``estimated_decoherence_rate``:
+      ``min(1.0, environmental_noise * 1.5 ** holes_1d)``. The base 1.5 and the
+      commutation threshold 0.25 are unsourced modelling constants, not
+      measured decoherence physics; treat the outputs as illustrative
+      specification-level figures, not measured safety bounds.
+    - ``quantum_environment_commutes``: ``estimated_decoherence_rate < 0.25``.
+
     Args:
         diagram: A DisCoPy rigid Diagram to embed.
         environmental_noise: Baseline PQC decoherence magnitude [0,1].
-        
+
     Returns:
-        MagnitudeHomologyMetrics calculating safety bounds.
+        MagnitudeHomologyMetrics with the quantities described above.
     """
     if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required")
@@ -380,10 +391,11 @@ def compute_quantum_magnitude_homology(
     commutes = effective_decoherence < _COMMUTATION_THRESHOLD
     
     if not commutes:
-        logger.warning(
-            "QUANTUM NOISE ALERT: PQC Decoherence rate (%.2f) exceeds homological "
-            "commutation boundary! 1-dimensional holes cannot be safely ported.", 
-            effective_decoherence
+        logger.debug(
+            "PQC decoherence proxy (%.2f) exceeds the unsourced commutation "
+            "threshold (0.25) for %d cup/cap proxy hole(s).",
+            effective_decoherence,
+            holes_1d,
         )
         
     return MagnitudeHomologyMetrics(

@@ -35,16 +35,19 @@ This is implemented in `case_probability(povm_element, density_matrix)`.
 @dataclass
 class CasePOVM:
     roles: list[CaseRole]           # Case roles in this POVM
-    elements: dict[CaseRole, np.ndarray]  # E_c ∈ ℂ^{d×d} for each role
+    elements: dict = field(default_factory=dict)  # role -> E_c ∈ ℂ^{d×d}
     dimension: int = 2              # Hilbert space dimension
     name: str = "povm"              # Used for auto-generating output filenames
 ```
 
-**Important**: `name` defaults to `"povm"`. Always set a descriptive name when constructing named POVMs to avoid filename collisions in `quantum_plots.py`.
+**Important**: `name` defaults to `"povm"` and the factory functions below do
+**not** accept a `name` argument — set it on the returned instance
+(`povm.name = "nominative_accusative"`) to avoid filename collisions in
+`quantum_plots.py`.
 
 **Validation** (`__post_init__` → `_validate()`):
 - Each `E_c` is positive semidefinite
-- `Σ E_c ≈ I` (completeness, within tolerance)
+- `Σ E_c ≈ I` (completeness, within tolerance — `is_complete(atol=1e-10)`)
 
 ### `case_probability(povm_element, density_matrix)`
 
@@ -61,10 +64,12 @@ prob = case_probability(povm.elements[CaseRole.NOM], rho)
 
 | Function | Returns | Description |
 |----------|---------|-------------|
-| `crisp_case_povm(roles)` | `CasePOVM` | Projective measurement: E_c = \|c⟩⟨c\| (orthogonal projectors) |
-| `graded_case_povm(roles, weights)` | `CasePOVM` | Weighted projectors for soft case assignment |
-| `fluid_s_povm(volitional_prob)` | `CasePOVM` | Two-element POVM for Fluid-S split-intransitivity |
-| `semantic_state(probs, roles)` | `np.ndarray` | Diagonal density matrix ρ = Σ pᵢ \|i⟩⟨i\| |
+| `crisp_case_povm(roles, dimension=None)` | `CasePOVM` | Projective measurement: E_c = \|c⟩⟨c\| (orthogonal projectors); `dimension` defaults to `len(roles)` |
+| `graded_case_povm(roles, overlap_matrix)` | `CasePOVM` | Overlap-weighted projectors for soft case assignment |
+| `fluid_s_povm(p_volitional, dimension=2)` | `CasePOVM` | Two-element POVM for Fluid-S split-intransitivity |
+| `semantic_state(weights, dimension=None, roles=None)` | `np.ndarray` | Diagonal density matrix ρ = Σ pᵢ \|i⟩⟨i\| |
+
+None of the four takes a `name=` keyword; assign `povm.name` after construction.
 
 ### Crisp vs. Graded vs. Fluid-S POVMs
 
@@ -87,7 +92,8 @@ import numpy as np
 
 # Create NOM/ACC crisp POVM
 roles = [CaseRole.NOM, CaseRole.ACC]
-povm = crisp_case_povm(roles, name="nominative_accusative")
+povm = crisp_case_povm(roles)
+povm.name = "nominative_accusative"   # `name` is a field, not a factory kwarg
 
 # Create NOM-dominant state
 rho = np.diag([0.9, 0.1]).astype(np.complex128)
@@ -105,4 +111,5 @@ print(f"P(NOM|ρ) = {p_nom:.3f}, P(ACC|ρ) = {p_acc:.3f}")
 |-------|-------|-----|
 | `AttributeError: 'CasePOVM' object has no attribute 'name'` | Old code before `name` field added | Ensure `quantum_case.py` has `name: str = "povm"` in the dataclass |
 | `ValueError: diag requires an array of at least two dimensions` | Passing 1D array to `case_probability` | Use 2D density matrix: `np.diag([...]).astype(np.complex128)` |
-| `np.linalg.LinAlgError` in completeness check | Near-singular POVM construction | Ensure weights sum correctly in `graded_case_povm` |
+| `np.linalg.LinAlgError` in completeness check | Near-singular POVM construction | Check the `overlap_matrix` passed to `graded_case_povm` — the elements must still sum to `I` |
+| `TypeError: ... unexpected keyword argument 'name'` | Passing `name=` to a POVM factory | Set `povm.name` on the returned instance instead |

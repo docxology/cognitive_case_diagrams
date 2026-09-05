@@ -15,9 +15,9 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.colors import LinearSegmentedColormap
 
-from ..case_systems.fluid_s import FluidSFunctor, VolitionContext
+from ..case_systems.fluid_s import FluidSFunctor
 from .styles import (
-    CASE_COLORS, FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_LABEL,
+    FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_LABEL,
     FIGURE_DPI,
     FLUID_S_AGENT_THRESHOLD,
 )

@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from ..quantum.quantum_case import CasePOVM, case_probability
 from .styles import (
     CASE_COLORS, FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_LABEL,
-    DEFAULT_FIGSIZE, FIGURE_DPI, COLOR_UNKNOWN, mathtext_safe_arrows,
+    FIGURE_DPI, COLOR_UNKNOWN, mathtext_safe_arrows,
 )
 
 logger = logging.getLogger(__name__)

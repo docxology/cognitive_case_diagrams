@@ -16,10 +16,10 @@ from src.quantum.quantum_case import (
 | Function | Description |
 |----------|-------------|
 | `case_probability(E_c, rho)` | `Tr(E_c ρ)` — **rho must be 2D complex128** |
-| `crisp_case_povm(roles)` | Orthogonal projectors (binary case) |
-| `graded_case_povm(roles, weights)` | Weighted projectors (soft case) |
-| `fluid_s_povm(p)` | Fluid-S split-S parameterized by volition prob |
-| `semantic_state(probs, roles)` | Diagonal density matrix ρ |
+| `crisp_case_povm(roles, dimension=None)` | Orthogonal projectors (binary case) |
+| `graded_case_povm(roles, overlap_matrix)` | Overlap-weighted projectors (soft case) |
+| `fluid_s_povm(p_volitional, dimension=2)` | Fluid-S split-S parameterized by volition prob |
+| `semantic_state(weights, dimension=None, roles=None)` | Diagonal density matrix ρ |
 
 ## ⚠ Critical: Density Matrix Must Be 2D
 

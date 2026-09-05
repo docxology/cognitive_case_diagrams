@@ -7,7 +7,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import numpy as np
 
 from ..case_systems.case_category import CaseRole
 from ..case_systems.functor import MonoidalFunctor, accusative_to_ergative_functor

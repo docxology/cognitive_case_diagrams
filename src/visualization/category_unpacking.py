@@ -27,7 +27,6 @@ from __future__ import annotations
 import logging
 from typing import Optional
 
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.path import Path as MplPath
@@ -37,12 +36,9 @@ from .styles import (
     FONT_SIZE_TITLE,
     FONT_SIZE_LABEL,
     FONT_SIZE_ANNOTATION,
-    FONT_SIZE_FLOOR,
     FIGURE_DPI,
     COLOR_EDGE,
     COLOR_TEXT,
-    COLOR_WIRE,
-    COLOR_ENTITY_WIRE,
     LINE_WIDTH_EDGE,
 )
 

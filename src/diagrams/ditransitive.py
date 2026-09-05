@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from ..case_systems.case_category import CaseRole
-from .string_diagram import AtomicType, Wire, Box, Sentence, N, S
+from .string_diagram import Wire, Box, Sentence, N, S
 
 logger = logging.getLogger(__name__)
 

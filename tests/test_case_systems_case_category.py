@@ -196,7 +196,7 @@ class TestMinimalCategory:
     def test_composition_closes(self):
         """Composition of acts_on and applied_to exists implicitly."""
         cat = minimal_case_category()
-        f = next(m for m in cat.morphisms if m.label == "acts_on")
+        # (acts_on is intentionally unused here — see comment below)
         g = next(m for m in cat.morphisms if m.label == "applied_to")
         # INS -> ACC (applied_to), but NOM -> ACC (acts_on) is the composed path
         # NOM -> INS (uses), INS -> ACC (applied_to) -> compose

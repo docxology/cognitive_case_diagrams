@@ -8,10 +8,9 @@ import logging
 import os
 
 import numpy as np
-import pytest
 
 from src.case_systems.case_category import CaseRole
-from src.quantum.quantum_case import CasePOVM, crisp_case_povm, case_probability
+from src.quantum.quantum_case import crisp_case_povm, case_probability
 from src.visualization.quantum_plots import plot_povm_probabilities
 
 logger = logging.getLogger(__name__)

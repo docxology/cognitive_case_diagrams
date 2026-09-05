@@ -7,10 +7,9 @@ with correct 2D decision surface structure.
 import logging
 import os
 
-import pytest
 
 from src.case_systems.fluid_s import (
-    FluidSFunctor, VolitionContext, create_fluid_s_functor, bats_fluid_s,
+    VolitionContext, bats_fluid_s,
 )
 from src.visualization.fluid_s_plots import (
     plot_fluid_s_volition_landscape,

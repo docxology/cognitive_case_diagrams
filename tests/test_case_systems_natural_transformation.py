@@ -62,6 +62,36 @@ class TestNaturality:
         assert not nt.is_complete()
         assert not nt.naturality_holds()
 
+    def test_failing_weight_mismatch_returns_false(self) -> None:
+        """A naturality square that does NOT commute returns False.
+
+        Components α_S (w=0.8) and α_P (w=1.0) share endpoints with the
+        identity self-maps, so both legs of the square have identical
+        endpoints but different weights: G(f)∘α_S = 0.8·0.5 = 0.4 while
+        α_P∘F(f) = 0.5·1.0 = 0.5 for f: S→P (w=0.5). The weight-comparison
+        branch of :meth:`naturality_holds` must fire.
+        """
+        fn = make_parallel_functors_with_morphism()
+        nt = NaturalTransformation(
+            name="weighted",
+            source_functor=fn,
+            target_functor=fn,
+        )
+        nt.set_component(CaseRole.S, ComponentMorphism(
+            object_name=CaseRole.S,
+            source_image=fn.object_map[CaseRole.S],
+            target_image=fn.object_map[CaseRole.S],
+            weight=0.8,
+        ))
+        nt.components[CaseRole.P] = ComponentMorphism(
+            object_name=CaseRole.P,
+            source_image=fn.object_map[CaseRole.P],
+            target_image=fn.object_map[CaseRole.P],
+            weight=1.0,
+        )
+        assert nt.is_complete()
+        assert not nt.naturality_holds()
+
 
 class TestNaturalTransformation:
     """Tests for NaturalTransformation class."""

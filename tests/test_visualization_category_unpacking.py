@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import pathlib
 
-import pytest
 
 from src.visualization.category_unpacking import (
     render_pregroup_reduction_unpacking,

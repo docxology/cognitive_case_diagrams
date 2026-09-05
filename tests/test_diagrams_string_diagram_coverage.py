@@ -7,7 +7,7 @@ Uses real DisCoPy operations (zero-mock policy).
 import pytest
 
 discopy = pytest.importorskip("discopy", reason="discopy required")
-from discopy.rigid import Ty, Id  # noqa: E402
+from discopy.rigid import Ty  # noqa: E402
 
 from src.diagrams.string_diagram import (  # noqa: E402
     AtomicType,

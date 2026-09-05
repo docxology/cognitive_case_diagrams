@@ -28,8 +28,18 @@ TESTS_DIR = PROJECT_ROOT / "tests"
 DAIF_DIR = PROJECT_ROOT / "src" / "daif"
 
 
-def test_count_test_files_matches_glob() -> None:
-    assert _count_test_files(TESTS_DIR) == len(list(TESTS_DIR.glob("test_*.py")))
+def test_count_test_files_counts_only_top_level_test_modules(tmp_path: Path) -> None:
+    """Contract: exactly the top-level ``test_*.py`` modules are counted."""
+    tests = tmp_path / "tests"
+    tests.mkdir()
+    (tests / "test_a.py").write_text("", encoding="utf-8")
+    (tests / "test_b.py").write_text("", encoding="utf-8")
+    (tests / "conftest.py").write_text("", encoding="utf-8")
+    (tests / "util.py").write_text("", encoding="utf-8")
+    sub = tests / "sub"
+    sub.mkdir()
+    (sub / "test_nested.py").write_text("", encoding="utf-8")
+    assert _count_test_files(tests) == 2
 
 
 def test_daif_counts_nonzero() -> None:
@@ -175,15 +185,48 @@ def test_collect_metrics_values_are_strings() -> None:
         assert isinstance(v, str), f"Key {k} has non-string value: {type(v)}"
 
 
-def test_coverage_json_populates_percent_when_present() -> None:
-    """When coverage.json exists (from pytest --cov-report=json), percent keys are set."""
-    cov = PROJECT_ROOT / "coverage.json"
-    if not cov.is_file():
-        pytest.skip("coverage.json not present — run pytest with --cov-report=json")
-    m = collect_metrics(PROJECT_ROOT)
-    assert "coverage_percent" in m
-    assert m["coverage_percent"], "coverage_percent should be non-empty when JSON exists"
-    assert "%" in m["coverage_summary"] or "coverage" in m["coverage_summary"].lower()
+def _make_tmp_project(tmp_path: Path, with_coverage: bool = True) -> Path:
+    """Build a minimal project layout collect_metrics can introspect."""
+    root = tmp_path / "proj"
+    tests = root / "tests"
+    tests.mkdir(parents=True)
+    (tests / "test_example.py").write_text(
+        "def test_a():\n    pass\n", encoding="utf-8"
+    )
+    daif = root / "src" / "daif"
+    daif.mkdir(parents=True)
+    (daif / "core.py").write_text("", encoding="utf-8")
+    figures = root / "output" / "figures"
+    figures.mkdir(parents=True)
+    (figures / "fig.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    if with_coverage:
+        (root / "coverage.json").write_text(json.dumps({
+            "totals": {
+                "percent_covered_display": "91.00%",
+                "percent_covered": 91.0,
+                "covered_lines": 91,
+                "num_statements": 100,
+                "covered_branches": 4,
+                "num_branches": 5,
+            }
+        }), encoding="utf-8")
+    return root
+
+
+def test_coverage_json_populates_percent_when_present(tmp_path: Path) -> None:
+    """A project with coverage.json gets real percent keys, never prose fallbacks."""
+    root = _make_tmp_project(tmp_path)
+    m = collect_metrics(root)
+    assert m["coverage_percent"] == "91.00"
+    assert "91.00%" in m["coverage_summary"]
+
+
+def test_collect_metrics_requires_coverage_json(tmp_path: Path) -> None:
+    """Missing coverage.json fails loudly instead of rendering instructions
+    into the published abstract."""
+    root = _make_tmp_project(tmp_path, with_coverage=False)
+    with pytest.raises(RuntimeError, match="coverage.json"):
+        collect_metrics(root)
 
 
 def test_read_coverage_totals_minimal_json(tmp_path: Path) -> None:

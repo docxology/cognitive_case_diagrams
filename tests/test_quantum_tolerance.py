@@ -78,7 +78,7 @@ class TestCaseProbability:
 
     def test_pure_state_gives_deterministic_assignment(self):
         """A pure-state density matrix on a projective POVM gives 0 or 1 probability."""
-        roles = [CaseRole.NOM, CaseRole.ACC]
+        # A projective POVM {p0, p1} on the 2-D space; no role list needed.
         p0 = np.array([[1.0, 0.0], [0.0, 0.0]])
         p1 = np.array([[0.0, 0.0], [0.0, 1.0]])
         # Pure state |0⟩

@@ -8,7 +8,6 @@ import logging
 
 import matplotlib
 import numpy as np
-import pytest
 
 from src.case_systems.case_category import CaseRole
 from src.enriched_cat.enriched import EnrichedCategory

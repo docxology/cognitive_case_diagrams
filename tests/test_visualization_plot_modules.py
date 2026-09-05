@@ -21,13 +21,12 @@ import os
 import tempfile
 
 import numpy as np
-import pytest
 
-from src.case_systems.case_category import CaseRole, standard_case_category
+from src.case_systems.case_category import CaseRole
 from src.cognitive.belief import CaseDiagramBelief
-from src.quantum.quantum_case import CasePOVM, crisp_case_povm, semantic_state
-from src.security.cognitive_security import TypeViolation, detect_type_violation
-from src.case_systems.fluid_s import FluidSFunctor, VolitionContext, create_fluid_s_functor
+from src.quantum.quantum_case import crisp_case_povm, semantic_state
+from src.security.cognitive_security import TypeViolation
+from src.case_systems.fluid_s import create_fluid_s_functor
 from src.visualization.active_inference_plots import plot_belief_distribution
 from src.visualization.quantum_plots import plot_povm_probabilities
 from src.visualization.security_plots import plot_type_violations

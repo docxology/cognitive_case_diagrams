@@ -10,8 +10,6 @@ import numpy as np
 from src.enriched_cat.enriched import (
     EnrichedCategory,
     standard_enriched_category,
-    STANDARD_PROXIMITY_MATRIX,
-    STANDARD_ROLES,
 )
 from src.case_systems.case_category import CaseRole
 

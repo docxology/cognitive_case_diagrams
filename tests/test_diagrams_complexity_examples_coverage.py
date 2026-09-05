@@ -78,12 +78,12 @@ class TestBuildComplexityExamples:
     def test_includes_intransitive(self, examples):
         """Should include an intransitive example."""
         labels_lower = [label.lower() for label, _ in examples]
-        assert any("intransitive" in l for l in labels_lower)
+        assert any("intransitive" in lab for lab in labels_lower)
 
     def test_includes_transitive(self, examples):
         """Should include a transitive example."""
         labels_lower = [label.lower() for label, _ in examples]
-        assert any("transitive" in l for l in labels_lower)
+        assert any("transitive" in lab for lab in labels_lower)
 
     def test_first_example_simplest(self, examples):
         """First example should have the fewest boxes."""

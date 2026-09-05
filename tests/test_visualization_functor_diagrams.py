@@ -8,7 +8,6 @@ import logging
 
 import matplotlib
 import matplotlib.patches as mpatches
-import pytest
 
 from src.case_systems.functor import accusative_to_ergative_functor
 from src.visualization.functor_diagrams import render_functor_diagram

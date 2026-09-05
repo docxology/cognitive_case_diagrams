@@ -5,15 +5,13 @@ wires, file saving, and discourse diagram rendering edge cases.
 """
 
 import logging
-from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import pytest
 
 from src.case_systems.case_category import CaseRole
 from src.diagrams.string_diagram import (
-    AtomicType, N, S, Wire, Box, Sentence, Discourse,
+    N, S, Wire, Box, Sentence, Discourse,
 )
 from src.visualization.string_diagrams import (
     render_discocat_sentence,

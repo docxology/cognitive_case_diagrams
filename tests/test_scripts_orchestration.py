@@ -148,9 +148,16 @@ class TestVariableSubstitution:
         """Manuscript placeholders actually used match keys in collect_metrics."""
         from src.generate_manuscript_metrics import collect_metrics
         metrics = collect_metrics(_PROJECT_ROOT)
-        manuscript_dir = _PROJECT_ROOT / "manuscript"
+        manuscript_dir = _PROJECT_ROOT / "docs" / "manuscript"
+        chapters = sorted(manuscript_dir.glob("[0-9]*.md"))
+        # Non-emptiness guard: without it this gate silently passes on zero files
+        # whenever the manuscript directory moves (it did, in commit cdb051f).
+        assert len(chapters) >= 20, (
+            f"expected the numbered manuscript sections, found {len(chapters)} "
+            f"in {manuscript_dir}"
+        )
         unresolved: set[str] = set()
-        for md in sorted(manuscript_dir.glob("[0-9]*.md")):
+        for md in chapters:
             text = md.read_text(encoding="utf-8")
             rendered = _do_substitution(text, metrics)
             still_unresolved = _UNRESOLVED_VAR_RE.findall(rendered)

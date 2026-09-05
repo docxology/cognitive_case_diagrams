@@ -2,7 +2,6 @@
 No mocks — real computations only.
 """
 import numpy as np
-import pytest
 
 from src.case_systems.case_category import CaseRole
 from src.quantum.figure_data import (

@@ -7,7 +7,6 @@ severity-colored bar chart structure.
 import logging
 import os
 
-import pytest
 
 from src.case_systems.case_category import CaseRole
 from src.security.cognitive_security import TypeViolation

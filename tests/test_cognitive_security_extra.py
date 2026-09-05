@@ -2,7 +2,6 @@
 semantic_integrity_check, and the unknown-role violation path.
 No mocks — real computations only.
 """
-import pytest
 
 from src.case_systems.case_category import CaseRole, minimal_case_category
 from src.enriched_cat.enriched import standard_enriched_category

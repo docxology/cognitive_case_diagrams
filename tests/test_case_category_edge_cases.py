@@ -7,7 +7,6 @@ from src.case_systems.case_category import (
     CaseCategory,
     CaseRole,
     Morphism,
-    minimal_case_category,
     standard_case_category,
 )
 

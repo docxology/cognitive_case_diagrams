@@ -153,7 +153,6 @@ class TestBetheeFreeEnergy:
         assert np.isfinite(fe)
 
     def test_identity_adjacency_factor(self, peaked_belief):
-        m = 1
         factor_beliefs = [peaked_belief.probabilities.copy()]
         adjacency = np.ones((3, 1))
         fe = bethe_free_energy(peaked_belief, factor_beliefs, adjacency)

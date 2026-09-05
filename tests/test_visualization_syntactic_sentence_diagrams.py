@@ -5,12 +5,9 @@ correctly as a PNG file with the expected structure and content.
 All tests use real file I/O and matplotlib rendering — no mocks.
 """
 
-import os
 import sys
-import tempfile
 from pathlib import Path
 
-import pytest
 
 # Ensure the project src is on the path
 PROJECT_ROOT = Path(__file__).parent.parent

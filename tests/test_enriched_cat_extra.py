@@ -22,6 +22,47 @@ def _small_enriched() -> EnrichedCategory:
     return EnrichedCategory(name="Small3", roles=roles, proximity_matrix=mat)
 
 
+def _asymmetric_enriched() -> EnrichedCategory:
+    """Deliberately NON-symmetric hom-matrix.
+
+    Row and column sums of Z^-1 coincide for symmetric matrices, so a
+    transposition of weighting/coweighting is invisible on the symmetric
+    fixtures used elsewhere in this file. This fixture is what makes the
+    defining equations Zw = 1 and vZ = 1 testable.
+    """
+    roles = [CaseRole.NOM, CaseRole.ACC, CaseRole.GEN]
+    mat = np.array([
+        [1.0, 0.9, 0.1],
+        [0.2, 1.0, 0.3],
+        [0.4, 0.5, 1.0],
+    ])
+    return EnrichedCategory(name="Asym3", roles=roles, proximity_matrix=mat)
+
+
+class TestWeightingDefiningEquations:
+    """weighting/coweighting must satisfy the equations their docstrings state."""
+
+    def test_weighting_solves_Zw_equals_one(self):
+        cat = _asymmetric_enriched()
+        assert np.allclose(cat.proximity_matrix @ cat.weighting(), 1.0, atol=1e-9)
+
+    def test_coweighting_solves_vZ_equals_one(self):
+        cat = _asymmetric_enriched()
+        assert np.allclose(cat.coweighting() @ cat.proximity_matrix, 1.0, atol=1e-9)
+
+    def test_weighting_and_coweighting_differ_on_asymmetric_matrix(self):
+        """Guards against the two being silently the same expression."""
+        cat = _asymmetric_enriched()
+        assert not np.allclose(cat.weighting(), cat.coweighting(), atol=1e-6)
+
+    def test_both_sum_to_the_magnitude(self):
+        """Sum of either vector equals |C| — ties the pair to magnitude()."""
+        cat = _asymmetric_enriched()
+        mag = cat.magnitude()
+        assert cat.weighting().sum() == pytest.approx(mag, abs=1e-9)
+        assert cat.coweighting().sum() == pytest.approx(mag, abs=1e-9)
+
+
 class TestWeighting:
     def test_returns_ndarray(self):
         cat = standard_enriched_category()

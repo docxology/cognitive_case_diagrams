@@ -11,7 +11,6 @@ from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 
 from src.case_systems.case_category import standard_case_category, minimal_case_category
 from src.enriched_cat.enriched import standard_enriched_category

@@ -7,7 +7,6 @@ real DisCoPy diagram creation functions.
 import pytest
 
 from src.diagrams.string_diagram import (
-    AtomicType,
     Wire,
     Box,
     Sentence,

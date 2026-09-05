@@ -1,5 +1,4 @@
 """Edge-case tests for DAIF inference — degenerate beliefs, NaN/inf, oscillation."""
-import warnings
 
 import numpy as np
 import pytest

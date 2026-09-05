@@ -5,7 +5,6 @@ No mocks.
 """
 
 import numpy as np
-import pathlib
 import pytest
 
 from src.cognitive.belief import CaseDiagramBelief

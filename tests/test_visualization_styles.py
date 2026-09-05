@@ -7,7 +7,6 @@ Figures are generated to tmp paths and validated for file existence.
 import os
 import tempfile
 
-import pytest
 
 from src.visualization.complexity_plots import (
     render_complexity_comparison,

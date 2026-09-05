@@ -3,7 +3,6 @@ that supply plot-ready arrays to the thin-orchestrator scripts.
 No mocks — all computations use real numpy algebra.
 """
 import numpy as np
-import pytest
 
 from src.cognitive.figure_data import (
     make_belief_trajectory_data,

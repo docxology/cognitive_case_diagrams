@@ -7,7 +7,6 @@ and render_syntactic_complexity_radar produce valid output files.
 import logging
 import os
 
-import pytest
 
 from src.visualization.complexity_plots import (
     render_complexity_comparison,

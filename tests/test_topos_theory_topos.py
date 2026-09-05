@@ -8,12 +8,10 @@ All tests use real computations — no mocks.
 import pytest
 
 from src.case_systems.case_category import (
-    CaseRole, CaseCategory,
     standard_case_category,
     minimal_case_category,
 )
 from src.enriched_cat.enriched import (
-    EnrichedCategory,
     standard_enriched_category,
 )
 from src.topos_theory.topos import (
@@ -327,11 +325,15 @@ class TestBridgeTransfer:
         must report ``transfer_possible is False`` and cite the arity
         spectrum in its ``mismatches`` list (soundness guard for §6)."""
         t1 = GeometricTheory(name="T1", theory_type=TheoryType.TYPOLOGICAL)
-        t1.add_sort("A"); t1.add_sort("B"); t1.add_sort("C")
+        t1.add_sort("A")
+        t1.add_sort("B")
+        t1.add_sort("C")
         t1.add_relation("R", ("A", "B"))  # binary
 
         t2 = GeometricTheory(name="T2", theory_type=TheoryType.ENRICHED)
-        t2.add_sort("A"); t2.add_sort("B"); t2.add_sort("C")
+        t2.add_sort("A")
+        t2.add_sort("B")
+        t2.add_sort("C")
         t2.add_relation("S", ("A", "B", "C"))  # ternary
 
         topos1 = ClassifyingTopos(theory=t1)

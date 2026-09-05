@@ -6,16 +6,13 @@ with correct structural properties.
 """
 
 import logging
-import tempfile
-from pathlib import Path
 
 import matplotlib
 import matplotlib.pyplot as plt
 import pytest
 
 from src.case_systems.case_category import (
-    CaseCategory, CaseRole, Morphism,
-    standard_case_category, minimal_case_category,
+    CaseRole, standard_case_category, minimal_case_category,
     introductory_case_category,
 )
 from src.visualization.category_diagrams import (

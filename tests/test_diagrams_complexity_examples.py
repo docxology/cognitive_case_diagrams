@@ -53,7 +53,7 @@ class TestBuildComplexityExamples:
         """Labels must be unique to allow indexed lookup."""
         labels = [label for label, _ in examples]
         assert len(labels) == len(set(labels)), (
-            f"Duplicate labels found: {[l for l in labels if labels.count(l) > 1]}"
+            f"Duplicate labels found: {[lab for lab in labels if labels.count(lab) > 1]}"
         )
 
     def test_diagrams_have_sentence_codomain(self, examples):

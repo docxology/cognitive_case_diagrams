@@ -82,10 +82,11 @@ class TestImplicitQuantileNetworkUpdate:
         updated = implicit_quantile_network_update(cq, cl, tq, tl, learning_rate=0.1)
         assert updated.shape == (n_curr,)
 
-    def test_neutral_distortion_runs_without_error(self):
+    def test_neutral_distortion_identical_inputs_unchanged(self):
         cq = np.array([0.3, 0.5, 0.7])
         cl = np.array([0.25, 0.50, 0.75])
-        implicit_quantile_network_update(cq, cl, cq, cl, risk_distortion="neutral")
+        updated = implicit_quantile_network_update(cq, cl, cq, cl, risk_distortion="neutral")
+        np.testing.assert_allclose(updated, cq, atol=1e-12)
 
     def test_optimistic_distortion(self):
         cq = np.array([0.3, 0.5, 0.7])
@@ -212,8 +213,10 @@ class TestWassersteinReturnDistance:
     def test_valid_p_values(self):
         da = make_return_dist(n=11)
         db = make_return_dist(n=11, offset=0.5)
-        wasserstein_return_distance(da, db, p=1)
-        wasserstein_return_distance(da, db, p=2)
+        for p in (1, 2):
+            w = wasserstein_return_distance(da, db, p=p)
+            assert np.isfinite(w)
+            assert w > 0.0
 
     def test_invalid_p_raises(self):
         da = make_return_dist()

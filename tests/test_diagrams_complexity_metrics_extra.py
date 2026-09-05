@@ -1,5 +1,4 @@
 """Tests for DiagramMetrics dataclass and complexity_metrics module."""
-import pytest
 
 from src.diagrams.complexity_metrics import (
     DISCOPY_AVAILABLE,

@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this software or manuscript, please cite it as below."
+title: "Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case"
+abstract: >-
+  Category-theoretic formalization of linguistic case systems, integrating
+  categorial grammar, DisCoCat/DisCoCirc distributional semantics, enriched
+  categories, and topos theory with the Active Inference framework via the
+  CEREBRUM architecture.
+type: software
+authors:
+  - given-names: "Daniel Ari"
+    family-names: "Friedman"
+    orcid: "https://orcid.org/0000-0001-6232-9096"
+    email: "daniel@activeinference.institute"
+    affiliation: "Active Inference Institute"
+version: "2.3.0"
+date-released: "2026-04-22"
+doi: "10.5281/zenodo.19695260"
+license: Apache-2.0
+repository-code: "https://github.com/docxology/cognitive_case_diagrams"
+keywords:
+  - category theory
+  - linguistic case
+  - active inference
+  - free energy principle
+  - DisCoCat
+  - compositional distributional semantics
+  - topos theory
+  - enriched categories
+  - computational linguistics
+preferred-citation:
+  type: article
+  title: "Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case"
+  authors:
+    - given-names: "Daniel Ari"
+      family-names: "Friedman"
+      orcid: "https://orcid.org/0000-0001-6232-9096"
+      affiliation: "Active Inference Institute"
+  journal: "Active Inference Journal"
+  year: 2026
+  doi: "10.5281/zenodo.19695260"

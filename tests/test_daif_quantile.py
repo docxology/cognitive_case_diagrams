@@ -82,11 +82,26 @@ class TestImplicitQuantileNetworkUpdate:
         updated = implicit_quantile_network_update(cq, cl, tq, tl, learning_rate=0.1)
         assert updated.shape == (n_curr,)
 
-    def test_neutral_distortion_identical_inputs_unchanged(self):
+    def test_neutral_distortion_identical_inputs_shrink_to_mean(self):
+        """Identical current/target shrink pairwise toward the mean.
+
+        Unlike the single-pair ``quantile_td_update``, the IQN update
+        averages Huber gradients over the full current x target grid, so
+        identical inputs are NOT fixed points: each quantile moves toward
+        the sample mean. The defensible invariants are that the mean is
+        preserved, the order is preserved, and the shrinkage is symmetric.
+        """
         cq = np.array([0.3, 0.5, 0.7])
         cl = np.array([0.25, 0.50, 0.75])
         updated = implicit_quantile_network_update(cq, cl, cq, cl, risk_distortion="neutral")
-        np.testing.assert_allclose(updated, cq, atol=1e-12)
+        # Mean preserved exactly; order preserved; shrinkage toward the mean.
+        assert updated.mean() == pytest.approx(cq.mean(), abs=1e-12)
+        assert np.all(np.diff(updated) > 0)
+        assert updated[0] > cq[0] and updated[-1] < cq[-1]
+        # Symmetric configuration -> symmetric shrinkage.
+        assert (updated[0] - cq[0]) == pytest.approx(-(updated[-1] - cq[-1]), abs=1e-12)
+        # Centre quantile is unchanged by the symmetric configuration.
+        assert updated[1] == pytest.approx(cq[1], abs=1e-12)
 
     def test_optimistic_distortion(self):
         cq = np.array([0.3, 0.5, 0.7])

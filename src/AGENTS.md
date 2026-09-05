@@ -59,7 +59,8 @@ from .daif import (
     quantile_td_update, implicit_quantile_network_update, wasserstein_return_distance,
     distributional_case_assignment, variational_message_passing,
     bethe_free_energy, expected_information_gain,
-    distributional_prediction_error, n400_from_return_distribution,
+    distributional_prediction_error, wasserstein_prediction_error,
+    n400_from_return_distribution,
     p600_from_precision_update, erp_amplitude_profile,
     G_policy, softmax_policy_selection, distributional_epistemic_value,
     convergence_diagnostics, distributional_kl, quantile_coverage,
@@ -85,7 +86,19 @@ Authoritative list: `__all__` in [`__init__.py`](__init__.py).
 | `security` | §9b | `TypeViolation`, `CaseFrameValidator`, `detect_type_violation()`, `injection_score()`, `topological_robustness()`, `semantic_integrity_check()` | Imports `case_systems`, `enriched_cat`; root re-exports `CaseFrameValidator` only |
 | `visualization` | All | 15 modules under `visualization/` besides `__init__.py` (includes `styles.py` + figure renderers, e.g. `category_unpacking`, `syntactic_sentence_diagrams`) | May import any subpackage for rendering |
 
-Coverage: enforce **≥90%** on `src/` via `pyproject.toml`; run `uv run pytest tests/ --cov=src` for current totals.
+Coverage: the **≥90%** floor on `src/` is declared in `pyproject.toml`
+(`[tool.coverage.report] fail_under = 90`) and enforced on any `--cov` run; run
+`uv run pytest tests/ --cov=src` for current totals. The measured percentage is
+not restated here — read `output/metrics.json` (`coverage_percent`,
+`coverage_summary`), which is the generated source of truth.
+
+**Scope caveat**: `[tool.coverage.run] omit` excludes only `tests/*`, `*/test_*.py`
+and every `*/__init__.py` — no `src/` implementation module is excluded. Read the
+omit list in `pyproject.toml` before quoting the figure as "coverage on `src/`".
+Note that `tests/test_diagrams_complexity_examples.py` and
+`tests/test_visualization_discopy_diagrams.py` skip when DisCoPy is absent, so a
+DisCoPy-less environment measures those two modules as uncovered rather than
+omitted.
 
 ## Design Principles
 

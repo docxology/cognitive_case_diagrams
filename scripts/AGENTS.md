@@ -23,6 +23,7 @@ Every command below runs from the **project root** (the directory containing thi
 | `generate_quantum_figures.py` | Quantum POVM + cognitive security domain (3 figures) |
 | `generate_syntactic_figures.py` | Syntactic case panel domain (1 figure) |
 | `inject_variables.py` | Manuscript `${variable}` injection from `output/metrics.json` |
+| `quality_gate.py` | **Quality gate** — `ruff check src/ tests/` + `mypy src/`; `--coverage` adds a full `pytest --cov` run enforcing the `fail_under = 90` floor. No CI exists in this repo, so this gate is the enforcement point. Thin orchestrator: no findings are suppressed or filtered here |
 
 ## `inject_variables.py` and `generate_manuscript_metrics`
 

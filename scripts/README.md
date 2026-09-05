@@ -17,6 +17,7 @@ Every command below runs from the **project root** (the parent of this `scripts/
 | `generate_quantum_figures.py` | Quantum POVM + cognitive security domain (3 figures) |
 | `generate_syntactic_figures.py` | Syntactic case panel (1 figure) |
 | `inject_variables.py` | Manuscript `${variable}` injection from `output/metrics.json` |
+| `quality_gate.py` | Runnable quality gate: `ruff check` + `mypy src/` (add `--coverage` to also enforce the ≥90% floor via a full `pytest --cov` run). Exits 1 on any finding; nothing is suppressed |
 
 ## Manuscript metrics (before `inject_variables.py`)
 

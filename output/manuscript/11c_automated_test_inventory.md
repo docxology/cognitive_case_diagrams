@@ -1,6 +1,6 @@
 # Appendix C: Automated Test Suite Inventory {#sec:test-suite-inventory}
 
-This appendix summarizes the **categories** of tests behind the counts in \autoref{sec:diagrammatic-cognition}. Aggregate figures are injected at build time (**1201** tests, **64** files, **9** domain packages under ``src/``; 95.79% line-and-branch coverage on ``src/`` (from ``coverage.json``); see `src/generate_manuscript_metrics.py` and `output/metrics.json`). API summary: [`docs/api_reference.md`](../api_reference.md#manuscript-metrics-helper-srcgenerate_manuscript_metrics). The open-source package [@cognitive_case_diagrams2026code] holds the implementation exercised by these tests. Every test uses real mathematical computations—no mocks or fakes.
+This appendix summarizes the **categories** of tests behind the counts in \autoref{sec:diagrammatic-cognition}. Aggregate figures are injected at build time (**1208** tests, **64** files, **9** domain packages under ``src/``; 95.79% line-and-branch coverage on ``src/`` (measured; see ``output/metrics.json`` and ``tests/AGENTS.md`` for provenance); see `src/generate_manuscript_metrics.py` and `output/metrics.json`). API summary: [`docs/api_reference.md`](../api_reference.md#manuscript-metrics-helper-srcgenerate_manuscript_metrics). The open-source package [@cognitive_case_diagrams2026code] holds the implementation exercised by these tests. Every test uses real mathematical computations—no mocks or fakes.
 
 - **Categorical axiom tests**: Identity morphism existence, composition associativity, weight invariants, `is_well_formed()` full axiom check
 - **Enriched category tests**: Hom-value constraints, composition inequality, categorical magnitude, magnitude deficit, full composition check, role clustering
@@ -15,7 +15,7 @@ This appendix summarizes the **categories** of tests behind the counts in \autor
 - **Cognitive security tests**: Type-violation detection, case frame validation, injection score computation, magnitude-based topological robustness, composition inequality as security boundary
 - **Ditransitive tests**: Three-argument sentence creation, NOM/ACC/DAT case assignment, DisCoPy diagram with three cups, complexity comparison with transitive
 - **Visualization tests** (`tests/test_visualization_*.py`): Category graphs, enriched heatmaps, functor panels, string and DisCoPy diagrams, complexity and DAIF plots, quantum and security plots, Fluid-S landscapes, syntactic panels—PNG output and structural checks where applicable
-- **DAIF subpackage tests** (224 tests across 8 test files):
+- **DAIF subpackage tests** (232 tests across 8 test files):
   - `test_daif_core.py`: Distributional Bellman operator, push-forward return, C51 categorical projection
   - `test_daif_quantile.py`: QR-DQN quantile Huber loss, IQN risk distortion (neutral/optimistic/pessimistic/CVaR), Wasserstein distances $W_1$/$W_2$
   - `test_daif_inference.py`: `distributional_case_assignment()` posterior convergence, variational message passing, Bethe free energy, expected information gain

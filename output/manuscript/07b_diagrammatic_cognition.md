@@ -60,7 +60,7 @@ The active inference agent uses this combined structure as a single, integrated 
 
 This is *total cognitive scenario understanding*: the agent doesn't just parse a sentence or assign case labels—it constructs a complete, internally consistent, generic, strongly typed, dynamically updating model of the relational structure of the situation, and uses that model to predict, explain, and act.
 
-## 1201 Automated Tests Confirm the Formalism Is Executable
+## 1208 Automated Tests Confirm the Formalism Is Executable
 
 The framework developed in this paper is computationally verified through an implementation and test suite that exercises every categorical construction discussed above.
 
@@ -70,6 +70,6 @@ The categorical core (`CaseCategory`, `EnrichedCategory`, `AlignmentFunctor`, `N
 
 ### Automated Test Suite and Verification
 
-The implementation is validated by **1201** automated tests across **64** test files. 95.79% line-and-branch coverage on ``src/`` (from ``coverage.json``) The configuration enforces **≥90%** coverage on ``src/``. Every test uses real mathematical computations—no mocks or fakes. The **per-category inventory** (counts, modules, and DAIF file breakdown) is listed in \autoref{sec:test-suite-inventory}.
+The implementation is validated by **1208** automated tests across **64** test files. 95.79% line-and-branch coverage on ``src/`` (measured; see ``output/metrics.json`` and ``tests/AGENTS.md`` for provenance) The configuration enforces **≥90%** coverage on ``src/``. Every test uses real mathematical computations—no mocks or fakes. The **per-category inventory** (counts, modules, and DAIF file breakdown) is listed in \autoref{sec:test-suite-inventory}.
 
 This computational verification demonstrates that the category-theoretic framework is a *working computational architecture*: the categorical abstractions compile, execute, and produce verifiable results, bridging the gap between formal theory and implemented system.

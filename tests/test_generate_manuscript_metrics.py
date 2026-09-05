@@ -104,9 +104,11 @@ def test_main_dry_run_exit_zero() -> None:
 
 
 def test_count_daif_symbols_zero_without_all_list(tmp_path: Path) -> None:
+    """Return 0 when ``__init__.py`` exists but defines no ``__all__`` list."""
     daif = tmp_path / "daif"
     daif.mkdir()
     (daif / "__init__.py").write_text("# no __all__\nx = 1\n", encoding="utf-8")
+    assert _count_daif_symbols(daif) == 0
 
 def test_count_daif_symbols_empty_all(tmp_path: Path) -> None:
     daif = tmp_path / "daif"
@@ -128,7 +130,7 @@ def test_main_writes_metrics_file(tmp_path: Path) -> None:
         cwd=str(PROJECT_ROOT),
         capture_output=True,
         text=True,
-            timeout=900,
+        timeout=900,
     )
     assert result.returncode == 0
     assert out.exists()

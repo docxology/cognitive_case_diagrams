@@ -93,6 +93,21 @@ class TestCaseCategoryAxioms:
             assert result.target == f.target
             assert math.isclose(result.weight, f.weight, rel_tol=1e-9)
 
+    def test_identity_is_self_composing(self) -> None:
+        """id_A ; id_A = id_A for all roles in the standard category."""
+        cat = standard_case_category()
+        for role in cat.objects:
+            id_a = cat.identity(role)
+            composed = cat.compose(id_a, id_a)
+            assert composed.source == role
+            assert composed.target == role
+            assert math.isclose(composed.weight, 1.0, rel_tol=1e-9)
+
+    def test_associativity_all_triples(self) -> None:
+        """(f ; g) ; h = f ; (g ; h) for all composable triples."""
+        cat = standard_case_category()
+        assert cat.associativity_holds()
+
 
 class TestEmptyMorphismCategory:
     """Edge case: category with objects but zero morphisms."""

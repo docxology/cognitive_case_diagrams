@@ -263,3 +263,56 @@ class TestComposition:
         for role in composite.components:
             assert composite.components[role].source_image == \
                    id1.components[role].source_image
+
+    def test_composite_weight_is_enriched_product(self) -> None:
+        """Vertical composition multiplies component weights (§4–5).
+
+        Both transformations live on the same functor, so every component is
+        trivially composable: w(β_A ∘ α_A) = w(α_A) · w(β_A).
+        """
+        fn = make_parallel_functors_with_morphism()
+        alpha = NaturalTransformation(name="alpha", source_functor=fn, target_functor=fn)
+        beta = NaturalTransformation(name="beta", source_functor=fn, target_functor=fn)
+        for role in (CaseRole.S, CaseRole.P):
+            image = fn.object_map[role]
+            alpha.set_component(role, ComponentMorphism(
+                object_name=role, source_image=image, target_image=image, weight=0.8))
+            beta.set_component(role, ComponentMorphism(
+                object_name=role, source_image=image, target_image=image, weight=0.5))
+        composite = compose_transformations(alpha, beta)
+        for role in (CaseRole.S, CaseRole.P):
+            assert composite.components[role].weight == pytest.approx(0.4)
+
+    def test_compose_incomposable_components_raises(self) -> None:
+        """α_A must land where β_A starts, componentwise.
+
+        ``set_component`` already enforces each transformation's own endpoints,
+        so a composability mismatch is only reachable via directly assigned
+        components (the dataclass permits it; other tests use that path).
+        """
+        fn = make_parallel_functors_with_morphism()
+        alpha = NaturalTransformation(name="alpha", source_functor=fn, target_functor=fn)
+        beta = NaturalTransformation(name="beta", source_functor=fn, target_functor=fn)
+        # α_S: NOM → ACC (lands on ACC) while β_S: NOM → NOM (starts at NOM).
+        alpha.components[CaseRole.S] = ComponentMorphism(
+            object_name=CaseRole.S,
+            source_image=fn.object_map[CaseRole.S],
+            target_image=fn.object_map[CaseRole.P],
+        )
+        alpha.components[CaseRole.P] = ComponentMorphism(
+            object_name=CaseRole.P,
+            source_image=fn.object_map[CaseRole.P],
+            target_image=fn.object_map[CaseRole.P],
+        )
+        beta.components[CaseRole.S] = ComponentMorphism(
+            object_name=CaseRole.S,
+            source_image=fn.object_map[CaseRole.S],
+            target_image=fn.object_map[CaseRole.S],
+        )
+        beta.components[CaseRole.P] = ComponentMorphism(
+            object_name=CaseRole.P,
+            source_image=fn.object_map[CaseRole.P],
+            target_image=fn.object_map[CaseRole.P],
+        )
+        with pytest.raises(ValueError, match="Cannot compose at S"):
+            compose_transformations(alpha, beta)

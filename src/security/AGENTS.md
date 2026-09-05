@@ -54,6 +54,13 @@ Constructor: `CaseFrameValidator(category: CaseCategory | None = None, enriched:
 
 `magnitude() / n` for `n = len(enriched.roles)`; measures distinctness of relational structure.
 
+**Bound caveat**: `R = |C|/n` lies in `(0, 1]` **only** for hom-matrices that satisfy
+the composition inequality `C(A,C) ≥ C(A,B)·C(B,C)`. `EnrichedCategory._validate`
+does not enforce that axiom, so a user-supplied proximity matrix can return
+`R > 1`; the function logs a warning when it does. Run
+`EnrichedCategory.full_composition_check()` (or `semantic_integrity_check`) before
+reading `R` as a normalized score.
+
 ### `semantic_integrity_check(enriched: EnrichedCategory) -> list`
 
 Returns triples `(A, B, C)` of roles where the [0,1] composition inequality fails (see `enriched` implementation for the precise predicate).
@@ -65,7 +72,7 @@ Returns triples `(A, B, C)` of roles where the [0,1] composition inequality fail
 | Ill-typed role pair | No morphism `r1 → r2` or `r2 → r1` | `CaseFrameValidator.validate_assignment` |
 | Unknown role | Role not in `category.objects` | same |
 | Distributional inconsistency | Composition inequality break | `semantic_integrity_check` |
-| Low structural distinctness | Small `\|C\|/n` | `topological_robustness` |
+| Low structural distinctness | Small `\|C\|/n` (valid as a `(0,1]` score only under the composition inequality) | `topological_robustness` |
 
 ## Common patterns
 

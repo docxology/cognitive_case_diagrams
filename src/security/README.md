@@ -23,7 +23,7 @@ from src.security import (
 | `detect_type_violation(category, source, target)` | Returns `TypeViolation` or `None` if a morphism `source → target` is missing |
 | `injection_score(violations)` | Aggregate severity in `[0, 1]` from a list of `TypeViolation` |
 | `CaseFrameValidator` | `validate_assignment(assignments: dict)` → list of violations; optional `enriched` for future weight checks |
-| `topological_robustness(enriched)` | `|C|/n` magnitude-based robustness in `(0, 1]` |
+| `topological_robustness(enriched)` | `\|C\|/n` magnitude-based robustness; in `(0, 1]` only when the hom-matrix satisfies the composition inequality (warns and can exceed 1 otherwise) |
 | `semantic_integrity_check(enriched)` | Lists `(A,B,C)` triples breaking the composition inequality |
 
 ## Example

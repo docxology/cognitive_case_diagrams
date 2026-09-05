@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import Optional
 
 import numpy as np
 
@@ -225,17 +224,22 @@ class EnrichedCategory:
     def weighting(self) -> np.ndarray:
         """Compute the weighting vector w where Zw = 1.
 
-        Returns column sums of Z^{-1}, representing the "importance"
-        of each role in the category. Uses pseudo-inverse for singular matrices.
+        The solution of ``Z w = 1`` is ``Z^{-1} 1``, i.e. the ROW sums of
+        ``Z^{-1}``. Represents the "importance" of each role in the category.
+        Uses pseudo-inverse for singular matrices.
+
+        Note: row and column sums coincide for symmetric hom-matrices, so the
+        distinction only shows on asymmetric ones.
         """
-        return np.sum(self._z_inverse(), axis=0)
+        return np.sum(self._z_inverse(), axis=1)
 
     def coweighting(self) -> np.ndarray:
         """Compute the coweighting vector v where vZ = 1.
 
-        Returns row sums of Z^{-1}. Uses pseudo-inverse for singular matrices.
+        The solution of ``v Z = 1`` is ``1^T Z^{-1}``, i.e. the COLUMN sums of
+        ``Z^{-1}``. Uses pseudo-inverse for singular matrices.
         """
-        return np.sum(self._z_inverse(), axis=1)
+        return np.sum(self._z_inverse(), axis=0)
 
     def magnitude_deficit(self) -> float:
         """Compute the magnitude deficit: n - |C|.
@@ -245,7 +249,9 @@ class EnrichedCategory:
         a large deficit means significant redundancy.
 
         Returns:
-            Non-negative deficit value.
+            Signed deficit ``n - |C|``. This is negative when ``|C| > n``, which
+            a hom-matrix violating the composition inequality can produce;
+            ``_validate`` does not enforce that axiom.
         """
         n = len(self.roles)
         deficit = n - self.magnitude()

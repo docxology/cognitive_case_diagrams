@@ -51,10 +51,10 @@ ec = EnrichedCategory(
 |--------|---------|-------------|
 | `hom(source, target)` | `float` | Returns `C(source, target)` proximity value |
 | `check_composition_inequality(a, b, c)` | `bool` | `C(A,C) ≥ C(A,B)·C(B,C)` |
-| `magnitude()` | `float` | `|C| = Σᵢⱼ (Z⁻¹)ᵢⱼ` — categorical magnitude |
-| `weighting()` | `np.ndarray` | Column sums of `Z⁻¹` — role importance weights |
-| `coweighting()` | `np.ndarray` | Row sums of `Z⁻¹` — dual weight vector |
-| `magnitude_deficit()` | `float` | `n - |C|` — information lost to distributional overlap |
+| `magnitude()` | `float` | `\|C\| = Σᵢⱼ (Z⁻¹)ᵢⱼ` — categorical magnitude |
+| `weighting()` | `np.ndarray` | Solves `Z w = 1`, i.e. **row** sums of `Z⁻¹` — role importance weights |
+| `coweighting()` | `np.ndarray` | Solves `v Z = 1`, i.e. **column** sums of `Z⁻¹` — dual weight vector |
+| `magnitude_deficit()` | `float` | `n - \|C\|` — information lost to distributional overlap |
 | `full_composition_check()` | `dict` | Checks all distinct triples; returns stats dict |
 | `role_clusters(threshold)` | `list[set]` | BFS clustering by proximity threshold |
 
@@ -88,10 +88,15 @@ clusters = ec.role_clusters(threshold=0.6)
 # Returns list of sets, each containing mutually-close case roles
 ```
 
-**Standard clustering (threshold=0.6)**:
-- NOM/ACC/VOC → core argument cluster
-- INS/LOC/ABL → oblique cluster
-- GEN/DAT → possessive/recipient cluster
+**Standard clustering (`standard_enriched_category()`, threshold=0.6)** — four components:
+- NOM/ACC/GEN/VOC → core argument cluster (NOM–VOC at 0.70 pulls VOC in; NOM–GEN at 0.60 meets the threshold)
+- LOC/ABL → oblique cluster (0.65)
+- DAT → singleton at this threshold
+- INS → singleton at this threshold
+
+Lower the threshold to widen the oblique cluster; the exact partition is a
+function of `STANDARD_PROXIMITY_MATRIX`, so re-run `role_clusters()` rather than
+quoting this list after any matrix change.
 
 ### Standard Proximity Matrix
 

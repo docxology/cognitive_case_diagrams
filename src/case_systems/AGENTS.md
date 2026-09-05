@@ -20,7 +20,7 @@ Per-file line coverage changes with edits; the source of truth is:
 ## `case_category.py`
 
 ### `CaseRole` (Enum)
-The 12 case roles as enumeration members, divided into:
+The 13 case roles as enumeration members (`len(list(CaseRole))` is the source of truth), divided into:
 - **Standard 8-case system**: `NOM`, `ACC`, `GEN`, `DAT`, `INS`, `LOC`, `ABL`, `VOC`
 - **Alignment roles** (Dixon/Comrie): `ERG`, `ABS`
 - **Core argument primitives**: `S` (sole), `A` (agent), `P` (patient)
@@ -46,7 +46,7 @@ A category where:
 | `add_role(role)` | — | Add object to category |
 | `add_morphism(m)` | — | Add morphism (validates source/target) |
 | `compose(f, g)` | `Morphism` | Categorical composition g ∘ f; enriched weight ``w(g∘f)=w(f)·w(g)`` |
-| `assess_daif_surprisal(obs, pred)` | `dict` | Extracts DAIF simulated N400 (heuristic) and P600 (structural) prediction errors |
+| `assess_daif_surprisal(observed, predicted_weight)` | `dict[str, float]` | DAIF surprisal proxies keyed `"N400_amplitude"` (= `abs(predicted_weight - observed.weight)`) and `"P600_amplitude"` (= `1.0` when the morphism is not structurally licensed, else `0.0`) |
 | `associativity_holds()` | `bool` | Verify associativity for all composable triples |
 | `is_well_formed()` | `bool` | Full categorical axiom check |
 

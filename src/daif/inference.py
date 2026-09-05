@@ -87,7 +87,12 @@ def distributional_case_assignment(
     convergence_iter = n_iterations
 
     # Reward proxy: log-likelihood as reward signal
-    safe_log_lik = np.where(likelihoods > 0, np.log(likelihoods), -100.0)
+    # np.where evaluates both branches, so np.log must never see a 0 — guard the
+    # argument, not just the result, or numpy emits a divide-by-zero RuntimeWarning.
+    _lik_attainable = likelihoods > 0
+    safe_log_lik = np.where(
+        _lik_attainable, np.log(np.where(_lik_attainable, likelihoods, 1.0)), -100.0
+    )
 
     for iteration in range(n_iterations):
         q = current.probabilities
@@ -111,7 +116,10 @@ def distributional_case_assignment(
 
         # Step 3: Variational free energy with explicit KL / data-fit decomposition.
         # F = KL(q_posterior || q_pushed) − E_q[log p(o|s)]
-        safe_log_prior = np.where(q_pushed > 0, np.log(q_pushed), -100.0)
+        _prior_nonzero = q_pushed > 0
+        safe_log_prior = np.where(
+            _prior_nonzero, np.log(np.where(_prior_nonzero, q_pushed, 1.0)), -100.0
+        )
         fe = variational_free_energy(posterior, safe_log_lik, safe_log_prior)
         kl_term = float(kl_divergence(posterior, q_pushed))
         expected_loglik = float(np.sum(posterior * safe_log_lik))
@@ -166,7 +174,23 @@ def distributional_case_assignment(
     # Build DistributionalReturn from final belief and reward proxy
     tau_levels = np.linspace(1 / (2 * n_quantiles), 1 - 1 / (2 * n_quantiles), n_quantiles)
     q_final = current.probabilities
-    reward_proxy = safe_log_lik - safe_log_lik.min()
+    # Anchor the reward scale to ATTAINABLE roles only. Anchoring to
+    # safe_log_lik.min() let the -100.0 unattainable-role sentinel set the zero
+    # point, so an unreachable role shifted the reported return mean by ~100
+    # (and by a different amount for every likelihood floor).
+    if _lik_attainable.any():
+        reward_floor = float(np.log(likelihoods[_lik_attainable]).min())
+        reward_proxy = np.where(_lik_attainable, safe_log_lik - reward_floor, 0.0)
+    else:
+        # Every role unattainable. The documented contract for this degenerate
+        # input is a graceful stop, not an exception, so report a flat zero
+        # reward rather than a scale derived entirely from the sentinel.
+        logger.warning(
+            "All observation likelihoods are zero; reward proxy is flat zero "
+            "and the return distribution carries no information."
+        )
+        reward_floor = 0.0
+        reward_proxy = np.zeros(n)
     z_vec = reward_proxy  # Single-step Bellman with identity transition
     mean_z = float(q_final @ z_vec)
     var_z = max(0.0, float(q_final @ z_vec ** 2) - mean_z ** 2)
@@ -213,14 +237,25 @@ def variational_message_passing(
 
     Implements the discrete VMP update from manuscript §7c:
 
-        q^{t+1}(c_k) ∝ q^{t}(c_k) · exp(w_k · o_k)
+        q(c_k) ∝ prior(c_k) · exp(w_k · o_k)
 
     where w_k is the likelihood weight (enriched hom-value acting as precision)
-    for role k, o_k is the
-    observed evidence for role k, and the precision-weighted product
-    encodes the expected log-likelihood message. The posterior is
-    normalised after each sweep. Convergence is declared when
+    for role k and o_k is the observed evidence for role k, so the
+    precision-weighted product encodes the expected log-likelihood message. The
+    posterior is normalised after each sweep and convergence is declared when
     ``||q^{t+1} - q^{t}||₁ < 10⁻⁶``.
+
+    Note on ``n_iterations``: with a single observation factor the incoming
+    message is constant in q, so this fixed point is reached in one sweep and
+    the loop always converges at iteration 1. The parameter is retained as a
+    maximum-sweep bound for the multi-factor generalisation; it does not change
+    the result here. This is deliberate — the multiplicative recurrence
+    ``q^{t+1} ∝ q^{t} · exp(w·o)`` has no fixed point (it converges to a point
+    mass on argmax), so iterating it would not be the intended posterior.
+
+    ``prior_precision`` enters the returned posterior precision, not the
+    posterior probabilities: q is initialised from a uniform prior, whose log
+    term cancels under normalisation.
 
     The posterior precision is returned as ``Λ_posterior = Λ_prior + Λ_lik``
     for downstream use (e.g., P600 computation).
@@ -338,14 +373,20 @@ def bethe_free_energy(
     factor_contrib = 0.0
     for alpha, fb in enumerate(factor_beliefs):
         fb_arr = np.asarray(fb, dtype=np.float64)
-        # Pad or truncate to match n roles, then normalise
-        if len(fb_arr) < n:
-            fb_padded = np.full(n, 1e-300)
-            fb_padded[:len(fb_arr)] = fb_arr
-            fb_arr = fb_padded
-        elif len(fb_arr) > n:
-            fb_arr = fb_arr[:n]
-        fb_norm = fb_arr / fb_arr.sum() if fb_arr.sum() > 0 else np.full(n, 1.0 / n)
+        # Honour the documented contract. The previous pad-with-1e-300 /
+        # truncate behaviour silently discarded probability mass in the dropped
+        # slots and returned a plausible number, so a caller passing the wrong
+        # shape got no signal at all.
+        if len(fb_arr) != n:
+            raise ValueError(
+                f"factor_beliefs[{alpha}] has length {len(fb_arr)}, expected {n}"
+            )
+        fb_sum = fb_arr.sum()
+        if fb_sum <= 0:
+            raise ValueError(
+                f"factor_beliefs[{alpha}] sums to {fb_sum}; expected a positive mass"
+            )
+        fb_norm = fb_arr / fb_sum
         b_norm = b_vars / b_vars.sum()
         # KL(b || f_α)
         kl = float(np.sum(b_norm * (np.log(b_norm + 1e-300) - np.log(fb_norm + 1e-300))))
@@ -384,19 +425,19 @@ def expected_information_gain(
     Raises:
         ValueError: On shape mismatch or non-positive likelihoods.
     """
-    O = np.asarray(candidate_observations, dtype=np.float64)
-    n_obs, n_roles = O.shape
+    likelihoods = np.asarray(candidate_observations, dtype=np.float64)
+    n_obs, n_roles = likelihoods.shape
     q = current_belief.probabilities
 
     if n_roles != len(q):
         raise ValueError(f"Observation columns ({n_roles}) must match roles ({len(q)})")
-    if np.any(O < 0):
+    if np.any(likelihoods < 0):
         raise ValueError("Likelihoods must be non-negative")
 
     eig = np.zeros(n_obs)
 
     for k in range(n_obs):
-        lik = O[k]
+        lik = likelihoods[k]
         # Joint: p(s, o_k) = p(o_k|s) * q(s)
         joint = lik * q
         marginal = joint.sum()

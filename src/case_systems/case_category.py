@@ -16,7 +16,6 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -252,17 +251,23 @@ class CaseCategory:
 
     def assess_daif_surprisal(self, observed: Morphism, predicted_weight: float) -> dict[str, float]:
         """Assess DAIF Distributional Prediction Error (DPE) (cf. §7c).
-        
-        Following Li et al. (2024) and Rabovsky et al. (2025):
-        - N400 (heuristic semantic surprise) tracks distance between predicted vs observed scalar enriched weights.
-        - P600 (structural geometric discrepancy) triggers forcefully upon foundational topology failure.
-        
+
+        Implements the Li & Futrell (2024) surprisal decomposition
+        (``li2023decomposition`` / ``li2024shallow`` in ``references.bib``):
+
+        - ``N400_amplitude`` = ``abs(predicted_weight - observed.weight)`` —
+          the absolute distance between the predicted enriched weight and the
+          observed morphism's weight (dimensionless, not μV).
+        - ``P600_amplitude`` = 1.0 when no morphism of this category licenses
+          the observed ``source → target`` pair (structurally unlicensed),
+          else 0.0 — a binary licensing flag, not a graded amplitude.
+
         Args:
             observed: The observed linguistic relation pattern.
             predicted_weight: The Bayesian prior weight expectation.
-            
-        Returns: 
-            Dictionary of N400 and P600 simulated amplitudes.
+
+        Returns:
+            Dictionary with keys ``N400_amplitude`` and ``P600_amplitude``.
         """
         n400_semantic_surprise = abs(predicted_weight - observed.weight)
         

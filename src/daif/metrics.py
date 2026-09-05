@@ -177,7 +177,6 @@ def quantile_coverage(
     if len(obs) == 0:
         raise ValueError("observed_values must be non-empty")
 
-    n_obs = len(obs)
     empirical_cov = np.array([
         float(np.mean(obs <= q)) for q in qvals
     ])

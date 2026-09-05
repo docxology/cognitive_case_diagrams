@@ -36,10 +36,16 @@ class VolitionContext(Enum):
 @dataclass
 class FluidSFunctor:
     """Context-dependent functor for Fluid-S alignment systems.
+    The documented domain is the universal category U = {S, A, P}, but the
+    implemented input alphabet is the surface-case proxy: ``NOM`` encodes S
+    and ``ACC`` encodes P (Fluid-S languages reuse existing surface cases for
+    context-dependent marking, manuscript §4–5). The mapping is:
 
-    Maps the universal category U = {S, A, P} to a language-specific
-    category where S receives context-dependent marking based on
-    agentive volition.
+    - ``map_object(CaseRole.NOM)``: NOM if volitional, ACC if non-volitional
+      (the context-dependent S marking).
+    - every other enum member — including the pre-alignment primitives
+      ``CaseRole.S/A/P`` — passes through unchanged; A and P are NOT remapped
+      by this functor.
 
     Attributes:
         name: Human-readable name for this functor.
@@ -160,10 +166,16 @@ class FluidSFunctor:
     def preserves_identity(self, role: CaseRole) -> bool:
         """Check whether the functor preserves identity at a role.
 
-        An identity morphism id_A should map to id_{F(A)}.
+        F(id_A) = id_{F(A)}: mapping the identity morphism at ``role`` through
+        the functor must yield an identity-shaped morphism on ``F(role)``.
+
+        For any functor implemented as a total function this holds
+        automatically — ``map_object`` never returns ``None`` for an enum
+        member — so the check is trivially true. It exists for API symmetry
+        with :meth:`AlignmentFunctor.preserves_identity`.
         """
-        mapped = self.map_object(role)
-        return mapped is not None  # Always true for valid roles
+        mapped = self.map_morphism(Morphism(source=role, target=role, label="id"))
+        return mapped.source == mapped.target == self.map_object(role)
 
     def kernel(self) -> list:
         """Compute the kernel: pairs of roles mapped to the same target.

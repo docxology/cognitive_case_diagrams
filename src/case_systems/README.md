@@ -15,11 +15,11 @@ from src.case_systems.natural_transformation import NaturalTransformation
 
 | Object | Module | Purpose |
 |--------|--------|---------|
-| `CaseRole` | `case_category` | 12-member enum: NOM/ACC/.../ERG/ABS/S/A/P |
+| `CaseRole` | `case_category` | 13-member enum: NOM/ACC/GEN/DAT/INS/LOC/ABL/VOC + ERG/ABS + S/A/P |
 | `CaseCategory` | `case_category` | Category with `compose()` and DAIF `assess_daif_surprisal()` (prompt-security type-checking lives in `src.security.cognitive_security.CaseFrameValidator`) |
 | `Morphism` | `case_category` | Frozen dataclass: `source`, `target`, `label`, `weight` |
 | `AlignmentFunctor` | `functor` | Cross-linguistic case mapping functor |
-| `MonoidalFunctor` | `functor` | Secures topological prompt injections via fibrational preservation testing |
+| `MonoidalFunctor` | `functor` | `AlignmentFunctor` subclass adding `preserves_tensor(role_a, role_b)` — a **specification-level** check that the alignment map does not merge distinct case roles. Not a guarantee about deployed LLM APIs; see [`AGENTS.md`](AGENTS.md) |
 | `NaturalTransformation` | `natural_transformation` | Between functors; `naturality_holds()` / `verify_naturality()` check §2b naturality squares |
 | `FluidSFunctor` | `fluid_s` | Context-dependent Fluid-S with `split_probability()` |
 

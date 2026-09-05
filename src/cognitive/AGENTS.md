@@ -19,7 +19,7 @@ The `cognitive` subpackage implements **§7** of the manuscript: **scalar** acti
 | `action_selection.py` | `expected_free_energy()` |
 | `reanalysis.py` | `magnitude_reanalysis_cost()`, `n400_amplitude_proxy()` |
 
-**Package surface**: `__init__.py` re-exports the symbols above (11 names). **Tests**: `tests/test_cognitive_*.py` — run `uv run pytest tests/test_cognitive_*.py --collect-only -q` for the current count.
+**Package surface**: `__init__.py` re-exports the symbols above (10 names in `__all__`). **Tests**: `tests/test_cognitive_*.py` — run `uv run pytest tests/test_cognitive_*.py --collect-only -q` for the current count.
 
 ---
 

@@ -7,9 +7,9 @@ description: DisCoCat/DisCoCirc-style string diagrams, complexity metrics, ditra
 
 ## When to use
 
-- Building `Sentence` / `Discourse` diagrams and measuring their structural quantum bounds.
-- Calculating `MagnitudeHomologyMetrics` to bound parameter decoherence.
-- Scanning discourse histories for non-cartesian topological adversarial hijacking by feeding `Discourse.role_history` slices into `src.security.cognitive_security.CaseFrameValidator.validate_assignment()`.
+- Building `Sentence` / `Discourse` diagrams and measuring their structural complexity.
+- Computing `MagnitudeHomologyMetrics` — a scalar syntactic complexity, a 1-D hole count, an estimated decoherence rate, and a commutation flag. It is **not** a graded homology object; see [`AGENTS.md`](AGENTS.md).
+- Scanning discourse histories for role-reversal patterns by feeding `Discourse.role_history` slices into `src.security.cognitive_security.CaseFrameValidator.validate_assignment()`.
 - Anything that composes case-theoretic types as string diagrams.
 
 ## Primary imports
@@ -17,9 +17,14 @@ description: DisCoCat/DisCoCirc-style string diagrams, complexity metrics, ditra
 ```python
 from src.diagrams import (
     AtomicType, Wire, Box, Sentence, Discourse, N, S,
-    syntactic_complexity_score, MagnitudeHomologyMetrics, compute_quantum_magnitude_homology,
-    compare_diagrams, DiagramMetrics,
+    syntactic_complexity_score, compare_diagrams, DiagramMetrics,
+    diagram_depth, diagram_width,
     DitransitiveSentence, create_ditransitive,
+)
+# Magnitude-homology helpers are not re-exported by the package __init__;
+# import them from the module directly.
+from src.diagrams.complexity_metrics import (
+    MagnitudeHomologyMetrics, compute_quantum_magnitude_homology,
 )
 ```
 

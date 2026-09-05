@@ -18,8 +18,6 @@ from .case_category import (
     CaseCategory,
     CaseRole,
     Morphism,
-    accusative_alignment,
-    ergative_alignment,
     tripartite_alignment,
 )
 

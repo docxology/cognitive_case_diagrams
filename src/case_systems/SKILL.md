@@ -1,6 +1,6 @@
 ---
 name: ccd-case-systems
-description: Linguistic case formally typed as an analytic category — CaseRole, Morphism, AlignmentFunctor, MonoidalFunctor, Natural Transformations. Crucial for §2 core topology, downstream §7c DAIF alignment, and §9b adversarial injection formal verification.
+description: Linguistic case formally typed as a category — CaseRole, Morphism, AlignmentFunctor, MonoidalFunctor, natural transformations. Use for §2/§2b categorical case, downstream §7c DAIF alignment, and the §9b protocol-level type-violation story.
 ---
 
 # `src/case_systems/`
@@ -9,8 +9,8 @@ description: Linguistic case formally typed as an analytic category — CaseRole
 
 - Defining, comparing, or mathematically grading case inventories and cross-linguistic functors.
 - Evaluating **DAIF Surprisal (N400/P600)** using `CaseCategory.assess_daif_surprisal()`.
-- Validating adversarial NLP topological bindings (`ACC -> NOM`) via `src.security.cognitive_security.CaseFrameValidator.validate_assignment()`.
-- Checking Fibrational F(A⊗B) tensor preservation with `MonoidalFunctor` against multi-turn chain-of-thought hijacking.
+- Flagging ill-typed role bindings (`ACC -> NOM`) via `src.security.cognitive_security.CaseFrameValidator.validate_assignment()`.
+- Checking tensor preservation `F(A⊗B)` with `MonoidalFunctor.preserves_tensor()` — a specification-level check on the alignment map, not a guarantee about a deployed model.
 - Verifying a natural transformation with `NaturalTransformation.naturality_holds()`.
 
 ## Primary imports

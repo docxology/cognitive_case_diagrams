@@ -7,10 +7,10 @@ DAIF extends point-estimate active inference (`src/cognitive/`) with **return di
 | Module | Role |
 |--------|------|
 | `types.py` | `DistributionalReturn`, `DAIFResult`, `ERPProfile` |
-| `core.py` | Push-forward Bellman, C51-style projection |
+| `core.py` | Belief push-forward with discounted reward, C51-style projection (`distributional_bellman_operator` is a forward recursion, not a Bellman fixed point — see [`AGENTS.md`](AGENTS.md)) |
 | `quantile.py` | QR-DQN / IQN, Wasserstein on returns |
 | `inference.py` | Distributional case assignment, VMP, Bethe FE, EIG |
-| `prediction.py` | DPE, N400/P600 proxies, synthetic ERP waveforms |
+| `prediction.py` | DPE (`distributional_prediction_error`, `wasserstein_prediction_error`), N400/P600 proxies, synthetic ERP waveforms |
 | `policy.py` | `G_policy`, Boltzmann policy, epistemic value |
 | `metrics.py` | Convergence diagnostics, distributional KL, quantile coverage |
 

@@ -33,11 +33,14 @@ class ComponentMorphism:
         object_name: The object A this component is defined on.
         source_image: F(A) — image of A under source functor.
         target_image: G(A) — image of A under target functor.
+        weight: Enriched weight of the component in [0,1] (§4–5). Default 1.0
+            preserves the historical behaviour of unweighted components.
     """
 
     object_name: CaseRole
     source_image: CaseRole
     target_image: CaseRole
+    weight: float = 1.0
 
     def as_morphism(self) -> Morphism:
         """Return the corresponding morphism F(A) → G(A)."""
@@ -45,6 +48,7 @@ class ComponentMorphism:
             source=self.source_image,
             target=self.target_image,
             label=f"α_{self.object_name.name}",
+            weight=self.weight,
         )
 
 

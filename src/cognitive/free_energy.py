@@ -88,7 +88,7 @@ def variational_free_energy(
 
     # Avoid log(0) by masking zeros
     nonzero = q > 0
-    log_q = np.where(nonzero, np.log(q), 0.0)
+    log_q = np.where(nonzero, np.log(np.where(nonzero, q, 1.0)), 0.0)
 
     # F = ∑ q_i (log q_i - log p(o|s_i) - log p(s_i))
     fe = np.sum(q[nonzero] * (log_q[nonzero] - log_likelihood[nonzero] - log_prior[nonzero]))

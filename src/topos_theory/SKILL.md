@@ -1,6 +1,6 @@
 ---
 name: ccd-topos-theory
-description: Geometric theories, classifying toposes, Morita checks, theory builders. Use for §6 topos-theoretic semantics and bridges between syntactic/semantic theories.
+description: Geometric theories, classifying toposes, Morita necessary-condition screens, theory builders. Use for §6 topos-theoretic semantics and bridges between syntactic/semantic theories.
 ---
 
 # `src/topos_theory/`
@@ -9,6 +9,10 @@ description: Geometric theories, classifying toposes, Morita checks, theory buil
 
 - Encoding geometric theories, classifying toposes, or comparing theories via Morita equivalence helpers.
 - Connecting typological or enriched setups to topos-level structure.
+
+`check_morita_equivalence(topos1, topos2)` takes two `ClassifyingTopos` values and
+returns `(not_ruled_out, mismatches)`. It screens **necessary conditions only** —
+a `True` never establishes equivalence.
 
 ## Primary imports
 

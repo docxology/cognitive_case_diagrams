@@ -176,11 +176,22 @@ def distributional_bellman_operator(
     n_quantiles: int = 51,
     convergence_tol: Optional[float] = None,
 ) -> list[DistributionalReturn]:
-    """Multi-step distributional Bellman iteration: Z_k = T Z_{k-1}.
+    """Multi-step belief push-forward with discounted immediate reward.
 
-    Iterates the distributional Bellman operator n_steps times, starting
-    from the single-step push-forward. This approximates the fixed-point
-    return distribution Z* = T Z* via contraction mapping.
+    At each step this returns the distribution of ``R + gamma * (T^T q_k)``,
+    where ``q_k`` is the belief propagated forward ``k`` times through the
+    transition matrix. It is a *forward* recursion over beliefs, not a value
+    backup.
+
+    It therefore does NOT converge to the Bellman fixed point ``Z* = T Z*``.
+    For ``T = [[.5,.5],[.5,.5]]``, ``R = [1,0]``, ``gamma = 0.9`` this returns
+    mean 0.95 at every step, while the true value function
+    ``(I - gamma*T)^-1 R = [5.5, 4.5]`` gives a belief-weighted value of 5.0.
+    Obtaining the fixed point would require the backup
+    ``z <- R + gamma * (T @ z)`` seeded at ``z = R``; that is a different
+    algorithm and would change every published §7c result, so it is not done
+    here. Read the output as a discounted one-step return under an evolving
+    belief, and do not cite it as a value function.
 
     Args:
         belief: Current belief distribution over case roles.

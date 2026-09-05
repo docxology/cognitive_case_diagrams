@@ -23,9 +23,8 @@ import logging
 from dataclasses import dataclass, field
 from enum import Enum
 
-import numpy as np
 
-from ..case_systems.case_category import CaseRole, Morphism, CaseCategory
+from ..case_systems.case_category import CaseCategory
 from ..enriched_cat.enriched import EnrichedCategory
 
 logger = logging.getLogger(__name__)
@@ -197,16 +196,21 @@ def check_morita_equivalence(
     Two geometric theories T1 and T2 are Morita equivalent if their
     classifying toposes are equivalent: E_{T1} ≃ E_{T2}.
 
-    This function checks necessary (but not sufficient) conditions:
+    This function checks NECESSARY (never sufficient) conditions:
+    - Same signature shape (sorts, relations, axioms) — compared exactly
     - Same arity spectrum
-    - Compatible axiom structure
+
+    A ``True`` result means "not ruled out", NOT "equivalent". Two signatures
+    can agree on every invariant computed here and still classify different
+    theories; establishing equivalence requires exhibiting the equivalence of
+    classifying toposes, which this module does not do.
 
     Args:
         topos1: First classifying topos.
         topos2: Second classifying topos.
 
     Returns:
-        Tuple of (possibly_equivalent, list_of_mismatches).
+        Tuple of (not_ruled_out, list_of_mismatches).
     """
     mismatches: list[str] = []
 
@@ -218,22 +222,25 @@ def check_morita_equivalence(
             f"Arity spectra differ: {spec1} vs {spec2}"
         )
 
-    # Check axiom count parity (same modular structure)
-    count1: int = topos1.invariants.get("axiom_count", 0)  # type: ignore[assignment]
-    count2: int = topos2.invariants.get("axiom_count", 0)  # type: ignore[assignment]
-    if abs(count1 - count2) > 2:
+    # Compare the full signature shape (num_sorts, num_relations, num_axioms)
+    # exactly. The previous `abs(axiom_count1 - axiom_count2) > 2` slack could
+    # never fire — every theory this module builds has exactly 2 axioms — so the
+    # condition was vacuous, and it ignored the sort and relation counts entirely.
+    shape1 = topos1.invariants.get("signature_shape")
+    shape2 = topos2.invariants.get("signature_shape")
+    if shape1 != shape2:
         mismatches.append(
-            f"Axiom counts differ significantly: {count1} vs {count2}"
+            f"Signature shapes differ (sorts, relations, axioms): {shape1} vs {shape2}"
         )
 
-    equivalent = len(mismatches) == 0
+    not_ruled_out = len(mismatches) == 0
     logger.info(
-        "Morita equivalence check %s ≃ %s: %s (%d mismatches)",
+        "Morita necessary-condition check %s ≃ %s: %s (%d mismatches)",
         topos1.theory.name, topos2.theory.name,
-        "POSSIBLE" if equivalent else "UNLIKELY",
+        "NOT RULED OUT" if not_ruled_out else "RULED OUT",
         len(mismatches),
     )
-    return equivalent, mismatches
+    return not_ruled_out, mismatches
 
 
 def build_typological_theory(
@@ -363,20 +370,24 @@ def bridge_transfer(
     Returns:
         Dictionary with transfer result and status.
     """
-    equivalent, mismatches = check_morita_equivalence(source_topos, target_topos)
+    not_ruled_out, mismatches = check_morita_equivalence(source_topos, target_topos)
 
     result = {
         "property": property_name,
         "source_theory": source_topos.theory.name,
         "target_theory": target_topos.theory.name,
-        "morita_equivalent": equivalent,
-        "transfer_possible": equivalent,
+        "morita_equivalent": not_ruled_out,
+        "transfer_possible": not_ruled_out,
+        # check_morita_equivalence tests necessary conditions only, so a True
+        # here licenses attempting the transfer, never asserting its validity.
+        "necessary_conditions_only": True,
         "mismatches": mismatches,
     }
 
-    if equivalent:
+    if not_ruled_out:
         logger.info(
-            "Bridge transfer: property '%s' transfers from %s to %s",
+            "Bridge transfer: property '%s' is NOT RULED OUT for transfer from %s "
+            "to %s (necessary conditions only — equivalence is not established)",
             property_name, source_topos.theory.name, target_topos.theory.name,
         )
     else:

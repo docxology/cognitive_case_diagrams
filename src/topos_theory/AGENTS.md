@@ -4,6 +4,11 @@
 
 The `topos_theory` subpackage implements **§6** of the manuscript: topos-theoretic bridges between case systems. Geometric theories classify case systems as theories of a topos; **Morita equivalence** provides the formal criterion for when two case systems are inter-translatable.
 
+> **Scope of the implementation**: `check_morita_equivalence` tests **necessary
+> conditions only**. A `True` result means "not ruled out", never "equivalent".
+> Establishing Morita equivalence requires exhibiting an equivalence of
+> classifying toposes, which this module does not do.
+
 > **References**: Caramello (2018) *Theories, Sites, Toposes*; Phillips (2021) universality of Language of Thought; Morita (1958) equivalence of module categories.
 
 ## Module Inventory
@@ -12,96 +17,141 @@ Line coverage: `uv run pytest tests/ --cov=src --cov-report=term-missing` (proje
 
 | Module | Key Exports |
 |--------|-------------|
-| `topos.py` | `GeometricTheory`, `ClassifyingTopos`, `TheoryType`, `check_morita_equivalence()`, `build_typological_theory()`, `bridge_transfer()` |
+| `topos.py` | `TheoryType`, `Axiom`, `GeometricTheory`, `ClassifyingTopos`, `check_morita_equivalence()`, `build_typological_theory()`, `build_enriched_theory()`, `bridge_transfer()` |
+
+`__all__` in [`__init__.py`](__init__.py) re-exports all of the above **except**
+`bridge_transfer`, which is imported from the module: `from src.topos_theory.topos import bridge_transfer`.
 
 ## `topos.py`
 
+### `Axiom` (dataclass)
+
+Fields: `name: str`, `antecedent: str`, `consequent: str`, `sort_variables: list[str]`.
+
 ### `GeometricTheory` (dataclass)
 
-A geometric theory `T` over the language of case systems:
+A geometric theory `T` over the language of case systems. Fields are `name`,
+`theory_type`, `sorts`, `relation_symbols` and `axioms` — a theory is built up
+through its `add_*` methods, not by passing a signature dict:
+
 ```python
 theory = GeometricTheory(
-    name="AccusativeTheory",
+    name="T_accusative",
     theory_type=TheoryType.TYPOLOGICAL,
-    axioms=["NOM_agent", "ACC_patient", "nom_acc_alignment"],
-    signature={"case_roles": 8, "alignment": "accusative"},
-    functors=["acts_on", "receives"],
-    invariants={"arity": 2},
 )
+theory.add_sort("NOM")
+theory.add_sort("ACC")
+# every sort named in an arity must already exist, or add_relation raises ValueError
+theory.add_relation("acts_on", ("NOM", "ACC"))
+theory.add_axiom(Axiom(
+    name="identity",
+    antecedent="x: CaseRole",
+    consequent="∃ id_x: Hom(x, x)",
+    sort_variables=["x"],
+))
 ```
 
-**Axioms** encode the case-role assignments and morphism constraints of a language's case system.
+| Member | Returns | Description |
+|--------|---------|-------------|
+| `sorts` | `list[str]` | Sort names (one per case role / object) |
+| `relation_symbols` | `dict[str, tuple[str, ...]]` | Relation name → arity tuple |
+| `axioms` | `list[Axiom]` | Geometric axioms |
+| `signature_invariant()` | `tuple[int, int, int]` | `(num_sorts, num_relations, num_axioms)` |
+| `arity_spectrum()` | `list[int]` | Sorted arity lengths |
 
-**`TheoryType` enum**:
-- `TheoryType.TYPOLOGICAL` — cross-linguistic case theory
-- `TheoryType.ALIGNMENT` — accusative/ergative/tripartite
-- `TheoryType.ENRICHED` — [0,1]-enriched variant
-- `TheoryType.FLUID_S` — split-intransitive
+**`TheoryType` enum** — the four members defined in `topos.py`:
+- `TheoryType.TYPOLOGICAL` (`"typological"`) — cross-linguistic case theory
+- `TheoryType.TYPE_LOGICAL` (`"type_logical"`) — type-logical grammar variant
+- `TheoryType.DISTRIBUTIONAL` (`"distributional"`) — distributional variant
+- `TheoryType.ENRICHED` (`"enriched"`) — [0,1]-enriched variant
 
 ### `ClassifyingTopos` (dataclass)
 
-The classifying topos `Set[T^op]` of a geometric theory — the universal model of `T`:
+The classifying topos `E_T` of a geometric theory — the universal model of `T`:
 ```python
 ct = ClassifyingTopos(theory=theory)
 ```
 
-**Computed invariants** (in `__post_init__`):
-- `signature_hash`: canonical hash of the theory signature for Morita comparison
-- `invariants`: arity spectrum, functor count, axiom count
+Fields: `theory` and `invariants`. `__post_init__` populates `invariants` with
+exactly four keys — `signature_shape` (`= theory.signature_invariant()`),
+`arity_spectrum`, `axiom_count`, and `theory_type`. There is no `signature_hash`.
 
-### `check_morita_equivalence(theory_a, theory_b)`
+### `check_morita_equivalence(topos1, topos2)`
 
-The central inter-theoretic translation check:
+Necessary-condition screen for the inter-theoretic translation criterion:
 ```
-T₁ ≡_Morita T₂ ⟺ Set[T₁^op] ≅ Set[T₂^op]
+T₁ ≡_Morita T₂ ⟺ E_{T₁} ≃ E_{T₂}
 ```
 
-In the implementation, equivalence is checked via:
-1. `arity_spectrum` equality (same functor arities)
-2. Structural invariant matching (annotation-level checks)
+It takes two **`ClassifyingTopos`** values (not `GeometricTheory`) and returns a
+**tuple** `(not_ruled_out: bool, mismatches: list[str])`. The screen is:
+
+1. `arity_spectrum` equality
+2. `signature_shape` equality — `(sorts, relations, axioms)` compared exactly
 
 ```python
-accusative = build_typological_theory("accusative", ["acts_on", "receives"])
-ergative = build_typological_theory("ergative", ["is_agent_of", "is_patient_of"])
+from src.case_systems.case_category import standard_case_category, minimal_case_category
 
-result = check_morita_equivalence(accusative, ergative)
-# result = {"equivalent": bool, "reason": str, "shared_invariants": dict}
+acc = ClassifyingTopos(theory=build_typological_theory(standard_case_category(), "accusative"))
+mini = ClassifyingTopos(theory=build_typological_theory(minimal_case_category(), "minimal"))
+
+not_ruled_out, mismatches = check_morita_equivalence(acc, mini)
 ```
 
-**Interpretation**: If `equivalent=True`, there exists a functorial translation between the two case systems that preserves all grammatical structure — a cross-linguistic universal.
+**Interpretation**: `not_ruled_out=True` means the two theories agree on every
+invariant this module computes — they are *not ruled out* as Morita equivalent.
+Two signatures can agree here and still classify different theories, so do not
+read a `True` as "there exists a functorial translation preserving all
+grammatical structure". A `False` is the informative direction: it rules the
+equivalence out.
 
-### `build_typological_theory(alignment_type, functors)`
+### `build_typological_theory(category, alignment_name="typological")`
 
-Factory for alignment-specific geometric theories:
+Factory that formalizes a `CaseCategory` as a geometric theory — objects become
+sorts, morphisms become relation symbols, and the identity/composition laws
+become the two `Axiom` entries:
 
 ```python
-acc_theory = build_typological_theory("accusative", ["acts_on", "receives"])
-erg_theory = build_typological_theory("ergative", ["is_agent_of", "is_patient_of"])
+from src.case_systems.case_category import standard_case_category
+from src.enriched_cat import standard_enriched_category
+
+acc_theory = build_typological_theory(standard_case_category(), "accusative")
 enriched_theory = build_enriched_theory(standard_enriched_category())
 ```
 
-### `bridge_transfer(source_theory, target_theory, knowledge)`
+Because there is one relation per morphism, the standard 8-case category yields
+**8 sorts and 8 relation symbols**, and the minimal 3-role category yields **3
+and 3**; both carry exactly 2 axioms. Re-derive these with
+`len(T.sorts)` / `len(T.relation_symbols)` rather than quoting them.
 
-If two theories are Morita-equivalent, transfer knowledge (case frame, lexical knowledge, etc.) from source's model to target's model:
+### `bridge_transfer(source_topos, target_topos, property_name)`
+
+Attempts inter-theoretic transfer of a named property via the bridge theorem. It
+takes two `ClassifyingTopos` values and a property **name**, and **returns a
+dict** — it does not raise on non-equivalence:
 
 ```python
-equiv_check = check_morita_equivalence(german_theory, latin_theory)
-if equiv_check["equivalent"]:
-    transferred = bridge_transfer(german_theory, latin_theory, knowledge_payload)
-    # transferred: dict with keys from target_theory's vocabulary
+result = bridge_transfer(source_topos, target_topos, "case_frame")
+result["morita_equivalent"]          # necessary conditions passed
+result["transfer_possible"]          # same flag
+result["necessary_conditions_only"]  # always True — see the scope note above
+result["mismatches"]                 # list[str]; empty when not ruled out
 ```
 
-Raises `ValueError` if theories are not Morita-equivalent (transfer would be invalid).
+Because `necessary_conditions_only` is always `True`, a passing check licenses
+*attempting* the transfer, never asserting its validity.
 
 ## Chain of Morita Equivalences (Manuscript §6)
 
-The manuscript establishes a chain:
+The manuscript proposes a chain:
 ```
 AccusativeEnglish ≡ AccusativeFrench ≡ ... (accusative family)
 ErgativeGeorgian  ≡ ErgativeBasque   ≡ ... (ergative family)
 ```
 
-This provides a computational basis for cross-linguistic case transfer in multilingual NLP models.
+This is a proposed basis for cross-linguistic case transfer in multilingual NLP
+models. The code in this subpackage screens the necessary conditions for such a
+chain; it does not certify any link in it.
 
 ## Caramello Connection
 
@@ -113,25 +163,32 @@ The manuscript argues (§6) that Phillips' (2021) result on the universality of 
 - **Syntax-based** case theories (surface morphosyntax)
 - **Semantic-based** case theories (thematic role assignment)
 
-`check_morita_equivalence` with `TheoryType.TYPOLOGICAL` vs. `TheoryType.ENRICHED` tests this computationally.
+`check_morita_equivalence` on a `TheoryType.TYPOLOGICAL` topos vs. a
+`TheoryType.ENRICHED` one screens this computationally — it can rule the
+correspondence out, but a pass is not a proof of it.
 
 ## Common Patterns
 
 ```python
+from src.case_systems.case_category import standard_case_category, minimal_case_category
 from src.topos_theory.topos import (
-    GeometricTheory, TheoryType,
+    ClassifyingTopos, TheoryType,
     build_typological_theory, check_morita_equivalence, bridge_transfer,
 )
 
-# Build two case theories
-accusative = build_typological_theory("accusative", ["acts_on", "receives"])
-tripartite = build_typological_theory("tripartite", ["acts_on", "receives", "is_sole"])
+# Build two case theories and their classifying toposes
+accusative = ClassifyingTopos(
+    theory=build_typological_theory(standard_case_category(), "accusative")
+)
+minimal = ClassifyingTopos(
+    theory=build_typological_theory(minimal_case_category(), "minimal")
+)
 
-# Check if they are Morita-equivalent
-result = check_morita_equivalence(accusative, tripartite)
-print(f"Equivalent: {result['equivalent']}, reason: {result['reason']}")
+# Screen the necessary conditions — returns (bool, list[str])
+not_ruled_out, mismatches = check_morita_equivalence(accusative, minimal)
+print(f"Not ruled out: {not_ruled_out}; mismatches: {mismatches}")
 
-# Transfer knowledge if equivalent
-if result["equivalent"]:
-    transferred = bridge_transfer(accusative, tripartite, knowledge={"acts_on": "John sees Mary"})
+# Attempt a property transfer (returns a dict; never raises on mismatch)
+result = bridge_transfer(accusative, minimal, "case_frame")
+print(result["transfer_possible"], result["necessary_conditions_only"])
 ```

@@ -1,6 +1,6 @@
 ---
 name: ccd-src
-description: Hub skill for cognitive_case_diagrams Layer-2 src — case categories, diagrams, enriched/topos semantics, scalar and distributional active inference, quantum POVMs, security validators, and figure generation. Use when editing or importing from projects/cognitive_case_diagrams/src.
+description: Hub skill for cognitive_case_diagrams Layer-2 src — case categories, diagrams, enriched/topos semantics, scalar and distributional active inference, quantum POVMs, security validators, and figure generation. Use when editing or importing from projects/ongoing/ActiveInference/cognitive_case_diagrams/src.
 ---
 
 # Cognitive Case Diagrams — `src/` hub

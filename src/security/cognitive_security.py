@@ -24,9 +24,8 @@ import logging
 from dataclasses import dataclass
 from typing import Optional
 
-import numpy as np
 
-from ..case_systems.case_category import CaseRole, Morphism, CaseCategory, standard_case_category
+from ..case_systems.case_category import CaseRole, CaseCategory, standard_case_category
 from ..enriched_cat.enriched import EnrichedCategory
 
 logger = logging.getLogger(__name__)
@@ -223,7 +222,10 @@ def topological_robustness(
         enriched: Enriched category to measure.
 
     Returns:
-        Robustness score in (0, 1].
+        Robustness score ``|C|/n``. Bounded in (0, 1] only for hom-matrices that
+        satisfy the composition inequality ``C(A,C) >= C(A,B) * C(B,C)``.
+        ``EnrichedCategory._validate`` does not enforce that axiom, so a
+        user-supplied proximity matrix can return R > 1.
     """
     n = len(enriched.roles)
     if n == 0:
@@ -235,6 +237,12 @@ def topological_robustness(
         "Topological robustness: |C|/n = %.4f/%d = %.4f",
         mag, n, robustness,
     )
+    if robustness > 1.0:
+        logger.warning(
+            "Robustness %.4f exceeds 1.0 — the proximity matrix likely violates "
+            "the composition inequality; run EnrichedCategory.full_composition_check()",
+            robustness,
+        )
     return robustness
 
 

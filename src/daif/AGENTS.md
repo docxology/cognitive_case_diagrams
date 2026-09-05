@@ -8,14 +8,24 @@ framework for case-theoretic language processing (§7c of the manuscript).
 | Module | Purpose | Key Symbols |
 |--------|---------|-------------|
 | `types.py` | Shared types | `DistributionalReturn`, `DAIFResult`, `ERPProfile` |
-| `core.py` | Distributional Bellman | `push_forward_return`, `distributional_bellman_operator`, `categorical_return_distribution` |
+| `core.py` | Return push-forward (see caveat below) | `push_forward_return`, `distributional_bellman_operator`, `categorical_return_distribution` |
 | `quantile.py` | Quantile TD learning | `quantile_td_update`, `implicit_quantile_network_update`, `wasserstein_return_distance` |
 | `inference.py` | Variational inference | `distributional_case_assignment`, `variational_message_passing`, `bethe_free_energy`, `expected_information_gain` |
-| `prediction.py` | ERP predictions | `distributional_prediction_error`, `n400_from_return_distribution`, `p600_from_precision_update`, `erp_amplitude_profile` |
+| `prediction.py` | ERP predictions | `distributional_prediction_error`, `wasserstein_prediction_error`, `n400_from_return_distribution`, `p600_from_precision_update`, `erp_amplitude_profile` |
 | `policy.py` | Policy selection | `G_policy`, `softmax_policy_selection`, `distributional_epistemic_value` |
 | `metrics.py` | Diagnostics | `convergence_diagnostics`, `distributional_kl`, `quantile_coverage`, `return_distribution_entropy` |
 
 **Total: 25 public symbols (via `__all__` in `daif/__init__.py`), 7 modules.**
+
+### Caveat: `distributional_bellman_operator` is a forward push-forward
+
+Despite the name, `distributional_bellman_operator` is a *forward* recursion over
+beliefs, **not** a value backup, and it does **not** converge to the Bellman fixed
+point `Z* = T Z*`. At each step it returns the distribution of
+`R + γ·(Tᵀ q_k)`, where `q_k` is the belief propagated forward `k` times. Read its
+output as a discounted one-step return under an evolving belief; do not cite it as
+a value function. The docstring in [`core.py`](core.py) carries the worked
+counter-example.
 
 ## Theoretical Background
 

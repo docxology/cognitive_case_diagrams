@@ -35,7 +35,7 @@ until the metrics file is regenerated.
 
 ## Open
 
-- [ ] No git tag anchors the DOI'd release. `git tag` is empty and `git describe --tags` fails, so the Zenodo record `10.5281/zenodo.19695260` (README.md, `docs/manuscript/00_abstract.md`) cannot be traced to a commit. Tag the tree that produced the archived PDF as `v2.3` and push it. — repository metadata
+- [x] Git tag `v2.3.0` now anchors the DOI'd release (created and pushed 2026-09-04, annotated, pointing at the remediated tree). `git describe --tags` resolves; Zenodo record `10.5281/zenodo.19695260` traces to `ae5a86f`. — repository metadata
 - [x] Regenerate `output/metrics.json`. Regenerated 2026-09-04: 95.79% line+branch (fresh `coverage.json` over the post-omit-cleanup scope), plus the new `enriched_*` / `topos_*` keys. — output/metrics.json
 - [x] Tracking policy for the untracked `output/**/AGENTS.md` and `output/**/README.md` pairs: committed all of them on 2026-09-04 (17 files incl. `output/manuscript/MANUSCRIPT_STATUS.md` and the `.checkpoints/` pair), matching the existing `output/manuscript/` convention. — output/
 - [x] `LICENSE` and `CITATION.cff` committed 2026-09-04. — LICENSE, CITATION.cff

@@ -22,7 +22,7 @@ from src.visualization import (
 | `category_diagrams.py` | `render_case_category`, `render_alignment_comparison`, `render_composition_triangle` | §2 PNGs |
 | `category_diagrams_config.py` | `CASE_MINIMAL_NODE_POSITIONS`, `CASE_MINIMAL_EDGE_LABEL_PREFIX`, `CASE_MINIMAL_LICENSED_CONNECTIONSTYLE` | Layout constants for `fig:case-minimal`; no renderers |
 | `category_unpacking.py` | `render_pregroup_reduction_unpacking`, `render_discocirc_entity_persistence`, `render_snake_equation_unpacking` | §4 unpacking panels |
-| `enriched_diagrams.py` | `render_enriched_heatmap` | `enriched_hom_matrix.png` |
+| `enriched_diagrams.py` | `render_enriched_heatmap`, `write_magnitude_report` | `enriched_hom_matrix.png` + `enriched_magnitude.txt` |
 | `functor_diagrams.py` | `render_functor_diagram` | `functor_alignment.png` |
 | `string_diagrams.py` | `render_discocat_sentence`, `render_discourse_diagram`, `render_discocirc_discourse`, `render_three_sentence_discourse` | Native string diagrams |
 | `discopy_diagrams.py` | `render_discopy_*`, `get_diagram_metrics` | DisCoPy PNGs (optional dep.) |

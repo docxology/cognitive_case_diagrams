@@ -5,8 +5,8 @@ with proper axis labeling and identity diagonal highlighting.
 """
 
 import logging
-from typing import Optional
-
+from pathlib import Path
+from typing import Optional, Union
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -92,3 +92,33 @@ def render_enriched_heatmap(
         logger.info("Saved enriched heatmap to %s", output_path)
 
     return fig
+
+
+def write_magnitude_report(
+    enriched: EnrichedCategory,
+    output_path: Union[str, Path],
+) -> Path:
+    """Write the categorical magnitude summary for *enriched* as a text file.
+
+    Companion artifact to :func:`render_enriched_heatmap`: records the
+    categorical magnitude and the optimal weighting vector next to the
+    heatmap PNG.
+
+    Args:
+        enriched: The enriched category to report on.
+        output_path: Destination path for the ``.txt`` report.
+
+    Returns:
+        The path the report was written to.
+    """
+    output_path = Path(output_path)
+    mag = enriched.magnitude()
+    w = enriched.weighting()
+    output_path.write_text(
+        f"Enriched Category: {enriched.name}\n"
+        f"Number of objects: {len(enriched.roles)}\n"
+        f"Categorical magnitude: {mag:.6f}\n"
+        f"Weighting vector: {w.tolist()}\n"
+    )
+    logger.info("Saved enriched magnitude report to %s", output_path)
+    return output_path

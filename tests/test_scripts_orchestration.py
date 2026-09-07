@@ -238,6 +238,8 @@ class TestGenerateDiagramsModule:
         spec.loader.exec_module(mod)
         for key in ["category", "discopy", "cognitive", "quantum", "syntactic"]:
             assert key in mod.DOMAINS
+        # Every domain must delegate to a sub-script module (no inline handlers)
+        assert all(mod.DOMAINS.values())
 
     def test_domain_aliases_resolve_correctly(self):
         import importlib.util
@@ -260,3 +262,21 @@ class TestGenerateDiagramsModule:
         spec.loader.exec_module(mod)
         with pytest.raises(ValueError, match="Unknown domain"):
             mod.run_domain("nonexistent_domain", tmp_path)
+
+    def test_run_domain_strings_delegates_to_subscript(self, tmp_path):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "generate_diagrams",
+            _PROJECT_ROOT / "scripts" / "generate_diagrams.py",
+        )
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        paths, failures = mod.run_domain("strings", tmp_path)
+        names = {p.name for p in paths}
+        assert {
+            "string_diagram_discocat.png",
+            "discourse_string_diagram.png",
+            "enriched_hom_matrix.png",
+            "enriched_magnitude.txt",
+        } <= names
+        assert failures == []

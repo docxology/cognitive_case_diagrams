@@ -9,6 +9,11 @@ The monorepo render stage (``scripts/pipeline/stage_03_render.py`` at the
 template root) automatically renders from ``output/manuscript/`` when that
 directory contains ``.md`` files.
 
+Thin orchestrator: substitution logic lives in
+``src/manuscript_injection.py`` (standalone fallback) or the template
+monorepo's ``projects.template.src.template.inject_metrics`` (used
+automatically when the monorepo is available).
+
 Usage:
     python scripts/inject_variables.py
     python scripts/inject_variables.py --dry-run
@@ -17,14 +22,8 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from pathlib import Path
-
-# Match only ``${identifier}`` tokens that ``string.Template.safe_substitute`` would
-# substitute — same pattern as ``projects/template/src/template/inject_metrics.py``
-# (avoids false positives on LaTeX-like ``${...}`` spans).
-_UNRESOLVED_VAR_RE = re.compile(r"\$\{([_a-zA-Z][_a-zA-Z0-9]*)\}")
 
 # Resolve project paths
 _SCRIPT_DIR = Path(__file__).resolve().parent
@@ -57,74 +56,22 @@ except ImportError:  # pragma: no cover - exercised only outside the monorepo
 
 
 from src.generate_manuscript_metrics import collect_metrics, write_metrics
+from src.manuscript_injection import (
+    count_unresolved_variables,
+    resolve_manuscript_dir,
+)
 
-# Use the template's inject_metrics infrastructure if available,
-# otherwise fall back to a local implementation
+# Prefer the template monorepo's inject_metrics infrastructure when available;
+# standalone checkouts delegate to the equivalent src/ implementation.
 try:
     from projects.template.src.template.inject_metrics import (
         render_all_chapters,
     )
 except ImportError:
-    # Fallback: local implementation matching the template pattern
-    import shutil
-    from string import Template
-
-    _CHAPTER_PATTERN = re.compile(r"^\d")
-
-    def render_all_chapters(
-        manuscript_dir: Path, metrics: dict, output_dir: Path
-    ) -> list[Path]:
-        """Process all numbered chapter files and copy ancillary files."""
-        output_dir.mkdir(parents=True, exist_ok=True)
-        written: list[Path] = []
-
-        for item in sorted(manuscript_dir.iterdir()):
-            if item.is_dir():
-                continue
-
-            if _CHAPTER_PATTERN.match(item.name) and item.suffix == ".md":
-                # Numbered chapter — apply substitution
-                source_text = item.read_text(encoding="utf-8")
-                rendered = Template(source_text).safe_substitute(metrics)
-
-                dest = output_dir / item.name
-                dest.write_text(rendered, encoding="utf-8")
-                written.append(dest)
-
-                # Warn about unresolved tokens (identifier-shaped only)
-                remaining = _UNRESOLVED_VAR_RE.findall(rendered)
-                if remaining:
-                    logger.warning(
-                        f"{item.name}: {len(remaining)} unresolved: "
-                        + ", ".join(f"${{{t}}}" for t in sorted(set(remaining)))
-                    )
-            else:
-                # Ancillary file — copy verbatim
-                dest = output_dir / item.name
-                shutil.copy2(item, dest)
-                written.append(dest)
-
-        return written
+    from src.manuscript_injection import render_all_chapters
 
 
 logger = get_logger(__name__)
-
-
-def resolve_manuscript_dir(project_root: Path) -> Path:
-    """Return the directory holding the numbered manuscript chapters.
-
-    Mirrors ``infrastructure.core.project_paths.resolve_source_manuscript_dir``
-    without importing it, so standalone checkouts resolve identically:
-    ``docs/manuscript/`` is canonical, ``manuscript/`` is the legacy fallback
-    retained for pre-relocation trees.
-    """
-    canonical = project_root / "docs" / "manuscript"
-    if any(canonical.glob("[0-9]*.md")):
-        return canonical
-    legacy = project_root / "manuscript"
-    if any(legacy.glob("[0-9]*.md")):
-        return legacy
-    return canonical
 
 
 def main() -> int:
@@ -188,17 +135,7 @@ def main() -> int:
         )
         return 1
 
-    unresolved_total = 0
-    for out_file in rendered_chapters:
-        content = out_file.read_text(encoding="utf-8")
-        remaining = _UNRESOLVED_VAR_RE.findall(content)
-        if remaining:
-            logger.warning(
-                f"  {out_file.name}: unresolved: "
-                + ", ".join(f"${{{t}}}" for t in sorted(set(remaining)))
-            )
-            unresolved_total += len(remaining)
-
+    unresolved_total = count_unresolved_variables(rendered_dir)
     if unresolved_total:
         logger.error(f"{unresolved_total} unresolved variable(s) remain — pipeline cannot proceed")
         return 1

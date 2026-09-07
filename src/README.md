@@ -33,7 +33,7 @@ from src.visualization import (
 | [`security/`](security/) | §9b | Type violation detection | `TypeViolation`, `CaseFrameValidator` |
 | [`visualization/`](visualization/) | All | Figure generation (30 publication figures) | `styles` + 14 renderer modules |
 
-[`generate_manuscript_metrics.py`](generate_manuscript_metrics.py) writes `output/metrics.json` for manuscript `${variable}` injection (test counts, `daif` module counts).
+[`generate_manuscript_metrics.py`](generate_manuscript_metrics.py) writes `output/metrics.json` for manuscript `${variable}` injection (test counts, `daif` module counts). [`manuscript_injection.py`](manuscript_injection.py) performs the standalone `${variable}` substitution into numbered chapters (`scripts/inject_variables.py` delegates to it when the monorepo `inject_metrics` is unavailable).
 
 Agent-oriented descriptors: [`SKILL.md`](SKILL.md) (hub) and one [`SKILL.md`](case_systems/SKILL.md) per subpackage.
 

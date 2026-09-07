@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `src/` directory is **Layer 2** of the Two-Layer Architecture: all scientific business logic lives here. **Nine** subpackages mirror the manuscript; `visualization/` spans all sections. [`generate_manuscript_metrics.py`](generate_manuscript_metrics.py) at this level introspects tests, `src/daif/`, optional root `coverage.json` (from `pytest --cov-report=json`), and installed DisCoPy/NumPy versions; it writes `output/metrics.json` for `${variable}` injection (`scripts/inject_variables.py`).
+The `src/` directory is **Layer 2** of the Two-Layer Architecture: all scientific business logic lives here. **Nine** subpackages mirror the manuscript; `visualization/` spans all sections. [`generate_manuscript_metrics.py`](generate_manuscript_metrics.py) at this level introspects tests, `src/daif/`, optional root `coverage.json` (from `pytest --cov-report=json`), and installed DisCoPy/NumPy versions; it writes `output/metrics.json` for `${variable}` injection. [`manuscript_injection.py`](manuscript_injection.py) implements the standalone `${variable}` substitution used by [`scripts/inject_variables.py`](../scripts/inject_variables.py) when the template monorepo's `inject_metrics` is not importable.
 
 > **Thin Orchestrator Rule**: `scripts/` import from `src/`. `src/` contains computation. This separation must never be violated.
 
@@ -12,6 +12,7 @@ The `src/` directory is **Layer 2** of the Two-Layer Architecture: all scientifi
 src/
 ├── __init__.py              # Public API surface (imports from all subpackages)
 ├── generate_manuscript_metrics.py  # metrics.json + ${variable} injection inputs
+├── manuscript_injection.py         # standalone ${variable} substitution (inject_variables fallback)
 ├── case_systems/            # §2: Case theory, alignment, Fluid-S
 ├── diagrams/                # §3–§4c: String diagrams, complexity, discourse, ditransitive
 ├── enriched_cat/            # §5: [0,1]-enriched categories, magnitude

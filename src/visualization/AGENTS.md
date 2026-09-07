@@ -64,6 +64,7 @@ Heatmap visualization for enriched category proximity matrices.
 | Function | Signature | Description |
 |----------|-----------|-------------|
 | `render_enriched_heatmap` | `(enriched, output_path=None, title=None) -> Figure` | Annotated heatmap of `[0,1]`-valued hom-weights |
+| `write_magnitude_report` | `(enriched, output_path) -> Path` | Companion `.txt` report: categorical magnitude + optimal weighting vector (`enriched_magnitude.txt`) |
 
 ### `functor_diagrams.py`
 

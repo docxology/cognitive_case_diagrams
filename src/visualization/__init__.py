@@ -26,7 +26,7 @@ from .category_diagrams import (
     render_alignment_comparison,
     render_composition_triangle,
 )
-from .enriched_diagrams import render_enriched_heatmap
+from .enriched_diagrams import render_enriched_heatmap, write_magnitude_report
 from .functor_diagrams import render_functor_diagram
 from .string_diagrams import (
     render_discocat_sentence,

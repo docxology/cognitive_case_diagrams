@@ -12,18 +12,19 @@ Every command below runs from the **project root** (the directory containing thi
 
 ## Files
 
-| Script | Purpose |
-|--------|---------|
-| `01_generate_manuscript_metrics.py` | **Stage-0 helper** — runs tests, emits `output/metrics.json` with test/DAIF/coverage numbers and installed DisCoPy/NumPy versions (calls `src.generate_manuscript_metrics`) |
-| `generate_diagrams.py` | Master dispatcher — runs all domains or a specific `--domain` (30 figures total) |
-| `generate_category_figures.py` | Category + functor domain (5 figures) |
-| `generate_category_unpacking_figures.py` | Three companion “unpacking” PNGs (pregroup reduction, DisCoCirc entity persistence, snake equation) |
-| `generate_discopy_figures.py` | DisCoPy + complexity domain (10 figures) |
-| `generate_cognitive_figures.py` | DAIF + active inference + Fluid-S domain (5 figures) |
-| `generate_quantum_figures.py` | Quantum POVM + cognitive security domain (3 figures) |
-| `generate_syntactic_figures.py` | Syntactic case panel domain (1 figure) |
-| `inject_variables.py` | Manuscript `${variable}` injection from `output/metrics.json` |
-| `quality_gate.py` | **Quality gate** — `ruff check src/ tests/` + `mypy src/`; `--coverage` adds a full `pytest --cov` run enforcing the `fail_under = 90` floor. No CI exists in this repo, so this gate is the enforcement point. Thin orchestrator: no findings are suppressed or filtered here |
+| Script | Purpose | Delegates to |
+|--------|---------|--------------|
+| `01_generate_manuscript_metrics.py` | **Stage-0 helper** — runs tests, emits `output/metrics.json` with test/DAIF/coverage numbers and installed DisCoPy/NumPy versions | `src.generate_manuscript_metrics` |
+| `generate_diagrams.py` | Master dispatcher — runs all domains or a specific `--domain` (30 figures total) | per-domain sub-scripts (below) via `importlib` |
+| `generate_category_figures.py` | Category + functor domain (5 figures) | `src.case_systems.*`, `src.visualization.category_diagrams`, `functor_diagrams` |
+| `generate_category_unpacking_figures.py` | Three companion “unpacking” PNGs (pregroup reduction, DisCoCirc entity persistence, snake equation) | `src.visualization.category_unpacking` |
+| `generate_discopy_figures.py` | DisCoPy + complexity domain (10 figures) | `src.diagrams.complexity_*`, `src.visualization.discopy_diagrams`, `complexity_plots` |
+| `generate_cognitive_figures.py` | DAIF + active inference + Fluid-S domain (5 figures) | `src.cognitive.figure_data`, `src.visualization.active_inference_plots`, `daif_plots`, `fluid_s_plots` |
+| `generate_string_figures.py` | String-diagram + enriched-category domain — DisCoCat sentence, DisCoCirc discourse, enriched hom heatmap + `enriched_magnitude.txt` companion report (3 figures + 1 report) | `src.diagrams.string_diagram`, `src.enriched_cat.enriched`, `src.visualization.string_diagrams`, `enriched_diagrams` |
+| `generate_quantum_figures.py` | Quantum POVM + cognitive security domain (3 figures) | `src.quantum.figure_data`, `src.visualization.quantum_plots`, `security_plots` |
+| `generate_syntactic_figures.py` | Syntactic case panel domain (1 figure) | `src.visualization.syntactic_sentence_diagrams` |
+| `inject_variables.py` | Manuscript `${variable}` injection from `output/metrics.json` | `src.generate_manuscript_metrics`; monorepo `inject_metrics` (standalone fallback: `src/manuscript_injection.py`) |
+| `quality_gate.py` | **Quality gate** — `ruff check src/ tests/` + `mypy src/`; `--coverage` adds a full `pytest --cov` run enforcing the `fail_under = 90` floor. No CI exists in this repo, so this gate is the enforcement point. Thin orchestrator: no findings are suppressed or filtered here | `ruff`, `mypy`, `pytest --cov` subprocesses |
 
 ## `inject_variables.py` and `generate_manuscript_metrics`
 
@@ -31,7 +32,7 @@ Injection is **downstream** of metrics collection:
 
 1. **`uv run pytest tests/ --cov=src --cov-report=json:coverage.json`** (from the project root) — writes `coverage.json` for `${coverage_*}` / `${coverage_summary}`.
 2. **`uv run python -m src.generate_manuscript_metrics`** — writes `output/metrics.json` (also records test counts, DAIF counts, NumPy/DisCoPy versions).
-3. **`uv run python scripts/inject_variables.py`** — substitutes `${…}` into numbered `docs/manuscript/*.md` and copies ancillaries to `output/manuscript/`.
+3. **`uv run python scripts/inject_variables.py`** — substitutes `${…}` into numbered `docs/manuscript/*.md` and copies ancillaries to `output/manuscript/`. The substitution contract lives in the monorepo `inject_metrics` when importable, with the standalone equivalent in [`src/manuscript_injection.py`](../src/manuscript_injection.py) (`render_all_chapters`, `resolve_manuscript_dir`, `count_unresolved_variables`).
 
 PDF rendering then prefers `output/manuscript/` when it contains `.md` files. Optional VCS policy for `coverage.json`: [`tests/AGENTS.md`](../tests/AGENTS.md).
 
@@ -83,7 +84,7 @@ Each sub-script also exposes a `run(out: Path) -> list[Path]` function importabl
 | `category` | `generate_category_figures.py` | case_category_standard, minimal, composition_triangle, alignment_comparison, functor_alignment (5) |
 | `category_unpacking` | `generate_category_unpacking_figures.py` | pregroup_reduction_unpacking, discocirc_entity_persistence, snake_equation_unpacking (3) |
 | `discopy` | `generate_discopy_figures.py` | discopy_transitive, composition, snake, passive, sentence_progression, multilingual, ditransitive, discocirc_discourse, three_sentence_discourse, complexity_comparison (10) |
-| `strings` _(alias: `enriched`)_ | _(inline in generate_diagrams.py)_ | string_diagram_discocat, discourse_string_diagram, enriched_hom_matrix (3) |
+| `strings` _(alias: `enriched`)_ | `generate_string_figures.py` | string_diagram_discocat, discourse_string_diagram, enriched_hom_matrix (3) |
 | `cognitive` _(alias: `daif`)_ | `generate_cognitive_figures.py` | active_inference_belief, fluid_s_volition_landscape, daif_belief_trajectory, daif_free_energy_convergence, daif_erp_predictions (5) |
 | `quantum` | `generate_quantum_figures.py` | quantum_povm_probabilities, security_type_violations, monoidal_functor_security (3) |
 | `syntactic` | `generate_syntactic_figures.py` | syntactic_case_panel (1) |

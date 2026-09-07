@@ -10,6 +10,7 @@ Domain sub-scripts (also callable independently):
     scripts/generate_cognitive_figures.py  — DAIF, active inference, Fluid-S
     scripts/generate_quantum_figures.py    — quantum POVM, cognitive security
     scripts/generate_syntactic_figures.py  — syntactic case panel
+    scripts/generate_string_figures.py     — string diagrams + enriched hom heatmap
     scripts/generate_category_unpacking_figures.py — pedagogical unpacking panels
 
 Canonical Outputs (30 PNGs total, plus enriched_magnitude.txt):
@@ -102,76 +103,13 @@ DOMAINS: dict[str, str] = {
     "quantum":  "generate_quantum_figures",
     "syntactic": "generate_syntactic_figures",
     "unpacking": "generate_category_unpacking_figures",
-    "strings":  "",  # inline handler: _generate_string_enriched()
+    "strings": "generate_string_figures",
 }
 
 _DOMAIN_ALIASES: dict[str, str] = {
     "daif":     "cognitive",
     "enriched": "strings",
 }
-
-
-# Per-figure failures from the inline "strings" domain, read by run_domain().
-# Mirrors the LAST_FAILURES convention the per-domain sub-scripts use, so this
-# handler cannot silently drop figures while reporting success either.
-STRINGS_LAST_FAILURES: list[str] = []
-
-
-def _generate_string_enriched(out: Path) -> list[Path]:
-    """Generate string diagram and enriched category figures (inline)."""
-    STRINGS_LAST_FAILURES.clear()
-    from src.diagrams.string_diagram import Sentence
-    from src.enriched_cat.enriched import standard_enriched_category
-    from src.visualization.string_diagrams import (
-        render_discocat_sentence,
-        render_discocirc_discourse,
-    )
-    from src.visualization.enriched_diagrams import render_enriched_heatmap
-
-    out.mkdir(parents=True, exist_ok=True)
-    outputs: list[Path] = []
-
-    try:
-        sent = Sentence.transitive("Alice", "chases", "Bob")
-        path = out / "string_diagram_discocat.png"
-        render_discocat_sentence(sent, output_path=path)
-        outputs.append(path)
-        logger.info("  ✓ string_diagram_discocat.png")
-    except Exception as exc:
-        logger.error("  ✗ string_diagram_discocat.png: %s", exc)
-        STRINGS_LAST_FAILURES.append("string_diagram_discocat.png")
-
-    try:
-        path = out / "discourse_string_diagram.png"
-        render_discocirc_discourse(output_path=path)
-        outputs.append(path)
-        logger.info("  ✓ discourse_string_diagram.png")
-    except Exception as exc:
-        logger.error("  ✗ discourse_string_diagram.png: %s", exc)
-        STRINGS_LAST_FAILURES.append("discourse_string_diagram.png")
-
-    try:
-        cat = standard_enriched_category()
-        path = out / "enriched_hom_matrix.png"
-        render_enriched_heatmap(cat, output_path=path)
-        outputs.append(path)
-        # Also write magnitude text file
-        mag = cat.magnitude()
-        w = cat.weighting()
-        txt_path = out / "enriched_magnitude.txt"
-        txt_path.write_text(
-            f"Enriched Category: {cat.name}\n"
-            f"Number of objects: {len(cat.roles)}\n"
-            f"Categorical magnitude: {mag:.6f}\n"
-            f"Weighting vector: {w.tolist()}\n"
-        )
-        outputs.append(txt_path)
-        logger.info("  ✓ enriched_hom_matrix.png + enriched_magnitude.txt")
-    except Exception as exc:
-        logger.error("  ✗ enriched figures: %s", exc)
-        STRINGS_LAST_FAILURES.append("enriched_hom_matrix.png + enriched_magnitude.txt")
-
-    return outputs
 
 
 # ── Main dispatcher ─────────────────────────────────────────────────────────
@@ -183,22 +121,17 @@ def run_domain(domain: str, out: Path) -> tuple[list[Path], list[str]]:
     for ``"cognitive"``, ``"enriched"`` for ``"strings"``).
 
     Args:
-        domain: One of the keys in DOMAINS, an alias in _DOMAIN_ALIASES,
-                or ``"strings"`` for the inline group.
+        domain: One of the keys in DOMAINS or an alias in _DOMAIN_ALIASES.
         out:    Output directory.
 
     Returns:
         Tuple of (generated file paths, per-figure failure identifiers).
         The failure list is read from the domain module's ``LAST_FAILURES``
-        (empty for the "strings" domain, which has no such module) so a
-        domain that only partially rendered is not reported as a full
+        so a domain that only partially rendered is not reported as a full
         success.
     """
     # Resolve alias first
     resolved = _DOMAIN_ALIASES.get(domain, domain)
-
-    if resolved == "strings":
-        return _generate_string_enriched(out), list(STRINGS_LAST_FAILURES)
 
     if resolved not in DOMAINS:
         raise ValueError(
@@ -227,7 +160,7 @@ def main() -> int:
         metavar="DOMAIN",
         help=(
             "Domain to generate figures for: "
-            f"{', '.join(DOMAINS.keys())}, strings; "
+            f"{', '.join(DOMAINS.keys())}; "
             "aliases: daif (=cognitive), enriched (=strings). Default: all"
         ),
     )
@@ -247,7 +180,7 @@ def main() -> int:
 
     if args.list:
         print("Available domains:")
-        for d in sorted(DOMAINS.keys()) + ["strings"]:
+        for d in sorted(DOMAINS.keys()):
             print(f"  {d}")
         print("Aliases:")
         for alias, target in sorted(_DOMAIN_ALIASES.items()):
@@ -262,8 +195,6 @@ def main() -> int:
     logger.info("=" * 60)
 
     if args.domain == "all":
-        # "strings" is already a key of DOMAINS; appending it again ran that
-        # handler twice and inflated the reported figure total to 35.
         domains_to_run = list(DOMAINS.keys())
     else:
         domains_to_run = [args.domain]

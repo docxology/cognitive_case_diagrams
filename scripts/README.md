@@ -6,18 +6,19 @@ Every command below runs from the **project root** (the parent of this `scripts/
 
 ## Files
 
-| Script | Purpose |
-|--------|---------|
-| `01_generate_manuscript_metrics.py` | **Run first** — collects test counts, DAIF symbols, coverage → `output/metrics.json` |
-| `generate_diagrams.py` | Master dispatcher — generates all **30** figures; supports `--domain` and `--list` |
-| `generate_category_figures.py` | Category + functor domain (5 figures) |
-| `generate_category_unpacking_figures.py` | Pedagogical unpacking PNGs (pregroup reduction, DisCoCirc entity persistence, snake equation — 3 figures) |
-| `generate_discopy_figures.py` | DisCoPy + complexity domain (10 figures) |
-| `generate_cognitive_figures.py` | DAIF + active inference + Fluid-S domain (5 figures) |
-| `generate_quantum_figures.py` | Quantum POVM + cognitive security domain (3 figures) |
-| `generate_syntactic_figures.py` | Syntactic case panel (1 figure) |
-| `inject_variables.py` | Manuscript `${variable}` injection from `output/metrics.json` |
-| `quality_gate.py` | Runnable quality gate: `ruff check` + `mypy src/` (add `--coverage` to also enforce the ≥90% floor via a full `pytest --cov` run). Exits 1 on any finding; nothing is suppressed |
+| Script | Purpose | Delegates to | Command |
+|--------|---------|--------------|---------|
+| `01_generate_manuscript_metrics.py` | **Run first** — collects test counts, DAIF symbols, coverage → `output/metrics.json` | `src.generate_manuscript_metrics` | `uv run python scripts/01_generate_manuscript_metrics.py` |
+| `generate_diagrams.py` | Master dispatcher — generates all **30** figures; supports `--domain` and `--list` | per-domain sub-scripts (below) via `importlib` | `uv run python scripts/generate_diagrams.py [--domain DOMAIN]` |
+| `generate_category_figures.py` | Category + functor domain (5 figures) | `src.case_systems.*`, `src.visualization.category_diagrams`, `functor_diagrams` | `uv run python scripts/generate_category_figures.py` |
+| `generate_category_unpacking_figures.py` | Pedagogical unpacking PNGs (pregroup reduction, DisCoCirc entity persistence, snake equation — 3 figures) | `src.visualization.category_unpacking` | `uv run python scripts/generate_category_unpacking_figures.py` |
+| `generate_discopy_figures.py` | DisCoPy + complexity domain (10 figures) | `src.diagrams.complexity_*`, `src.visualization.discopy_diagrams`, `complexity_plots` | `uv run python scripts/generate_discopy_figures.py` |
+| `generate_cognitive_figures.py` | DAIF + active inference + Fluid-S domain (5 figures) | `src.cognitive.figure_data`, `src.visualization.active_inference_plots`, `daif_plots`, `fluid_s_plots` | `uv run python scripts/generate_cognitive_figures.py` |
+| `generate_string_figures.py` | String-diagram + enriched-category domain (DisCoCat sentence, DisCoCirc discourse, enriched hom heatmap + `enriched_magnitude.txt` — 3 figures + 1 companion report) | `src.diagrams.string_diagram`, `src.enriched_cat.enriched`, `src.visualization.string_diagrams`, `enriched_diagrams` | `uv run python scripts/generate_string_figures.py` |
+| `generate_quantum_figures.py` | Quantum POVM + cognitive security domain (3 figures) | `src.quantum.figure_data`, `src.visualization.quantum_plots`, `security_plots` | `uv run python scripts/generate_quantum_figures.py` |
+| `generate_syntactic_figures.py` | Syntactic case panel (1 figure) | `src.visualization.syntactic_sentence_diagrams` | `uv run python scripts/generate_syntactic_figures.py` |
+| `inject_variables.py` | Manuscript `${variable}` injection from `output/metrics.json` → `output/manuscript/` | `src.generate_manuscript_metrics`; monorepo `inject_metrics` (standalone fallback: `src.manuscript_injection`) | `uv run python scripts/inject_variables.py [--dry-run]` |
+| `quality_gate.py` | Runnable quality gate: `ruff check` + `mypy src/` (add `--coverage` to also enforce the ≥90% floor via a full `pytest --cov` run). Exits 1 on any finding; nothing is suppressed | `ruff`, `mypy`, `pytest --cov` subprocesses | `uv run python scripts/quality_gate.py [--coverage]` |
 
 ## Manuscript metrics (before `inject_variables.py`)
 
@@ -63,6 +64,7 @@ uv run python scripts/inject_variables.py --dry-run   # reports only; writes not
 
 # Or run each sub-script directly
 uv run python scripts/generate_discopy_figures.py
+uv run python scripts/generate_string_figures.py
 
 # Via template root pipeline stage 2 (run from the template repository root)
 uv run python scripts/pipeline/stage_02_analysis.py \

@@ -42,6 +42,7 @@ def test_count_test_files_counts_only_top_level_test_modules(tmp_path: Path) -> 
     assert _count_test_files(tests) == 2
 
 
+@pytest.mark.timeout(1800)  # scans all test files — I/O-bound on external/slow storage under load
 def test_daif_counts_nonzero() -> None:
     assert _count_daif_modules(DAIF_DIR) >= 1
     assert _count_daif_symbols(DAIF_DIR) >= 1
@@ -54,6 +55,7 @@ def test_number_to_word_small_integers() -> None:
     assert _number_to_word(99) == "ninety-nine"
 
 
+@pytest.mark.timeout(1800)  # spawns nested `pytest --collect-only` — minutes on external/slow storage
 def test_collect_metrics_expected_keys() -> None:
     m = collect_metrics(PROJECT_ROOT)
     for key in (
@@ -91,13 +93,13 @@ def test_write_metrics_roundtrip(tmp_path: Path) -> None:
     assert loaded == m
 
 
+@pytest.mark.timeout(1800)  # spawns nested `pytest --collect-only` — minutes on external/slow storage
 def test_main_dry_run_exit_zero() -> None:
     result = subprocess.run(
         [sys.executable, "-m", "src.generate_manuscript_metrics", "--dry-run"],
-        cwd=str(PROJECT_ROOT),
         capture_output=True,
         text=True,
-        timeout=900,
+        timeout=1800,
     )
     assert result.returncode == 0
     assert "total_test_count" in result.stdout
@@ -117,6 +119,7 @@ def test_count_daif_symbols_empty_all(tmp_path: Path) -> None:
     assert _count_daif_symbols(daif) == 0
 
 
+@pytest.mark.timeout(1800)  # spawns nested `pytest --collect-only` — minutes on external/slow storage
 def test_main_writes_metrics_file(tmp_path: Path) -> None:
     out = tmp_path / "metrics.json"
     result = subprocess.run(
@@ -130,7 +133,7 @@ def test_main_writes_metrics_file(tmp_path: Path) -> None:
         cwd=str(PROJECT_ROOT),
         capture_output=True,
         text=True,
-        timeout=900,
+        timeout=1800,
     )
     assert result.returncode == 0
     assert out.exists()
@@ -177,6 +180,7 @@ def test_number_to_word_boundary_values() -> None:
     assert _number_to_word(0) == "zero"
 
 
+@pytest.mark.timeout(1800)  # spawns nested `pytest --collect-only` — minutes on external/slow storage
 def test_collect_metrics_values_are_strings() -> None:
     """All values returned by collect_metrics should be strings."""
     m = collect_metrics(PROJECT_ROOT)

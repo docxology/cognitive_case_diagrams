@@ -2,7 +2,7 @@
 
 Shared numerical input validation is in `numerics.py`; manuscript metrics, substitution, and cross-artifact validation are root helper modules. Package scope follows the table below.
 
-Release helpers separate quality evidence (`release_validation.py`), visual-inspection freshness (`publication_review.py`), citation/deposit metadata (`release_metadata.py`), and portable archive integrity (`release_bundle.py`). These helpers prepare and validate local artifacts; remote publication remains an explicit orchestration action.
+Release helpers separate quality evidence (`release_validation.py`), visual-inspection freshness (`publication_review.py`), citation/deposit metadata (`release_metadata.py`), and portable archive integrity (`release_bundle.py`). The aggregate read-only status reporter (`evidence_status.py`, installed as the `ccd-evidence-status` console command) composes these validators into one machine-readable report with per-stage `missing`/`stale`/`invalid`/`validated` states. These helpers prepare and validate local artifacts; remote publication remains an explicit orchestration action.
 
 | Package | Contract |
 | :--- | :--- |

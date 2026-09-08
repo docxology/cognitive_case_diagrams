@@ -718,7 +718,7 @@ def list_experiment_variables(
 ) -> ExperimentVariablesResult:
     """Project the stable variables registry of the canonical experiments file.
 
-    Reads output/experiments/experiment_results.json under the contained
+    Reads output/experiments/results.json under the contained
     artifact root. Absence of the file is reported as an explicit error: the
     results are written by the experiments stage, never synthesized here.
     """

@@ -15,7 +15,7 @@ from typing import Any
 
 import yaml
 
-from src.release_validation import write_json_atomic
+from src.release_validation import StaleEvidenceError, write_json_atomic
 
 try:
     import tomllib
@@ -159,7 +159,7 @@ def validate_release_metadata(project_root: Path) -> dict[str, Any]:
     root = project_root.resolve(strict=True)
     expected = build_release_metadata(root)
     if yaml.safe_load((root / "CITATION.cff").read_text()) != expected["citation"]:
-        raise ValueError("CITATION.cff is stale; regenerate release metadata")
+        raise StaleEvidenceError("CITATION.cff is stale; regenerate release metadata")
     if json.loads((root / ".zenodo.json").read_text()) != expected["software"]:
-        raise ValueError(".zenodo.json is stale; regenerate release metadata")
+        raise StaleEvidenceError(".zenodo.json is stale; regenerate release metadata")
     return expected

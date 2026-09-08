@@ -34,6 +34,8 @@ Documentation = "https://github.com/docxology/cognitive_case_diagrams/blob/main/
 [project.scripts]
 # MCP stdio server entry point (requires the `mcp` extra or dev group).
 ccd-mcp = "src.integrations.server:main"
+# Read-only evidence-status reporter (no generation, no network).
+ccd-evidence-status = "src.evidence_status:main"
 
 [project.optional-dependencies]
 dev = [

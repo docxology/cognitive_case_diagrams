@@ -37,6 +37,9 @@ from src.integrations.registry import (
     json_safe,
 )
 
+pytest_plugins = ("fixtures_manuscript",)
+
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -319,16 +322,31 @@ def test_experiments_projection_respects_limit(real_results_root: Path) -> None:
 # Capability metadata
 
 
-def test_capability_metadata_is_honest_and_path_free() -> None:
-    capability = capability_metadata(PROJECT_ROOT)
+def test_capability_metadata_validated_branch_is_deterministic(gate_tree: Path) -> None:
+    capability = capability_metadata(gate_tree)
     assert capability["claims"], "claim ledger must be present"
     assert all(entry["status"] for entry in capability["claims"])
     assert capability["tool_contracts"]
-    status = capability["quality_receipt"]["status"]
-    assert status in {"validated", "missing", "stale_or_invalid"}
-    if status != "validated":
-        assert "/Volumes" not in json.dumps(capability["quality_receipt"])
-        assert "/Users" not in json.dumps(capability["quality_receipt"])
+    summary = capability["quality_receipt"]
+    assert summary["status"] == "validated"
+    assert "status" not in summary["receipt"]
+    assert summary["receipt"]["pytest_passed"] > 0
+    assert "/Volumes" not in json.dumps(summary)
+    assert "/Users" not in json.dumps(summary)
+
+
+def test_capability_metadata_failure_branches_are_deterministic(gate_tree: Path) -> None:
+    (gate_tree / "src" / "example.py").write_text("value = 2\n")
+    summary = capability_metadata(gate_tree)["quality_receipt"]
+    assert summary["status"] == "stale_or_invalid"
+    assert summary["detail"]
+    assert "/Volumes" not in json.dumps(summary)
+    assert "/Users" not in json.dumps(summary)
+    (gate_tree / "output" / "reports" / "quality_receipt.json").unlink()
+    summary = capability_metadata(gate_tree)["quality_receipt"]
+    assert summary["status"] == "missing"
+    assert "/Volumes" not in json.dumps(summary)
+    assert "/Users" not in json.dumps(summary)
 
 
 def test_project_version_is_reported() -> None:

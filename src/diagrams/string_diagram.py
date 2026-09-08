@@ -660,15 +660,14 @@ def create_tensor_semantics(
     object_vec: Optional[list[float]] = None,
     verb_tensor: Optional[list[float]] = None,
 ):
-    """Create a DisCoCat meaning functor evaluation in tensor category.
+    """Build one hand-constructed SVO ditransitive diagram in discopy.tensor
+    with default basis vectors and evaluate it by tensor contraction.
 
-    Implements F: Preg -> FVect by building the diagram directly in
-    discopy.tensor, where Box data carries word vectors/tensors.
-    The diagram is evaluated via .eval() to produce sentence meaning.
-
-    This is the core DisCoCat semantic composition (§4):
+    A concrete worked example of compositional evaluation (§4) — not a
+    general Preg-to-FVect functor, not learned, and not a corpus estimate.
+    The schematic identity
         F(Alice chases Bob) = F(chases) x_n F(Alice) x_n F(Bob)
-
+    labels the construction.
     Args:
         subject: Subject noun name.
         verb: Verb name.

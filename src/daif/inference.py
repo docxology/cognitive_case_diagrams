@@ -31,6 +31,9 @@ of one fixed posterior. n_iterations=1 consumes the likelihood once.
 Convergence requires both belief L1 change and FE change below threshold.
 Diagnostics identify the stop reason and retain all updated beliefs. The
 return_distribution is a dimensionless log-likelihood score heuristic.
+``transition_matrix=None`` uses the identity transition: the filter has no
+temporal dynamics and reduces to repeated Bayesian assimilation of the same
+likelihood; that default is logged at debug level only.
 """
     likelihoods = finite_vector(observation_likelihoods, "Likelihoods")
     if np.any(likelihoods < 0):
@@ -45,7 +48,7 @@ return_distribution is a dimensionless log-likelihood score heuristic.
         raise ValueError(f"Likelihoods ({len(likelihoods)}) must match roles ({n})")
 
     if transition_matrix is None:
-        logger.warning(
+        logger.debug(
             "transition_matrix is None — using identity (no transition dynamics). "
             "Pass an explicit matrix to model temporal case-role dynamics."
         )

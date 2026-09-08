@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from src.release_validation import file_sha256, quality_input_fingerprint, write_json_atomic
+from src.release_validation import StaleEvidenceError, file_sha256, quality_input_fingerprint, write_json_atomic
 
 REVIEW_PATH = Path("output/reports/publication_review.json")
 BROWSER_CHECKS = frozenset(
@@ -115,5 +115,5 @@ def validate_publication_review(project_root: Path) -> dict[str, Any]:
         raise ValueError("Unsupported publication review record")
     _validate_observations(root, receipt["observations"])
     if receipt.get("inputs") != publication_fingerprint(root):
-        raise ValueError("Publication review is stale for the current source or artifacts")
+        raise StaleEvidenceError("Publication review is stale for the current source or artifacts")
     return receipt

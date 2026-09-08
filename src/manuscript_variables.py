@@ -790,9 +790,11 @@ def write_variables_manifest(root: Path, metrics: dict[str, str]) -> Path:
 
 def validate_variables_manifest(root: Path, metrics: dict[str, str]) -> dict:
     """Reject missing or stale variable declarations, values or evidence."""
+    from src.release_validation import StaleEvidenceError
+
     actual = json.loads((root / VARIABLES_MANIFEST_RELATIVE).read_text())
     if actual != build_variables_manifest(root, metrics):
-        raise ValueError("Manuscript variable manifest is stale")
+        raise StaleEvidenceError("Manuscript variable manifest is stale")
     return actual
 
 

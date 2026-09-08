@@ -47,8 +47,10 @@ Consumers MUST call `validate_experiment_results(results, project_root=None)`
 before trusting an artifact. It rechecks the schema, finiteness, the config
 hash, recomputes the source digests from disk (recorded digests are never
 trusted), requires the sanity controls to pass, and validates every variable
-entry. It returns `{"valid", "errors", "checks"}` and never raises for
+entry. It returns `{"valid", "errors", "checks", "stale"}` and never raises for
 malformed input.
+The `stale` flag marks provenance-binding failures (source bytes, membership,
+or runtime environment) that regenerating from the current tree fixes.
 
 ## Study designs and uncertainty conventions
 

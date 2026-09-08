@@ -27,6 +27,7 @@ try:
     # Availability probe: importing these names is the DISCOPY_AVAILABLE test.
     # Ty/Box/Id are re-imported lazily inside functions that need them.
     from discopy.rigid import Ty, Box, Cup, Cap, Id, Diagram  # noqa: F401
+    from discopy.utils import AxiomError  # noqa: F401
     DISCOPY_AVAILABLE = True
 except ImportError:
     DISCOPY_AVAILABLE = False
@@ -40,7 +41,7 @@ class DiagramMetrics:
     Attributes:
         name: Descriptive name (e.g., sentence represented).
         box_count: Total number of boxes (including cups/caps).
-        word_count: Number of Word boxes (lexical entries).
+        word_count: Boxes that are neither Cup nor Cap; for pregroup parse diagrams these are the Word entries.
         cup_count: Number of Cup contractions.
         cap_count: Number of Cap expansions.
         is_normal_form: Whether the diagram is in normal form.
@@ -77,16 +78,17 @@ def count_boxes(diagram: "Diagram") -> int:
 
 
 def count_words(diagram: "Diagram") -> int:
-    """Count Word boxes (lexical entries) in a diagram.
+    """Count boxes that are neither Cup nor Cap in a diagram.
 
-    Word boxes are distinguished from structural boxes (Cup, Cap)
-    by not being instances of Cup or Cap.
+    For pregroup parse diagrams these are the Word entries; any other
+    Box kind (custom or structural) is also counted, so this is not a
+    pure lexical-entry count.
 
     Args:
         diagram: A DisCoPy rigid Diagram.
 
     Returns:
-        Number of Word/Box entries (excluding Cup/Cap).
+        Number of non-Cup/Cap boxes.
     """
     if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required for word counting")
@@ -97,7 +99,7 @@ def count_words(diagram: "Diagram") -> int:
 
 
 def count_cups(diagram: "Diagram") -> int:
-    """Count Cup contractions (evaluation maps) in a diagram.
+    """Count rigid-category Cup boxes in a diagram.
 
     Args:
         diagram: A DisCoPy rigid Diagram.
@@ -111,7 +113,7 @@ def count_cups(diagram: "Diagram") -> int:
 
 
 def count_caps(diagram: "Diagram") -> int:
-    """Count Cap expansions (coevaluation maps) in a diagram.
+    """Count rigid-category Cap boxes in a diagram.
 
     Args:
         diagram: A DisCoPy rigid Diagram.
@@ -125,11 +127,12 @@ def count_caps(diagram: "Diagram") -> int:
 
 
 def diagram_depth(diagram: "Diagram") -> int:
-    """Compute the depth of a diagram (number of sequential layers).
+    """Number of sequential layers in the DisCoPy inside-representation.
 
-    Depth corresponds to the number of sequential composition steps,
-    which bounds circuit depth when compiling to quantum hardware
-    (cf. eq. 4-4 in the manuscript).
+    Uses ``depth()`` when the diagram supports it, else ``len(inside)``.
+    A discrete structural statistic used as the manuscript's synthetic
+    complexity proxy (eq. 4-4); no compilation to quantum hardware is
+    performed and no hardware claim follows.
 
     Args:
         diagram: A DisCoPy rigid Diagram.
@@ -141,16 +144,17 @@ def diagram_depth(diagram: "Diagram") -> int:
         raise RuntimeError("discopy required for depth computation")
     try:
         return diagram.depth()
-    except (AttributeError, TypeError):
-        # grammar.pregroup diagrams may not support depth() directly
+    except (AttributeError, TypeError, AxiomError):
+        # discopy raises AxiomError for diagrams without a layer structure;
+        # grammar.pregroup diagrams may not support depth() directly.
         return len(diagram.inside) if hasattr(diagram, 'inside') else len(diagram.boxes)
 
 
 def diagram_width(diagram: "Diagram") -> int:
-    """Compute the width of a diagram (maximum number of parallel wires).
+    """Maximum number of parallel wires in a diagram.
 
-    Width determines the quantum register count when compiling to
-    parameterized quantum circuits.
+    Uses DisCoPy ``width`` (``len(dom)`` fallback for layerless diagrams).
+    A structural statistic; no compilation or register-count claim follows.
 
     Args:
         diagram: A DisCoPy rigid Diagram.

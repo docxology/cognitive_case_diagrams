@@ -31,6 +31,7 @@ uv run python scripts/inject_variables.py
 uv run python scripts/validate_project.py
 uv run python scripts/build_release.py --metadata-only
 uv build --no-sources
+uv run python scripts/evidence_status.py
 ```
 
 Render through the sibling template engine using the commands in the project README. Inspect every final PDF page and every figure; check PDF identity/metadata, web images, internal links, browser console, keyboard navigation, and narrow viewport behavior. Record only observations actually completed through `record_publication_review`. The record binds the current publication bytes and tested source. A late change invalidates it.

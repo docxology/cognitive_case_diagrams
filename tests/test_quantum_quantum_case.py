@@ -131,6 +131,35 @@ class TestSemanticState:
         with pytest.raises(ValueError, match="positive"):
             semantic_state({CaseRole.NOM: 0.0, CaseRole.ACC: 0.0}, roles=roles)
 
+    def test_overflowing_weight_total_is_rejected(self) -> None:
+        """Finite weights whose sum overflows are rejected, never zeroed."""
+        overflowing = {CaseRole.NOM: 1e308, CaseRole.ACC: 1e308, CaseRole.DAT: 1e308}
+        with pytest.raises(ValueError, match="positive finite value"):
+            semantic_state(overflowing)
+        with pytest.raises(ValueError, match="positive finite value"):
+            semantic_state({CaseRole.NOM: 1e308, CaseRole.ACC: 1e308})
+
+    def test_ordinary_outputs_are_byte_stable(self) -> None:
+        """The finite-total normalization path is unchanged by the guard."""
+        assert np.diag(
+            semantic_state({CaseRole.NOM: 0.5, CaseRole.ACC: 0.3, CaseRole.DAT: 0.2})
+        ).real.tolist() == [0.5, 0.3, 0.2]
+        assert np.diag(
+            semantic_state({CaseRole.NOM: 7.25, CaseRole.ACC: 0.125, CaseRole.DAT: 3.5})
+        ).real.tolist() == [0.6666666666666666, 0.011494252873563218, 0.3218390804597701]
+        assert np.diag(
+            semantic_state({CaseRole.NOM: 1.0, CaseRole.ACC: 1e-300})
+        ).real.tolist() == [1.0, 1e-300]
+
+    def test_power_of_two_rescaling_is_byte_identical(self) -> None:
+        """Exact power-of-two weight rescaling yields identical densities."""
+        base = {CaseRole.NOM: 7.25, CaseRole.ACC: 0.125, CaseRole.DAT: 3.5}
+        up = {role: weight * 2.0 ** 500 for role, weight in base.items()}
+        down = {role: weight * 2.0 ** -500 for role, weight in base.items()}
+        reference = semantic_state(base)
+        assert np.array_equal(semantic_state(up), reference)
+        assert np.array_equal(semantic_state(down), reference)
+
 
 class TestCaseProbabilityEquation:
     """Tests for P(c|ρ) = Tr(E_c ρ) — Equation 8.1."""

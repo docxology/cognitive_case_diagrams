@@ -77,6 +77,8 @@ DEFAULT_RESULTS_PATH = "output/experiments/results.json"
 
 _UNITS = ("probability", "dimensionless", "nats", "count", "version")
 
+_STALE_CHECKS = ("source_hashes", "source_combined", "source_membership", "numpy_matches")
+
 # Numerical-domain source files bound into the provenance digest (relative
 # POSIX paths, sorted; no absolute paths, no timestamps). A result is fresh
 # only when these bytes match; manuscript validation must reject stale ones.
@@ -658,7 +660,10 @@ def _validate_experiment_results(
             makes the validator usable from clean wheels and tmp fixtures.
 
     Returns:
-        ``{"valid": bool, "errors": [str...], "checks": {name: bool...}}``.
+        ``{"valid": bool, "errors": [str...], "checks": {name: bool...},
+        "stale": bool}``. ``stale`` is true only when the verdict is a
+        failure and at least one provenance binding check (``_STALE_CHECKS``)
+        failed; regenerating from the current tree fixes stale results.
         Never raises for a malformed input; every defect becomes an error.
     """
     errors: list[str] = []
@@ -670,9 +675,18 @@ def _validate_experiment_results(
             errors.append(message)
         return bool(condition)
 
+    def verdict() -> dict[str, Any]:
+        failed = [name for name, passed in checks.items() if not passed]
+        return {
+            "valid": not errors,
+            "errors": errors,
+            "checks": checks,
+            "stale": bool(failed) and any(name in _STALE_CHECKS for name in failed),
+        }
+
     if not ok("top_level_mapping", isinstance(results, dict),
               "results must be a mapping"):
-        return {"valid": False, "errors": errors, "checks": checks}
+        return verdict()
     ok("schema_version", results.get("schema_version") == RESULTS_SCHEMA_VERSION,
        f"schema_version must be {RESULTS_SCHEMA_VERSION!r}, "
        f"got {results.get('schema_version')!r}")
@@ -688,11 +702,11 @@ def _validate_experiment_results(
     provenance = results.get("provenance")
     if not ok("provenance_mapping", isinstance(provenance, dict),
               "provenance must be a mapping"):
-        return {"valid": False, "errors": errors, "checks": checks}
+        return verdict()
     ok("provenance_keys", _PROVENANCE_KEYS <= set(provenance),
        f"provenance must contain {sorted(_PROVENANCE_KEYS - set(provenance))}")
     if not (_PROVENANCE_KEYS <= set(provenance)):
-        return {"valid": False, "errors": errors, "checks": checks}
+        return verdict()
 
     cfg = None
     try:
@@ -705,7 +719,7 @@ def _validate_experiment_results(
     except Exception as exc:  # noqa: BLE001 - any invalid config is a defect
         ok("config_hash_matches", False, f"experiments_config invalid: {exc}")
     if cfg is None:
-        return {"valid": False, "errors": errors, "checks": checks}
+        return verdict()
     ok("seed_matches", type(provenance["seed"]) is int and provenance["seed"] == cfg.seed,
        "provenance seed differs from experiment configuration")
     ok("numpy_matches", provenance["numpy_version"] == np.__version__,
@@ -715,7 +729,7 @@ def _validate_experiment_results(
     recorded_files = provenance["source_files"]
     if not ok("source_files_mapping", isinstance(recorded_files, dict),
               "provenance.source_files must be a mapping"):
-        return {"valid": False, "errors": errors, "checks": checks}
+        return verdict()
     ok("source_membership", set(recorded_files) == set(files),
        "source file membership changed: recorded-only "
        f"{sorted(set(recorded_files) - set(files))}, disk-only "
@@ -734,7 +748,7 @@ def _validate_experiment_results(
     experiments = results.get("experiments")
     if not ok("experiments_mapping", isinstance(experiments, dict),
               "experiments must be a mapping"):
-        return {"valid": False, "errors": errors, "checks": checks}
+        return verdict()
     expected_blocks = set(cfg.enabled_sections())
     if cfg.projection.enabled:
         expected_blocks.add("quantum_projection")
@@ -829,7 +843,7 @@ def _validate_experiment_results(
     expected_variables = _assemble_variables(experiments, cfg.confidence_level)
     ok("variables_consistent", variables == expected_variables,
        "variables do not match their study metrics and interval records")
-    return {"valid": not errors, "errors": errors, "checks": checks}
+    return verdict()
 
 
 def validate_experiment_results(results: Any, project_root: str | Path | None = None) -> dict[str, Any]:
@@ -837,7 +851,7 @@ def validate_experiment_results(results: Any, project_root: str | Path | None = 
     try:
         return _validate_experiment_results(results, project_root)
     except (OSError, ValueError, TypeError, KeyError, AttributeError, OverflowError) as exc:
-        return {"valid": False, "errors": [f"Malformed experiment evidence: {exc}"], "checks": {"well_formed": False}}
+        return {"valid": False, "errors": [f"Malformed experiment evidence: {exc}"], "checks": {"well_formed": False}, "stale": False}
 
 
 def experiment_variable_definitions() -> dict[str, dict[str, str]]:
@@ -851,7 +865,7 @@ def experiment_variable_definitions() -> dict[str, dict[str, str]]:
             for side in ("low", "high"):
                 definitions[f"{name}_ci95_{side}"] = {
                     "unit": unit,
-                    "description": f"{side.title()} bound of the 95% interval for {name}",
+                    "description": f"{side.title()} bound of the confidence interval for {name}",
                 }
     for name in ("analytic_identities_pass", "invalid_input_controls_pass"):
         definitions[f"exp_sanity_{name}"] = {"unit": "count", "description": f"Synthetic validation control status: {name}"}

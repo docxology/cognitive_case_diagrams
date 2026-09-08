@@ -323,7 +323,9 @@ def semantic_state(
         semidefinite, diagonal).
 
     Raises:
-        ValueError: If the weight sum is not strictly positive.
+        ValueError: If the weight sum is not strictly positive, or if the
+            sum of the supplied weights overflows floating-point range; the
+            state is rejected instead of silently non-normalizable.
     """
     if roles is None:
         roles = list(weights.keys())
@@ -340,7 +342,10 @@ def semantic_state(
         if i < d:
             diag[i] = weights.get(role, 0.0)
 
-    total = np.sum(diag).real
+    with np.errstate(over="ignore"):
+        total = float(np.sum(diag).real)
+    if not np.isfinite(total):
+        raise ValueError("weights must sum to a positive finite value")
     if total <= 0:
         raise ValueError("weights must sum to a positive value")
 

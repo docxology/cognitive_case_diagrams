@@ -26,6 +26,18 @@ except ImportError:  # Python 3.10
     import tomli as tomllib  # type: ignore[no-redef]
 
 
+class StaleEvidenceError(ValueError):
+    """Derived evidence no longer matches the current inputs it binds.
+
+    Raised by the canonical validators when their recompute-and-diff
+    comparison finds that stored evidence was produced from different
+    source, test, artifact, or runtime bytes than the ones on disk.
+    Subclassing ValueError preserves every existing fail-closed
+    ``except ValueError`` contract while letting status reporters
+    distinguish a stale artifact from an invalid one.
+    """
+
+
 QUALITY_RECEIPT = Path("output/reports/quality_receipt.json")
 QUALITY_JUNIT = Path("output/reports/pytest.xml")
 
@@ -237,7 +249,7 @@ def validate_quality_receipt(project_root: Path) -> dict[str, Any]:
     if timestamp.utcoffset() is None:
         raise ValueError("Quality receipt timestamp must include a timezone")
     if receipt.get("inputs") != quality_input_fingerprint(root):
-        raise ValueError("Quality receipt is stale for the current source")
+        raise StaleEvidenceError("Quality receipt is stale for the current source")
     checks = receipt.get("checks", [])
     if (
         len(checks) != 3
@@ -256,7 +268,7 @@ def validate_quality_receipt(project_root: Path) -> dict[str, Any]:
     if receipt.get("coverage") != _coverage_summary(root) or receipt.get("tests") != _test_summary(
         root
     ):
-        raise ValueError("Quality receipt does not match its current coverage/test evidence")
+        raise StaleEvidenceError("Quality receipt does not match its current coverage/test evidence")
     if any(receipt.get(key) != value for key, value in _public_fields(receipt).items()):
         raise ValueError("Manuscript-facing quality fields disagree with executed checks")
     return receipt

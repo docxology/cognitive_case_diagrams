@@ -15,6 +15,7 @@ Run these from the project root; use uv for its declared environment.
 | `uv run python scripts/validate_project.py` | Reject stale hydration, unresolved references, corrupt images, and registry mismatch |
 | `uv run python scripts/build_release.py --metadata-only` | Generate citation/software/deposit metadata from canonical inputs |
 | `uv run python scripts/build_release.py` | Require current evidence and assemble the reproducibility archive |
+| `uv run python scripts/evidence_status.py` | Read-only JSON report of quality, experiments, manuscript, metadata, visual-review, and release evidence states (exit 0 only when all stages validate) |
 
 Use `--list` for the current figure-domain registry and aliases. The experiment figure domain consumes previously generated results; run the experiments first. Per-domain `generate_*_figures.py` files expose `run(output_directory)` and a CLI. `01_generate_manuscript_metrics.py` is the pipeline metrics entry point. Algorithms and plotting live in source; these scripts orchestrate them.
 

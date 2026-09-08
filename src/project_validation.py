@@ -11,7 +11,7 @@ from pathlib import Path
 
 from PIL import Image
 from src.manuscript_variables import scan_hard_coded_claims, validate_metrics, validate_variables_manifest
-from src.release_validation import quality_input_fingerprint
+from src.release_validation import StaleEvidenceError, quality_input_fingerprint
 
 FIGURE = re.compile(r'!\[([^\n]*)\]\(([^)]+)\)\{#(fig:[\w:.-]+)\}')
 LABEL = re.compile(r'\{#([\w:.-]+)\}')
@@ -42,7 +42,7 @@ def validate_project(root: Path) -> dict:
         if TOKEN.search(expected):
             raise ValueError(f'Unresolved manuscript token in {name}')
         if (hydrated / name).read_text(encoding='utf-8') != expected:
-            raise ValueError(f'Stale hydrated chapter: {name}')
+            raise StaleEvidenceError(f'Stale hydrated chapter: {name}')
     text = '\n'.join(sources.values())
     labels = LABEL.findall(text)
     if len(labels) != len(set(labels)):
@@ -79,14 +79,14 @@ def validate_project(root: Path) -> dict:
         if entry is None or entry.get('label') != label:
             raise ValueError(f'Figure registry label mismatch: {label}')
         if entry.get('generator_input_fingerprint') != figure_inputs:
-            raise ValueError(f'Stale figure generation inputs: {relative}')
+            raise StaleEvidenceError(f'Stale figure generation inputs: {relative}')
         if Path(entry.get('path', '')).is_absolute() or (root / entry.get('path', '')).resolve() != image.resolve():
             raise ValueError(f'Figure registry path mismatch: {relative}')
         alt = entry.get('alt_text')
         if not isinstance(alt, str) or not alt.strip():
             raise ValueError(f'Missing accessibility text: {relative}')
         if alt != alt_texts.get(image.name):
-            raise ValueError(f'Stale accessibility text: {relative}')
+            raise StaleEvidenceError(f'Stale accessibility text: {relative}')
         digest = hashlib.sha256(image.read_bytes()).hexdigest()
         if entry.get('sha256') != digest:
             raise ValueError(f'Figure checksum mismatch: {relative}')
@@ -99,7 +99,7 @@ def validate_project(root: Path) -> dict:
         raise ValueError('Figure count differs from metrics')
     for auxiliary in ('references.bib', 'config.yaml', 'preamble.md'):
         if (source / auxiliary).read_bytes() != (hydrated / auxiliary).read_bytes():
-            raise ValueError(f'Stale hydrated auxiliary: {auxiliary}')
+            raise StaleEvidenceError(f'Stale hydrated auxiliary: {auxiliary}')
     return {'chapters': len(chapters), 'figures': len(referenced),
             'bibliography_entries': len(bib), 'labels': len(labels),
             'status': 'structural checks passed; visual review remains separate'}

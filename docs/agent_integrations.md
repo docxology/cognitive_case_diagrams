@@ -168,6 +168,24 @@ ccd-mcp --list-tools | head            # catalog without a server
 uv run pytest tests/test_mcp_server.py tests/test_agent_interface.py -q
 ```
 
+## Evidence status CLI
+
+`ccd-evidence-status` (console script installed with the package, also via
+`uv run python scripts/evidence_status.py`) prints one JSON report covering
+the release-evidence stages: `quality`, `experiments`, `manuscript`,
+`metadata`, `visual_review`, and `release`. Each stage reports `missing`,
+`stale`, `invalid`, or `validated` by delegating to the canonical fail-closed
+validators (never by re-implementing their checks); the release stage requires
+archive verification plus a three-way source binding. The process exits 0 only
+when every stage is validated, so a mid-pipeline checkout is expected to exit
+1. It performs no generation, no network access, and no writes, and reports
+only project-relative artifact paths. The MCP capability summary consumes the
+same state mapping with its coarser `stale_or_invalid` vocabulary.
+
+```bash
+uv run ccd-evidence-status --project-root .
+```
+
 ## Installable skill
 
 `skills/cognitive-case-diagrams/` is a self-contained skill folder teaching

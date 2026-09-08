@@ -242,18 +242,24 @@ def quality_receipt_summary(project_root: Path | None = None) -> dict[str, Any]:
 
     The receipt is never faked: missing files report ``missing``, stale or
     inconsistent receipts report ``stale_or_invalid`` with the validator's
-    message, and only a fully validated receipt is embedded verbatim.
+    message, and only a fully validated receipt is embedded — under a
+    ``receipt`` key whose own ``status`` field is removed so the contract
+    vocabulary stays the only ``status`` in this section. The state mapping
+    is shared with ``src.evidence_status`` so the MCP and CLI surfaces
+    cannot drift.
     """
+    from src.evidence_status import quality_stage
     from src.release_validation import validate_quality_receipt
 
     root = project_root if project_root is not None else _default_project_root()
-    try:
+    stage = quality_stage(root)
+    if stage["state"] == "validated":
         receipt: dict[str, Any] = validate_quality_receipt(root)
-    except FileNotFoundError:
-        return {"status": "missing", "detail": "Source-bound quality evidence is not available in this installation"}
-    except ValueError as exc:
-        return {"status": "stale_or_invalid", "detail": str(exc)}
-    return {"validation_status": "validated", **receipt}
+        payload = {key: value for key, value in receipt.items() if key != "status"}
+        return {"status": "validated", "receipt": payload}
+    if stage["state"] == "missing":
+        return {"status": "missing", "detail": stage["detail"]}
+    return {"status": "stale_or_invalid", "detail": stage["detail"]}
 
 
 def capability_metadata(project_root: Path | None = None) -> dict[str, Any]:

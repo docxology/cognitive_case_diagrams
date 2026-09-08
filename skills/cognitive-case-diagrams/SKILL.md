@@ -44,6 +44,11 @@ Full details, Codex `config.toml` form, and the `CCD_ARTIFACT_ROOT` override:
   `ccd://artifacts/<path>` (explicit public allowlist only).
 - Read `ccd://capabilities` before citing any result: each tool's contract
   note states what is computed and what is not implemented.
+- Evidence status: `ccd-evidence-status` (console script, or
+  `uv run python scripts/evidence_status.py`) prints the machine-readable
+  per-stage evidence report (`missing`/`stale`/`invalid`/`validated`; exit 0
+  only when every stage validates). Read-only: it reuses the canonical
+  validators and never generates evidence.
 
 ## Boundaries (do not violate)
 

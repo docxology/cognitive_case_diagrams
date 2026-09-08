@@ -20,7 +20,7 @@ from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from src.release_validation import (QUALITY_CACHE_PARTS, QUALITY_JUNIT, QUALITY_RECEIPT, file_sha256, is_quality_input, validate_quality_receipt, write_json_atomic)
+from src.release_validation import (QUALITY_CACHE_PARTS, QUALITY_JUNIT, QUALITY_RECEIPT, StaleEvidenceError, file_sha256, is_quality_input, validate_quality_receipt, write_json_atomic)
 
 
 _SOURCE_ROOTS = ("src", "scripts", "tests", "docs", "skills")
@@ -247,7 +247,7 @@ def _validate_archived_evidence(archive: zipfile.ZipFile, hashes: dict[str, str]
         try:
             receipt = validate_quality_receipt(root)
         except (OSError, ValueError, KeyError) as exc:
-            raise ValueError(f"Archived quality evidence is stale or invalid: {exc}") from exc
+            raise StaleEvidenceError(f"Archived quality evidence is stale or invalid: {exc}") from exc
     review_name = "output/reports/publication_review.json"
     if review_name in hashes:
         review = json.loads(archive.read(review_name))

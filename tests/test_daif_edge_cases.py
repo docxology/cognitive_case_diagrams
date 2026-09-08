@@ -43,14 +43,27 @@ class TestDegenerateBeliefs:
             distributional_case_assignment(prior, likelihoods, bad_T)
 
 
-class TestTransitionMatrixNoneWarning:
-    def test_none_transition_logs_warning(self, caplog):
+class TestTransitionMatrixNoneDefault:
+    def test_none_default_matches_explicit_identity(self):
+        prior = _make_belief([0.5, 0.5])
+        likelihoods = np.array([0.7, 0.3])
+        default = distributional_case_assignment(prior, likelihoods, transition_matrix=None)
+        explicit = distributional_case_assignment(prior, likelihoods, np.eye(2))
+        np.testing.assert_array_equal(default.belief.probabilities, explicit.belief.probabilities)
+        assert default.fe_trajectory == explicit.fe_trajectory
+        assert default.return_distribution.mean == explicit.return_distribution.mean
+
+    def test_none_transition_logs_at_debug_not_warning(self, caplog):
         import logging
         prior = _make_belief([0.5, 0.5])
         likelihoods = np.array([0.7, 0.3])
-        with caplog.at_level(logging.WARNING, logger="daif.inference"):
+        with caplog.at_level(logging.DEBUG, logger="src.daif.inference"):
             distributional_case_assignment(prior, likelihoods, transition_matrix=None)
-        assert any("identity" in r.message or "None" in r.message for r in caplog.records)
+        assert any("identity" in r.message for r in caplog.records)
+        caplog.clear()
+        with caplog.at_level(logging.WARNING, logger="src.daif.inference"):
+            distributional_case_assignment(prior, likelihoods, transition_matrix=None)
+        assert not caplog.records
 
 
 class TestConvergenceDetection:

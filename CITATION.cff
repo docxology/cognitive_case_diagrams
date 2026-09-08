@@ -1,28 +1,28 @@
 cff-version: 1.2.0
 message: Cite the exact software release and manuscript version used.
 title: 'Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case'
-abstract: 'Linguistic case offers a useful test of how diagrams connect relational
-  structure, compositional syntax, and uncertainty. This article reviews categorical
-  approaches and supplies an executable collection of deliberately small examples.
-  The implementation includes case-role graphs, pregroup derivations, tensor contractions,
-  synthetic similarity matrices, Bayesian filtering, quantile utilities, and positive-operator-valued
-  measurements. These components share notation, but their mathematical relationships
-  require separate assumptions; a common diagrammatic vocabulary does not establish
-  their equivalence.
+abstract: 'Linguistic case offers a setting in which to examine how diagrams connect
+  relational structure, compositional syntax, and uncertainty. This article reviews
+  categorical approaches and supplies an executable collection of deliberately small
+  examples. The implementation includes case-role graphs, pregroup derivations, tensor
+  contractions, synthetic similarity matrices, Bayesian filtering, quantile utilities,
+  and positive-operator-valued measurements. These components share notation, but
+  their mathematical relationships require separate assumptions; a common diagrammatic
+  vocabulary does not establish their equivalence.
 
 
   The principal contribution is an inspectable comparison of these constructions and
   their limits. We distinguish generated derivations from illustrative drawings, finite
   score distributions from Bellman return distributions, presentation statistics from
   topos invariants, and model-unit prediction errors from physiological measurements.
-  The accompanying suite collects 1627 tests across 81 files; that is a collection
-  count, and a separate source-bound quality receipt records 1627 passing tests with
-  93.17% line-and-branch coverage (Appendix C). The figure pipeline produces 33 figures
+  The accompanying suite collects 1783 tests across 91 files; that is a collection
+  count, and a separate source-bound quality receipt records 1783 passing tests with
+  91.52% line-and-branch coverage (Appendix C). The figure pipeline produces 33 figures
   from source. All numerical illustrations use synthetic inputs; no corpus study,
   participant experiment, EEG fit, quantum-hardware run, or deployed-agent security
   evaluation is reported. Topos-theoretic transfer, cognitive advantages of case diagrams,
   and case-based authorization remain research proposals with explicit validation
-  requirements. This is working revision 2.4.0; its local validation does not constitute
+  requirements. This is working revision 2.5.0; its local validation does not constitute
   publication or independent mathematical certification.'
 type: software
 authors:

@@ -28,7 +28,7 @@ def review_tree(tmp_path: Path) -> Path:
         "docs/figure_alt_text.json": '{}',
         "output/manuscript/01_a.md": "# Fixture",
         "output/web/index.html": "<p>Fixture</p>",
-        "output/pdf/cognitive_case_diagrams_combined.pdf": "PDF bytes are opaque to the receipt",
+        "output/pdf/cognitive_case_diagrams_combined.pdf": None,
         "output/figures/figure_registry.json": '[{"filename":"a.png"}]',
         "output/figures/a.png": "Image bytes are opaque to the receipt",
         "output/metrics.json": '{}',
@@ -36,12 +36,24 @@ def review_tree(tmp_path: Path) -> Path:
         "output/experiments/results.json": '{}',
     }
     for name, text in files.items():
+        if text is None:
+            continue
         path = tmp_path / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text)
+    (tmp_path / "output/pdf").mkdir(parents=True, exist_ok=True)
+    import matplotlib
+
+    matplotlib.use("Agg")
+    from matplotlib.backends.backend_pdf import PdfPages
+    import matplotlib.pyplot as plt
+
+    with PdfPages(tmp_path / "output/pdf/cognitive_case_diagrams_combined.pdf") as pdf:
+        for _ in range(2):
+            figure = plt.figure()
+            pdf.savefig(figure)
+            plt.close(figure)
     return tmp_path
-
-
 def observations() -> dict:
     return {
         "pdf_page_count": 2,
@@ -85,7 +97,10 @@ def test_incomplete_inspection_rejected(review_tree: Path, field: str, value: ob
 def test_late_changes_invalidate_inspection(review_tree: Path, name: str) -> None:
     record_publication_review(review_tree, **observations())
     path = review_tree / name
-    path.write_text(path.read_text() + "\nchanged")
+    if path.suffix == ".pdf":
+        path.write_bytes(path.read_bytes() + b"\nchanged")
+    else:
+        path.write_text(path.read_text() + "\nchanged")
     with pytest.raises(ValueError, match="stale"):
         validate_publication_review(review_tree)
 
@@ -118,3 +133,20 @@ def test_tampered_observations_rejected(review_tree: Path) -> None:
     (review_tree / REVIEW_PATH).write_text(json.dumps(receipt))
     with pytest.raises(ValueError, match="browser"):
         validate_publication_review(review_tree)
+
+
+def test_declared_page_count_must_match_derived_bytes(review_tree: Path) -> None:
+    """Positive: declared == derived passes; negative: N-1/N+1 are rejected."""
+    for wrong in (1, 3):
+        data = observations()
+        data["pdf_page_count"] = wrong
+        data["inspected_pdf_pages"] = list(range(1, wrong + 1))
+        with pytest.raises(ValueError, match="does not match the 2 pages"):
+            record_publication_review(review_tree, **data)
+
+
+def test_truncated_pdf_is_rejected(review_tree: Path) -> None:
+    pdf = review_tree / "output/pdf/cognitive_case_diagrams_combined.pdf"
+    pdf.write_bytes(pdf.read_bytes()[: len(pdf.read_bytes()) // 2])
+    with pytest.raises(ValueError, match="page tree|trailer|catalog"):
+        record_publication_review(review_tree, **observations())

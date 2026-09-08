@@ -108,14 +108,14 @@ def _integrated_tree(gate_tree: Path) -> Path:
     write_release_metadata(gate_tree)
     pdf = gate_tree / "output" / "pdf" / "cognitive_case_diagrams_combined.pdf"
     pdf.parent.mkdir(parents=True, exist_ok=True)
-    pdf.write_bytes(b"%PDF-1.4\n% fixture\n")
+    _write_real_pdf(pdf)
     web = gate_tree / "output" / "web" / "index.html"
     web.parent.mkdir(parents=True, exist_ok=True)
     web.write_text("<p>Fixture</p>\n")
     record_publication_review(
         gate_tree,
-        pdf_page_count=1,
-        inspected_pdf_pages=[1],
+        pdf_page_count=2,
+        inspected_pdf_pages=[1, 2],
         inspected_figures=["a.png"],
         browser_checks={name: True for name in BROWSER_CHECKS},
         pdf_metadata_checked=True,
@@ -271,7 +271,7 @@ def test_visual_review_stage_states(gate_tree: Path) -> None:
 
     pdf = gate_tree / "output" / "pdf" / "cognitive_case_diagrams_combined.pdf"
     pdf.parent.mkdir(parents=True, exist_ok=True)
-    pdf.write_bytes(b"%PDF-1.4\n% fixture\n")
+    _write_real_pdf(pdf)
     web = gate_tree / "output" / "web" / "index.html"
     web.parent.mkdir(parents=True, exist_ok=True)
     web.write_text("<p>Fixture</p>\n")
@@ -291,8 +291,8 @@ def test_visual_review_stage_states(gate_tree: Path) -> None:
                 "schema": "ccd-publication-review-v1",
                 "inputs": {"quality_source": "0" * 64, "files": {}, "sha256": "1" * 64},
                 "observations": {
-                    "pdf_page_count": 1,
-                    "inspected_pdf_pages": [1],
+                    "pdf_page_count": 2,
+                    "inspected_pdf_pages": [1, 2],
                     "inspected_figures": ["a.png"],
                     "browser_checks": {name: True for name in BROWSER_CHECKS},
                     "pdf_metadata_checked": True,
@@ -432,3 +432,19 @@ def test_report_is_byte_deterministic(gate_tree: Path, tmp_path: Path) -> None:
     empty_second = run_cli("--project-root", str(tmp_path))
     assert empty_first.stdout == empty_second.stdout
     assert empty_first.returncode == 1
+
+
+def _write_real_pdf(path: Path) -> None:
+    """A real two-page PDF: the receipt validator derives counts from bytes."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    from matplotlib.backends.backend_pdf import PdfPages
+    import matplotlib.pyplot as plt
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with PdfPages(path) as pdf:
+        for _ in range(2):
+            figure = plt.figure()
+            pdf.savefig(figure)
+            plt.close(figure)

@@ -8,10 +8,11 @@ figures and operate the rendered web article before recording these observations
 from __future__ import annotations
 
 import hashlib
+import io
 import json
-from collections.abc import Mapping, Sequence
 from datetime import datetime, timezone
 from pathlib import Path
+from collections.abc import Mapping, Sequence
 from typing import Any
 
 from src.release_validation import StaleEvidenceError, file_sha256, quality_input_fingerprint, write_json_atomic
@@ -53,11 +54,44 @@ def publication_fingerprint(project_root: Path) -> dict[str, Any]:
     return {**inputs, "sha256": digest}
 
 
+def _pdf_page_count(data: bytes) -> int:
+    """Derive the page count with the declared pypdf parser.
+
+    Unreadable, malformed, truncated, or encrypted documents raise with an
+    explicit reason instead of trusting a self-declared count.
+    """
+    from pypdf import PdfReader
+    from pypdf.errors import PdfReadError
+
+    try:
+        reader = PdfReader(io.BytesIO(data))
+        if reader.is_encrypted:
+            raise ValueError("PDF is encrypted; page count cannot be derived")
+        count = len(reader.pages)
+    except PdfReadError as exc:
+        raise ValueError(f"PDF page tree is unreadable: {exc}") from exc
+    except (ValueError, KeyError, TypeError, OSError) as exc:
+        raise ValueError(f"PDF page tree is unreadable: {exc}") from exc
+    if count <= 0:
+        raise ValueError("PDF page tree reports zero pages")
+    return count
+
+
 def _validate_observations(root: Path, observations: Mapping[str, Any]) -> None:
     count = observations.get("pdf_page_count")
     pages = observations.get("inspected_pdf_pages", [])
+    pdf_path = root / "output/pdf/cognitive_case_diagrams_combined.pdf"
+    try:
+        derived = _pdf_page_count(pdf_path.read_bytes())
+    except OSError as exc:
+        raise ValueError(f"PDF artifact is unreadable for page-count derivation: {exc}") from exc
     if type(count) is not int or count <= 0 or pages != list(range(1, count + 1)):
         raise ValueError("Every PDF page must have a recorded visual inspection")
+    if count != derived:
+        raise ValueError(
+            f"Declared pdf_page_count {count} does not match the {derived} pages "
+            "derived from the PDF bytes"
+        )
     registry = json.loads((root / "output/figures/figure_registry.json").read_text())
     expected = sorted(entry["filename"] for entry in registry)
     if not expected or observations.get("inspected_figures") != expected:

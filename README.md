@@ -23,10 +23,11 @@ To render PDF and HTML, run from the sibling **template checkout root** after pr
 
 ```bash
 uv run python scripts/pipeline/stage_03_render.py --project ongoing/ActiveInference/cognitive_case_diagrams --skip-manuscript-hydration
+uv run python scripts/correct_web.py
 uv run python scripts/pipeline/stage_04_validate.py --project ongoing/ActiveInference/cognitive_case_diagrams
 ```
 
-The engine is external to this repository. Generated artifacts live in `output/`; edit their writers in `src/`, scripts, or numbered manuscript sources.
+The engine is external to this repository. Generated artifacts live in `output/`; edit their writers in `src/`, scripts, or numbered manuscript sources. `scripts/correct_web.py` is the project-owned, idempotent post-render step that restores the code-block cascade in every rendered HTML page; every re-render removes its marker, so it must be re-run after stage_03 and before stage_04 or any browser check, and a later HTML correction invalidates previously recorded browser acceptance.
 
 The shared template validator has a documented integration limitation with this checkout's category symlink and ignored render outputs; see the [earlier review receipts](docs/comprehensive_review.md#6-verification-receipts). The standalone [release workflow](docs/release_workflow.md) validates the real project root, final artifacts, inspection record, metadata, and reproducibility archive. A local receipt records local evidence; publication requires separately verified remote results.
 

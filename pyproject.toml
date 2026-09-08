@@ -24,6 +24,7 @@ dependencies = [
     "pyyaml>=6.0",
     "pillow>=9.5",
     "discopy>=1.0.0",
+    "pypdf>=5.1.0",
 ]
 
 [project.urls]

@@ -3785,13 +3785,13 @@
       "src/numerics.py": "e67e8c7e9770b7174c08c1f605925c397465a3453b45e3a69ff537a870c8e4ef",
       "src/quantum/__init__.py": "d6aafbb8ce403553cd115b25f63648e4a4ee1fe781f6cbe666ce191a0d63ccfc",
       "src/quantum/figure_data.py": "18cdaff601dfef1132390477acef153d4bacb1001c00cd0f09527fd42cafb9d5",
-      "src/quantum/quantum_case.py": "37e8a6bfcc84f3d15f8ba7230c1dd6d03a661915cfc1d96e3b65fd5b19f6200e",
+      "src/quantum/quantum_case.py": "c3e7b20060efaf3163da85ccb599a4c5c44696515e0f3c0ccdd3a6efc6550f19",
       "src/security/__init__.py": "837b1c18168ce431da40f4dea6d09a42dded313030c5823739fc3b7a463b3e80",
       "src/security/cognitive_security.py": "687d08d9dcd3954981466cf2561a453d04d48c3b49df15ce3a708288f654e725",
       "src/topos_theory/__init__.py": "b18f95ba4da17edfc13142479e2496421ee2aaa806297025602387a33f932abb",
       "src/topos_theory/topos.py": "3c6715948201bf5984dc3e21b66475a6b5f0d1bfff62d0f59ed9cb96efbc5fda"
     },
-    "source_sha256": "d84ca5c76b65598833be3c59976f3467a28f8e0daf48fadeb6817aa4ebe78d4b"
+    "source_sha256": "af8d9a55d7324f3e119a4e847077163c2eb9c0977c3579bcdfe5362b9d9868d3"
   },
   "schema_version": "1.0",
   "variables": {

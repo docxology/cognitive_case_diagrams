@@ -32,11 +32,11 @@
     "docs/manuscript/config.yaml": "2da8c1a589ed927780c04a03473f4c5a9f38313ea8eb5275894b1a522e7ae428",
     "docs/manuscript/preamble.md": "e61d8cbb0f1a77465adf113f2cb6633163235f723e20b81b6d515c7885623b43",
     "docs/manuscript/references.bib": "6b94894db015da32b02a7bf421352e7ee75cefba6448d73ac669524172dd2a44",
-    "output/experiments/results.json": "38ee005e6504bdce2edca2bf78e483f881bb3a67dd41fd804f0c90d12d41e1ca",
-    "output/figures/figure_registry.json": "a55123182dd70d08ee2b7f62b759b59a7b87a19736e32b4908157778f82293dc",
-    "output/reports/quality_receipt.json": "705ff2cafd11cdc4baf94205385a328ff0e693c2b03ce4de3faf37897a501628"
+    "output/experiments/results.json": "e20dba2531370bce737f16deebce07d49f0924c4b3df9ddbd72f42748cf23ba0",
+    "output/figures/figure_registry.json": "c07c53ede3cccaf8c96f7b9709901ec76440a2b13f8fdb0cf44f04ff2f3ad709",
+    "output/reports/quality_receipt.json": "f9067e41560f1cb3ffd7dcbf681f487f9492dc764e2b166013c6177ef390be35"
   },
-  "quality_input_fingerprint": "bac101a70d09420f936c1bcaaf2d0588eeb99a018d94352d068a77b0111ce9d4",
+  "quality_input_fingerprint": "9407faf88d16f0aad60e742fbfc8802f4747308fabf60bdb04a2b371eea9e5fe",
   "schema": "ccd-manuscript-variables-v1",
   "variables": {
     "alignment_extra_label_count": {
@@ -145,7 +145,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_covered",
         "unit": "count"
       },
-      "value": "6599"
+      "value": "6600"
     },
     "coverage_lines_total": {
       "spec": {
@@ -157,7 +157,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_total",
         "unit": "count"
       },
-      "value": "7081"
+      "value": "7083"
     },
     "coverage_percent": {
       "spec": {
@@ -169,7 +169,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_percent",
         "unit": "percent"
       },
-      "value": "91.52"
+      "value": "91.50"
     },
     "daif_assignment_iterations": {
       "spec": {
@@ -1273,7 +1273,7 @@
         "source": "src.release_validation.validate_quality_receipt -> quality_input_fingerprint[:12]",
         "unit": "text"
       },
-      "value": "bac101a70d09"
+      "value": "9407faf88d16"
     },
     "quality_receipt_generated_at": {
       "spec": {
@@ -1285,7 +1285,7 @@
         "source": "src.release_validation.validate_quality_receipt -> generated_at",
         "unit": "timestamp"
       },
-      "value": "2026-09-08T19:19:32.967234+00:00"
+      "value": "2026-09-08T20:58:58.869272+00:00"
     },
     "quantum_acc_probability": {
       "spec": {

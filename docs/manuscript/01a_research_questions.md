@@ -13,4 +13,4 @@ The project asks what can be represented and checked with small case diagrams. I
 
 Table: Research questions, evidence, and missing steps. {#tbl:research-questions}
 
-The phrase *implemented* below means an operation is available and exercised locally. *Illustrative* denotes a constructed example. *Proposed* denotes an unimplemented or unevaluated connection. Passing software tests does not promote a proposal to a theorem or an empirical finding.
+The phrase *implemented* below means an operation is available and exercised locally. *Illustrative* denotes a constructed example. *Proposed* denotes an unimplemented or unevaluated connection. Passing software tests does not promote a proposal to a theorem or an empirical finding. Repo-level claim statements in [@sec:test-suite-inventory] and in the canonical ledger `docs/claim_ledger.md` carry their own status vocabulary: verified, partially_supported, unsupported, and proposed, with the qualified variants verified (synthetic only), verified via receipt, unsupported for raw input, ambiguous / proposed, and not_asserted_here used where the cited row warrants them.

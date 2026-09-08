@@ -38,3 +38,106 @@ jobs:
           uv run --frozen python scripts/generate_diagrams.py
           uv run --frozen python scripts/inject_variables.py
           uv run --frozen python scripts/validate_project.py
+
+
+  release-package:
+    # Candidate-artifact verification only. Actual visual inspection stays a
+    # human/lane act recorded via record_publication_review; CI never creates
+    # or demands a visual-review receipt, so scripts/build_release.py (whose
+    # gate requires one) is intentionally not run here.
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          python-version: '3.12'
+          enable-cache: true
+      - name: Install the locked environment and optional MCP interface
+        run: uv sync --frozen --extra mcp
+      - name: Produce current source-bound evidence
+        run: |
+          uv run --frozen python scripts/quality_gate.py --coverage
+          uv run --frozen python scripts/run_experiments.py
+          uv run --frozen python scripts/generate_diagrams.py
+          uv run --frozen python scripts/inject_variables.py
+      - name: Reject stale committed citation metadata before regeneration
+        run: |
+          uv run --frozen python -c "from pathlib import Path; from src.release_metadata import validate_release_metadata; validate_release_metadata(Path('.'))"
+      - name: Regenerate intended generated metadata (intended lifecycle, not drift hiding)
+        run: |
+          uv run --frozen python scripts/build_release.py --metadata-only
+          uv run --frozen python scripts/validate_project.py
+      - name: Automated candidate assembly (no visual-review receipt is created or demanded)
+        run: |
+          uv run --frozen python - <<'PY'
+          from pathlib import Path
+
+          from src.release_bundle import build_release_archive, verify_release_archive
+          from src.release_metadata import validate_release_metadata
+
+          metadata = validate_release_metadata(Path('.'))
+          version, day = metadata['version'], metadata['date']
+          destination = Path('output/candidate')
+          first = build_release_archive(
+              Path('.'), destination / f'candidate-{version}.zip',
+              version=version, publication_date=day,
+          )
+          second = build_release_archive(
+              Path('.'), destination / f'candidate-{version}-again.zip',
+              version=version, publication_date=day,
+          )
+          assert first['archive_sha256'] == second['archive_sha256'], (
+              'candidate archive assembly is not deterministic'
+          )
+          assert verify_release_archive(destination / f'candidate-{version}.zip') == first
+          print('verified candidate archive sha256:', first['archive_sha256'])
+          PY
+      - name: Install the built wheel in a clean interpreter outside the checkout
+        run: |
+          uv build --no-sources
+          uv venv /tmp/ccd-release-smoke --python 3.12
+          uv pip install --python /tmp/ccd-release-smoke/bin/python dist/*.whl
+          /tmp/ccd-release-smoke/bin/ccd-mcp --version
+          /tmp/ccd-release-smoke/bin/ccd-mcp --list-tools
+          # Mid-pipeline evidence states are expected to exit 1; the report is
+          # recorded honestly instead of being treated as a failure signal.
+          /tmp/ccd-release-smoke/bin/ccd-evidence-status --project-root . || \
+            echo "evidence-status reported an expected non-validated mid-pipeline state"
+      - name: SDK stdio smoke against the installed wheel
+        run: |
+          uv run --frozen python - <<'PY'
+          import asyncio
+          import json
+
+          from mcp import ClientSession, StdioServerParameters
+          from mcp.client.stdio import stdio_client
+
+
+          async def main() -> None:
+              params = StdioServerParameters(command='/tmp/ccd-release-smoke/bin/ccd-mcp')
+              async with stdio_client(params) as (read, write):
+                  async with ClientSession(read, write) as session:
+                      await session.initialize()
+                      tools = await session.list_tools()
+                      assert len(tools.tools) >= 17, 'wheel serves fewer tools than advertised'
+                      capabilities = await session.read_resource('ccd://capabilities')
+                      payload = json.loads(capabilities.contents[0].text)
+                      assert payload['server'] == 'cognitive-case-diagrams'
+                      print(f'wheel stdio smoke ok: {len(tools.tools)} tools')
+
+
+          asyncio.run(main())
+          PY
+      - name: Upload the verified candidate archive
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: candidate-archive
+          path: output/candidate/
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false

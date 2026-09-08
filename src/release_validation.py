@@ -89,8 +89,17 @@ def quality_input_fingerprint(project_root: Path) -> dict[str, Any]:
             if current.is_symlink():
                 raise ValueError(f"Linked quality input: {relative}")
         hashes[relative.as_posix()] = file_sha256(path)
-    encoded = json.dumps(hashes, sort_keys=True, separators=(",", ":")).encode()
-    return {"sha256": hashlib.sha256(encoded).hexdigest(), "file_count": len(hashes), "files": hashes}
+    return {"sha256": combined_quality_digest(hashes), "file_count": len(hashes), "files": hashes}
+
+
+def combined_quality_digest(hashes: Mapping[str, str]) -> str:
+    """Combine per-file digests into the canonical quality input digest.
+
+    Single source of truth for the digest format shared by the disk
+    fingerprint and the verifier's reconstruction from archived bytes.
+    """
+    encoded = json.dumps(dict(hashes), sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(encoded).hexdigest()
 
 
 def write_json_atomic(path: Path, payload: Mapping[str, Any]) -> None:

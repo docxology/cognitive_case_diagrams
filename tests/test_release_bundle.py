@@ -161,7 +161,7 @@ def test_archived_quality_evidence_is_revalidated(release_tree: Path, tmp_path: 
     built = build(release_tree, tmp_path / "quality.zip")
     assert verify_release_archive(tmp_path / "quality.zip") == built
     (release_tree / "src/example.py").write_text("value = 2\n")
-    with pytest.raises(ValueError, match="Archived quality evidence"):
+    with pytest.raises(ValueError, match="Archived quality"):
         build(release_tree, tmp_path / "stale.zip")
     assert not (tmp_path / "stale.zip").exists()
 
@@ -243,3 +243,12 @@ def test_verify_rejects_egg_info_members(release_tree: Path, tmp_path: Path) -> 
         release_tree, destination, version="2.4.0", publication_date="2026-09-07"
     )
     assert verify_release_archive(destination) == manifest
+
+
+def test_quality_root_inputs_are_always_collected() -> None:
+    """The shared declaration keeps fingerprint-bound inputs in archives."""
+    from src.release_bundle import _ROOT_FILES, _RELEASE_SHIPPED_ROOT_FILES
+    from src.release_validation import _QUALITY_ROOT_FILES
+
+    assert set(_QUALITY_ROOT_FILES) <= set(_ROOT_FILES)
+    assert not set(_RELEASE_SHIPPED_ROOT_FILES) & set(_QUALITY_ROOT_FILES)

@@ -2,7 +2,7 @@
 
 A geometric theory has a specified signature and axioms in geometric logic. Its classifying topos represents its models across suitable toposes [@caramello2018theories, sec. 2.1.2]. Morita equivalence concerns equivalence of classifying toposes, or equivalently the appropriate natural equivalence of model categories [@caramello2018theories, sec. 2.2.2]. Caramello's bridge programme uses alternative presentations of a common topos to transport invariant information [@caramello2016bridges].
 
-This is stronger than similar vocabulary or matching counts [@caramello2018theories, sec. 2.1.7, sec. 6.1.1, sec. 10.1]. Adding a definable relation symbol can change signature size without changing the modeled structure. Conversely, two theories can have equal numbers and arities of symbols while imposing incompatible axioms. Counts of sorts, relations, or axioms are therefore neither necessary nor sufficient conditions for Morita equivalence.
+This is stronger than similar vocabulary or matching counts [@caramello2018theories, sec. 2.1.7, sec. 6.1.1, sec. 7.1, sec. 10.1]. Adding a definable relation symbol can change signature size without changing the modeled structure. Conversely, two theories can have equal numbers and arities of symbols while imposing incompatible axioms. Counts of sorts, relations, or axioms are therefore neither necessary nor sufficient conditions for Morita equivalence.
 
 ## What the software represents
 

@@ -23,6 +23,10 @@ MAX_OBSERVATIONS = 32
 MAX_NAME_LENGTH = 64
 MAX_QUANTILES = 101
 MAX_ARTIFACT_BYTES = 2_000_000
+# Final PDF deliverables are one to two orders of magnitude larger than any
+# other public artifact but remain single bounded files; the read bound is
+# per artifact class (see artifacts.read_bound_for), never a global raise.
+MAX_PDF_BYTES = 24_000_000
 MAX_ARTIFACT_ENTRIES = 200
 MAX_EXPERIMENT_VARIABLES = 256
 MAX_FRAME_ASSIGNMENTS = 64

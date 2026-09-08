@@ -34,78 +34,11 @@ SERVER_INSTRUCTIONS = (
     "ccd://claims resources for the claim ledger and method contracts."
 )
 
-CLAIMS: list[dict[str, str]] = [
-    {
-        "claim": "Selected pregroup reductions execute",
-        "status": "verified",
-        "evidence": "DisCoPy constructors and grammar tests; hand-assigned types",
-    },
-    {
-        "claim": "Finite Bayesian updates implement normalization",
-        "status": "verified",
-        "evidence": "Analytic posterior and impossible-evidence tests",
-    },
-    {
-        "claim": "Quantile updates use all target samples",
-        "status": "verified",
-        "evidence": "Two-point analytic QR counterexample and regression suite",
-    },
-    {
-        "claim": "C51 helper preserves clipped tail mass",
-        "status": "verified",
-        "evidence": "Method/function parity and endpoint examples",
-    },
-    {
-        "claim": "Supplied POVMs and states satisfy matrix contracts",
-        "status": "verified",
-        "evidence": "Hermitian, PSD, completeness, trace and malformed-input tests",
-    },
-    {
-        "claim": "Standard role matrix is a valid enrichment",
-        "status": "unsupported for raw input",
-        "evidence": "Raw composition failure retained; explicit closure added",
-    },
-    {
-        "claim": "Matrix magnitude measures linguistic information",
-        "status": "partially_supported",
-        "evidence": "Matrix statistic implemented; linguistic interpretation untested",
-    },
-    {
-        "claim": "Theory profiles decide Morita equivalence",
-        "status": "unsupported",
-        "evidence": "Counts can change under equivalent presentations; transfer now unavailable",
-    },
-    {
-        "claim": "All case frameworks have a common classifying topos",
-        "status": "unsupported",
-        "evidence": "No equivalence witness, sites, or sheaf construction",
-    },
-    {
-        "claim": "Local DAIF package reproduces full DAIF / Bellman control",
-        "status": "unsupported",
-        "evidence": "Exact dimensionless score contract replaces the former claim",
-    },
-    {
-        "claim": "VMP/Bethe names imply general factor-graph inference",
-        "status": "unsupported",
-        "evidence": "Single-factor update and shared-distribution score documented",
-    },
-    {
-        "claim": "Diagrams improve cognition or predict EEG amplitudes",
-        "status": "ambiguous / proposed",
-        "evidence": "Requires controlled human data and physiological calibration",
-    },
-    {
-        "claim": "Quantum figure exhibits interference",
-        "status": "unsupported",
-        "evidence": "Canonical diagonal mixture and projectors have a classical interpretation",
-    },
-    {
-        "claim": "Case labels secure real agent execution",
-        "status": "unsupported",
-        "evidence": "Supplied-label policy only; no authenticated execution boundary",
-    },
-]
+# Claims are a generated projection of docs/claim_ledger.md (all rows,
+# canonical order, including not_asserted_here). Regenerate via
+# scripts/generate_claims.py after editing the ledger; the drift control is
+# tests/test_claims_projection.py comparing this constant to a fresh parse.
+from src.integrations._claims_generated import CLAIMS
 
 CANONICAL_SOURCES = {
     "claim_ledger": "docs/claim_ledger.md",

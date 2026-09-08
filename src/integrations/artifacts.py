@@ -16,7 +16,7 @@ from __future__ import annotations
 import os
 from pathlib import Path, PurePosixPath
 
-from .registry import MAX_ARTIFACT_BYTES, MAX_ARTIFACT_ENTRIES
+from .registry import MAX_ARTIFACT_BYTES, MAX_ARTIFACT_ENTRIES, MAX_PDF_BYTES
 
 DEFAULT_ARTIFACT_ROOT = Path(__file__).resolve().parents[2] / "output"
 
@@ -38,6 +38,11 @@ PUBLIC_FILES: tuple[str, ...] = (
 # Final render products may be regenerated under different names; keep the
 # exact, parent-approved final PDF here.
 PUBLIC_PDF_FILES: tuple[str, ...] = ("pdf/cognitive_case_diagrams_combined.pdf",)
+
+
+def read_bound_for(relative: str) -> int:
+    """Per-class read bound: final PDFs are oversized single deliverables."""
+    return MAX_PDF_BYTES if relative in PUBLIC_PDF_FILES else MAX_ARTIFACT_BYTES
 
 # Never exposed even if reachable through an allowed prefix.
 _DENIED_COMPONENTS = frozenset({"__pycache__", "review", "release", "logs"})
@@ -164,11 +169,12 @@ class ArtifactIndex:
     def read(self, relative: str) -> tuple[bytes, str]:
         """Return bounded bytes and media type for an allowlisted artifact."""
         target = self.resolve(relative)
+        bound = read_bound_for(PurePosixPath(relative).as_posix())
         with target.open("rb") as handle:
-            data = handle.read(MAX_ARTIFACT_BYTES + 1)
-        if len(data) > MAX_ARTIFACT_BYTES:
+            data = handle.read(bound + 1)
+        if len(data) > bound:
             raise ArtifactError(
-                f"artifact exceeds the {MAX_ARTIFACT_BYTES}-byte read bound: {relative!r}"
+                f"artifact exceeds the {bound}-byte read bound: {relative!r}"
             )
         return data, mime_type_for(target)
 
@@ -216,6 +222,8 @@ class ArtifactIndex:
                 "uri": artifact_uri(relative),
                 "mime_type": mime_type_for(Path(relative)),
                 "size_bytes": (self.root / relative).stat().st_size,
+                "readable": (self.root / relative).stat().st_size
+                <= read_bound_for(relative),
             }
             for relative in ordered[:MAX_ARTIFACT_ENTRIES]
         ]

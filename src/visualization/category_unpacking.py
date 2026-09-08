@@ -451,17 +451,17 @@ def render_snake_equation_unpacking(
     ax.text(0.50, 0.60,
             r"$(\varepsilon_n \otimes 1_n) \circ (1_n \otimes \eta_n) \;=\; 1_n$",
             ha="center", fontsize=FONT_SIZE_LABEL, color=wire_color)
-    ax.text(0.50, 0.42,
+    ax.text(0.50, 0.48,
             r"$(1_n \otimes \varepsilon'_n) \circ (\eta'_n \otimes 1_n) \;=\; 1_n$",
             ha="center", fontsize=FONT_SIZE_LABEL, color=wire_color)
-    ax.text(0.50, 0.18,
+    ax.text(0.50, 0.30,
             "Both zigzags straighten (lower line: the other adjoint orientation).\n"
             r"$\eta_n: 1 \to n^r \otimes n$ (cap, $\mathrm{Cap}(n^r, n)$)"
             "\n"
             r"$\varepsilon_n: n \otimes n^r \to 1$ (cup, $\mathrm{Cup}(n, n^r)$)"
             "\n"
             r"$\eta'_n: 1 \to n \otimes n^l$, $\varepsilon'_n: n^l \otimes n \to 1$",
-            ha="center", fontsize=FONT_SIZE_ANNOTATION, color=COLOR_TEXT, fontstyle="italic",
+            ha="center", va="top", fontsize=FONT_SIZE_ANNOTATION, color=COLOR_TEXT, fontstyle="italic",
             linespacing=1.5)
     ax.set_title("3. Axiom recap", fontsize=FONT_SIZE_LABEL, fontweight="bold")
 

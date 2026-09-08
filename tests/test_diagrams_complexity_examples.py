@@ -122,3 +122,19 @@ def test_diagram_depth_matches_reference_rows() -> None:
     ]
     for index, (diagram, expected) in enumerate(rows):
         assert diagram_depth(diagram) == expected, f"reference row {index} failed"
+
+
+def test_displayed_snake_terms_collapse_to_identity() -> None:
+    """The figure's declared SnakeA term and mirror both equal Id(n)."""
+    from discopy.rigid import Cap, Cup, Id, Ty
+
+    n = Ty("n")
+    eta, eps = Cap(n.r, n), Cup(n, n.r)
+    snake = (eps @ Id(n)) << (Id(n) @ eta)
+    assert snake.dom == n
+    assert snake.cod == n
+    assert snake.normal_form() == Id(n)
+    mirror = (Id(n) @ Cup(n.l, n)) << (Cap(n, n.l) @ Id(n))
+    assert mirror.dom == n
+    assert mirror.cod == n
+    assert mirror.normal_form() == Id(n)

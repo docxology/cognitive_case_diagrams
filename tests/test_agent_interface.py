@@ -391,3 +391,65 @@ def test_transport_vector_bounds_match_documented_limits() -> None:
     # The advertised schema bound must equal the registry constant, so docs
     # and runtime cannot drift apart.
     assert MAX_VECTOR_LENGTH == 64
+
+
+def test_pdf_class_read_bound(tmp_path: Path) -> None:
+    """Final-PDF class reads to its own bound; read bytes match the file."""
+    import hashlib
+
+    from src.integrations.artifacts import ArtifactIndex
+    from src.integrations.registry import MAX_PDF_BYTES
+
+    root = tmp_path / "output"
+    pdf = root / "pdf" / "cognitive_case_diagrams_combined.pdf"
+    pdf.parent.mkdir(parents=True)
+    payload = b"%PDF-1.4 fixture" + b"0" * 2_500_000
+    pdf.write_bytes(payload)
+    index = ArtifactIndex(root)
+    data, _ = index.read("pdf/cognitive_case_diagrams_combined.pdf")
+    assert hashlib.sha256(data).hexdigest() == hashlib.sha256(payload).hexdigest()
+    pdf.write_bytes(b"x" * (MAX_PDF_BYTES + 1))
+    try:
+        index.read("pdf/cognitive_case_diagrams_combined.pdf")
+    except ArtifactError as exc:
+        assert str(MAX_PDF_BYTES) in str(exc)
+    else:
+        raise AssertionError("oversized pdf accepted")
+
+
+def test_global_artifact_cap_unchanged_for_non_pdf_classes(tmp_path: Path) -> None:
+    """The 2 MiB cap still governs figures and every other artifact class."""
+    from src.integrations.artifacts import ArtifactIndex
+    from src.integrations.registry import MAX_ARTIFACT_BYTES
+
+    root = tmp_path / "output"
+    (root / "figures").mkdir(parents=True)
+    (root / "figures" / "big.png").write_bytes(b"0" * (MAX_ARTIFACT_BYTES + 1))
+    index = ArtifactIndex(root)
+    try:
+        index.read("figures/big.png")
+    except ArtifactError as exc:
+        assert str(MAX_ARTIFACT_BYTES) in str(exc)
+    else:
+        raise AssertionError("oversized figure accepted")
+
+
+def test_entries_readable_flag_matches_per_class_bounds(tmp_path: Path) -> None:
+    """readable == size <= per-class bound for every listed entry."""
+    from src.integrations.artifacts import ArtifactIndex, read_bound_for
+    from src.integrations.registry import MAX_PDF_BYTES
+
+    root = tmp_path / "output"
+    (root / "figures").mkdir(parents=True)
+    (root / "pdf").mkdir()
+    (root / "figures" / "small.png").write_bytes(b"png")
+    canonical = root / "pdf" / "cognitive_case_diagrams_combined.pdf"
+    canonical.write_bytes(b"%PDF")
+    listing = ArtifactIndex(root).entries()
+    for entry in listing["artifacts"]:
+        expected = entry["size_bytes"] <= read_bound_for(entry["path"])
+        assert entry["readable"] is expected
+    canonical.write_bytes(b"x" * (MAX_PDF_BYTES + 1))
+    listing = ArtifactIndex(root).entries()
+    oversized = next(e for e in listing["artifacts"] if e["path"].endswith(".pdf"))
+    assert oversized["readable"] is False

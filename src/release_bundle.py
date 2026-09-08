@@ -20,26 +20,20 @@ from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from src.release_validation import (QUALITY_CACHE_PARTS, QUALITY_JUNIT, QUALITY_RECEIPT, StaleEvidenceError, file_sha256, is_quality_input, validate_quality_receipt, write_json_atomic)
+from src.release_validation import (_QUALITY_ROOT_FILES, QUALITY_CACHE_PARTS, QUALITY_JUNIT, QUALITY_RECEIPT, StaleEvidenceError, combined_quality_digest, file_sha256, is_quality_input, validate_quality_receipt, write_json_atomic)
 
 
 _SOURCE_ROOTS = ("src", "scripts", "tests", "docs", "skills")
 _SOURCE_SUFFIXES = frozenset({".py", ".md", ".json", ".yaml", ".yml", ".toml", ".bib", ".txt"})
-_ROOT_FILES = (
-    "README.md",
-    "AGENTS.md",
-    "SKILL.md",
+_RELEASE_SHIPPED_ROOT_FILES = (
+    # Release-published records the quality fingerprint does not bind.
     "LICENSE",
     "CITATION.cff",
-    "pyproject.toml",
-    "uv.lock",
-    "MANIFEST.in",
-    "conftest.py",
     ".zenodo.json",
     ".gitignore",
-    ".github/workflows/ci.yml",
     "coverage.json",
 )
+_ROOT_FILES = tuple(sorted(set(_QUALITY_ROOT_FILES) | set(_RELEASE_SHIPPED_ROOT_FILES)))
 _EXPLICIT_HIDDEN_FILES = frozenset({".zenodo.json", ".gitignore", ".github/workflows/ci.yml"})
 _GENERATED_ROOTS = ("output/figures", "output/experiments", "output/manuscript", "output/web")
 _GENERATED_SUFFIXES = frozenset(
@@ -235,6 +229,14 @@ def _validate_archived_evidence(archive: zipfile.ZipFile, hashes: dict[str, str]
     evidence = {QUALITY_RECEIPT.as_posix(), QUALITY_JUNIT.as_posix(), "coverage.json"}
     if not evidence <= hashes.keys():
         raise ValueError("Archived quality receipt is missing its test or coverage evidence")
+    receipt_name = QUALITY_RECEIPT.as_posix()
+    embedded = json.loads(archive.read(receipt_name))
+    recorded = embedded.get("inputs", {}).get("sha256")
+    archived_members = {name: digest for name, digest in hashes.items() if is_quality_input(name)}
+    if recorded is not None and combined_quality_digest(archived_members) != recorded:
+        raise StaleEvidenceError(
+            "Archived quality fingerprint disagrees with its archived members"
+        )
     with tempfile.TemporaryDirectory(prefix="ccd-archive-evidence-") as folder:
         root = Path(folder).resolve()
         for name in ("src", "scripts", "tests"):

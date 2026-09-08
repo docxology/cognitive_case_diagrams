@@ -1,6 +1,6 @@
 # Introduction: Case, Composition, and the Limits of a Shared Diagram {#sec:introduction}
 
-A sentence distinguishes participants and the relations between them. In “Alice chases Bob,” changing which participant occupies the subject position changes the interpretation. A representation that stores only an unordered pair of names loses this distinction. Case diagrams make selected relations visible and provide small objects on which to test composition, uncertainty, and interpretation.
+A sentence distinguishes participants and the relations between them. In “Alice chases Bob,” changing which participant occupies the subject position changes the interpretation. A representation that stores only an unordered pair of names loses this distinction. Case diagrams make selected relations visible and provide small objects on which to exercise composition, uncertainty, and interpretation.
 
 Three meanings of *case* must remain separate. Morphological case concerns forms and marking; grammatical relations concern positions such as subject and object; semantic roles concern participation in an event. They can correlate without coinciding. NOM is not a universal synonym for agent, and ACC does not always denote a patient. Our examples use role labels as modeling choices, not as a claim that every language has the same inventory.
 

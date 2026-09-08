@@ -21,4 +21,4 @@ closed = candidate.composition_closure()
 assert not closed.full_composition_check()["violations"]
 ```
 
-Closure is a mathematical operation, not statistical validation. It raises selected similarities and can alter their interpretation, spectrum, magnitude, and clusters. Both raw and closed matrices should be retained in empirical work. Bradley, Terilla, and Vlassopoulos construct enriched structure from suitable text-extension probabilities [@fritz2021enriched]; this does not identify the present role matrix with their construction.
+Closure is a mathematical operation, not statistical validation. It raises selected similarities and can alter their interpretation, spectrum, magnitude, and clusters. Both raw and closed matrices should be retained in empirical work. Bradley, Terilla, and Vlassopoulos construct enriched structure from suitable text-extension probabilities [@bradley2021enriched]; this does not identify the present role matrix with their construction.

@@ -16,4 +16,4 @@ Here `count_words` counts every non-Cup/non-Cap box; in diagrams containing a Sw
 
 ![Complexity measurements for the generator's selected diagrams. Scores depend on the assigned lexical decomposition and the injected weights. The collection is illustrative rather than a benchmark sampled from a language.](output/figures/complexity_comparison.png){#fig:complexity-comparison}
 
-The legacy `compute_pqc_decoherence_proxy()` derives a synthetic score from excess cups over caps and an arbitrary exponential factor. Despite legacy field names, it computes neither topological homology nor a physical decoherence rate. No physical or security conclusion in this manuscript relies on that score.
+The legacy `compute_pqc_decoherence_proxy()` derives a synthetic decoherence-rate field from a caller-supplied noise baseline, excess cups over caps, and an unsourced exponential amplification factor; the container also carries this section's base complexity score as its base field. Despite legacy field names, it computes neither topological homology nor a physical decoherence rate. No physical or security conclusion in this manuscript relies on that score.

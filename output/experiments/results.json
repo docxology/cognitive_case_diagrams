@@ -3649,7 +3649,7 @@
       "metrics": {
         "entropy_bins_max_abs_effect": 0.12034686088467417,
         "entropy_bins_sweep_value": 200.0,
-        "gamma_max_abs_effect": 0.2525649594354673,
+        "gamma_max_abs_effect": 0.25256495943546736,
         "gamma_sweep_value": 1.0,
         "temperature_max_abs_effect": 0.7570511886336069,
         "temperature_sweep_value": 4.0
@@ -3662,11 +3662,11 @@
           1.0616850878085726
         ],
         "gamma_mean_by_arm": [
-          -0.024794517224315214,
-          0.03834672263455162,
+          -0.02479451722431521,
+          0.038346722634551626,
           0.10148796249341845,
           0.1646292023522853,
-          0.2277704422111521
+          0.22777044221115214
         ],
         "policy_entropy_by_arm": [
           0.8438955295528139,
@@ -3747,10 +3747,10 @@
     "seed": 20260907,
     "source_files": {
       "src/case_systems/__init__.py": "74e268f385f329bb78cdb248419a83155dc63d1696a62abd262b604d21f200fe",
-      "src/case_systems/case_category.py": "f7074dac8b1b666eb29bb8901fb1f2e7119d55cd41c8b14fc7d261b52324cc3c",
-      "src/case_systems/fluid_s.py": "e18660859f5964c0544955044926a44f10c5688a4ea9f737df63094834e97548",
+      "src/case_systems/case_category.py": "758192c1de504ff22fc12694498d0750a89a7a2eed1782a29cd68a562770addc",
+      "src/case_systems/fluid_s.py": "d6bbb0b7df0ea0d9c48a3596cd2c5aac71d46c897fe79e31ca5e423512e9f2ec",
       "src/case_systems/functor.py": "782d8626e0ec43d37f7c0fc1fccb3cb767155410192f05098d3cf5e0e52af416",
-      "src/case_systems/natural_transformation.py": "165bd1f9523700b7dc95615af6df158474d59c15db7243f33c54216f07d34a4f",
+      "src/case_systems/natural_transformation.py": "09c105418f11e83a8d539f9412cbfb8b02aee45b71d9d689f3758243fe1d22e6",
       "src/cognitive/__init__.py": "3c6f940978412f3553fc6e7a91f7fd7a1e25934a80d47033de73255766b0ff6c",
       "src/cognitive/action_selection.py": "e25365410d6e8975c99d93e8f3f21ce2d865cd228bc43596909a09d74ef039f4",
       "src/cognitive/belief.py": "026ab79a1b3ef05de5f4e6e62d96c94c4e72d1ae9523e5aee93e26cc8ba1691f",
@@ -3759,39 +3759,39 @@
       "src/cognitive/free_energy.py": "1b8183d576fa7f172a91f67283041933a00520d0f321ac4888a3610f508489d8",
       "src/cognitive/prediction_error.py": "e565253136a94a06adcefee43e778a6e22363ddc8ad984966588f0ab1b758943",
       "src/cognitive/reanalysis.py": "0860cd601bc5d1a87f11ec6b158f908ea87303463b6e0af4b5c28ab2814ac090",
-      "src/daif/__init__.py": "0519daa179c68512cabf5cfbfda96940052dd3960b47a3a7731da055012164a6",
-      "src/daif/core.py": "15c7a4584a0165d8918bfc9607e8714864befecd10d412e44c31f2690a222eab",
-      "src/daif/inference.py": "9891a7b92b71ff4663d014dc4330215e2fd5517ce4da8296c497b0ca1fd86f6e",
-      "src/daif/metrics.py": "8f1938eeb7bb2f69bfcce558960bd43bd1510e4b61d037ee16fda8b4889dee3a",
+      "src/daif/__init__.py": "aefc04e393ed3462dacd22541d645bf9b17b38b7fe61efcee1343637bb7ed3e7",
+      "src/daif/core.py": "78d89d2f3604fb1124b6d49615ba3ccbe569ba7d021d9822dbd36eb31f964956",
+      "src/daif/inference.py": "efebaf0035a43b368af716bc75a56f33a4fdc73cad3223952f2f33a5e899ff98",
+      "src/daif/metrics.py": "bb99ba21bd7a2f5a8a6bf75ef5932fa66e701b7bbee9d96542d51f7eae064fca",
       "src/daif/policy.py": "7b4e5a72140aa2948d30b0e9b20b786fd8326c39d45aeb40aeb088df992fed13",
-      "src/daif/prediction.py": "206edf13bc5464975c637173835ce8dd0b2ac3b42fff63ee710fa3f575ec1ac2",
+      "src/daif/prediction.py": "693fa1247668faeb6cc6a96659e54f4053f91d9401a59780cf691103399501fd",
       "src/daif/quantile.py": "15c60f6bb6bcc2bbc0322cfdd4584e425c7f2ed117d20f1aa5fed4190733b791",
       "src/daif/types.py": "30841a733489e2fb9d467df484dd31a1c759c2c87c30911eaeb2d8ba9ae46cff",
       "src/diagrams/__init__.py": "8c9a72e4f079f5a2fdf5e08a6c35f2cee28f92b4f62466eb10f07714addae8a8",
       "src/diagrams/complexity_examples.py": "bf23af99b6437abe2891bf622c4f527dec2f6aea9358aabda39c28f1b26daf69",
-      "src/diagrams/complexity_metrics.py": "c632d3f3aaf6f5e45fc8cef71b1b892b54fa1f24476340ea3d73c5fc65905d7e",
+      "src/diagrams/complexity_metrics.py": "0ae25545e6706f923ce4f7b36e5741469a1be8b1548a9f2e31c8a8bffb6b5f1e",
       "src/diagrams/ditransitive.py": "5db154573e8d3e7a6532b878cab961c27c2d905d93c67afc6237ce95c5ad00e9",
-      "src/diagrams/string_diagram.py": "13972ccffed1907928a73002f6bb4c16129cd3b9bf42290d8d281f02ca3be113",
+      "src/diagrams/string_diagram.py": "1d9b5ea7ee66240ba2a4bc83059554c9688b266788e9067eb9cde8f68ec6a2cb",
       "src/enriched_cat/__init__.py": "15b0c317d00e4a22bfbef08ec7d343ac8cccc4552abc6d9d78d7bfbd49f19a05",
       "src/enriched_cat/enriched.py": "176fbc2b4736848af3ba9cba7e6d1edd8b0ba57d30ddb33d6acaf00b59ae9db5",
       "src/experiments/__init__.py": "1470135ca46b83f1da88b85705eeb1c451f43e158aa8f30a7d5c08c36fa2edbe",
       "src/experiments/config.py": "d7131000172df83e729f54761d9c4c1413beb8e41f1e4a214e42bfda5cef1b24",
       "src/experiments/rng.py": "cc2e4ab6115b8f06af0c87135b08f22e9ee808ce14e0bafb1a012815a2eb65da",
-      "src/experiments/runner.py": "039e25b81e440e8301d8a52dd018f55c59823efb2bcbd53c01c9ce243fdbaa98",
+      "src/experiments/runner.py": "5bdf860c17d2f03f6d2ae5e822216478c6f2c9dca8d71e12a16a36098542249a",
       "src/experiments/serialization.py": "cf33114676d927deec8a043a2f27cdf719fc5dd0ea2249d6720fda76caabf069",
       "src/experiments/stats.py": "42b452f5f30247d0fac2fd84c67e714bde4d6dddc077ca57e490fe8024c2869f",
       "src/experiments/studies.py": "5b532beec630b9fbf37720058e23ac8a926b0439f8a69bd321627a407434ae67",
       "src/experiments/synthetic.py": "bc80fd6cec2d56ab22cf46d1fe87aa24e63c933b39807e77f7193d6b7db4dd9f",
-      "src/numerics.py": "140b14331214e307912ebcfd8920d3022a5baf90b0318155d10e937d9775117e",
+      "src/numerics.py": "e67e8c7e9770b7174c08c1f605925c397465a3453b45e3a69ff537a870c8e4ef",
       "src/quantum/__init__.py": "d6aafbb8ce403553cd115b25f63648e4a4ee1fe781f6cbe666ce191a0d63ccfc",
       "src/quantum/figure_data.py": "18cdaff601dfef1132390477acef153d4bacb1001c00cd0f09527fd42cafb9d5",
-      "src/quantum/quantum_case.py": "f91a1b4b0269f7e949169b8198c10ea1002a5b8c3bd5f5f082a63f2ebe533913",
+      "src/quantum/quantum_case.py": "37e8a6bfcc84f3d15f8ba7230c1dd6d03a661915cfc1d96e3b65fd5b19f6200e",
       "src/security/__init__.py": "837b1c18168ce431da40f4dea6d09a42dded313030c5823739fc3b7a463b3e80",
       "src/security/cognitive_security.py": "687d08d9dcd3954981466cf2561a453d04d48c3b49df15ce3a708288f654e725",
       "src/topos_theory/__init__.py": "b18f95ba4da17edfc13142479e2496421ee2aaa806297025602387a33f932abb",
       "src/topos_theory/topos.py": "3c6715948201bf5984dc3e21b66475a6b5f0d1bfff62d0f59ed9cb96efbc5fda"
     },
-    "source_sha256": "e7b19228f19eebd51d51b307ec57b9fa12bf62c905a69b792b7889e478d205c4"
+    "source_sha256": "d84ca5c76b65598833be3c59976f3467a28f8e0daf48fadeb6817aa4ebe78d4b"
   },
   "schema_version": "1.0",
   "variables": {
@@ -4198,7 +4198,7 @@
       "interpretation": "Descriptive largest paired mean-score effect of the prespecified gamma sweep against gamma[0] at common random numbers; carries NO interval because the arm is selected by the data (prespecified per-arm pointwise intervals are in experiments.sensitivity.arms).",
       "sample_unit": "replicate",
       "unit": "dimensionless",
-      "value": 0.2525649594354673
+      "value": 0.25256495943546736
     },
     "exp_sensitivity_temperature_max_abs_effect": {
       "ci_high": null,

@@ -1,6 +1,6 @@
 # Case Systems and Alignment {#sec:case-systems}
 
-Comparative case analysis separates argument roles from their marking. We use S for the sole argument of a canonical intransitive predicate, A for the more agent-like argument of a canonical transitive predicate, and P for its more patient-like argument. Alignment describes how a specified marking system groups these roles. Case marking of full noun phrases, pronouns, and verbal person marking can differ within a language [@comrie2013alignment].
+Comparative case analysis separates argument roles from their marking. We use S for the sole argument of a canonical intransitive predicate, A for the more agent-like argument of a canonical transitive predicate, and P for its more patient-like argument. Alignment describes how a specified marking system groups these roles. Case marking of full noun phrases can differ within a language [@comrie2013alignment]; parallel differences hold for pronouns [@comrie2013person] and verbal person marking [@siewierska2013person].
 
 | Pattern | Grouping in the simplified representation |
 | :--- | :--- |

@@ -1,12 +1,12 @@
 # Introduction: Case, Composition, and the Limits of a Shared Diagram {#sec:introduction}
 
-A sentence distinguishes participants and the relations between them. In “Alice chases Bob,” changing which participant occupies the subject position changes the interpretation. A representation that stores only an unordered pair of names loses this distinction. Case diagrams make selected relations visible and provide small objects on which to test composition, uncertainty, and interpretation.
+A sentence distinguishes participants and the relations between them. In “Alice chases Bob,” changing which participant occupies the subject position changes the interpretation. A representation that stores only an unordered pair of names loses this distinction. Case diagrams make selected relations visible and provide small objects on which to exercise composition, uncertainty, and interpretation.
 
 Three meanings of *case* must remain separate. Morphological case concerns forms and marking; grammatical relations concern positions such as subject and object; semantic roles concern participation in an event. They can correlate without coinciding. NOM is not a universal synonym for agent, and ACC does not always denote a patient. Our examples use role labels as modeling choices, not as a claim that every language has the same inventory.
 
 ![A hand-specified 4-role graph used to introduce the notation. Nodes denote selected role labels and arrows denote named relations. This is a modeling example, not a graph extracted from a corpus.](output/figures/case_category_minimal.png){#fig:case-minimal}
 
-Categorical compositional distributional semantics provides a mathematical account of how typed grammatical reductions can guide operations on word representations [@coecke2010mathematical]. Enriched-category constructions give a different route from suitable text-extension probabilities to mathematical structure [@fritz2021enriched]. Neither result implies that an arbitrary role graph, attention matrix, or probability table automatically satisfies the relevant categorical axioms.
+Categorical compositional distributional semantics provides a mathematical account of how typed grammatical reductions can guide operations on word representations [@coecke2010mathematical]. Enriched-category constructions give a different route from suitable text-extension probabilities to mathematical structure [@bradley2021enriched]. Neither result implies that an arbitrary role graph, attention matrix, or probability table automatically satisfies the relevant categorical axioms.
 
 ## Contributions and evidence {#sec:whats-new}
 

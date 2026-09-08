@@ -1,6 +1,6 @@
 # Categorial Grammar and Executable Reductions {#sec:categorial-grammar}
 
-Categorial grammars associate lexical expressions with types that determine how they combine. In a pregroup presentation, a noun type $n$ has left and right adjoints. Ordered reductions use $n^l n\leq 1$ and $n n^r\leq 1$, together with the corresponding expansion inequalities. These are directional operations; arbitrary wire exchange is not an axiom of a nonsymmetric pregroup.
+Categorial grammars associate lexical expressions with types that determine how they combine. In a pregroup presentation, a noun type $n$ has left and right adjoints. Ordered reductions use $n^l n\leq 1$ and $n n^r\leq 1$, together with the corresponding expansion inequalities [@coecke2010mathematical]. These are directional operations; arbitrary wire exchange is not an axiom of a nonsymmetric pregroup.
 
 For the hand-assigned types of “Alice chases Bob,” the reduction is
 

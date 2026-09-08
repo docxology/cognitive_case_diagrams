@@ -1,42 +1,42 @@
 {
   "inputs": {
-    "docs/figure_alt_text.json": "7220d5d50aa1eb84fa73ffeb28fa37496a32140dbdb83be60ce3d8ee702977fe",
-    "docs/manuscript/00_abstract.md": "1c35280ee324d4c77a4442aa35163404297ae02b8e24b4de0b80aeedee3dd85f",
-    "docs/manuscript/01_introduction.md": "282581a3317b19c5894493f713c7f67f13b75dee0cb99b34b8f0baaf78da6413",
-    "docs/manuscript/01a_research_questions.md": "ba9e608a3198cf8373849af881b132c75da31378ce38279f33064cef9feeca4b",
-    "docs/manuscript/02_case_systems.md": "970ca3ec3d311f680fca09b23a1c7b0c28d3782442acceb6bca95746ff0634d7",
+    "docs/figure_alt_text.json": "d3805ae4e41e7cdd4c6965361d21a4ccfe1f46dd8a16cee0552a3e1012304a26",
+    "docs/manuscript/00_abstract.md": "706642505236ea7be985ecaff0f72c8673543ebe42a75eed600c4bbb26e851ab",
+    "docs/manuscript/01_introduction.md": "b1415dbbc2835b33dad6abd2c208103655c58d9431e92e40a8b6cffe47b59ea2",
+    "docs/manuscript/01a_research_questions.md": "9bf10ed7a987aa8ac4de77868732e81e1da1b7d3abc1de5882af1f635b64527d",
+    "docs/manuscript/02_case_systems.md": "b3cc5b6eba5a3d750dbf69a0f51d2d80c9636f93cdca48ec7c674782542ad0fb",
     "docs/manuscript/02b_case_categories.md": "b1e3efc82fdf02d5a4734ba4594ac89faf17ea51b84d741f5311d4f05f48e6d9",
-    "docs/manuscript/03_categorial_grammar.md": "53b96fcacc58366e0cf84ce4d63b350a457c610eba09b756f0de802995f084ac",
+    "docs/manuscript/03_categorial_grammar.md": "18b3e0bec61f2d186b22a8f54838d39c68eb0eb62ec2f3b0d456742e603640f9",
     "docs/manuscript/03b_case_type_logic.md": "c5e05693de3534adcf4120807accce8469ca675e7aa7240d93aad77fcaf13799",
     "docs/manuscript/04_categorical_semantics.md": "2d874394866b2a8126c1cead98d8f598257ddd8843b8ecca80706a50f2e17269",
-    "docs/manuscript/04b_compact_closure_complexity.md": "98287efa0c86db3fa6d5934c5d53fc3640b8c3d111d80b9ad52897353058bd87",
+    "docs/manuscript/04b_compact_closure_complexity.md": "6bd612072457b1d61685d6925a996f36d8f4623d7655b930524a6c12e0ab76f6",
     "docs/manuscript/04c_discourse_complexity.md": "8802bc3909e0c5a849d18e2dc7b6d72f09e4655abbcd2e3834958fcabdacffd9",
-    "docs/manuscript/05_enriched_categories.md": "e02e4a8165943ff6996f6c12e2662c625aa194d2531678297a4e2bf7f00dc1fe",
+    "docs/manuscript/05_enriched_categories.md": "44452491a191c23d1f05f92f8634e34a29cfc7a8e2b030d7b5a23158c748e5c0",
     "docs/manuscript/05b_magnitude_homology.md": "d23d54370f8168fd9f8dbeb946fabeb60ffdc75b9970ee3a8f5bfd7877952773",
-    "docs/manuscript/06_topos_theory.md": "95c6cae36e99e58e01a61aba5c18cbd7c1bf1e1e76592f7ddb8c7974a6aaa153",
+    "docs/manuscript/06_topos_theory.md": "5aef2888f9431ab8610404180f6fe3df8a696da307d58bad1194ad41d2d65e9b",
     "docs/manuscript/07_cognitive_integration.md": "3010d2afb67b4be5ee41885619587602d6be6eacbac8478c43fb9f39e3c12287",
     "docs/manuscript/07b_diagrammatic_cognition.md": "9a28ac20048437cb8a477b6e8db31e893ef43e7a1a88277c096fffec8e8138cb",
-    "docs/manuscript/07c_daif_results.md": "0a764c98450e2b247b88e1a379bd24c972ff74dbd8f1d5b8b250501756dbb591",
+    "docs/manuscript/07c_daif_results.md": "040dfcd7ad8320073d52be6737f47a5e32ceec165abf0af3f6b5038bd90eac6d",
     "docs/manuscript/07d_synthetic_statistics.md": "42be8b1013247f91781f308af06b124cb2370487700c97275a21dae8cc7a7f03",
     "docs/manuscript/08_quantum_active_inference.md": "32ea04f9b5595037266e9241b9fd911b02972f631163ab956490d8da93a43c74",
     "docs/manuscript/08b_quantum_semantics.md": "463c309af60971dc8dcc030e5fb847b1333668967cdf936d89d928d96e37e7d2",
     "docs/manuscript/09_ai_implications.md": "ad0dd70fbaa861bd41486af4ce08e3d8dd9139b605b0182756bf27f33bfbbc0c",
     "docs/manuscript/09b_cognitive_security.md": "0357bb5142d254fc1a60750a0754839907214d7488c5a84489746d1defc4232a",
-    "docs/manuscript/10_conclusion.md": "e2827a1635eb730a100f0c17ada22a49f29e1cb85a363649aa61c7fb5ef0c9cc",
+    "docs/manuscript/10_conclusion.md": "1d1e8df4e5031d9ba5a6a039bfdf5ef6ed91c69a5e7bab7c3da84a9f0f313634",
     "docs/manuscript/11_syntactic_sentence_diagrams.md": "896da38534b04f99258063c9e21be4a42f61fc35134fd8dcd00dacc32c868037",
-    "docs/manuscript/11b_notation.md": "5173808da175a8e129f38e5165994ecca559df7cf5e64f753db773920a3c4195",
+    "docs/manuscript/11b_notation.md": "27bc94ab4b1618a229d57b742b23d88262133d976f6882bdf11d3bf217b9d33b",
     "docs/manuscript/11c_automated_test_inventory.md": "e5380601e2d804580e6ee6a6d59fbf11f22d50499be491e0a3e1f46c61881cbc",
     "docs/manuscript/AGENTS.md": "4405e5e1b2aa0eaeeba282dd4cd09a0742b4697e240037560f6c64d401808cb1",
     "docs/manuscript/MANUSCRIPT_STATUS.md": "8d02dbc2e59c2d75903e45c7032b7be3a7f5394f63d164c4cea79262a22322a6",
     "docs/manuscript/README.md": "8879d90deebc88da22fbf0778784d15d7d0902d8a1923fb9ed7074f34d8ccec1",
-    "docs/manuscript/config.yaml": "8269904b9d36217b6575364663b7f6e9cab4ae7a298391381084d447cb28a778",
+    "docs/manuscript/config.yaml": "2da8c1a589ed927780c04a03473f4c5a9f38313ea8eb5275894b1a522e7ae428",
     "docs/manuscript/preamble.md": "e61d8cbb0f1a77465adf113f2cb6633163235f723e20b81b6d515c7885623b43",
-    "docs/manuscript/references.bib": "fca8fef4d9fbc7b60f9dc4a9bdf6840fbb13748b1ee8325d51d1806ce9bce7b7",
-    "output/experiments/results.json": "9f4ff02556b77dcb81822811a2c428b6fe55140fbe2f13a2413726119bed1367",
-    "output/figures/figure_registry.json": "ed8418c1adcb1ff7c4fda1031f48931acd89d55c06a7c0071d536d005c481059",
-    "output/reports/quality_receipt.json": "49081701916950dd1efb408acc73d55b70ff8352de779ae3d270da5de8b0cee2"
+    "docs/manuscript/references.bib": "6b94894db015da32b02a7bf421352e7ee75cefba6448d73ac669524172dd2a44",
+    "output/experiments/results.json": "38ee005e6504bdce2edca2bf78e483f881bb3a67dd41fd804f0c90d12d41e1ca",
+    "output/figures/figure_registry.json": "a55123182dd70d08ee2b7f62b759b59a7b87a19736e32b4908157778f82293dc",
+    "output/reports/quality_receipt.json": "f6eac193664fa263826937be153145ccf9f3679b2d83baf8d11d196e603bf9bf"
   },
-  "quality_input_fingerprint": "80819a3816e450bc99be2260ceabc4db22c328b6b938a698544474ab428d77d2",
+  "quality_input_fingerprint": "bac101a70d09420f936c1bcaaf2d0588eeb99a018d94352d068a77b0111ce9d4",
   "schema": "ccd-manuscript-variables-v1",
   "variables": {
     "alignment_extra_label_count": {
@@ -145,7 +145,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_covered",
         "unit": "count"
       },
-      "value": "6175"
+      "value": "6599"
     },
     "coverage_lines_total": {
       "spec": {
@@ -157,7 +157,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_total",
         "unit": "count"
       },
-      "value": "6490"
+      "value": "7081"
     },
     "coverage_percent": {
       "spec": {
@@ -169,7 +169,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_percent",
         "unit": "percent"
       },
-      "value": "93.17"
+      "value": "91.52"
     },
     "daif_assignment_iterations": {
       "spec": {
@@ -337,7 +337,7 @@
         "source": "src.generate_manuscript_metrics._count_daif_symbols",
         "unit": "count"
       },
-      "value": "26"
+      "value": "27"
     },
     "daif_test_files": {
       "spec": {
@@ -349,7 +349,7 @@
         "source": "src.generate_manuscript_metrics._count_daif_test_files",
         "unit": "count"
       },
-      "value": "8"
+      "value": "9"
     },
     "daif_tests": {
       "spec": {
@@ -361,7 +361,7 @@
         "source": "src.generate_manuscript_metrics._count_daif_tests",
         "unit": "count"
       },
-      "value": "232"
+      "value": "244"
     },
     "daif_trajectory_evidence_count": {
       "spec": {
@@ -557,7 +557,7 @@
     },
     "exp_calibration_coverage_error_mean_ci95_high": {
       "spec": {
-        "description": "High bound of the 95% interval for exp_calibration_coverage_error_mean",
+        "description": "High bound of the confidence interval for exp_calibration_coverage_error_mean",
         "format": "sig6",
         "name": "exp_calibration_coverage_error_mean_ci95_high",
         "provenance": "experiments",
@@ -569,7 +569,7 @@
     },
     "exp_calibration_coverage_error_mean_ci95_low": {
       "spec": {
-        "description": "Low bound of the 95% interval for exp_calibration_coverage_error_mean",
+        "description": "Low bound of the confidence interval for exp_calibration_coverage_error_mean",
         "format": "sig6",
         "name": "exp_calibration_coverage_error_mean_ci95_low",
         "provenance": "experiments",
@@ -617,7 +617,7 @@
     },
     "exp_filter_free_energy_final_mean_ci95_high": {
       "spec": {
-        "description": "High bound of the 95% interval for exp_filter_free_energy_final_mean",
+        "description": "High bound of the confidence interval for exp_filter_free_energy_final_mean",
         "format": "sig6",
         "name": "exp_filter_free_energy_final_mean_ci95_high",
         "provenance": "experiments",
@@ -629,7 +629,7 @@
     },
     "exp_filter_free_energy_final_mean_ci95_low": {
       "spec": {
-        "description": "Low bound of the 95% interval for exp_filter_free_energy_final_mean",
+        "description": "Low bound of the confidence interval for exp_filter_free_energy_final_mean",
         "format": "sig6",
         "name": "exp_filter_free_energy_final_mean_ci95_low",
         "provenance": "experiments",
@@ -653,7 +653,7 @@
     },
     "exp_filter_paired_loglik_diff_mean_ci95_high": {
       "spec": {
-        "description": "High bound of the 95% interval for exp_filter_paired_loglik_diff_mean",
+        "description": "High bound of the confidence interval for exp_filter_paired_loglik_diff_mean",
         "format": "sig6",
         "name": "exp_filter_paired_loglik_diff_mean_ci95_high",
         "provenance": "experiments",
@@ -665,7 +665,7 @@
     },
     "exp_filter_paired_loglik_diff_mean_ci95_low": {
       "spec": {
-        "description": "Low bound of the 95% interval for exp_filter_paired_loglik_diff_mean",
+        "description": "Low bound of the confidence interval for exp_filter_paired_loglik_diff_mean",
         "format": "sig6",
         "name": "exp_filter_paired_loglik_diff_mean_ci95_low",
         "provenance": "experiments",
@@ -689,7 +689,7 @@
     },
     "exp_filter_posterior_accuracy_mean_ci95_high": {
       "spec": {
-        "description": "High bound of the 95% interval for exp_filter_posterior_accuracy_mean",
+        "description": "High bound of the confidence interval for exp_filter_posterior_accuracy_mean",
         "format": "sig6",
         "name": "exp_filter_posterior_accuracy_mean_ci95_high",
         "provenance": "experiments",
@@ -701,7 +701,7 @@
     },
     "exp_filter_posterior_accuracy_mean_ci95_low": {
       "spec": {
-        "description": "Low bound of the 95% interval for exp_filter_posterior_accuracy_mean",
+        "description": "Low bound of the confidence interval for exp_filter_posterior_accuracy_mean",
         "format": "sig6",
         "name": "exp_filter_posterior_accuracy_mean_ci95_low",
         "provenance": "experiments",
@@ -773,7 +773,7 @@
     },
     "exp_projection_mean_exactness_residual_mean_ci95_high": {
       "spec": {
-        "description": "High bound of the 95% interval for exp_projection_mean_exactness_residual_mean",
+        "description": "High bound of the confidence interval for exp_projection_mean_exactness_residual_mean",
         "format": "sig6",
         "name": "exp_projection_mean_exactness_residual_mean_ci95_high",
         "provenance": "experiments",
@@ -785,7 +785,7 @@
     },
     "exp_projection_mean_exactness_residual_mean_ci95_low": {
       "spec": {
-        "description": "Low bound of the 95% interval for exp_projection_mean_exactness_residual_mean",
+        "description": "Low bound of the confidence interval for exp_projection_mean_exactness_residual_mean",
         "format": "sig6",
         "name": "exp_projection_mean_exactness_residual_mean_ci95_low",
         "provenance": "experiments",
@@ -809,7 +809,7 @@
     },
     "exp_projection_refinement_paired_diff_mean_ci95_high": {
       "spec": {
-        "description": "High bound of the 95% interval for exp_projection_refinement_paired_diff_mean",
+        "description": "High bound of the confidence interval for exp_projection_refinement_paired_diff_mean",
         "format": "sig6",
         "name": "exp_projection_refinement_paired_diff_mean_ci95_high",
         "provenance": "experiments",
@@ -821,7 +821,7 @@
     },
     "exp_projection_refinement_paired_diff_mean_ci95_low": {
       "spec": {
-        "description": "Low bound of the 95% interval for exp_projection_refinement_paired_diff_mean",
+        "description": "Low bound of the confidence interval for exp_projection_refinement_paired_diff_mean",
         "format": "sig6",
         "name": "exp_projection_refinement_paired_diff_mean_ci95_low",
         "provenance": "experiments",
@@ -881,7 +881,7 @@
     },
     "exp_quantile_huber_fd_residual_mean_ci95_high": {
       "spec": {
-        "description": "High bound of the 95% interval for exp_quantile_huber_fd_residual_mean",
+        "description": "High bound of the confidence interval for exp_quantile_huber_fd_residual_mean",
         "format": "sig6",
         "name": "exp_quantile_huber_fd_residual_mean_ci95_high",
         "provenance": "experiments",
@@ -893,7 +893,7 @@
     },
     "exp_quantile_huber_fd_residual_mean_ci95_low": {
       "spec": {
-        "description": "Low bound of the 95% interval for exp_quantile_huber_fd_residual_mean",
+        "description": "Low bound of the confidence interval for exp_quantile_huber_fd_residual_mean",
         "format": "sig6",
         "name": "exp_quantile_huber_fd_residual_mean_ci95_low",
         "provenance": "experiments",
@@ -977,7 +977,7 @@
     },
     "exp_quantum_completeness_residual_mean_ci95_high": {
       "spec": {
-        "description": "High bound of the 95% interval for exp_quantum_completeness_residual_mean",
+        "description": "High bound of the confidence interval for exp_quantum_completeness_residual_mean",
         "format": "sig6",
         "name": "exp_quantum_completeness_residual_mean_ci95_high",
         "provenance": "experiments",
@@ -989,7 +989,7 @@
     },
     "exp_quantum_completeness_residual_mean_ci95_low": {
       "spec": {
-        "description": "Low bound of the 95% interval for exp_quantum_completeness_residual_mean",
+        "description": "Low bound of the confidence interval for exp_quantum_completeness_residual_mean",
         "format": "sig6",
         "name": "exp_quantum_completeness_residual_mean_ci95_low",
         "provenance": "experiments",
@@ -1189,11 +1189,11 @@
         "source": "config.yaml paper.date",
         "unit": "date"
       },
-      "value": "2026-09-07"
+      "value": "2026-09-08"
     },
     "paper_doi": {
       "spec": {
-        "description": "Concept DOI for the paper (reserved draft until publication)",
+        "description": "Concept DOI identifying the paper series (all versions)",
         "format": "string",
         "name": "paper_doi",
         "provenance": "config",
@@ -1225,11 +1225,11 @@
         "source": "config.yaml paper.version",
         "unit": "version"
       },
-      "value": "2.4.0"
+      "value": "2.5.0"
     },
     "paper_version_doi": {
       "spec": {
-        "description": "Reserved version DOI for this revision (not yet published)",
+        "description": "Version DOI identifying this revision; live deposit state is whatever version_record reports at read time",
         "format": "string",
         "name": "paper_version_doi",
         "provenance": "config",
@@ -1241,7 +1241,7 @@
     },
     "paper_version_record_url": {
       "spec": {
-        "description": "Zenodo record URL of the reserved version draft",
+        "description": "Zenodo record URL for the version DOI",
         "format": "string",
         "name": "paper_version_record_url",
         "provenance": "config",
@@ -1273,7 +1273,7 @@
         "source": "src.release_validation.validate_quality_receipt -> quality_input_fingerprint[:12]",
         "unit": "text"
       },
-      "value": "80819a3816e4"
+      "value": "bac101a70d09"
     },
     "quality_receipt_generated_at": {
       "spec": {
@@ -1285,7 +1285,7 @@
         "source": "src.release_validation.validate_quality_receipt -> generated_at",
         "unit": "timestamp"
       },
-      "value": "2026-09-08T07:04:03.730105+00:00"
+      "value": "2026-09-08T19:10:20.441689+00:00"
     },
     "quantum_acc_probability": {
       "spec": {
@@ -1453,7 +1453,7 @@
         "source": "src.generate_manuscript_metrics._count_collected_tests",
         "unit": "count"
       },
-      "value": "1627"
+      "value": "1783"
     },
     "total_test_files": {
       "spec": {
@@ -1465,7 +1465,7 @@
         "source": "src.generate_manuscript_metrics._count_test_files",
         "unit": "count"
       },
-      "value": "81"
+      "value": "91"
     },
     "total_test_files_word": {
       "spec": {
@@ -1477,7 +1477,7 @@
         "source": "src.generate_manuscript_metrics._number_to_word",
         "unit": "count"
       },
-      "value": "eighty-one"
+      "value": "ninety-one"
     },
     "total_tests_failed": {
       "spec": {
@@ -1501,7 +1501,7 @@
         "source": "src.release_validation.validate_quality_receipt -> pytest_passed",
         "unit": "count"
       },
-      "value": "1627"
+      "value": "1783"
     },
     "total_tests_skipped": {
       "spec": {

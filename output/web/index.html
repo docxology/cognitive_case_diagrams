@@ -1,0 +1,2452 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.11" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Daniel Ari Friedman" />
+  <title>Cognitive Diagrams: Reviewing Categorical Accounts of
+Linguistic Case</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <script data-template-mathjax-config>
+window.MathJax = window.MathJax || {};
+window.MathJax.chtml = Object.assign({}, window.MathJax.chtml, {
+  fontURL: "https://cdn.jsdelivr.net/npm/@mathjax/mathjax-newcm-font@4.0.0/chtml/woff2",
+  dynamicPrefix: "https://cdn.jsdelivr.net/npm/@mathjax/mathjax-newcm-font@4.0.0/chtml/dynamic"
+});
+window.normalizeTemplateMathJaxAria = function () {
+  document.querySelectorAll("mjx-speech[aria-roledescription]").forEach(function (node) {
+    var roleDescription = node.getAttribute("aria-roledescription") || "";
+    if (/[-]/.test(roleDescription)) {
+      node.setAttribute("aria-roledescription", "mathematical expression");
+    }
+  });
+};
+window.MathJax.startup = Object.assign({}, window.MathJax.startup, {
+  ready: function () {
+    window.MathJax.startup.defaultReady();
+    window.MathJax.startup.promise.then(window.normalizeTemplateMathJaxAria);
+  }
+});
+</script>
+<script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-chtml.js"
+  type="text/javascript" integrity="sha384-2BWc4dVaHADUocwKrUrK9u3iDwHxVMKXWEcoRmUkXYSFKhAsgVAYClu9ydNuo5Oz" crossorigin="anonymous"></script>
+
+<link data-template-favicon rel="icon" href="favicon.ico">
+
+<style>
+:root {
+  --brand-1: #5b6ee0;
+  --web-bg: #f8f8f8;
+  --web-surface: #ffffff;
+  --web-text: #2c3e50;
+  --web-border: #bdc3c7;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --brand-1: #7e8ce8;
+    --web-bg: #0f1420;
+    --web-surface: #161c2b;
+    --web-text: #e6eaf2;
+    --web-border: #2a3447;
+  }
+}
+.theorem-box {
+  border-left: 4px solid var(--brand-1);
+  background: var(--web-surface);
+  padding: 0.6em 1em;
+  margin: 1.1em 0;
+  border-radius: 0 4px 4px 0;
+}
+.theorem-box.definition { border-left-style: dashed; }
+.theorem-box > p:first-child { margin-top: 0; }
+.theorem-box > p:last-child { margin-bottom: 0; }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  max-width: 100%;
+}
+
+body {
+  font-family: 'Liberation Serif', 'Times New Roman', serif;
+  line-height: 1.6;
+  width: min(100%, 800px);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  color: #1a1a1a;
+  overflow-x: visible;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 0.65rem 0.9rem;
+  transform: translateY(-120%);
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.skip-link:visited {
+  color: #ffffff;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  body {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+  }
+
+  figure img {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 800px) {
+  body {
+    width: 100%;
+    max-width: 100vw;
+    margin: 0 auto;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 5px;
+  overflow-wrap: anywhere;
+}
+
+code {
+  background-color: #ecf0f1;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: 'Liberation Mono', 'Courier New', monospace;
+}
+
+pre {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0;
+}
+
+figure {
+  max-width: 100%;
+  margin: 1.5rem 0;
+}
+
+th, td {
+  border: 1px solid #bdc3c7;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #1f6f8b;
+  color: white;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  margin: 20px 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  color: #b91c1c;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.14em;
+  overflow-wrap: anywhere;
+}
+
+a:visited {
+  color: #8f1d1d;
+}
+
+a:hover {
+  text-decoration-thickness: 0.14em;
+}
+
+a:focus-visible {
+  outline: 3px solid #1f6f8b;
+  outline-offset: 3px;
+}
+
+.toc {
+  background-color: #ecf0f1;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+
+.toc a,
+#TOC a {
+  color: #b91c1c;
+  display: inline-block;
+  min-height: 28px;
+  line-height: 1.5;
+  padding-block: 2px;
+}
+
+.toc li,
+#TOC li {
+  margin-block: 1px;
+}
+
+.math {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 1.1em;
+}
+
+mjx-container[display="true"] {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.25rem;
+}
+
+.figure {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.figure img {
+  max-width: 100%;
+  height: auto;
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* A reading column keeps prose comfortable, but dense scientific figures need
+   a larger inspection surface.  The rendered image remains responsive and the
+   explicit link opens its source-resolution asset without changing the PDF. */
+.figure-full-size-link {
+  color: inherit;
+  display: block;
+  max-width: 100%;
+  text-align: center;
+}
+
+.figure-full-size-link img {
+  cursor: zoom-in;
+  margin-bottom: 0.45rem;
+}
+
+.figure-full-size-label {
+  color: #1f6f8b;
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+}
+
+.figure-full-size-link:focus-visible {
+  outline: 3px solid #1f6f8b;
+  outline-offset: 4px;
+}
+
+@media (min-width: 1000px) {
+  .figure-full-size-link {
+    left: 50%;
+    max-width: none;
+    position: relative;
+    transform: translateX(-50%);
+    width: min(1080px, calc(100vw - 3rem));
+  }
+}
+
+.figure-caption {
+  font-style: italic;
+  color: #4b5563;
+  margin-top: 10px;
+  text-align: center;
+}
+
+</style>
+<style id="ccd-web-overrides">
+/* pandoc 3.11 `.sourceCode{background-color:transparent;overflow:visible}` (0,1,0)
+   defeats the engine pre rule (0,0,1); restore the code-block surface + scroll. */
+pre.sourceCode {
+  background-color: var(--web-surface);
+  color: var(--web-text);
+  overflow-x: auto;
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<header id="title-block-header">
+<h1 class="title">Cognitive Diagrams: Reviewing Categorical Accounts of
+Linguistic Case</h1>
+<p class="author">Daniel Ari Friedman</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#abstract" id="toc-abstract"><span
+class="toc-section-number">1</span> Abstract</a></li>
+<li><a href="#sec:introduction" id="toc-sec:introduction"><span
+class="toc-section-number">2</span> Introduction: Case, Composition, and
+the Limits of a Shared Diagram</a>
+<ul>
+<li><a href="#sec:whats-new" id="toc-sec:whats-new"><span
+class="toc-section-number">2.1</span> Contributions and
+evidence</a></li>
+</ul></li>
+<li><a href="#sec:research-questions"
+id="toc-sec:research-questions"><span
+class="toc-section-number">3</span> Research Questions and Evidence
+Map</a></li>
+<li><a href="#sec:case-systems" id="toc-sec:case-systems"><span
+class="toc-section-number">4</span> Case Systems and Alignment</a></li>
+<li><a href="#sec:case-categories" id="toc-sec:case-categories"><span
+class="toc-section-number">5</span> Case-Role Graphs and Categorical
+Presentations</a></li>
+<li><a href="#sec:categorial-grammar"
+id="toc-sec:categorial-grammar"><span
+class="toc-section-number">6</span> Categorial Grammar and Executable
+Reductions</a></li>
+<li><a href="#sec:case-type-logic" id="toc-sec:case-type-logic"><span
+class="toc-section-number">7</span> Case Features and Voice
+Alternation</a></li>
+<li><a href="#sec:categorical-semantics"
+id="toc-sec:categorical-semantics"><span
+class="toc-section-number">8</span> Compositional Distributional
+Semantics</a>
+<ul>
+<li><a href="#sec:discocat-meaning-functor"
+id="toc-sec:discocat-meaning-functor"><span
+class="toc-section-number">8.1</span> An explicit tensor
+contraction</a></li>
+</ul></li>
+<li><a href="#sec:compact-closure-complexity"
+id="toc-sec:compact-closure-complexity"><span
+class="toc-section-number">9</span> Duality Identities and Diagram
+Complexity</a></li>
+<li><a href="#sec:discocirc-discourse"
+id="toc-sec:discocirc-discourse"><span
+class="toc-section-number">10</span> Discourse: Entity Bookkeeping and
+State-Update Proposals</a></li>
+<li><a href="#sec:enriched-categories"
+id="toc-sec:enriched-categories"><span
+class="toc-section-number">11</span> Candidate Similarities and <span
+class="math inline">\([0,1]\)</span>-Enrichment</a></li>
+<li><a href="#sec:magnitude-homology"
+id="toc-sec:magnitude-homology"><span
+class="toc-section-number">12</span> Magnitude, Weightings, and
+Numerical Sensitivity</a></li>
+<li><a href="#sec:topos-theory" id="toc-sec:topos-theory"><span
+class="toc-section-number">13</span> Topos-Theoretic Bridges:
+Requirements and Present Scope</a>
+<ul>
+<li><a href="#what-the-software-represents"
+id="toc-what-the-software-represents"><span
+class="toc-section-number">13.1</span> What the software
+represents</a></li>
+<li><a href="#sec:morita-two-object"
+id="toc-sec:morita-two-object"><span
+class="toc-section-number">13.2</span> What a bridge would
+require</a></li>
+</ul></li>
+<li><a href="#sec:cognitive-integration"
+id="toc-sec:cognitive-integration"><span
+class="toc-section-number">14</span> Bayesian Case-Role Beliefs and
+Active-Inference Motivation</a></li>
+<li><a href="#sec:diagrammatic-cognition"
+id="toc-sec:diagrammatic-cognition"><span
+class="toc-section-number">15</span> Cognitive Hypotheses and Testable
+Comparisons</a></li>
+<li><a href="#sec:daif-results" id="toc-sec:daif-results"><span
+class="toc-section-number">16</span> Distributional Utilities and
+Synthetic Filtering</a>
+<ul>
+<li><a href="#sec:daif-pushforward" id="toc-sec:daif-pushforward"><span
+class="toc-section-number">16.1</span> Finite score distributions and
+projection</a></li>
+<li><a href="#sec:daif-quantile" id="toc-sec:daif-quantile"><span
+class="toc-section-number">16.2</span> Pairwise quantile regression and
+distortion</a></li>
+<li><a href="#sec:daif-vmp" id="toc-sec:daif-vmp"><span
+class="toc-section-number">16.3</span> Filtering, single-factor
+messages, and factor scores</a></li>
+<li><a href="#sec:daif-policy" id="toc-sec:daif-policy"><span
+class="toc-section-number">16.4</span> Caller-defined policy
+scores</a></li>
+<li><a href="#sec:daif-erp" id="toc-sec:daif-erp"><span
+class="toc-section-number">16.5</span> Prediction-error and ERP-inspired
+proxies</a></li>
+<li><a href="#sec:daif-metrics" id="toc-sec:daif-metrics"><span
+class="toc-section-number">16.6</span> Metrics and reconstruction
+conventions</a></li>
+<li><a href="#sec:daif-limitations" id="toc-sec:daif-limitations"><span
+class="toc-section-number">16.7</span> Scope and extensions</a></li>
+<li><a href="#sec:cerebrum" id="toc-sec:cerebrum"><span
+class="toc-section-number">16.8</span> CEREBRUM as a design
+vocabulary</a></li>
+</ul></li>
+<li><a href="#sec:synthetic-statistics"
+id="toc-sec:synthetic-statistics"><span
+class="toc-section-number">17</span> Synthetic Statistical Behavior of
+the Utilities</a>
+<ul>
+<li><a href="#sec:exp-filtering" id="toc-sec:exp-filtering"><span
+class="toc-section-number">17.1</span> Filtering and transition
+ablation</a></li>
+<li><a href="#sec:exp-calibration" id="toc-sec:exp-calibration"><span
+class="toc-section-number">17.2</span> Calibration of quantile
+coverage</a></li>
+<li><a href="#sec:exp-quantile-projection"
+id="toc-sec:exp-quantile-projection"><span
+class="toc-section-number">17.3</span> Projection and quantile
+identities</a></li>
+<li><a href="#sec:exp-sensitivity" id="toc-sec:exp-sensitivity"><span
+class="toc-section-number">17.4</span> Sensitivity sweeps</a></li>
+<li><a href="#sec:exp-controls" id="toc-sec:exp-controls"><span
+class="toc-section-number">17.5</span> Validity controls</a></li>
+<li><a href="#sec:exp-limits" id="toc-sec:exp-limits"><span
+class="toc-section-number">17.6</span> Interpretation
+boundaries</a></li>
+</ul></li>
+<li><a href="#sec:quantum-active-inference"
+id="toc-sec:quantum-active-inference"><span
+class="toc-section-number">18</span> Quantum Diagram Connections and
+Their Assumptions</a></li>
+<li><a href="#sec:quantum-semantics"
+id="toc-sec:quantum-semantics"><span
+class="toc-section-number">19</span> Case Labels as Measurement
+Outcomes</a></li>
+<li><a href="#sec:ai-implications" id="toc-sec:ai-implications"><span
+class="toc-section-number">20</span> Proposed Case-Labeled Agent
+Interfaces</a></li>
+<li><a href="#sec:cognitive-security"
+id="toc-sec:cognitive-security"><span
+class="toc-section-number">21</span> Role Policies and the Limits of
+Type-Based Security</a>
+<ul>
+<li><a href="#sec:cognitive-security-present-day"
+id="toc-sec:cognitive-security-present-day"><span
+class="toc-section-number">21.1</span> Requirements for operational
+enforcement</a></li>
+<li><a href="#sec:cognitive-security-limitations"
+id="toc-sec:cognitive-security-limitations"><span
+class="toc-section-number">21.2</span> Limits</a></li>
+</ul></li>
+<li><a href="#sec:conclusion" id="toc-sec:conclusion"><span
+class="toc-section-number">22</span> Conclusion</a>
+<ul>
+<li><a href="#sec:future-directions"
+id="toc-sec:future-directions"><span
+class="toc-section-number">22.1</span> Next experiments and
+proofs</a></li>
+</ul></li>
+<li><a href="#sec:syntactic-diagrams"
+id="toc-sec:syntactic-diagrams"><span
+class="toc-section-number">23</span> Appendix A: Schematic Construction
+Panel</a></li>
+<li><a href="#sec:notation" id="toc-sec:notation"><span
+class="toc-section-number">24</span> Appendix B: Notation and
+Conventions</a>
+<ul>
+<li><a href="#sec:notation-linguistic"
+id="toc-sec:notation-linguistic"><span
+class="toc-section-number">24.1</span> Linguistic labels</a></li>
+<li><a href="#sec:notation-categorical"
+id="toc-sec:notation-categorical"><span
+class="toc-section-number">24.2</span> Algebra and
+probabilities</a></li>
+</ul></li>
+<li><a href="#sec:test-suite-inventory"
+id="toc-sec:test-suite-inventory"><span
+class="toc-section-number">25</span> Appendix C: Reproduction and
+Verification Scope</a></li>
+</ul>
+</nav>
+<main id="main-content" tabindex="-1">
+<h1 data-number="1" id="abstract"><span
+class="header-section-number">1</span> Abstract</h1>
+<p>Linguistic case offers a useful test of how diagrams connect
+relational structure, compositional syntax, and uncertainty. This
+article reviews categorical approaches and supplies an executable
+collection of deliberately small examples. The implementation includes
+case-role graphs, pregroup derivations, tensor contractions, synthetic
+similarity matrices, Bayesian filtering, quantile utilities, and
+positive-operator-valued measurements. These components share notation,
+but their mathematical relationships require separate assumptions; a
+common diagrammatic vocabulary does not establish their equivalence.</p>
+<p>The principal contribution is an inspectable comparison of these
+constructions and their limits. We distinguish generated derivations
+from illustrative drawings, finite score distributions from Bellman
+return distributions, presentation statistics from topos invariants, and
+model-unit prediction errors from physiological measurements. The
+accompanying suite collects 1627 tests across 81 files; that is a
+collection count, and a separate source-bound quality receipt records
+1627 passing tests with 93.17% line-and-branch coverage (Appendix C).
+The figure pipeline produces 33 figures from source. All numerical
+illustrations use synthetic inputs; no corpus study, participant
+experiment, EEG fit, quantum-hardware run, or deployed-agent security
+evaluation is reported. Topos-theoretic transfer, cognitive advantages
+of case diagrams, and case-based authorization remain research proposals
+with explicit validation requirements. This is working revision 2.4.0;
+its local validation does not constitute publication or independent
+mathematical certification.</p>
+<hr />
+<h1 data-number="2" id="sec:introduction"><span
+class="header-section-number">2</span> Introduction: Case, Composition,
+and the Limits of a Shared Diagram</h1>
+<p>A sentence distinguishes participants and the relations between them.
+In “Alice chases Bob,” changing which participant occupies the subject
+position changes the interpretation. A representation that stores only
+an unordered pair of names loses this distinction. Case diagrams make
+selected relations visible and provide small objects on which to test
+composition, uncertainty, and interpretation.</p>
+<p>Three meanings of <em>case</em> must remain separate. Morphological
+case concerns forms and marking; grammatical relations concern positions
+such as subject and object; semantic roles concern participation in an
+event. They can correlate without coinciding. NOM is not a universal
+synonym for agent, and ACC does not always denote a patient. Our
+examples use role labels as modeling choices, not as a claim that every
+language has the same inventory.</p>
+<figure id="fig:case-minimal">
+<a class="figure-full-size-link" href="../figures/case_category_minimal.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/case_category_minimal.png"
+alt="Four coloured role nodes, NOM, ACC, INS, and VOC, linked by selected directed generators. Solid green arrows are admitted by the example specification; dashed red arrows illustrate excluded role promotions." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 1: A hand-specified 4-role graph
+used to introduce the notation. Nodes denote selected role labels and
+arrows denote named relations. This is a modeling example, not a graph
+extracted from a corpus.</figcaption>
+</figure>
+<p>Categorical compositional distributional semantics provides a
+mathematical account of how typed grammatical reductions can guide
+operations on word representations <span class="citation"
+data-cites="coecke2010mathematical">(<a
+href="#ref-coecke2010mathematical" role="doc-biblioref">Coecke et al.
+2010</a>)</span>. Enriched-category constructions give a different route
+from suitable text-extension probabilities to mathematical structure
+<span class="citation" data-cites="fritz2021enriched">(<a
+href="#ref-fritz2021enriched" role="doc-biblioref">Bradley et al.
+2021</a>)</span>. Neither result implies that an arbitrary role graph,
+attention matrix, or probability table automatically satisfies the
+relevant categorical axioms.</p>
+<h2 data-number="2.1" id="sec:whats-new"><span
+class="header-section-number">2.1</span> Contributions and evidence</h2>
+<p>This work contributes a connected exposition and reproducible
+examples, together with checks that expose where the examples stop. The
+categorical core distinguishes formal DisCoPy reductions from
+lightweight role bookkeeping. The numerical core tests normalization,
+support, composition inequalities, matrix sensitivity, quantile
+conventions, and measurement validity. The manuscript then uses those
+contracts to delimit proposed cognitive and security
+interpretations.</p>
+<p>The repository contains no trained linguistic model or empirical
+dataset. Terms such as <em>prediction</em>, <em>precision</em>, and
+<em>return</em> in compatibility APIs therefore need the operational
+definitions given below. A synthetic calculation can verify arithmetic
+under stated assumptions; it cannot establish those assumptions as facts
+about language or the brain.</p>
+<p>The reading order follows a dependency chain: alignment labels; graph
+and grammar constructions; semantic evaluation; enrichment and
+magnitude; the distinct requirements of topos theory; filtering and
+distributional utilities; synthetic statistical behavior of those
+utilities; measurement analogies; and proposed agent protocols. The
+research questions in sec. <a href="#sec:research-questions">3</a>
+identify which parts are implemented and which require new evidence. The
+synthetic-statistics section sec. <a
+href="#sec:synthetic-statistics">17</a> reports seeded computations of
+the utilities’ own behavior and adds no empirical claim.</p>
+<hr />
+<h1 data-number="3" id="sec:research-questions"><span
+class="header-section-number">3</span> Research Questions and Evidence
+Map</h1>
+<p>The project asks what can be represented and checked with small case
+diagrams. It does not test a universal cognitive theory. The distinction
+matters because the same drawing can be used as a pedagogical aid, a
+typed derivation, or a scientific hypothesis, with different standards
+of evidence.</p>
+<table id="tbl:research-questions">
+<caption>Table 1: Research questions, evidence, and missing
+steps.</caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Question</th>
+<th style="text-align: left;">Present evidence</th>
+<th style="text-align: left;">What remains required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Can selected argument structures be
+represented compositionally?</td>
+<td style="text-align: left;">Executable pregroup diagrams and tensor
+contractions</td>
+<td style="text-align: left;">Language-specific grammar coverage and
+evaluated parsing</td>
+</tr>
+<tr>
+<td style="text-align: left;">Can role similarities form an enriched
+category?</td>
+<td style="text-align: left;">Explicit axiom checks and max-product
+closure of a synthetic matrix</td>
+<td style="text-align: left;">Estimated similarities, uncertainty, and
+justified closure semantics</td>
+</tr>
+<tr>
+<td style="text-align: left;">Can case theories be transferred through a
+common classifying topos?</td>
+<td style="text-align: left;">Theory-presentation containers only</td>
+<td style="text-align: left;">Geometric theories, sites, equivalence
+witnesses, invariant transport</td>
+</tr>
+<tr>
+<td style="text-align: left;">Can uncertainty be updated
+consistently?</td>
+<td style="text-align: left;">Finite Bayesian filtering and
+distributional utility tests</td>
+<td style="text-align: left;">Learned generative models and held-out
+prediction</td>
+</tr>
+<tr>
+<td style="text-align: left;">Do diagrams improve human reasoning?</td>
+<td style="text-align: left;">Proposed experimental comparisons</td>
+<td style="text-align: left;">Participants, controlled stimuli,
+preregistered outcomes</td>
+</tr>
+<tr>
+<td style="text-align: left;">Can case labels help enforce agent
+authority?</td>
+<td style="text-align: left;">A finite role-policy checker</td>
+<td style="text-align: left;">Authenticated provenance, runtime
+enforcement, adversarial evaluation</td>
+</tr>
+</tbody>
+</table>
+<p>The phrase <em>implemented</em> below means an operation is available
+and exercised locally. <em>Illustrative</em> denotes a constructed
+example. <em>Proposed</em> denotes an unimplemented or unevaluated
+connection. Passing software tests does not promote a proposal to a
+theorem or an empirical finding.</p>
+<hr />
+<h1 data-number="4" id="sec:case-systems"><span
+class="header-section-number">4</span> Case Systems and Alignment</h1>
+<p>Comparative case analysis separates argument roles from their
+marking. We use S for the sole argument of a canonical intransitive
+predicate, A for the more agent-like argument of a canonical transitive
+predicate, and P for its more patient-like argument. Alignment describes
+how a specified marking system groups these roles. Case marking of full
+noun phrases, pronouns, and verbal person marking can differ within a
+language <span class="citation" data-cites="comrie2013alignment">(<a
+href="#ref-comrie2013alignment" role="doc-biblioref">Comrie
+2013</a>)</span>.</p>
+<table id="tbl:alignment-types">
+<caption>Table 2: Schematic alignment patterns. These are not an
+exhaustive classification of language-wide behavior.</caption>
+<thead>
+<tr>
+<th style="text-align: left;">Pattern</th>
+<th style="text-align: left;">Grouping in the simplified
+representation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Nominative–accusative</td>
+<td style="text-align: left;">S and A together; P separate</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ergative–absolutive</td>
+<td style="text-align: left;">S and P together; A separate</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tripartite</td>
+<td style="text-align: left;">S, A, and P distinct</td>
+</tr>
+<tr>
+<td style="text-align: left;">Neutral</td>
+<td style="text-align: left;">S, A, and P marked alike</td>
+</tr>
+<tr>
+<td style="text-align: left;">Active–stative / split-S</td>
+<td style="text-align: left;">Subclasses of S pattern differently</td>
+</tr>
+<tr>
+<td style="text-align: left;">Fluid-S</td>
+<td style="text-align: left;">Some S marking varies with construal or
+context</td>
+</tr>
+</tbody>
+</table>
+<p>Historical accounts of semantic participation, deep case, dependency,
+and proto-roles motivate different choices of analytical unit. They
+should not be treated as interchangeable theories simply because a
+diagram can display their labels. In particular, a morphological case
+system does not determine a unique category of semantic relations.</p>
+<p>The software’s standard inventory is NOM, ACC, GEN, DAT, INS, LOC,
+ABL, VOC. ERG, ABS, S, A, and P are additional enum labels used in
+alignment examples, beyond the 8 standard members. The standard
+inventory is a convenience, not a universal eight-case ontology. English
+names in the examples carry assigned grammatical-role metadata; most
+English full noun phrases do not inflect for nominative versus
+accusative case.</p>
+<figure id="fig:fluid-s">
+<a class="figure-full-size-link" href="../figures/fluid_s_volition_landscape.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/fluid_s_volition_landscape.png"
+alt="A synthetic logistic surface maps hand-selected volition and agentivity coordinates to an ERG-labelled probability. Verb labels are illustrative coordinates; a dashed line marks probability one-half." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 2: Synthetic Fluid-S weight sweep.
+The plotted probabilities are supplied by the example generator and
+illustrate a context-dependent mapping; they are not estimated
+volitionality judgments or language-specific frequencies.</figcaption>
+</figure>
+<p>A context probability in the Fluid-S API specifies a mixture between
+two case-label assignments. The numerical mixture is well-defined once
+its endpoints are supplied. Establishing that this mixture describes a
+language would require documented constructions, annotator agreement,
+and predictive evaluation. Language names in legacy convenience
+functions identify the motivating analogy rather than a validated
+grammar.</p>
+<hr />
+<h1 data-number="5" id="sec:case-categories"><span
+class="header-section-number">5</span> Case-Role Graphs and Categorical
+Presentations</h1>
+<p>The Python <code>CaseCategory</code> stores a finite role set and a
+list of labelled arrows. An arrow has source, target, label, and a
+weight in <span class="math inline">\([0,1]\)</span>. Identity arrows
+and composite arrows can be constructed. For composable <span
+class="math inline">\(f:A\to B\)</span> and <span
+class="math inline">\(g:B\to C\)</span>, the implementation multiplies
+weights:</p>
+<p><span id="eq:eq-2-1"><span class="math display">\[
+w(g\circ f)=w(g)w(f).
+\qquad{(1)}\]</span></span></p>
+<p>This gives a useful presentation of relational paths. The stored
+generator list need not contain every composite. Endpoint and weight
+checks therefore should not be described as a complete implementation of
+arbitrary hom-sets and their equations. <code>is_well_formed()</code>
+checks the stored representation; it does not prove that a proposed
+linguistic analysis is adequate.</p>
+<figure id="fig:case-standard">
+<a class="figure-full-size-link" href="../figures/case_category_standard.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/case_category_standard.png"
+alt="Eight case-role nodes and hand-authored directed generators, with synthetic weights and separately marked prohibited edges. The graph is a modelling specification, not a grammar inferred from language data." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 3: The standard synthetic role
+graph. Its arrows are explicit modeling choices; their presence is not a
+measured grammatical universal.</figcaption>
+</figure>
+<p>An alignment map assigns source labels to target labels. The two
+common groupings of S, A, and P differ as maps on named arguments, even
+when their unlabelled quotient sets have the same cardinality. In
+particular, NOM alone cannot determine whether a source argument was S
+or A, so an accusative-to-ergative mapping cannot generally recover the
+original argument from its surface case.</p>
+<figure id="fig:alignment">
+<a class="figure-full-size-link" href="../figures/alignment_comparison.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/alignment_comparison.png"
+alt="Three schematic mappings of S, A, and P: nominative-accusative groups S with A; ergative-absolutive groups S with P; tripartite gives each a separate label." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 4: Comparison of schematic
+alignment maps. The grouped labels illustrate which distinctions are
+retained or lost; the figure is not an equivalence proof between
+language grammars.</figcaption>
+</figure>
+<p><code>AlignmentFunctor</code> is a lightweight object/arrow mapping
+helper. Its identity and composition predicates compare endpoints and
+weights; they do not verify all target-hom membership or labelled-arrow
+equations. Some alignment factories contain only objects, so tests over
+their stored nonidentity arrows can be vacuous. A mathematical functor
+claim requires an explicit source and target category and preservation
+of their defining relations.</p>
+<figure id="fig:composition">
+<a class="figure-full-size-link" href="../figures/composition_triangle.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/composition_triangle.png"
+alt="A triangular path from NOM through ACC to DAT, with a direct dashed arrow labelled h equals g composed with f. The direct arrow denotes the composite path." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 5: A composition triangle showing
+the source, intermediate, and target of a selected path. Equality of two
+paths is an additional relation to establish, not a consequence of
+drawing a triangle.</figcaption>
+</figure>
+<p>For actual functors <span class="math inline">\(F,G:C\to D\)</span>,
+a natural transformation requires components <span
+class="math inline">\(\eta_A:F(A)\to G(A)\)</span> with</p>
+<p><span id="eq:eq-2-2"><span class="math display">\[
+G(f)\circ\eta_A=\eta_B\circ F(f).
+\qquad{(2)}\]</span></span></p>
+<p>The natural-transformation helper checks its supplied components and
+finite source arrows using the project’s representation. This is useful
+for examples, but neither a dative alternation nor a cross-linguistic
+correspondence becomes a natural transformation without the required
+maps and equations.</p>
+<hr />
+<h1 data-number="6" id="sec:categorial-grammar"><span
+class="header-section-number">6</span> Categorial Grammar and Executable
+Reductions</h1>
+<p>Categorial grammars associate lexical expressions with types that
+determine how they combine. In a pregroup presentation, a noun type
+<span class="math inline">\(n\)</span> has left and right adjoints.
+Ordered reductions use <span class="math inline">\(n^l n\leq 1\)</span>
+and <span class="math inline">\(n n^r\leq 1\)</span>, together with the
+corresponding expansion inequalities. These are directional operations;
+arbitrary wire exchange is not an axiom of a nonsymmetric pregroup.</p>
+<p>For the hand-assigned types of “Alice chases Bob,” the reduction
+is</p>
+<p><span id="eq:eq-3-2"><span class="math display">\[
+n\,(n^r s n^l)\,n\longrightarrow s.
+\qquad{(3)}\]</span></span></p>
+<p>The implementation builds words and cups with DisCoPy. The assertion
+below verifies the codomain of this specified derivation. It does not
+discover lexical types or establish grammaticality independently of
+them.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> discopy.rigid <span class="im">import</span> Ty, Box, Cup, Id</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n, s <span class="op">=</span> Ty(<span class="st">&quot;n&quot;</span>), Ty(<span class="st">&quot;s&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> (Box(<span class="st">&quot;Alice&quot;</span>, Ty(), n)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>         <span class="op">@</span> Box(<span class="st">&quot;chases&quot;</span>, Ty(), n.r <span class="op">@</span> s <span class="op">@</span> n.l)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>         <span class="op">@</span> Box(<span class="st">&quot;Bob&quot;</span>, Ty(), n))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>diagram <span class="op">=</span> words <span class="op">&gt;&gt;</span> (Cup(n, n.r) <span class="op">@</span> Id(s) <span class="op">@</span> Cup(n.l, n))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> diagram.cod <span class="op">==</span> s</span></code></pre></div>
+<figure id="fig:native-discocat">
+<a class="figure-full-size-link" href="../figures/string_diagram_discocat.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/string_diagram_discocat.png"
+alt="A native schematic places Alice, Bob, and chases in separate boxes. Noun and sentence wires and dashed role connections illustrate supplied metadata rather than an executable cup reduction." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 6: Native rendering of the
+transitive example. Case colors are supplied metadata; the drawing is a
+schematic companion to the executable DisCoPy construction.</figcaption>
+</figure>
+<figure id="fig:string-diagram">
+<a class="figure-full-size-link" href="../figures/discopy_sentence_progression.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discopy_sentence_progression.png"
+alt="Intransitive, transitive, and passive typed examples are shown side by side. Arrows separate examples and do not assert a semantics-preserving rewrite between sentences." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 7: Intransitive, transitive, and
+passive examples with explicitly assigned lexical types. Cup counts
+describe these constructions rather than a universal complexity scale
+for voice.</figcaption>
+</figure>
+<figure id="fig:multilingual-isomorphism">
+<a class="figure-full-size-link" href="../figures/discopy_multilingual.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discopy_multilingual.png"
+alt="English, Latin-inspired, and Japanese-inspired lexical substitutions share one normalized transitive diagram template. The displayed order is a template convention, not a verified surface grammar for all three languages." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 8: Lexical substitutions in a
+shared normalized diagram template. Language labels do not imply that
+the displayed order is each language’s surface order or that the code
+implements those languages’ grammars.</figcaption>
+</figure>
+<p>String diagrams represent equations within a specified categorical
+calculus. A drawing is a proof only when the allowed rewrites and
+interpretation have been established. Visual similarity alone does not
+prove a linguistic universal, semantic equivalence, or independence from
+word order.</p>
+<figure id="fig:discopy-transitive">
+<a class="figure-full-size-link" href="../figures/discopy_transitive.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discopy_transitive.png"
+alt="A larger native pregroup diagram contracts determiners, modifiers, and two noun arguments in the sentence about an agent intercepting a payload. Lexical types are supplied explicitly." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 9: A larger executable DisCoPy
+example using assigned modifier and argument types. Successful
+contraction checks the supplied type sequence.</figcaption>
+</figure>
+<figure id="fig:pregroup-unpacking">
+<a class="figure-full-size-link" href="../figures/pregroup_reduction_unpacking.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/pregroup_reduction_unpacking.png"
+alt="Four pedagogical panels show lexical types for Alice chases Bob, their tensor product, two noun cups, and a sentence-meaning box with remaining output type s." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 10: Pedagogical unpacking of the
+transitive reduction: lexical types, juxtaposition, cup contraction, and
+the remaining sentence output. The reduced output type is <span
+class="math inline">\(s\)</span>; the semantic sentence morphism is not
+thereby erased.</figcaption>
+</figure>
+<hr />
+<h1 data-number="7" id="sec:case-type-logic"><span
+class="header-section-number">7</span> Case Features and Voice
+Alternation</h1>
+<p>A case label attached to a drawing is different from a case-refined
+type enforced by a parser. Most constructors in this project use the
+same noun object <code>Ty("n")</code> and store NOM/ACC distinctions as
+metadata. They therefore do not reject every mismatched case
+feature.</p>
+<p>A proposed refinement can introduce distinct objects <span
+class="math inline">\(n_{\mathrm{NOM}}\)</span> and <span
+class="math inline">\(n_{\mathrm{ACC}}\)</span> and type a transitive
+verb as <span class="math inline">\(n_{\mathrm{NOM}}^r s
+n_{\mathrm{ACC}}^l\)</span>. Then the intended reductions involve those
+exact objects. This requires corresponding lexical assignments and
+explicit coercions where a grammar licenses them; it is not achieved by
+decorating an unrefined diagram after construction.</p>
+<p>Passivization changes grammatical realization while preserving
+selected semantic participation. The project offers both a schematic
+passive template and an example using a Swap primitive. These illustrate
+different representational choices. A Swap is available only in an
+appropriate symmetric extension and is not itself a general linguistic
+derivation of passive voice. Nor does changing a participant’s
+grammatical role necessarily change that participant’s identity.</p>
+<figure id="fig:discopy-passive">
+<a class="figure-full-size-link" href="../figures/discopy_passive.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discopy_passive.png"
+alt="A native diagram for Bob is chased by Alice uses a separately assigned passive predicate type and two noun cups, leaving sentence output s." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 11: Passive example with Bob in
+the subject slot and Alice in a supplied oblique slot. “By Alice” is an
+English oblique phrase; INS is a modeling label in some illustrations,
+not an English instrumental inflection. The generic noun type does not
+enforce these role labels.</figcaption>
+</figure>
+<p>Proof–type correspondences can clarify what a grammar derivation
+establishes. They do not make arbitrary case assignment computationally
+identical to Hindley–Milner inference, nor do they guarantee
+native-speaker judgments. This implementation performs selected typed
+compositions and role bookkeeping; it does not implement general
+case-feature inference, a full Lambek prover, or monadic root
+syntax.</p>
+<hr />
+<h1 data-number="8" id="sec:categorical-semantics"><span
+class="header-section-number">8</span> Compositional Distributional
+Semantics</h1>
+<p>A typed grammatical derivation can guide a semantic calculation. In
+the DisCoCat construction, a suitable interpretation maps grammatical
+types to semantic spaces and the derivation to a composition map <span
+class="citation" data-cites="coecke2010mathematical">(<a
+href="#ref-coecke2010mathematical" role="doc-biblioref">Coecke et al.
+2010</a>)</span>. This separates the choice of a grammar from the choice
+of lexical representations.</p>
+<h2 data-number="8.1" id="sec:discocat-meaning-functor"><span
+class="header-section-number">8.1</span> An explicit tensor
+contraction</h2>
+<p>Let <span class="math inline">\(a_i\)</span> and <span
+class="math inline">\(b_k\)</span> represent the two noun vectors and
+<span class="math inline">\(V_{ijk}\)</span> a transitive verb tensor,
+with the middle index ranging over sentence features. The example
+calculation is</p>
+<p><span id="eq:eq-4-2"><span class="math display">\[
+m_j=\sum_{i,k}a_i V_{ijk} b_k.
+\qquad{(4)}\]</span></span></p>
+<p>The source helper <code>create_tensor_semantics()</code> constructs
+deterministic example tensors and evaluates their contraction. These are
+generated representations, not pretrained embeddings or estimates from a
+corpus. Exchanging the arguments changes the result when the selected
+tensor is sensitive to that exchange; the formalism does not guarantee
+every tensor will distinguish them.</p>
+<figure id="fig:discopy-discocat">
+<a class="figure-full-size-link" href="../figures/discopy_composition.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discopy_composition.png"
+alt="Two native DisCoPy renderings show the tensor of Alice, chases, and Bob before and after attaching noun-type cups; the sentence output wire remains." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 12: Word tensor product followed
+by grammatical contraction in the transitive example. The diagram shows
+how assigned types determine the slots used by semantic
+evaluation.</figcaption>
+</figure>
+<figure id="fig:discopy-ditransitive">
+<a class="figure-full-size-link" href="../figures/discopy_ditransitive.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discopy_ditransitive.png"
+alt="A native typed diagram for Alice gives Bob a book contracts three noun arguments against the verb slots and leaves one sentence wire." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 13: A ditransitive example with
+three explicitly supplied argument slots. Recipient and theme labels are
+metadata unless refined noun objects are introduced.</figcaption>
+</figure>
+<p>The diagrams make dependency on argument position inspectable. This
+is a representational advantage, not a measured interpretability result.
+Tensor entries can still be opaque, high-dimensional, or poorly
+estimated. Similarly, transformer attention is not automatically a
+functor or an enriched hom-matrix; such an identification needs domains,
+codomains, and law-preserving maps. A useful empirical comparison would
+train alternative composition models on the same data and test argument
+reversal and generalization on held-out constructions.</p>
+<hr />
+<h1 data-number="9" id="sec:compact-closure-complexity"><span
+class="header-section-number">9</span> Duality Identities and Diagram
+Complexity</h1>
+<p>Cups and caps satisfy snake identities in the appropriate category
+with duals. A wire bent through a matching evaluation and coevaluation
+is equal to its identity morphism. The project constructs both sides and
+checks normal forms with DisCoPy; this is an executable algebraic
+example, not a new theorem.</p>
+<figure id="fig:discopy-snake">
+<a class="figure-full-size-link" href="../figures/discopy_snake.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discopy_snake.png"
+alt="A left cup-cap zigzag, straight identity wire, and right zigzag are equated in the specified rigid diagram calculus." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 14: Executable snake-equation
+diagrams and the identity wire. Equality is tested within the selected
+DisCoPy calculus.</figcaption>
+</figure>
+<figure id="fig:snake-unpacking">
+<a class="figure-full-size-link" href="../figures/snake_equation_unpacking.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/snake_equation_unpacking.png"
+alt="A pedagogical cup-cap zigzag is paired with a straight identity wire and the two typed duality identities. The equality applies inside the specified categorical calculus." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 15: Stepwise illustration of a
+snake identity. The allowed categorical equation licenses straightening
+the wire; geometric resemblance alone would not.</figcaption>
+</figure>
+<p>The complexity utilities report box count, cup count, cap count,
+depth, width, and normal-form size. The configurable score used by the
+examples is</p>
+<p><span id="eq:eq-4-4"><span class="math display">\[
+\kappa(D)=1N_{\mathrm{lex}}+0.5N_{\mathrm{cup}}+0.25N_{\mathrm{cap}}+0.1\,d(D).
+\qquad{(5)}\]</span></span></p>
+<p>Here <code>count_words</code> counts every non-Cup/non-Cap box; in
+diagrams containing a Swap, this is broader than a linguistic word
+count. The four coefficients are the declared defaults of
+<code>syntactic_complexity_score()</code> in the source, injected at
+build time; they are chosen weights, not a fitted psycholinguistic
+model. DisCoPy depth and width describe a particular representation and
+do not directly determine qubit count, hardware depth, processing time,
+or cognitive difficulty without an explicit compilation or measurement
+model.</p>
+<figure id="fig:complexity-comparison">
+<a class="figure-full-size-link" href="../figures/complexity_comparison.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/complexity_comparison.png"
+alt="Horizontal grouped bars compare total boxes, word boxes, and cups for ten explicitly constructed sentence examples. Row labels identify the example and lexical box contents; counts concern the implemented diagrams." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 16: Complexity measurements for
+the generator’s selected diagrams. Scores depend on the assigned lexical
+decomposition and the injected weights. The collection is illustrative
+rather than a benchmark sampled from a language.</figcaption>
+</figure>
+<p>The legacy <code>compute_pqc_decoherence_proxy()</code> derives a
+synthetic score from excess cups over caps and an arbitrary exponential
+factor. Despite legacy field names, it computes neither topological
+homology nor a physical decoherence rate. No physical or security
+conclusion in this manuscript relies on that score.</p>
+<hr />
+<h1 data-number="10" id="sec:discocirc-discourse"><span
+class="header-section-number">10</span> Discourse: Entity Bookkeeping
+and State-Update Proposals</h1>
+<p>The same participant can occupy different grammatical roles across
+sentences. The <code>Discourse</code> helper records explicitly supplied
+entity names and role histories. For “Alice chases Bob. Bob fears Alice.
+Alice smiles,” Alice’s stored sequence is NOM, ACC, NOM. This is
+bookkeeping over supplied sentence objects. It does not infer that the
+pronoun “she” refers to Alice.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.diagrams.string_diagram <span class="im">import</span> Sentence, Discourse</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>discourse <span class="op">=</span> Discourse()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>discourse.add_sentence(Sentence.transitive(<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;chases&quot;</span>, <span class="st">&quot;Bob&quot;</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>discourse.add_sentence(Sentence.transitive(<span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;fears&quot;</span>, <span class="st">&quot;Alice&quot;</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>discourse.add_sentence(Sentence.intransitive(<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;smiles&quot;</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> [r.name <span class="cf">for</span> r <span class="kw">in</span> discourse.role_history[<span class="st">&quot;Alice&quot;</span>]] <span class="op">==</span> [<span class="st">&quot;NOM&quot;</span>, <span class="st">&quot;ACC&quot;</span>, <span class="st">&quot;NOM&quot;</span>]</span></code></pre></div>
+<figure id="fig:discourse">
+<a class="figure-full-size-link" href="../figures/discopy_discocirc_discourse.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discopy_discocirc_discourse.png"
+alt="Native diagrams for Alice chases Bob and Bob runs appear in parallel. Bob is a repeated lexical label; the combined output is a tensor of sentence outputs." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 17: Tensor juxtaposition of two
+independently typed sentence diagrams. The output <span
+class="math inline">\(s\otimes s\)</span> does not itself encode
+coreference or a shared semantic memory.</figcaption>
+</figure>
+<figure id="fig:native-discourse">
+<a class="figure-full-size-link" href="../figures/discourse_string_diagram.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discourse_string_diagram.png"
+alt="Two vertical entity tracks labelled Alice and Bob intersect sentence boxes for chases and runs. Role dots record supplied NOM and ACC assignments across these sentence schematics." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 18: Native entity-history drawing
+for the two-sentence example. Persistent lines visualize explicit name
+matching in the supplied data.</figcaption>
+</figure>
+<figure id="fig:three-sentence-discourse">
+<a class="figure-full-size-link" href="../figures/discopy_three_sentence_discourse.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discopy_three_sentence_discourse.png"
+alt="Three independent native diagrams for Alice chases Bob, Bob fears Alice, and Alice smiles are tensored together. Shared names do not constitute a state-update circuit." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 19: Three independently
+constructed sentence diagrams with repeated entity labels. Shared
+spelling is visible, but a tensor of sentence outputs does not implement
+a DisCoCirc state-update circuit.</figcaption>
+</figure>
+<figure id="fig:discocirc-persistence">
+<a class="figure-full-size-link" href="../figures/discocirc_entity_persistence.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/discocirc_entity_persistence.png"
+alt="Three sentence schematics reuse the supplied names Alice and Bob. A lower ribbon tracks Alice through NOM, ACC, NOM and Bob through ACC, NOM, then absence; no inferred coreference or semantic state update is shown." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 20: A separate history ribbon
+makes the supplied role changes readable. The construction illustrates
+entity persistence without claiming learned coreference or implemented
+Frobenius updates.</figcaption>
+</figure>
+<p>A full discourse model would specify persistent semantic states and
+the update maps applied by sentences. It would also need a policy for
+aliases, repeated names, pronouns, and distinct participants with
+identical surface forms. These are open requirements here. Quantum
+compilation and trainability would introduce further choices of
+encoding, ansatz, observable, optimization, and hardware. Local
+observables alone do not justify an unconditional claim that barren
+plateaus are absent. No quantum circuit is trained in this project.</p>
+<hr />
+<h1 data-number="11" id="sec:enriched-categories"><span
+class="header-section-number">11</span> Candidate Similarities and <span
+class="math inline">\([0,1]\)</span>-Enrichment</h1>
+<p>For enrichment over the ordered monoid <span
+class="math inline">\(([0,1],\cdot,1)\)</span>, a finite hom-matrix
+<span class="math inline">\(Z\)</span> must satisfy</p>
+<p><span id="eq:eq-5-2"><span class="math display">\[
+Z_{ii}=1,\qquad Z_{ik}\geq Z_{ij}Z_{jk}\quad\text{for every }i,j,k.
+\qquad{(6)}\]</span></span></p>
+<p>The inequality follows the order convention used here. Symmetry is
+optional. Normalized conditional probabilities, cosine similarities, and
+attention weights do not generally satisfy these axioms. They are
+candidate inputs requiring separate justification.</p>
+<p>The standard 8-role matrix in
+<code>src/enriched_cat/enriched.py</code> is hand-selected and fails
+some composition inequalities. For example, its NOM-to-DAT value is
+0.45, whereas the NOM-to-ACC-to-DAT product is 0.85 × 0.55 = 0.4675. The
+failure is retained as a useful counterexample; the matrix is not
+described as an English estimate or a valid enriched category merely
+because its entries lie in <span
+class="math inline">\([0,1]\)</span>.</p>
+<figure id="fig:enriched-heatmap">
+<a class="figure-full-size-link" href="../figures/enriched_hom_matrix.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/enriched_hom_matrix.png"
+alt="An eight-by-eight heatmap prints hand-selected similarity values between case roles, with unit diagonal. It is labelled a synthetic candidate matrix because some multiplicative composition inequalities fail." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 21: Synthetic candidate similarity
+matrix. Read entries as selected numerical examples. The raw matrix
+fails composition closure; neither its colors nor its linguistic labels
+provide empirical provenance.</figcaption>
+</figure>
+<p><code>composition_closure()</code> computes the maximum path product
+using a Floyd–Warshall update <span
+class="math inline">\(Z_{ik}\leftarrow\max(Z_{ik},Z_{ij}Z_{jk})\)</span>.
+It returns a new matrix and leaves the raw input intact. With entries at
+most one and unit diagonals, cycles cannot improve a path product beyond
+a cycle-free representative. The resulting finite closure satisfies the
+multiplicative path inequalities up to the stated numerical
+tolerance.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.enriched_cat.enriched <span class="im">import</span> standard_enriched_category</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>candidate <span class="op">=</span> standard_enriched_category()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>closed <span class="op">=</span> candidate.composition_closure()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> closed.full_composition_check()[<span class="st">&quot;violations&quot;</span>]</span></code></pre></div>
+<p>Closure is a mathematical operation, not statistical validation. It
+raises selected similarities and can alter their interpretation,
+spectrum, magnitude, and clusters. Both raw and closed matrices should
+be retained in empirical work. Bradley, Terilla, and Vlassopoulos
+construct enriched structure from suitable text-extension probabilities
+<span class="citation" data-cites="fritz2021enriched">(<a
+href="#ref-fritz2021enriched" role="doc-biblioref">Bradley et al.
+2021</a>)</span>; this does not identify the present role matrix with
+their construction.</p>
+<hr />
+<h1 data-number="12" id="sec:magnitude-homology"><span
+class="header-section-number">12</span> Magnitude, Weightings, and
+Numerical Sensitivity</h1>
+<p>For a finite similarity matrix <span
+class="math inline">\(Z\)</span>, a weighting <span
+class="math inline">\(w\)</span> and coweighting <span
+class="math inline">\(v\)</span> satisfy <span
+class="math inline">\(Zw=\mathbf1\)</span> and <span
+class="math inline">\(v^T Z=\mathbf1^T\)</span>. When both exist, their
+sums agree because <span class="math inline">\(v^T Zw\)</span> can be
+evaluated in either order. If <span class="math inline">\(Z\)</span> is
+invertible, the matrix magnitude is</p>
+<p><span id="eq:eq-5-3"><span class="math display">\[
+\lvert Z\rvert=\mathbf1^T Z^{-1}\mathbf1.
+\qquad{(7)}\]</span></span></p>
+<p>For a two-role example <span
+class="math inline">\(Z=\left(\begin{smallmatrix}1&amp;a\\a&amp;1\end{smallmatrix}\right)\)</span>
+with <span class="math inline">\(0\leq a&lt;1\)</span>, the weighting is
+<span class="math inline">\((1/(1+a),1/(1+a))\)</span> and the magnitude
+is <span class="math inline">\(2/(1+a)\)</span>. At <span
+class="math inline">\(a=1\)</span>, the inverse does not exist, yet
+weightings and coweightings do exist and have sum one. Singularity
+therefore does not by itself make magnitude undefined.</p>
+<p>The implementation uses an inverse for well-conditioned nonsingular
+matrices and a pseudoinverse when required. In the latter case it checks
+the left and right weighting residuals; a least-squares vector that
+fails these equations is not accepted as magnitude. Matrix mutation
+invalidates the cached inverse. A near-singular result remains sensitive
+to perturbations, and residual tolerances are numerical criteria rather
+than exact proofs.</p>
+<p>For the raw illustrative matrix, the generated inverse-sum statistic
+is 2.49608, with two-norm condition number approximately 91.8505. Its
+object count minus that statistic is 5.50392. These describe this chosen
+matrix; the raw matrix’s failed enrichment axioms preclude presenting
+the result as a categorical invariant of a validated linguistic
+model.</p>
+<p>Magnitude homology is a distinct graded construction <span
+class="citation" data-cites="leinster2021magnitude">(<a
+href="#ref-leinster2021magnitude" role="doc-biblioref">Leinster and
+Shulman 2021</a>)</span>. The project does not construct its chain
+complex, differentials, or homology groups. A cup-minus-cap count is not
+a substitute. Likewise, a magnitude deficit is not automatically an
+entropy, a redundancy estimate, a reanalysis cost, or a security margin.
+Those interpretations require additional assumptions and evidence.</p>
+<p>For positive hom-values, the transformation <span
+class="math inline">\(d(i,j)=-\log Z_{ij}\)</span> converts the
+multiplicative composition inequality to a triangle inequality. Zero
+hom-values correspond to infinite distance, and symmetry is still an
+additional condition. This connection explains a mathematical
+relationship between similarity and distance; it does not identify
+arbitrary attention matrices with metric spaces.</p>
+<hr />
+<h1 data-number="13" id="sec:topos-theory"><span
+class="header-section-number">13</span> Topos-Theoretic Bridges:
+Requirements and Present Scope</h1>
+<p>A geometric theory has a specified signature and axioms in geometric
+logic. Its classifying topos represents its models across suitable
+toposes. Morita equivalence concerns equivalence of classifying toposes,
+or equivalently the appropriate natural equivalence of model categories.
+Caramello’s bridge programme uses alternative presentations of a common
+topos to transport invariant information <span class="citation"
+data-cites="caramello2016bridges">(<a href="#ref-caramello2016bridges"
+role="doc-biblioref">Caramello 2016</a>)</span>.</p>
+<p>This is stronger than similar vocabulary or matching counts. Adding a
+definable relation symbol can change signature size without changing the
+modeled structure. Conversely, two theories can have equal numbers and
+arities of symbols while imposing incompatible axioms. Counts of sorts,
+relations, or axioms are therefore neither necessary nor sufficient
+conditions for Morita equivalence.</p>
+<h2 data-number="13.1" id="what-the-software-represents"><span
+class="header-section-number">13.1</span> What the software
+represents</h2>
+<p><code>GeometricTheory</code> stores names, relation arities, and
+textual axiom descriptions. <code>ClassifyingTopos</code> is a
+compatibility name for a presentation-profile container; it does not
+construct a Grothendieck topology, a category of sheaves, or a
+classifying universal model. The standard builder supplies 8 sorts and 8
+relations; the minimal builder supplies 3 sorts and 3 relations. These
+are presentation statistics only.</p>
+<p><code>compare_theory_presentations()</code> compares those
+statistics. The deprecated <code>check_morita_equivalence()</code>
+retains the same profile-comparison result with a warning; its Boolean
+must not be interpreted as Morita equivalence.
+<code>bridge_transfer()</code> reports
+<code>morita_equivalent=None</code> and
+<code>transfer_possible=False</code> because no equivalence witness is
+supplied, even when profiles match.</p>
+<figure id="fig:functor-alignment">
+<a class="figure-full-size-link" href="../figures/functor_alignment.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/functor_alignment.png"
+alt="Two role-label graphs illustrate nominative-accusative and ergative-absolutive groupings. Dashed correspondence arrows show a chosen relabelling between the expanded diagrams, including merged labels." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 22: Schematic alignment mapping. A
+map between selected role labels illustrates a candidate correspondence;
+it does not construct a geometric morphism or a topos-theoretic
+bridge.</figcaption>
+</figure>
+<h2 data-number="13.2" id="sec:morita-two-object"><span
+class="header-section-number">13.2</span> What a bridge would
+require</h2>
+<p>For two candidate case theories, a substantive result would specify
+their geometric syntax, exhibit the relevant models or sites, construct
+comparison functors, and prove the required equivalence and coherence. A
+transferred claim must then be identified as invariant under that
+equivalence. No such witness is constructed here. A two-object picture
+or a matching profile cannot replace these steps.</p>
+<p>Topos logic also needs careful separation from probability and
+quantum mechanics. Heyting algebras are distributive, although excluded
+middle need not hold. Intuitionistic logic is not made classical by
+“sheaf decoherence,” and no cohomological collapse or thermodynamic
+limit follows from the present code. Formalizing linguistic theories and
+testing which invariants survive is a research direction, not an
+accomplished unification.</p>
+<hr />
+<h1 data-number="14" id="sec:cognitive-integration"><span
+class="header-section-number">14</span> Bayesian Case-Role Beliefs and
+Active-Inference Motivation</h1>
+<p>Active inference supplies a motivation for relating generative
+models, uncertainty, and action <span class="citation"
+data-cites="friston2017active">(<a href="#ref-friston2017active"
+role="doc-biblioref">Friston et al. 2017</a>)</span>. The implemented
+cognitive core is narrower: finite categorical beliefs, Bayesian
+likelihood updates, KL divergence, variational free-energy evaluation,
+and caller-defined policy scores.</p>
+<p>For prior probabilities <span class="math inline">\(p_i\)</span> and
+nonnegative likelihoods <span class="math inline">\(L_i\)</span> with
+positive evidence <span class="math inline">\(e=\sum_i p_iL_i\)</span>,
+the update is <span class="math inline">\(q_i=p_iL_i/e\)</span>.
+Likelihoods need not sum to one over states. A negative likelihood is
+invalid even where the prior is zero, and an all-zero or
+disjoint-support likelihood is an error rather than a reason to invent a
+uniform posterior.</p>
+<p>For a fixed generative pair <span
+class="math inline">\((p,L)\)</span>,</p>
+<p><span id="eq:variational-bound"><span class="math display">\[
+F(q)=D_{\mathrm{KL}}(q\Vert p)-\sum_i q_i\log L_i
+    =D_{\mathrm{KL}}(q\Vert p(\cdot\mid o))-\log e.
+\qquad{(8)}\]</span></span></p>
+<p>The identity holds with consistent support conventions. It
+establishes the usual bound for this fixed model; it does not imply that
+free energies computed under different incoming priors and observations
+must decrease. Zero-probability terms are masked rather than evaluated
+as <span class="math inline">\(0\log0\)</span>.</p>
+<figure id="fig:active-inference-belief">
+<a class="figure-full-size-link" href="../figures/active_inference_belief.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/active_inference_belief.png"
+alt="Three panels for synthetic alignment-frame evidence: the accusative-frame posterior increases, posterior entropy decreases, and per-update free energy varies. A separately labelled running minimum is an envelope, not the measured trajectory." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 23: Synthetic filtering over
+candidate alignment-frame labels. Likelihood vectors are hand-selected;
+the plot demonstrates the supplied update rule rather than an
+empirically inferred change in a language’s alignment.</figcaption>
+</figure>
+<p><code>sequential_belief_update()</code> consumes each supplied
+likelihood once. <code>distributional_case_assignment()</code>
+repeatedly consumes the same likelihood, optionally with a Markov
+prediction step; its iteration parameter is therefore an
+evidence-repetition choice, not just an optimizer budget. A single
+categorical belief indexes the candidates declared by the caller. It
+cannot simultaneously stand for every noun’s case, the whole parse tree,
+and an alignment system without an explicit joint model.</p>
+<p>Policy selection utilities evaluate supplied surprise,
+information-value, and utility vectors. A full active-inference model
+would need a specified generative process, observation predictions under
+policies, and preferences. Those components are not inferred from the
+graph drawing.</p>
+<hr />
+<h1 data-number="15" id="sec:diagrammatic-cognition"><span
+class="header-section-number">15</span> Cognitive Hypotheses and
+Testable Comparisons</h1>
+<p>A diagram can make a relation easy to inspect when its visual
+arrangement exposes a needed constraint. This motivates a hypothesis
+about case diagrams, not a universal claim that the brain prefers them.
+Drawing readability, algebraic correctness, and human reasoning
+performance are different outcomes.</p>
+<p>A controlled study could compare matched diagrammatic and textual
+explanations of the same small role structures. Accuracy, response time,
+and transfer to new examples should be measured separately, with
+training time, diagram familiarity, language background, and visual
+complexity controlled. Counterexamples in which a diagram hides a needed
+distinction are as informative as successes.</p>
+<p>The implementation’s prediction-error proxies provide another source
+of hypotheses. Multiplying a mismatch by a selected weight demonstrates
+sensitivity to that weight by construction. It does not establish that
+the weight is neural precision or that the output is an N400 or P600
+amplitude. The scalar example is</p>
+<p><span id="eq:pe-precision-error"><span class="math display">\[
+\mathrm{PE}=w\,|\mu_{\mathrm{pred}}-\mu_{\mathrm{obs}}|.
+\qquad{(9)}\]</span></span></p>
+<p>To evaluate a physiological interpretation, a study would need a
+dataset, preprocessing specification, electrode and time-window
+definitions, parameter estimation on training data, and held-out
+comparison against simpler alternatives. The current project includes
+none of those measurements. Consequently the ERP-inspired functions in
+sec. <a href="#sec:daif-erp">16.5</a> return uncalibrated model
+quantities.</p>
+<p>The software suite exercises specific algebraic and numerical
+contracts. It does not certify every statement in this review,
+independently verify the implementation, or establish cognitive
+privilege. The reproducibility appendix sec. <a
+href="#sec:test-suite-inventory">25</a> states what the tests cover and
+what empirical claims remain outside their scope.</p>
+<hr />
+<h1 data-number="16" id="sec:daif-results"><span
+class="header-section-number">16</span> Distributional Utilities and
+Synthetic Filtering</h1>
+<p>Distributional active inference is an existing research programme
+<span class="citation" data-cites="akgul2026distributional">(<a
+href="#ref-akgul2026distributional" role="doc-biblioref">Akgül et al.
+2026</a>)</span>. The local <code>src/daif/</code> package is a
+collection of experimental utilities inspired by distributional
+representations; it is not a reproduction of that paper’s complete
+algorithm. Several compatibility names predate the present
+clarification. This section defines the quantities actually
+computed.</p>
+<h2 data-number="16.1" id="sec:daif-pushforward"><span
+class="header-section-number">16.1</span> Finite score distributions and
+projection</h2>
+<p>For role probabilities <span class="math inline">\(q\)</span>, a
+row-stochastic transition matrix <span class="math inline">\(T\)</span>,
+dimensionless score vector <span class="math inline">\(R\)</span>, and
+<span class="math inline">\(\gamma\in[0,1]\)</span>,
+<code>push_forward_return()</code> forms</p>
+<p><span id="eq:eq-7-1"><span class="math display">\[
+z=R+\gamma T^Tq,\qquad \mu=\sum_i q_i\delta_{z_i}.
+\qquad{(10)}\]</span></span></p>
+<p>The mass at <span class="math inline">\(z_i\)</span> is <span
+class="math inline">\(q_i\)</span>. Mean and variance use exact finite
+weighted sums. The stored quantile values use the generalized inverse of
+this discrete CDF, removing zero-mass support. They do not interpolate
+new values between distinct atoms. For equal mass at the support
+endpoints 0 and 10, the midpoint levels 0.125, 0.375, 0.625, 0.875 yield
+0, 0, 10, 10.</p>
+<p>Despite its legacy name,
+<code>distributional_bellman_operator()</code> propagates beliefs and
+repeats this score calculation. It does not back up state-conditioned
+future-return distributions or sum discounted rewards. In the canonical
+counterexample configuration — uniform transition entry 0.5, uniform
+two-state belief, reward entries 1 and 0, and discount 0.9 — its score
+mean is 0.95. The true infinite-horizon expected return for that Markov
+reward process, computed from <span class="math inline">\((I-\gamma
+T)^{-1}R\)</span>, is 5. This counterexample rules out treating the
+utility as a Bellman solver; both quoted numbers are recomputed from the
+same declared configuration at build time.</p>
+<p><code>categorical_return_distribution()</code> and
+<code>DistributionalReturn.to_categorical()</code> share a C51-style
+projection: clip supplied samples to fixed support, then split each
+sample’s mass between adjacent atoms. Values outside the support
+contribute to endpoint atoms rather than disappearing. Stored quantiles
+do not reconstruct every property of the original law; projection of
+equally weighted quantile samples is an explicit approximation.</p>
+<h2 data-number="16.2" id="sec:daif-quantile"><span
+class="header-section-number">16.2</span> Pairwise quantile regression
+and distortion</h2>
+<p>For current values <span class="math inline">\(\theta_i\)</span>,
+target samples <span class="math inline">\(y_j\)</span>, and midpoint
+levels <span class="math inline">\(\tau_i\)</span>, the update uses
+every pair <span
+class="math inline">\(\delta_{ij}=y_j-\theta_i\)</span>, as motivated by
+quantile regression <span class="citation"
+data-cites="dabney2018distributional">(<a
+href="#ref-dabney2018distributional" role="doc-biblioref">Dabney,
+Rowland, et al. 2018</a>)</span>. Define <span
+class="math inline">\(H_\kappa\)</span> as the ordinary Huber loss. The
+implemented coordinate update is</p>
+<p><span id="eq:eq-7c-qr"><span class="math display">\[
+\theta_i&#39; = \theta_i + \alpha\frac1M\sum_j
+|\tau_i-\mathbf1_{\delta_{ij}&lt;0}|\,
+\operatorname{clip}(\delta_{ij},-\kappa,\kappa).
+\qquad{(11)}\]</span></span></p>
+<p>Here the Huber loss is unnormalized: its derivative is clipped at
+<span class="math inline">\(\kappa\)</span>. The learning-rate
+convention absorbs averaging over current coordinates. Comparing with a
+paper or implementation using <span
+class="math inline">\(H_\kappa/\kappa\)</span> requires corresponding
+rescaling of <span class="math inline">\(\alpha\)</span>. The output is
+sorted to retain quantile order. Current and target sample counts can
+differ.</p>
+<p><code>implicit_quantile_network_update()</code> applies pairwise
+Huber updates with distorted current probability levels; it contains no
+neural network. Target values are equally weighted samples; supplied
+target levels are validated metadata, not quadrature weights. The IQN
+literature concerns learning quantile functions <span class="citation"
+data-cites="dabney2018implicit">(<a href="#ref-dabney2018implicit"
+role="doc-biblioref">Dabney, Ostrovski, et al. 2018</a>)</span>. In this
+helper, for <span class="math inline">\(0&lt;\eta&lt;1\)</span>,
+optimistic distortion <span
+class="math inline">\(1-(1-\tau)^{1/\eta}\)</span> emphasizes upper
+values, while pessimistic distortion <span
+class="math inline">\(\tau^{1/\eta}\)</span> emphasizes lower values.
+Both reduce to the identity at <span
+class="math inline">\(\eta=1\)</span>; the direction reverses if <span
+class="math inline">\(\eta&gt;1\)</span>, so the mode name alone is
+insufficient without its parameter.</p>
+<h2 data-number="16.3" id="sec:daif-vmp"><span
+class="header-section-number">16.3</span> Filtering, single-factor
+messages, and factor scores</h2>
+<p>At each filter step the code computes <span
+class="math inline">\(p^-=T^Tq\)</span> and <span
+class="math inline">\(q&#39;=L\odot p^-/\sum_i L_i p^-_i\)</span>. It
+stores the updated belief before any stopping decision. Diagnostics
+include the complete posterior trajectory, the number of updates, and
+<code>stop_reason</code>. Stopping requires small changes in both belief
+and free energy; an increase in free energy alone is not an error
+because successive priors change.</p>
+<p><code>variational_message_passing()</code> is a single-factor
+calculation with an implicit uniform prior:</p>
+<p><span id="eq:eq-7c-vmp"><span class="math display">\[
+q_i=\operatorname{softmax}_i(\lambda_{\mathrm{lik},i}o_i).
+\qquad{(12)}\]</span></span></p>
+<p>It also returns <span
+class="math inline">\(\lambda_{\mathrm{prior}}+\lambda_{\mathrm{lik}}\)</span>
+as bookkeeping. Prior precision does not determine a nonuniform
+categorical prior. Because the incoming message is constant, extra
+sweeps do not perform general loopy inference.</p>
+<p>The legacy <code>bethe_free_energy()</code> is now also exposed as
+<code>factor_consistency_score()</code>. Its actual formula is</p>
+<p><span id="eq:eq-7c-bethe"><span class="math display">\[
+C(q)=\sum_a D_{\mathrm{KL}}(q\Vert\widehat f_a)
+      -\left(\sum_i(d_i-1)\right)H(q).
+\qquad{(13)}\]</span></span></p>
+<p>There is only one categorical distribution <span
+class="math inline">\(q\)</span>, and <span
+class="math inline">\(\widehat f_a\)</span> is a normalized supplied
+vector. This is not a Bethe free energy: no joint factor marginals,
+individual variable marginals, or factor potentials are represented.
+Adjacency must be binary, and negative factor weights are rejected.</p>
+<p><code>expected_information_gain()</code> returns each observation’s
+contribution <span class="math inline">\(p(o)D_{\mathrm{KL}}(q(\cdot\mid
+o)\Vert q)\)</span>. Its sum is mutual information only if the supplied
+likelihood columns sum to one across a complete observation alphabet. An
+arbitrary list of candidate likelihood vectors is not automatically such
+an alphabet.</p>
+<figure id="fig:daif-free-energy">
+<a class="figure-full-size-link" href="../figures/daif_free_energy_convergence.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/daif_free_energy_convergence.png"
+alt="Synthetic filter updates show per-update free energy. A companion panel plots KL from the predicted prior and negative expected log likelihood; their plotted sum equals the free-energy trajectory." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 24: Computed per-update free
+energy and its KL/data-fit decomposition for synthetic
+repeated-observation filtering. Each evidence vector is used for up to 3
+updates before the next vector. There is no fitted convergence envelope
+or fixed-objective convergence claim.</figcaption>
+</figure>
+<figure id="fig:daif-belief-trajectory">
+<a class="figure-full-size-link" href="../figures/daif_belief_trajectory.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/daif_belief_trajectory.png"
+alt="The ordered synthetic evidence updates concentrate posterior mass on NOM. Separate panels show role probabilities, decreasing entropy, and total variation between successive stored beliefs; the first undefined change is displayed as zero." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 25: A separate sequence consumes 6
+hand-selected likelihood vectors once each. Panels show probabilities,
+entropy, and total variation between adjacent posteriors for one latent
+role. The first displayed change is a zero placeholder; it is not a
+measured change from an omitted prior. No percentile bands or
+token-specific parses are inferred.</figcaption>
+</figure>
+<h2 data-number="16.4" id="sec:daif-policy"><span
+class="header-section-number">16.4</span> Caller-defined policy
+scores</h2>
+<p><code>G_policy()</code> evaluates <span
+class="math inline">\(-q\cdot\ell-q\cdot e-\gamma q\cdot
+u+\beta\operatorname{Var}(Z)\)</span> for supplied finite vectors <span
+class="math inline">\(\ell,e,u\)</span>. This can express a chosen
+surprise, information-value, utility, and risk tradeoff. It is not a
+general expected-free-energy derivation. Expected log likelihood of one
+observation is not ambiguity entropy, and posterior entropy is not
+information gain. Units must be made compatible by the coefficients.</p>
+<p>Policy probabilities are computed by a stable softmax of negative
+scores. Subtraction precedes temperature scaling to avoid overflow. Low
+temperature concentrates mass on minima, including equal treatment of
+tied minima; no optimality theorem about the environment follows.</p>
+<h2 data-number="16.5" id="sec:daif-erp"><span
+class="header-section-number">16.5</span> Prediction-error and
+ERP-inspired proxies</h2>
+<p>The scalar error is weighted surprisal <span
+class="math inline">\(-w\log q_i\)</span>, with a small positive
+probability floor in the compatibility API. A separate function uses
+<span class="math inline">\(wW_1\)</span> between two reconstructed
+quantile distributions. These are distinct mismatches, not
+interchangeable derivations of one physiological observable.</p>
+<p>The N400-inspired proxy is <span
+class="math inline">\(-s\lambda|m-m_0|\)</span>. The P600-inspired proxy
+is <span class="math inline">\(s
+k\max(0,\lambda_{\mathrm{post}}-\lambda_{\mathrm{prior}})\mathrm{DPE}\)</span>.
+Severity <span class="math inline">\(s\)</span>, scaling <span
+class="math inline">\(k\)</span>, and precision values are caller
+inputs. The waveform utility places these amplitudes in Gaussian
+templates with specified millisecond centers and widths. Millisecond
+timing labels do not calibrate amplitude to microvolts; compatibility
+fields ending in <code>_uV</code> still contain uncalibrated values.</p>
+<figure id="fig:daif-erp-predictions">
+<a class="figure-full-size-link" href="../figures/daif_erp_predictions.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/daif_erp_predictions.png"
+alt="Left: hand-selected role weights versus model prediction errors. Right: negative N400-inspired and positive P600-inspired amplitude proxies by role, explicitly labelled as uncalibrated model units." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 26: Synthetic prediction-error and
+amplitude proxies across role labels. Hand-selected weights, beliefs,
+and severity values determine the outputs. Amplitudes are model units;
+no EEG dataset, empirical error bars, or comparison with literature
+microvolt ranges is shown.</figcaption>
+</figure>
+<h2 data-number="16.6" id="sec:daif-metrics"><span
+class="header-section-number">16.6</span> Metrics and reconstruction
+conventions</h2>
+<p>Wasserstein distance uses both stored probability-level grids, even
+when their lengths match. Between levels it linearly interpolates
+quantiles and holds tails constant to zero and one. Integration for
+orders one and two is exact for these reconstructed laws. It is not
+exact for an unknown originating distribution, and no universal
+convergence rate is asserted.</p>
+<p>Histogram KL and entropy depend on the binning and smoothing
+parameters. <code>quantile_coverage()</code> compares observations with
+supplied quantiles; calling it does not itself create held-out
+calibration data. <code>convergence_diagnostics()</code> reports changes
+in a supplied series; a small change is not proof of a unique fixed
+point.</p>
+<h2 data-number="16.7" id="sec:daif-limitations"><span
+class="header-section-number">16.7</span> Scope and extensions</h2>
+<p>A genuine distributional-control experiment would need a reward
+process, state-conditioned return laws, a justified Bellman or inference
+operator, parameter learning, baseline comparisons, and independent
+evaluation data. An EEG experiment would additionally require
+physiological calibration. Neither is supplied here. The present
+utilities are useful as explicit numerical examples because these
+missing steps are visible. The seeded synthetic computations in sec. <a
+href="#sec:synthetic-statistics">17</a> characterize the filtering,
+calibration, projection, and sensitivity behavior of these utilities on
+their declared inputs; they remain synthetic and add no empirical
+evidence.</p>
+<h2 data-number="16.8" id="sec:cerebrum"><span
+class="header-section-number">16.8</span> CEREBRUM as a design
+vocabulary</h2>
+<p>The 8 familiar case labels can organize a proposed agent
+architecture: actor, affected content, recipient, instrument, context,
+source, possession, and address. This analogy does not establish eight
+neural modules or a universal factorization of cognition. The software
+does not implement a complete CEREBRUM agent. Proposed architectural
+mappings should be evaluated as engineering choices with explicit
+interfaces and tasks.</p>
+<hr />
+<h1 data-number="17" id="sec:synthetic-statistics"><span
+class="header-section-number">17</span> Synthetic Statistical Behavior
+of the Utilities</h1>
+<p>The preceding sections define what each utility computes. This
+section reports what those utilities <em>do</em> on their declared
+synthetic inputs, computed by the seeded runner in
+<code>src/experiments/</code>. Every quantity here is synthetic: inputs
+are fixed or seeded constructions, replication is resampling over seeded
+runs, and intervals summarize replication-to-replication variation of
+the computation itself. No corpus, participant, physiological, hardware,
+or deployed-agent evidence is involved, and none of these numbers
+estimates a property of any language or brain.</p>
+<p>The runner executes configured arms with a seeded PCG64 generator
+(seed 20260907, 256 replicates per study) and emits a schema-annotated
+result file whose configuration hash is
+<code>0ead4d99c7d6617c1d07342dd37636db5b07e14afe95214308f6b9a92fb7a5d1</code>;
+the manuscript quotes only registry-declared identifiers from that file
+through injection. Replicate-level means carry two-sided 95%
+normal-approximation intervals (normal quantile 1.95996); point maxima
+and residuals are reported as descriptive bounds without intervals.
+There are no p-values, significance labels, or comparisons with
+empirical work in this section, and all configured arms are reported
+without multiplicity adjustment.</p>
+<h2 data-number="17.1" id="sec:exp-filtering"><span
+class="header-section-number">17.1</span> Filtering and transition
+ablation</h2>
+<p>The filtering study assimilates a known synthetic likelihood over 3
+roles, repeating that same-likelihood assimilation 3 times per replicate
+with a tight convergence threshold, and compares the stored trajectory
+with the exact repeated-Bayes closed form. Mean posterior probability of
+the true role after the final assimilation is 0.997309 with interval
+[0.996974, 0.997644]. A paired arm re-runs the same repeated
+assimilation with a banded informative transition on identical draws, so
+the paired mean log-probability difference -0.0214211 nats with interval
+[-0.0225471, -0.0202951] isolates the effect of changing the transition
+while the likelihood is held fixed. The stored trajectory agrees with
+the closed form to a maximum deviation of 3.33067e-16, and the mean
+final free energy is 0.157986 nats with interval [0.150038, 0.165933].
+Posterior mode match is reported descriptively as 1.</p>
+<figure id="fig:experiment-filtering">
+<a class="figure-full-size-link" href="../figures/experiment_filtering.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/experiment_filtering.png"
+alt="Synthetic filtering and ablation results across independently seeded replicates. Points summarize replicate outcomes; labelled intervals quantify simulation uncertainty under the supplied model, with no linguistic measurements." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 27: Synthetic Bayesian transition
+ablation across seeded replicates: identity-transition assimilation
+versus a banded informative transition on identical draws, with
+replicate-to-replicate uncertainty bands. The bands are replication
+intervals of a synthetic computation, not sampling error from empirical
+data, and the plotted quantities are model probabilities and
+nats.</figcaption>
+</figure>
+<h2 data-number="17.2" id="sec:exp-calibration"><span
+class="header-section-number">17.2</span> Calibration of quantile
+coverage</h2>
+<p>For a finite discrete return law, the exact coverage target of a
+quantile level is its distribution function <span
+class="math inline">\(F(Q(\tau))\)</span>, which need not equal <span
+class="math inline">\(\tau\)</span> under the discrete generalized
+inverse; that atom gap is a separate descriptive quantity. With 19
+levels and 200 observations per replicate, observed coverage of the
+stored quantiles is compared with that exact target. The mean absolute
+deviation from the exact discrete-law target is 0.0202648 with interval
+[0.0187924, 0.0217371]; this deviation quantifies Monte Carlo sampling
+error of the empirical coverage estimate around the exact discrete
+target, not distance from a continuous coverage convention. The largest
+per-replicate deviation is 0.0698747, and the largest per-level gap
+between mean observed coverage and the mean exact target is 0.00392405.
+These diagnostics are properties of the stored representation and the
+seeded sampling scheme, not estimates from data.</p>
+<figure id="fig:experiment-calibration">
+<a class="figure-full-size-link" href="../figures/experiment_calibration.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/experiment_calibration.png"
+alt="Empirical coverage of synthetic discrete outcomes is compared with the exact cumulative probability at each model quantile. A separate error panel shows replicate uncertainty relative to this discrete target; nominal quantile levels are not treated as exact attainable coverage." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 28: Empirical discrete coverage of
+stored quantile levels against the exact <span
+class="math inline">\(F(Q(\tau))\)</span> target of the same synthetic
+law, with paired per-replicate sampling errors. Coverage targets are
+exact arithmetic properties of the discrete law; no empirical
+calibration data is used.</figcaption>
+</figure>
+<h2 data-number="17.3" id="sec:exp-quantile-projection"><span
+class="header-section-number">17.3</span> Projection and quantile
+identities</h2>
+<p>The C51-style projection must conserve total mass and preserve the
+mean of clipped samples. Across seeded replicates and configured atom
+counts, the maximum mass residual is 2.22045e-16, the mean
+mean-exactness residual is 6.78033e-17 with interval [6.10892e-17,
+7.45174e-17], and the largest such residual is 3.33067e-16. The
+Wasserstein reconstruction satisfies its self-distance identity to at
+most 0. The pairwise Huber update agrees with its finite-difference
+numerical gradient characterization to at most 8.15287e-11; this is a
+numerical agreement check of the implemented gradient, not a
+machine-precision identity proof.</p>
+<h2 data-number="17.4" id="sec:exp-sensitivity"><span
+class="header-section-number">17.4</span> Sensitivity sweeps</h2>
+<p>Configured sweeps vary one configuration parameter at a time and
+report every arm against its reference. Summarizing those arms, the
+largest absolute paired mean effect is 0.252565 for the discount sweep,
+0.120347 nats for the return-entropy bin-count sweep, and 0.757051 nats
+for the policy-temperature sweep. These are descriptive effect sizes of
+a synthetic computation under parameter changes; they measure the
+arithmetic sensitivity of the utilities, not any cognitive or empirical
+quantity.</p>
+<figure id="fig:experiment-sensitivity">
+<a class="figure-full-size-link" href="../figures/experiment_sensitivity.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/experiment_sensitivity.png"
+alt="Prespecified parameter sweeps show paired changes relative to each declared baseline using common random inputs. Every arm is displayed with pointwise simulation uncertainty; intervals do not correct for simultaneous comparisons." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 29: All configured sensitivity
+arms (discount, return-entropy bin count, policy temperature) plotted
+against their reference arms with pointwise paired intervals over seeded
+replicates. All effects are synthetic-computation sensitivities in
+dimensionless score units or nats; they carry no empirical
+interpretation.</figcaption>
+</figure>
+<h2 data-number="17.5" id="sec:exp-controls"><span
+class="header-section-number">17.5</span> Validity controls</h2>
+<p>The runner also executes analytic negative controls. The
+analytic-identity control suite reports 1, and the invalid-input control
+suite reports 1, where 1 means all analytic identity checks passed and 1
+means all malformed-input rejections behaved as declared. Separately,
+the crisp two-role POVM example satisfies completeness to a mean
+residual of 2.1684e-17 with interval [1.56478e-17, 2.77203e-17] and a
+maximum residual of 2.22045e-16 across replicates, consistent with the
+matrix contracts in sec. <a href="#sec:quantum-semantics">19</a>.</p>
+<h2 data-number="17.6" id="sec:exp-limits"><span
+class="header-section-number">17.6</span> Interpretation boundaries</h2>
+<p>Three boundaries delimit this section. First, replication intervals
+summarize variation across seeded runs of deterministic code; they are
+not sampling distributions over any population. Second, every configured
+arm is reported without multiplicity adjustment, and the configurations
+themselves are synthetic choices, not estimated models. Third, agreement
+with closed forms and numerical gradients validates the implementation
+of a stated computation; it neither extends the mathematics beyond its
+assumptions nor converts any utility into a Bellman solver, a general
+inference engine, or a measurement model. The reproduction path for
+every number in this section is documented in sec. <a
+href="#sec:test-suite-inventory">25</a>.</p>
+<hr />
+<h1 data-number="18" id="sec:quantum-active-inference"><span
+class="header-section-number">18</span> Quantum Diagram Connections and
+Their Assumptions</h1>
+<p>Typed diagrams also occur in quantum information, where wires denote
+systems and boxes denote operations. This shared notation makes some
+structural comparisons possible. It does not identify a grammatical
+derivation, a quantum circuit, and a Bayesian update as the same
+process.</p>
+<p>A categorical interpretation must specify its source category, target
+category, object map, arrow map, and preserved structure. The
+nonsymmetric ordering of pregroup grammar is especially important: a
+wire exchange available in a symmetric quantum-process category is not
+automatically a grammatical rewrite. A cup and a general ZX spider are
+also different operations; the presence of duality does not supply all
+the additional algebraic laws of a spider.</p>
+<p>The local implementation uses DisCoPy diagrams and finite-dimensional
+NumPy matrices. It does not implement ZX rewriting, generalized-flow
+circuit extraction, a topological quantum neural network, a TQFT
+evaluation, a sheaf of semantic channels, or a hardware compiler. These
+are possible external frameworks for future work, not local validation
+results. No conclusion about quantum advantage, trainability at
+arbitrary scale, thermodynamic semantic capacity, or protection against
+prompt injection is drawn from their names.</p>
+<p>The implemented measurement model in sec. <a
+href="#sec:quantum-semantics">19</a> can be evaluated directly and is
+consequently a more concrete point of comparison. Even there, a
+probabilistic analogy does not imply that linguistic cognition uses
+physical quantum coherence. A useful next experiment would compare a
+specified measurement-based classifier against a matched classical model
+and report exactly which resources and assumptions differ.</p>
+<hr />
+<h1 data-number="19" id="sec:quantum-semantics"><span
+class="header-section-number">19</span> Case Labels as Measurement
+Outcomes</h1>
+<p>A positive-operator-valued measure (POVM) is a family of positive
+semidefinite Hermitian effects <span class="math inline">\(E_c\)</span>
+that sum to the identity. A density matrix <span
+class="math inline">\(\rho\)</span> is positive semidefinite and
+Hermitian with trace one. Under these assumptions,</p>
+<p><span id="eq:eq-8-1"><span class="math display">\[
+P(c\mid\rho)=\operatorname{Tr}(E_c\rho),\qquad\sum_cP(c\mid\rho)=1.
+\qquad{(14)}\]</span></span></p>
+<p>The sum identity follows by linearity of trace. The implementation
+checks finite entries, dimensions, Hermiticity, positivity,
+completeness, and density normalization within explicit floating-point
+tolerances. A symmetric eigenvalue routine alone would not validate
+Hermiticity, which is checked separately. An individual effect is also
+required to lie below the identity.</p>
+<p><code>crisp_case_povm()</code> constructs orthogonal coordinate
+projectors. A projective measurement does not guarantee a deterministic
+outcome for every state: a mixture or superposition can yield several
+outcomes. The convenience <code>semantic_state()</code> constructs a
+diagonal mixture from supplied nonnegative role weights; it does not
+create coherence or entanglement.</p>
+<figure id="fig:quantum-povm">
+<a class="figure-full-size-link" href="../figures/quantum_povm_probabilities.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/quantum_povm_probabilities.png"
+alt="A bar chart shows Born-rule outcome probabilities for a supplied diagonal density and crisp case projectors. NOM has the largest mass, ACC and DAT share smaller equal masses, and the remaining labels have zero mass." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 30: Born-rule probabilities for
+orthogonal projectors and the synthetic diagonal mixture, with computed
+outcome probabilities 0.8 on NOM, 0.1 on ACC, and 0.1 on DAT. Remaining
+outcomes have zero probability. These bars are computed traces; they
+show neither interference fringes nor a continuous semantic-state
+density.</figcaption>
+</figure>
+<p><code>graded_case_povm()</code> creates diagonal effects from
+normalized role weights on basis coordinates.
+<code>fluid_s_povm()</code> rotates a two-role measurement according to
+a supplied context parameter. These are finite mathematical models.
+Interpreting their outcomes as case assignments is a chosen labeling
+convention, not a proof that grammatical alignment equals a quantum
+reference frame.</p>
+<p>A general caller can provide a coherent density matrix directly,
+subject to validation. Demonstrating an interference effect would
+require a specified state family and measurement whose probabilities
+depend on off-diagonal components. The canonical figure uses commuting
+diagonal objects and admits an ordinary classical probability
+interpretation. No physical quantum advantage or semantic
+channel-capacity result is established. The seeded completeness check of
+the canonical example is reported in sec. <a
+href="#sec:exp-controls">17.5</a>.</p>
+<hr />
+<h1 data-number="20" id="sec:ai-implications"><span
+class="header-section-number">20</span> Proposed Case-Labeled Agent
+Interfaces</h1>
+<p>Role labels can make an agent interaction easier to inspect: a
+requester initiates a task, an instrument executes an operation, an
+object is processed, and a recipient receives a result. A case-based
+interface could attach such labels to typed records and check allowed
+compositions. This is an engineering proposal, not a claim that existing
+agent protocols lack semantics or that linguistic case alone defines a
+secure protocol.</p>
+<p>A useful record would include authenticated actor identity, operation
+type, resource identifier, authority scope, input provenance, and result
+destination. These fields must be distinguished from user-editable text.
+Calling a piece of content “NOM” cannot grant it authority.</p>
+<table id="tbl:ai-case-roles">
+<caption>Table 3: An illustrative interface vocabulary, not a deployed
+protocol.</caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Proposed label</th>
+<th style="text-align: left;">Possible interface meaning</th>
+<th style="text-align: left;">Required additional information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">NOM</td>
+<td style="text-align: left;">Initiating actor</td>
+<td style="text-align: left;">Authenticated identity and
+authorization</td>
+</tr>
+<tr>
+<td style="text-align: left;">INS</td>
+<td style="text-align: left;">Tool or executor</td>
+<td style="text-align: left;">Capability, constraints, and executable
+operation</td>
+</tr>
+<tr>
+<td style="text-align: left;">ACC</td>
+<td style="text-align: left;">Processed content</td>
+<td style="text-align: left;">Origin, trust level, and allowed uses</td>
+</tr>
+<tr>
+<td style="text-align: left;">DAT</td>
+<td style="text-align: left;">Recipient</td>
+<td style="text-align: left;">Destination authorization and disclosure
+scope</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOC / ABL</td>
+<td style="text-align: left;">Context / source</td>
+<td style="text-align: left;">Actual environment and provenance
+records</td>
+</tr>
+</tbody>
+</table>
+<p>A composition check can establish that an output type is accepted by
+the next operation. It cannot by itself establish that either operation
+is truthful, authorized, privacy-preserving, or successful. The present
+repository supplies no network transport, protocol adapter, credential
+system, or reference monitor. A future prototype should connect the
+labels to real capability checks and evaluate both rejected unauthorized
+actions and permitted legitimate actions.</p>
+<p>Entity histories from sec. <a href="#sec:discocirc-discourse">10</a>
+could support an interaction trace if identities were supplied reliably.
+They would still need explicit semantics for state updates, delegation,
+revocation, and failures. No fixed-point theorem for multi-agent
+behavior follows from representing a dialogue as a graph.</p>
+<hr />
+<h1 data-number="21" id="sec:cognitive-security"><span
+class="header-section-number">21</span> Role Policies and the Limits of
+Type-Based Security</h1>
+<p>A useful prompt-injection analogy is the attempted promotion of
+processed content into instructions with authority. The security module
+represents selected role transitions and reports violations relative to
+a supplied finite policy. It operates on already assigned labels; it
+does not read arbitrary text and infer trustworthy authority.</p>
+<p><code>detect_type_violation()</code> rejects roles outside its
+category before considering identity transitions.
+<code>CaseFrameValidator</code> checks membership and pairwise licensed
+connections, refreshing its adjacency view when the mutable category
+changes. The assignment checker accepts a connection in either direction
+for its pairwise compatibility test, so its result must not be mistaken
+for verification of a directed execution trace. Reported severities are
+hand-selected policy scores, not calibrated attack probabilities.</p>
+<figure id="fig:security-violations">
+<a class="figure-full-size-link" href="../figures/security_type_violations.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/security_type_violations.png"
+alt="Two supplied-label data-flow examples compare an admitted trace with an attempted webpage-to-tool authority promotion. PASS and FAIL refer to the example policy; the hand-selected score is explicitly not runtime enforcement." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 31: A schematic authorized flow
+and an attempted content-to-authority promotion. The drawing
+communicates a policy distinction; it is not an observed attack trace or
+an executable firewall.</figcaption>
+</figure>
+<p>The compatibility class <code>MonoidalFunctor</code> checks pairwise
+role separation and existence of corresponding edges. Its method name
+<code>preserves_tensor()</code> is historical: the implementation has no
+tensor objects or tensorator coherence data. Monoidal functors need not
+be injective on objects, and two roles mapping to one object does not
+establish nonmonoidality. Indeed, grammatical alignment deliberately
+merges some argument distinctions. Whether a merge is prohibited is a
+policy decision.</p>
+<figure id="fig:monoidal-functor-security">
+<a class="figure-full-size-link" href="../figures/monoidal_functor_security.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/monoidal_functor_security.png"
+alt="A chosen role map is paired with a yes/no matrix for role separation and edge existence. The title identifies a synthetic policy, not a proof of monoidal functor laws." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 32: Truth table for the supplied
+role-separation policy. A failed cell records a label merge or missing
+edge under this rule, not mathematical failure of a monoidal law and not
+evidence that a linguistic alignment is malicious.</figcaption>
+</figure>
+<h2 data-number="21.1" id="sec:cognitive-security-present-day"><span
+class="header-section-number">21.1</span> Requirements for operational
+enforcement</h2>
+<p>A deployed system would need authenticated provenance, trustworthy
+assignment of roles, authorization at the tool boundary, and a check
+that the executed action matches the checked request. It would also need
+adversarial tests spanning indirect instructions, multi-turn context,
+confused delegation, and permitted role changes. The repository
+implements none of those system boundaries and reports no detection rate
+or security benchmark.</p>
+<h2 data-number="21.2" id="sec:cognitive-security-limitations"><span
+class="header-section-number">21.2</span> Limits</h2>
+<p>Role labels alone cannot detect deception, validate factual claims,
+or prevent disclosure. A rejected label transition may be a legitimate
+request under a different policy; an accepted transition may carry
+harmful or false content. Magnitude, graph topology, and quantum
+terminology provide no automatic security guarantee. The finite checker
+remains useful as a transparent specification example when its inputs,
+rule set, and missing enforcement layer are stated.</p>
+<hr />
+<h1 data-number="22" id="sec:conclusion"><span
+class="header-section-number">22</span> Conclusion</h1>
+<p>Case diagrams provide a compact setting for comparing relational
+labels, typed composition, uncertainty, and interpretation. The
+executable examples show how a chosen representation can be built and
+inspected. They also expose where a proposed identification fails: a
+similarity table may violate enrichment, profile counts do not decide
+Morita equivalence, a finite score distribution is not a Bellman return
+law, and a type-policy result is not a deployed security guarantee.</p>
+<p>The project’s contribution is an evidence-bounded synthesis with
+explicit computational contracts. Pregroup reductions and tensor
+calculations are implemented examples. Role-history drawings are
+supplied bookkeeping. Numerical figures use synthetic inputs. The
+measurement example computes valid probabilities for specified matrices.
+Cognitive advantage, physiological interpretation, inter-theory
+transfer, and operational agent security remain hypotheses or
+engineering proposals.</p>
+<h2 data-number="22.1" id="sec:future-directions"><span
+class="header-section-number">22.1</span> Next experiments and
+proofs</h2>
+<p>Priority extensions follow from the missing evidence. A linguistic
+evaluation should specify a corpus and annotation scheme, estimate
+parameters on training data, and test held-out constructions against
+baselines. An enrichment study should report the raw matrix, axiom
+failures, closure changes, and sensitivity of magnitude. A topos bridge
+should supply actual theories and an equivalence witness. A cognitive or
+EEG study should prespecify outcomes and compare the model with simpler
+explanations. A protocol prototype should enforce authenticated
+capabilities and test the full execution boundary.</p>
+<p>Each extension should preserve counterexamples that can falsify its
+checks. Passing tests supports the stated software contracts; it neither
+supplies absent experiments nor proves all mathematical interpretations.
+Keeping these distinctions explicit makes further work reproducible and
+its results easier to assess.</p>
+<hr />
+<h1 data-number="23" id="sec:syntactic-diagrams"><span
+class="header-section-number">23</span> Appendix A: Schematic
+Construction Panel</h1>
+<p>The panel collects eight hand-authored construction sketches. Its
+arcs are dependency-style annotations, not constituency trees produced
+by a parser. Some panels include a checked simple type template; the
+relative-clause and causative sketches display their interpretive
+structure without claiming a completed formal derivation.</p>
+<figure id="fig:syntactic-panel">
+<a class="figure-full-size-link" href="../figures/syntactic_case_panel.png" target="_blank" rel="noopener" aria-label="Open full-size figure"><img src="../figures/syntactic_case_panel.png"
+alt="Eight hand-authored dependency-style sketches cover intransitive, transitive, ditransitive, passive, schematic ergative, benefactive, relative-clause, and causative constructions. The last two explicitly state that no formal derivation is supplied." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
+<figcaption>Figure 33: 8 pedagogical sketches
+spanning intransitive, transitive, ditransitive, passive, ergative,
+benefactive, relative-clause, and causative patterns. Words, roles, and
+arcs are supplied by the generator. The ergative example uses schematic
+labels rather than an unverified language-specific sentence. Panels are
+not ordered by a measured complexity score.</figcaption>
+</figure>
+<p>The English examples use assigned NOM/ACC/DAT/INS labels to
+illustrate argument functions; those labels do not assert corresponding
+English case inflections. A benefit recipient or passive agent should
+not be equated with a particular morphological case across languages.
+Readers seeking executable reductions should use the DisCoPy
+constructors in sec. <a href="#sec:categorial-grammar">6</a>, whose
+types and codomains can be checked directly.</p>
+<hr />
+<h1 data-number="24" id="sec:notation"><span
+class="header-section-number">24</span> Appendix B: Notation and
+Conventions</h1>
+<h2 data-number="24.1" id="sec:notation-linguistic"><span
+class="header-section-number">24.1</span> Linguistic labels</h2>
+<p>S, A, and P denote the argument primitives defined in sec. <a
+href="#sec:case-systems">4</a>. NOM, ACC, GEN, DAT, INS, LOC, ABL, VOC,
+ERG, and ABS are case labels used in the examples. Their interpretation
+depends on the language or modeling context. Case color is redundant
+with a written label; it does not encode evidence strength.</p>
+<h2 data-number="24.2" id="sec:notation-categorical"><span
+class="header-section-number">24.2</span> Algebra and probabilities</h2>
+<table id="tbl:notation">
+<caption>Table 4: Symbols used in the mathematical and computational
+examples.</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Meaning here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(A,B,C\)</span></td>
+<td style="text-align: left;">Objects or specified role labels</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline">\(f:A\to
+B\)</span></td>
+<td style="text-align: left;">A typed arrow; its exact semantics must be
+supplied</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="math inline">\(g\circ
+f\)</span></td>
+<td style="text-align: left;">First <span
+class="math inline">\(f\)</span>, then <span
+class="math inline">\(g\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(\otimes\)</span></td>
+<td style="text-align: left;">Monoidal product in a specified
+category</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(n,s,n^l,n^r\)</span></td>
+<td style="text-align: left;">Noun, sentence, and adjoint types</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(Z_{ij}\)</span></td>
+<td style="text-align: left;">Candidate or verified hom-value,
+distinguished in context</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(|Z|\)</span></td>
+<td style="text-align: left;">Weighting/coweighting sum when
+defined</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(q,p,L,T\)</span></td>
+<td style="text-align: left;">Posterior, prior, likelihood,
+row-stochastic transition matrix</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(F\)</span></td>
+<td style="text-align: left;">Variational free energy for a specified
+fixed model</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(G\)</span></td>
+<td style="text-align: left;">Caller-defined policy score in the
+compatibility API</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(\tau,Q(\tau)\)</span></td>
+<td style="text-align: left;">Quantile probability level and value</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(E_c,\rho\)</span></td>
+<td style="text-align: left;">POVM effect and density matrix</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(W_p\)</span></td>
+<td style="text-align: left;">Wasserstein distance of order <span
+class="math inline">\(p\)</span> under a stated reconstruction</td>
+</tr>
+</tbody>
+</table>
+<p>Natural logarithms give entropy and KL in nats. Similarity weights
+and synthetic scores are dimensionless unless a scale is explicitly
+supplied. Variances have squared score units. ERP-inspired amplitudes
+are uncalibrated model units; waveform time coordinates are
+milliseconds. <code>return</code>, <code>Bellman</code>,
+<code>Bethe</code>, <code>MonoidalFunctor</code>, and
+<code>ClassifyingTopos</code> in legacy APIs do not override the
+narrower operational definitions in the text.</p>
+<hr />
+<h1 data-number="25" id="sec:test-suite-inventory"><span
+class="header-section-number">25</span> Appendix C: Reproduction and
+Verification Scope</h1>
+<p>Two different counts matter and must not be conflated. The suite
+<em>collects</em> 1627 tests in 81 files across 11 source subpackages; a
+collection count alone certifies nothing. A passing run is certified
+only by the source-bound quality receipt, which records 1627 passed, 0
+failed, and 0 skipped tests with 6175 of 6490 statements covered (93.17%
+combined). The receipt binds that evidence to source fingerprint
+80819a3816e4 and was recorded at 2026-09-08T07:04:03.730105+00:00; a
+receipt whose fingerprint no longer matches the tree is rejected. The
+metrics writer records installed NumPy 2.4.4 and DisCoPy 1.2.2.</p>
+<p>The suite covers role-graph construction; sampled endpoint and weight
+laws; explicit pregroup reductions; tensor evaluation; finite
+probability calculations; quantile update conventions; matrix magnitude
+and composition checks; POVM and density validation; finite role-policy
+checks; the seeded synthetic studies of sec. <a
+href="#sec:synthetic-statistics">17</a>; figure generation; and
+manuscript substitution. It uses real numerical arrays, files, and
+subprocesses. Test counts, coverage, and synthetic study outputs are not
+mathematical proofs or empirical effect sizes.</p>
+<p>Negative controls include malformed probability inputs, impossible
+observations, non-Hermitian effects, incompatible quantile grids, a
+composition-violating matrix, a matching theory profile without a
+transfer witness, manuscript math containing literal dollar delimiters,
+unregistered or nonfinite manuscript variables, and prose or captions
+containing numeric literals that no registry identifier backs. These
+cases matter because a validator that accepts everything can produce a
+superficially green run.</p>
+<p>From the project root, install and verify with:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync <span class="at">--frozen</span> <span class="at">--extra</span> mcp</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python scripts/quality_gate.py <span class="at">--coverage</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python scripts/run_experiments.py</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python scripts/generate_diagrams.py</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python scripts/inject_variables.py</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python scripts/validate_project.py</span></code></pre></div>
+<p>All canonical numerical examples are synthetic. Seeds or fixed arrays
+are declared in source. The project has no corpus split, participant
+sample, EEG dataset, quantum-hardware receipt, or operational-agent
+security evaluation. This revision is identified by <a
+href="https://zenodo.org/records/22653315">10.5281/zenodo.22653315</a>;
+the series uses DOI 10.5281/zenodo.19695259. The live deposit state is
+reported at the version-record link.</p>
+<p>The first command uses the lockfile; the quality gate runs lint,
+types, and the full coverage-enforced suite and writes the receipt under
+<code>output/reports/</code>. The experiments runner writes the
+schema-annotated synthetic results consumed by injection. Figure
+generation writes <code>../figures/</code> and the figure registry,
+binding each entry to the source fingerprint it was rendered from.
+Injection writes <code>output/manuscript/</code> and the variable
+manifest from the canonical numbered sources; validation re-checks every
+binding. Render through the sibling template engine using the
+lifecycle-qualified project selector documented in the repository
+README. Rendered PDFs require visual inspection in addition to text,
+link, and citation checks.</p>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-akgul2026distributional" class="csl-entry" role="listitem">
+Akgül, Abdullah, Gulcin Baykal, Manuel Haußmann, Mustafa Mert Çelikok,
+and Melih Kandemir. 2026. <em>Distributional Active Inference</em>. <a
+href="https://doi.org/10.48550/arXiv.2601.20985">https://doi.org/10.48550/arXiv.2601.20985</a>.
+</div>
+<div id="ref-fritz2021enriched" class="csl-entry" role="listitem">
+Bradley, Tai-Danae, John Terilla, and Yiannis Vlassopoulos. 2021.
+<span>“An Enriched Category Theory of Language: From Syntax to
+Semantics.”</span> <em>arXiv Preprint arXiv:2106.07890</em>. <a
+href="https://arxiv.org/abs/2106.07890">https://arxiv.org/abs/2106.07890</a>.
+</div>
+<div id="ref-caramello2016bridges" class="csl-entry" role="listitem">
+Caramello, Olivia. 2016. <span>“The Theory of Topos-Theoretic
+<span>‘Bridges’</span>: A Conceptual Introduction.”</span> <em>Glass
+Bead Journal</em>. <a
+href="https://www.glass-bead.org/article/the-theory-of-topos-theoretic-bridges-a-conceptual-introduction/">https://www.glass-bead.org/article/the-theory-of-topos-theoretic-bridges-a-conceptual-introduction/</a>.
+</div>
+<div id="ref-coecke2010mathematical" class="csl-entry" role="listitem">
+Coecke, Bob, Mehrnoosh Sadrzadeh, and Stephen Clark. 2010.
+<span>“Mathematical Foundations for a Compositional Distributional Model
+of Meaning.”</span> <em>Linguistic Analysis</em> 36: 345–84.
+</div>
+<div id="ref-comrie2013alignment" class="csl-entry" role="listitem">
+Comrie, Bernard. 2013. <span>“Alignment of Case Marking of Full Noun
+Phrases.”</span> In <em>The World Atlas of Language Structures
+Online</em>, edited by Matthew S. Dryer and Martin Haspelmath. Max
+Planck Institute for Evolutionary Anthropology. <a
+href="https://wals.info/chapter/98">https://wals.info/chapter/98</a>.
+</div>
+<div id="ref-dabney2018implicit" class="csl-entry" role="listitem">
+Dabney, Will, Georg Ostrovski, David Silver, and Rémi Munos. 2018.
+<span>“Implicit Quantile Networks for Distributional Reinforcement
+Learning.”</span> <em>Proceedings of the 35th International Conference
+on Machine Learning</em>, 1096–105. <a
+href="https://proceedings.mlr.press/v80/dabney18a.html">https://proceedings.mlr.press/v80/dabney18a.html</a>.
+</div>
+<div id="ref-dabney2018distributional" class="csl-entry"
+role="listitem">
+Dabney, Will, Mark Rowland, Marc G. Bellemare, and Rémi Munos. 2018.
+<span>“Distributional Reinforcement Learning with Quantile
+Regression.”</span> <em>Proceedings of the 32nd AAAI Conference on
+Artificial Intelligence (AAAI-18)</em>, 2892–901. <a
+href="https://doi.org/10.1609/aaai.v32i1.11791">https://doi.org/10.1609/aaai.v32i1.11791</a>.
+</div>
+<div id="ref-friston2017active" class="csl-entry" role="listitem">
+Friston, Karl J., Thomas FitzGerald, Francesco Rigoli, Philipp
+Schwartenbeck, and Giovanni Pezzulo. 2017. <span>“Active Inference: A
+Process Theory.”</span> <em>Neural Computation</em> 29 (1): 1–49. <a
+href="https://doi.org/10.1162/NECO_a_00912">https://doi.org/10.1162/NECO_a_00912</a>.
+</div>
+<div id="ref-leinster2021magnitude" class="csl-entry" role="listitem">
+Leinster, Tom, and Michael Shulman. 2021. <span>“Magnitude Homology of
+Enriched Categories and Metric Spaces.”</span> <em>Algebraic &amp;
+Geometric Topology</em> 21 (5): 2175–221. <a
+href="https://doi.org/10.2140/agt.2021.21.2175">https://doi.org/10.2140/agt.2021.21.2175</a>.
+</div>
+</div>
+</main>
+</body>
+</html>

@@ -9,14 +9,35 @@ from __future__ import annotations
 import numpy as np
 
 
+def _contains_bool(item) -> bool:
+    """Recursively find booleans in sequences, nested rows, and object arrays."""
+    if isinstance(item, (bool, np.bool_)):
+        return True
+    if isinstance(item, (list, tuple)):
+        return any(_contains_bool(child) for child in item)
+    if isinstance(item, np.ndarray) and item.dtype == object:
+        return any(_contains_bool(child) for child in item.flat)
+    return False
+
+
 def _as_float_array(values, name: str) -> np.ndarray:
     """Cast to float64, rejecting booleans and complex input outright."""
+    if isinstance(values, (list, tuple)) and _contains_bool(values):
+        # np.asarray infers float64 for mixed sequences, so the dtype check
+        # alone cannot see embedded booleans (e.g. [True, 0.0] or nested
+        # [[True, 0.0], [0.0, 1.0]] rows).
+        raise ValueError(f"{name} must contain numeric values, not booleans")
     raw = np.asarray(values)
     if raw.dtype == np.bool_:
         raise ValueError(f"{name} must contain numeric values, not booleans")
     if np.issubdtype(raw.dtype, np.complexfloating):
         raise ValueError(f"{name} must be real-valued; complex input is rejected")
-    return raw.astype(np.float64)
+    if raw.dtype == object and _contains_bool(raw):
+        raise ValueError(f"{name} must contain numeric values, not booleans")
+    try:
+        return raw.astype(np.float64)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{name} must contain real numeric values") from exc
 
 
 def finite_vector(values, name: str, size: int | None = None) -> np.ndarray:

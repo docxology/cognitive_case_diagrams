@@ -5,13 +5,16 @@ where the intransitive subject S receives different case marking depending
 on the speaker's construal of agentive volition. In Bats (Nakh-Daghestanian),
 'fall' takes ABS when accidental but ERG when volitional.
 
-Categorically, Fluid-S defines a context-dependent functor
-    F_θ: U → L
-parameterized by θ ∈ {+vol, −vol}:
-    F_{+vol}(S) = ERG    (volitional → agent-like)
-    F_{-vol}(S) = ABS    (non-volitional → patient-like)
-    F_θ(A) = ERG         (always agent)
-    F_θ(P) = ABS         (always patient)
+Categorically, Fluid-S defines a context-dependent functor on the
+intransitive-subject role:
+    F_volitional(S) = NOM-proxy marking (agent-like)
+    F_non-volitional(S) = ACC-proxy marking (patient-like)
+In the code's CaseRole vocabulary the surface proxies are NOM (agent-like)
+and ACC (patient-like); the manuscript's ERG/ABS are linguistic glosses for
+these markings (CaseRole.ERG/ABS are alignment-specific enum members, not
+mapping targets of this functor). The pre-alignment primitives A and P pass
+through unchanged — their alignment to the agent/patient markings is
+handled by the alignment dictionaries in case_category.
 
 The graded version replaces the binary θ with a probability p ∈ [0,1]
 representing the degree of agentive construal.
@@ -41,10 +44,11 @@ class FluidSFunctor:
     and ``ACC`` encodes P (Fluid-S languages reuse existing surface cases for
     context-dependent marking, manuscript §4–5). The mapping is:
 
-    - ``map_object(CaseRole.NOM)``: NOM if volitional, ACC if non-volitional
-      (the context-dependent S marking).
+    - ``map_object(CaseRole.S)`` and ``map_object(CaseRole.NOM)``: NOM if
+      volitional, ACC if non-volitional (the context-dependent S marking;
+      S is the intransitive-subject primitive, NOM its surface proxy).
     - every other enum member — including the pre-alignment primitives
-      ``CaseRole.S/A/P`` — passes through unchanged; A and P are NOT remapped
+      ``CaseRole.A/P`` — passes through unchanged; A and P are NOT remapped
       by this functor.
 
     Attributes:
@@ -86,18 +90,18 @@ class FluidSFunctor:
         (ABS-proxy) surface form, reflecting how Fluid-S languages
         reuse existing surface cases for context-dependent marking:
 
-            S → NOM (agent-like) if volitional
-            S → ACC (patient-like) if non-volitional
-            Other roles pass through unchanged
+            S and NOM → NOM (agent-like) if volitional
+            S and NOM → ACC (patient-like) if non-volitional
+            A, P and the obliques pass through unchanged
         """
-        if role == CaseRole.NOM:
-            # S (intransitive subject) — context-dependent
+        if role in (CaseRole.NOM, CaseRole.S):
+            # S (intransitive subject) and its NOM proxy — context-dependent
             if self.volition == VolitionContext.VOLITIONAL:
-                mapped = CaseRole.NOM  # ERG-like (agent marking)
-                logger.debug("S mapped to NOM (volitional/agent-like)")
+                mapped = CaseRole.NOM  # agent-like marking (ERG gloss)
+                logger.debug("S/NOM mapped to NOM (volitional/agent-like)")
             else:
-                mapped = CaseRole.ACC  # ABS-like (patient marking)
-                logger.debug("S mapped to ACC (non-volitional/patient-like)")
+                mapped = CaseRole.ACC  # patient-like marking (ABS gloss)
+                logger.debug("S/NOM mapped to ACC (non-volitional/patient-like)")
             return mapped
 
         # A (transitive agent) always maps to agent marking
@@ -124,14 +128,15 @@ class FluidSFunctor:
         if not 0.0 <= p_volitional <= 1.0:
             raise ValueError(f"p_volitional must be in [0,1], got {p_volitional}")
 
-        if role != CaseRole.NOM:
-            # Non-S roles are deterministic
+        if role not in (CaseRole.NOM, CaseRole.S):
+            # Roles other than the Fluid-S subject and its NOM proxy are
+            # deterministic
             return {self.map_object(role): 1.0}
 
-        # S role: probabilistic split
+        # S (and its NOM proxy): probabilistic split over the surface cases
         return {
-            CaseRole.NOM: p_volitional,      # ERG-like (volitional)
-            CaseRole.ACC: 1.0 - p_volitional,  # ABS-like (non-volitional)
+            CaseRole.NOM: p_volitional,      # agent-like (volitional)
+            CaseRole.ACC: 1.0 - p_volitional,  # patient-like (non-volitional)
         }
 
     def split_probability(self, role: CaseRole) -> dict[CaseRole, float]:

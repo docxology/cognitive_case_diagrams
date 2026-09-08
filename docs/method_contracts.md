@@ -9,6 +9,7 @@ All canonical numerical inputs are synthetic. An API name is not evidence that i
 | `MonoidalFunctor.preserves_tensor` | Pairwise role separation and edge existence | No tensorator or monoidal-law check; merging objects can be mathematically valid |
 | `standard_enriched_category` | Hand-selected symmetric candidate matrix | Fails composition; call `composition_closure()` explicitly |
 | `magnitude` | Inverse sum, or residual-validated pseudoinverse weighting sum | No unconditional entropy, redundancy, or security interpretation |
+| `FluidSFunctor` | Context-dependent S-marking: S and its NOM proxy map NOM/ACC by volition (graded: `{NOM: p, ACC: 1-p}`); A/P/obliques pass through | `CaseRole.ERG`/`ABS` are linguistic glosses, not mapping targets; `kernel()` identifies S with the surface cases; no empirical Bats claim |
 | `role_clusters` | Weak components of thresholded directed similarities | Transitive connectivity does not imply all pairs are close |
 | `compare_theory_presentations` | Counts and relation arities | Neither necessary nor sufficient for Morita equivalence |
 | `check_morita_equivalence` | Deprecated profile-comparison wrapper | Emits a warning; use the canonical name |

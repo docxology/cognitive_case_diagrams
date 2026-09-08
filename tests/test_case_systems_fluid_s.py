@@ -142,17 +142,27 @@ class TestBatsLanguage:
 class TestFluidSKernel:
     """Tests for functor kernel computation."""
 
-    def test_volitional_kernel_empty(self) -> None:
-        """Volitional functor: NOM ≠ ACC, so kernel is empty."""
-        f = create_fluid_s_functor(volitional=True)
-        assert len(f.kernel()) == 0
+    def test_volitional_kernel_identifies_s_with_nom(self) -> None:
+        """Volitional: S and NOM both map to NOM, so kernel = {(NOM,S)}.
 
-    def test_non_volitional_kernel_merges(self) -> None:
-        """Non-volitional functor: NOM→ACC, ACC→ACC, so kernel = {(NOM,ACC)}."""
-        f = create_fluid_s_functor(volitional=False)
+        Queue P1-08: S is now context-dependently marked (previously it
+        silently passed through, leaving the kernel empty)."""
+        f = create_fluid_s_functor(volitional=True)
         kernel = f.kernel()
         assert len(kernel) == 1
+        assert (CaseRole.NOM, CaseRole.S) in kernel
+
+    def test_non_volitional_kernel_merges(self) -> None:
+        """Non-volitional: S and NOM both map to ACC, so kernel = {(NOM,ACC), (S,ACC), (NOM,S)}.
+
+        Queue P1-08: S is now context-dependently marked (previously it
+        silently passed through, leaving only the (NOM,ACC) pair)."""
+        f = create_fluid_s_functor(volitional=False)
+        kernel = f.kernel()
+        assert len(kernel) == 3
         assert (CaseRole.NOM, CaseRole.ACC) in kernel
+        assert (CaseRole.NOM, CaseRole.S) in kernel
+        assert (CaseRole.ACC, CaseRole.S) in kernel
 
 
 class TestEnrichedWeight:

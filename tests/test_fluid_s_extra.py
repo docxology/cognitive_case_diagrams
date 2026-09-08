@@ -43,19 +43,21 @@ class TestMapMorphism:
 
 
 class TestKernel:
-    def test_volitional_kernel_empty(self):
-        """Volitional: NOM→NOM, ACC→ACC — no two distinct roles collapse."""
+    def test_volitional_kernel_identifies_S_with_NOM(self):
+        """Volitional: S maps to NOM, so kernel includes the (NOM, S) pair."""
         f = create_fluid_s_functor(volitional=True)
-        assert f.kernel() == []
+        kernel = f.kernel()
+        assert (CaseRole.NOM, CaseRole.S) in kernel
 
-    def test_non_volitional_kernel_has_pair(self):
-        """Non-volitional: NOM→ACC, ACC→ACC — NOM and ACC collapse."""
+    def test_non_volitional_kernel_has_three_pairs(self):
+        """Non-volitional: NOM->ACC, S context-dependent — three pairs total."""
         f = create_fluid_s_functor(volitional=False)
         kernel = f.kernel()
-        assert len(kernel) == 1
+        assert len(kernel) == 3
         roles_in_kernel = {r for pair in kernel for r in pair}
         assert CaseRole.NOM in roles_in_kernel
         assert CaseRole.ACC in roles_in_kernel
+        assert CaseRole.S in roles_in_kernel
 
     def test_kernel_returns_list(self):
         assert isinstance(create_fluid_s_functor().kernel(), list)

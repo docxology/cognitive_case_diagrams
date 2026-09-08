@@ -104,10 +104,6 @@ jobs:
           uv run --frozen python - <<'PY'
           from pathlib import Path
 
-          review = Path('output/reports/publication_review.json')
-          if review.exists():
-              review.unlink()
-
           from src.release_bundle import build_release_archive, verify_release_archive
           from src.release_metadata import validate_release_metadata
 
@@ -117,16 +113,18 @@ jobs:
           first = build_release_archive(
               Path('.'), destination / f'candidate-{version}.zip',
               version=version, publication_date=day,
+              exclude_review_record=True,
           )
           second = build_release_archive(
               Path('.'), destination / f'candidate-{version}-again.zip',
               version=version, publication_date=day,
+              exclude_review_record=True,
           )
           assert first['archive_sha256'] == second['archive_sha256'], (
               'candidate archive assembly is not deterministic'
           )
           assert verify_release_archive(destination / f'candidate-{version}.zip') == first
-          assert not any('publication_review' in name for name in first['files']), (
+          assert 'output/reports/publication_review.json' not in first['files'], (
               'candidate assembly must not carry a stale-bound review record'
           )
           print('verified candidate archive sha256:', first['archive_sha256'])

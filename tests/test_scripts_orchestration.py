@@ -198,13 +198,18 @@ class TestVariableSubstitution:
 
 class TestFigureRegistry:
     def test_write_registry_creates_json(self, tmp_path):
-        import importlib.util
-        spec = importlib.util.spec_from_file_location(
-            "generate_diagrams",
-            _PROJECT_ROOT / "scripts" / "generate_diagrams.py",
-        )
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
+        from src.visualization.figure_registry import write_figure_registry
+
+        project_root = tmp_path / "project"
+        (project_root / "docs").mkdir(parents=True)
+        (project_root / "docs/figure_alt_text.json").write_text("{}")
+        (project_root / "docs/manuscript").mkdir()
+        for name in ("src", "tests", "scripts"):
+            (project_root / name).mkdir()
+            (project_root / name / "example.py").write_text("value = 1\n")
+        (project_root / "pyproject.toml").write_text("[tool.coverage.report]\nfail_under = 90\n")
+        (project_root / "uv.lock").write_text("version = 1\n")
+        out_dir = project_root / "output" / "figures"
 
         # Create fake figure files
         fake_png = tmp_path / "fig1.png"
@@ -214,8 +219,8 @@ class TestFigureRegistry:
         fake_svg.write_text("fake")
         fake_txt.write_text("ignored")
 
-        mod._write_figure_registry([fake_png, fake_svg, fake_txt], tmp_path)
-        registry_path = tmp_path / "figure_registry.json"
+        write_figure_registry([fake_png, fake_svg, fake_txt], out_dir, project_root)
+        registry_path = out_dir / "figure_registry.json"
         assert registry_path.exists()
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
         assert len(registry) == 2  # txt excluded
@@ -226,18 +231,23 @@ class TestFigureRegistry:
         assert all("generated_by" in r for r in registry)
 
     def test_registry_label_format(self, tmp_path):
-        import importlib.util
-        spec = importlib.util.spec_from_file_location(
-            "generate_diagrams",
-            _PROJECT_ROOT / "scripts" / "generate_diagrams.py",
-        )
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
+        from src.visualization.figure_registry import write_figure_registry
 
+        project_root = tmp_path / "project"
+        (project_root / "docs").mkdir(parents=True)
+        (project_root / "docs/figure_alt_text.json").write_text("{}")
+        (project_root / "docs/manuscript").mkdir()
+
+        for name in ("src", "tests", "scripts"):
+            (project_root / name).mkdir()
+            (project_root / name / "example.py").write_text("value = 1\n")
+        (project_root / "pyproject.toml").write_text("[tool.coverage.report]\nfail_under = 90\n")
+        (project_root / "uv.lock").write_text("version = 1\n")
+        out_dir = project_root / "output" / "figures"
         p = tmp_path / "my_figure_name.png"
         p.write_text("fake")
-        mod._write_figure_registry([p], tmp_path)
-        registry = json.loads((tmp_path / "figure_registry.json").read_text())
+        write_figure_registry([p], out_dir, project_root)
+        registry = json.loads((out_dir / "figure_registry.json").read_text())
         assert registry[0]["label"] == "fig:my-figure-name"
 
 

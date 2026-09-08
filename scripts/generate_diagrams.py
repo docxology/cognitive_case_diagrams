@@ -59,10 +59,7 @@ Usage::
 """
 
 import argparse
-import json
-import hashlib
 import logging
-import re
 import sys
 from pathlib import Path
 
@@ -236,104 +233,25 @@ def main() -> int:
         for name, exc in errors:
             logger.warning("  ✗ %s: %s", name, exc)
 
-    # Write figure registry for PDF rendering pipeline
-    _write_figure_registry(all_outputs, out)
+    # Write figure registry for PDF rendering pipeline. Extracted to
+    # src/visualization/figure_registry.py so the release-critical writer is
+    # under src coverage; A5 guards the generation window, A6 rebuilds only in
+    # diagnostic mode. Per-domain failures above do not block the manifest —
+    # downstream gates (project_validation) reject stale/orphaned entries.
+    from src.release_validation import quality_input_fingerprint
+    from src.visualization.figure_registry import write_figure_registry
+
+    try:
+        write_figure_registry(
+            all_outputs, out, PROJECT_ROOT,
+            expected_fingerprint=quality_input_fingerprint(PROJECT_ROOT)["sha256"],
+            allow_rebuild=args.skip_failed,
+        )
+    except ValueError as exc:
+        logger.error("Figure registry not written: %s", exc)
+        return 1
 
     logger.info("=" * 60)
-
-    if errors and not args.skip_failed:
-        return 1
-    return 0
-
-
-# ``![caption](output/figures/<name>.png){#fig:<label>}`` — captures the image
-# filename and the Pandoc label the manuscript actually uses for it.
-_FIGURE_LABEL_RE = re.compile(
-    r"\]\((?:[^)]*/)?(?P<filename>[\w.-]+\.(?:png|pdf|svg))\)\{#(?P<label>fig:[\w:.-]+)\}"
-)
-
-
-def _manuscript_figure_labels(project_root: Path) -> dict[str, str]:
-    """Map figure filename -> the Pandoc label the manuscript assigns it.
-
-    The manuscript is the authority for its own cross-reference labels. Deriving
-    them from filenames instead (``fig:` + stem.replace('_','-')``) produced
-    ``fig:case-category-standard`` where the manuscript writes ``fig:case-standard``,
-    so 20 of 30 labels failed the shared publication gate's
-    "Unregistered figure reference" check.
-    """
-    manuscript_dir = project_root / "docs" / "manuscript"
-    if not manuscript_dir.is_dir():
-        manuscript_dir = project_root / "manuscript"
-    labels: dict[str, str] = {}
-    for md in sorted(manuscript_dir.glob("*.md")):
-        for m in _FIGURE_LABEL_RE.finditer(md.read_text(encoding="utf-8")):
-            labels[m.group("filename")] = m.group("label")
-    return labels
-
-
-def _write_figure_registry(paths: list[Path], out_dir: Path) -> None:
-    """Write figure_registry.json consumed by the PDF rendering pipeline."""
-    project_root = Path(__file__).resolve().parent.parent
-    manuscript_labels = _manuscript_figure_labels(project_root)
-    alt_texts = json.loads((project_root / "docs/figure_alt_text.json").read_text())
-    from src.release_validation import quality_input_fingerprint
-    generation_inputs = quality_input_fingerprint(project_root)["sha256"]
-
-    seen: set[str] = set()
-    registry: list[dict] = []
-    unlabelled: list[str] = []
-    for p in paths:
-        if p.suffix not in {".png", ".pdf", ".svg"}:
-            continue
-        if p.name in seen:
-            continue
-        seen.add(p.name)
-        label = manuscript_labels.get(p.name)
-        if label is None:
-            # Not referenced by the manuscript — keep the derived slug so the
-            # entry still round-trips, and say so rather than failing silently.
-            label = f"fig:{p.stem.replace('_', '-')}"
-            unlabelled.append(p.name)
-        try:
-            rel = p.resolve().relative_to(project_root)
-        except ValueError:
-            rel = p
-        registry.append({
-            "filename": p.name,
-            # Project-relative: absolute paths embedded the author's home
-            # directory in a repo that ships to GitHub and Zenodo.
-            "path": str(rel),
-            "label": label,
-            "alt_text": alt_texts.get(p.name, ""),
-            "generated_by": "scripts/generate_diagrams.py",
-            "generator_input_fingerprint": generation_inputs,
-            "sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
-            "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption",
-        })
-    dest = out_dir / "figure_registry.json"
-    # Merge with the existing registry instead of replacing it: a
-    # ``--domain X`` run regenerates only X's figures, and wholesale
-    # replacement would drop the other domains' entries from the manifest the
-    # PDF pipeline consumes. Newly rendered figures win on filename clashes.
-    existing: dict[str, dict] = {}
-    if dest.exists():
-        try:
-            for entry in json.loads(dest.read_text(encoding="utf-8")):
-                filename = entry.get("filename")
-                if isinstance(filename, str):
-                    existing[filename] = entry
-        except (json.JSONDecodeError, AttributeError):
-            logger.warning("Existing figure registry unreadable — rebuilding it.")
-    merged = {**existing, **{e["filename"]: e for e in registry}}
-    merged_list = sorted(merged.values(), key=lambda e: e["filename"])
-    dest.write_text(json.dumps(merged_list, indent=2) + "\n", encoding="utf-8")
-    logger.info("Wrote figure registry: %s (%d entries)", dest, len(merged_list))
-    if unlabelled:
-        logger.warning(
-            "%d figure(s) carry no manuscript label (supplementary or orphaned): %s",
-            len(unlabelled), ", ".join(sorted(unlabelled)),
-        )
 
 
 if __name__ == "__main__":

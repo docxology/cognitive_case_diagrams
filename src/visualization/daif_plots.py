@@ -44,12 +44,16 @@ def plot_belief_trajectory(
     probs = np.array([b.probabilities for b in trajectory])
     x = np.arange(n)
     fig, axes = plt.subplots(3, 1, figsize=figsize, sharex=True, layout="constrained")
+    role_markers = {"NOM": "o", "ACC": "s", "DAT": "D", "INS": "^", "GEN": "v",
+                    "LOC": "P", "ABL": "X", "VOC": "*"}
     for j, role in enumerate(roles):
-        axes[0].plot(x, probs[:, j], "o-", label=role.name,
-                     color=CASE_COLORS.get(role.name, COLOR_UNKNOWN))
+        marker = role_markers.get(role.name, "o")
+        axes[0].plot(x, probs[:, j], marker=marker, linestyle="-", label=role.name,
+                     color=CASE_COLORS.get(role.name, COLOR_UNKNOWN),
+                     markersize=7, linewidth=2.0)
     axes[0].set(ylabel="Probability", ylim=(-0.03, 1.03))
     axes[0].legend(ncol=min(4, len(roles)), fontsize=16)
-    axes[1].plot(x, [b.entropy() for b in trajectory], "o-", color="#5B21B6")
+    axes[1].plot(x, [b.entropy() for b in trajectory], "o-", color="#1F2937")
     axes[1].set_ylabel("Entropy (nats)")
     changes = np.concatenate(([0.0], np.abs(np.diff(probs, axis=0)).sum(axis=1) / 2))
     axes[2].bar(x, changes, color="#0F766E")

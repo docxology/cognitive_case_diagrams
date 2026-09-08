@@ -21,6 +21,38 @@ from .styles import (
     mathtext_safe_arrows,
 )
 
+def humanize_category_name(name: str) -> str:
+    """Split camel-case registry names for figure titles ('Standard8Case' -> 'Standard 8 Case').
+
+    Captions carry the exact registry identity; the in-figure title is display text.
+    """
+    if not name:
+        return name
+    out: list[str] = []
+    for ch in name:
+        if ch.isupper() and out and (out[-1].islower() or out[-1].isdigit()):
+            out.append(" ")
+        elif ch.isdigit() and out and out[-1].isalpha():
+            out.append(" ")
+        out.append(ch)
+    return "".join(out)
+
+
+def ordered_targets(mapping: dict[str, str]) -> list[str]:
+    """Order target labels by their first source association so edges read row-wise.
+
+    Replaces the previous sorted() order, which put ABS above ACC above ERG and
+    made Tripartite's A->ERG / P->ACC edges cross in an X that invites misreading
+    the endpoints (documented in the visual audit, RET-01 context).
+    """
+    seen: dict[str, int] = {}
+    for src in ("S", "A", "P"):
+        tgt = mapping.get(src)
+        if tgt is not None and tgt not in seen:
+            seen[tgt] = len(seen)
+    return list(seen.keys())
+
+
 logger = logging.getLogger(__name__)
 
 # Default structurally prohibited transitions (drawn only if both roles exist).
@@ -173,7 +205,7 @@ def render_case_category(
             w = data.get("weight", 1.0)
             lbl = data.get("label", "")
             pfx = edge_label_prefix.get((u, v), "") if edge_label_prefix else ""
-            edge_labels[(u, v)] = mathtext_safe_arrows(f"{pfx}✓ {lbl}\n(w={w:.1f})")
+            edge_labels[(u, v)] = mathtext_safe_arrows(f"{pfx}✓ {lbl}\n(w={w:.2f})")
         nx.draw_networkx_edge_labels(
             G, pos, edge_labels=edge_labels, ax=ax,
             font_size=FONT_SIZE_FLOOR, font_color=licensed_color,
@@ -208,7 +240,7 @@ def render_case_category(
             label=mathtext_safe_arrows("✓ Licensed (structurally admissible)"),
         )
         prohibited_patch = mpatches.Patch(
-            color=prohibited_color,
+            color=prohibited_color, linestyle="--",
             label=mathtext_safe_arrows("✗ Prohibited (ill-formed)"),
         )
         ax.legend(
@@ -250,7 +282,7 @@ def render_case_category(
         )
 
     # Use mathtext for \\mathcal{C} — Unicode 𝒞 (U+1D49E) is missing from DejaVu Sans.
-    display_title = title or ("Case Category " + r"$\mathcal{C}$" + f": {category.name}")
+    display_title = title or ("Case Category " + r"$\mathcal{C}$" + f": {humanize_category_name(category.name)}")
     ax.set_title(display_title, fontsize=FONT_SIZE_TITLE, fontweight="bold", pad=20)
     if node_positions is not None:
         ax.margins(0.32)
@@ -295,7 +327,7 @@ def render_alignment_comparison(
         # Source nodes (left side)
         sources = ["S", "A", "P"]
         # Target nodes (right side)
-        targets = sorted(set(mapping.values()))
+        targets = ordered_targets(mapping)
 
         for s in sources:
             G.add_node(s, side="source")
@@ -386,7 +418,9 @@ def render_composition_triangle(
         font_size=FONT_SIZE_LABEL, font_weight="bold", font_color="white"
     )
 
-    # Draw edges with different styles
+    # Draw edges with different styles: f/g as plain morphism edges (dark),
+    # the composed path h as a solid indigo edge - solid because dashed
+    # elsewhere in this figure family means "prohibited / not in Mor(C)".
     straight_edges = [(nodes[0], nodes[1]), (nodes[1], nodes[2])]
     composed_edge = [(nodes[0], nodes[2])]
 
@@ -396,8 +430,7 @@ def render_composition_triangle(
     )
     nx.draw_networkx_edges(
         G, pos, edgelist=composed_edge, ax=ax, node_size=5200,
-        edge_color=CASE_COLORS["ACC"], arrows=True, arrowsize=20, width=2.5,
-        style="dashed"
+        edge_color=CASE_COLORS["S"], arrows=True, arrowsize=20, width=2.5
     )
 
     edge_labels = {

@@ -14,8 +14,9 @@ import matplotlib.pyplot as plt
 from ..enriched_cat.enriched import EnrichedCategory
 from .styles import (
     FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_ANNOTATION,
-    DEFAULT_FIGSIZE, FIGURE_DPI, HEATMAP_TEXT_PIVOT,
+    DEFAULT_FIGSIZE, FIGURE_DPI, heatmap_text_color,
 )
+from .category_diagrams import humanize_category_name
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +69,7 @@ def render_enriched_heatmap(
     for i in range(n):
         for j in range(n):
             value = enriched.proximity_matrix[i, j]
-            color = "white" if value > HEATMAP_TEXT_PIVOT else "black"
+            color = heatmap_text_color(value)
             fontweight = "bold" if i == j else "normal"
             ax.text(
                 j, i, f"{value:.2f}",
@@ -83,7 +84,7 @@ def render_enriched_heatmap(
     ax.set_xticklabels(labels, fontsize=FONT_SIZE_FLOOR, rotation=45, ha="right")
     ax.set_yticklabels(labels, fontsize=FONT_SIZE_FLOOR)
 
-    display_title = title or f"Candidate similarities (synthetic): {enriched.name}"
+    display_title = title or f"Candidate similarities (synthetic): {humanize_category_name(enriched.name)}"
     ax.set_title(display_title, fontsize=FONT_SIZE_TITLE, fontweight="bold", pad=20)
 
     fig.tight_layout()

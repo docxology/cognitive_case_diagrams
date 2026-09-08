@@ -33,7 +33,7 @@ CASE_COLORS: dict[str, str] = {
     "NOM": "#2563EB",   # Blue
     "ACC": "#DC2626",   # Red
     "GEN": "#059669",   # Emerald
-    "DAT": "#7C3AED",   # Violet
+    "DAT": "#92400E",   # Dark bronze (corrected-Lab CVD min 9.0 vs co-plot set; was #7C3AED violet)
     "INS": "#D97706",   # Amber
     "LOC": "#0891B2",   # Cyan
     "ABL": "#BE185D",   # Rose
@@ -92,7 +92,7 @@ LINE_WIDTH_EDGE: float = 2.0
 MARKER_SIZE: float = 12.0
 
 # ─── Threshold constants (algorithm-level) ───────────────────────────────────
-HEATMAP_TEXT_PIVOT: float = 0.6    # Enriched heatmap: white text if value > pivot
+HEATMAP_TEXT_PIVOT: float = 0.75    # Enriched heatmap: white text if value > pivot (0.75 keeps white >=4.8:1)
 FLUID_S_AGENT_THRESHOLD: float = 0.5   # Fluid-S: line for ergative vs. absolutive
 
 
@@ -114,6 +114,16 @@ def mathtext_safe_arrows(text: str) -> str:
         .replace("\u2218", r"$\circ$")
     )
 
+
+def heatmap_text_color(value: float, pivot: float | None = None) -> str:
+    """Cell text color for the enriched heatmap: white above the pivot, black below.
+
+    The pivot is chosen so white-on-fill keeps WCAG 4.5:1 at the lightest cell it
+    covers (YlOrRd at 0.75 is ~4.8:1; at 0.70 it is ~4.2:1 and fails).
+    """
+    if pivot is None:
+        pivot = HEATMAP_TEXT_PIVOT
+    return "white" if value > pivot else "black"
 
 def save_publication_figure(figure: Figure, path: str | Path, **kwargs: Any) -> None:
     """Apply the declared text floor to actual artists before saving a figure.

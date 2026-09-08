@@ -275,7 +275,7 @@ def render_syntactic_panel(
         ncol=8,
         fontsize=16,
         framealpha=0.9,
-        title="Case Roles",
+        title="Case-role and word-class colours",
         title_fontsize=16,
         bbox_to_anchor=(0.5, -0.085),
     )

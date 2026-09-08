@@ -341,10 +341,10 @@ def plot_monoidal_functor_security(
         ax_map.text(x + 0.06, y, role.name, fontsize=FONT_SIZE_FLOOR,
                     ha="left", va="center", fontweight="bold", color="#1a1a1a")
 
-    ax_map.text(0.25, 0.98, "Source", fontsize=FONT_SIZE_LABEL, ha="center",
-                va="top", fontweight="bold", color="#4f8ef7")
-    ax_map.text(0.75, 0.98, "Target", fontsize=FONT_SIZE_LABEL, ha="center",
-                va="top", fontweight="bold", color="#e53935")
+    ax_map.text(0.25, 1.08, "Source", fontsize=FONT_SIZE_LABEL, ha="center",
+                va="bottom", fontweight="bold", color="#4f8ef7", transform=ax_map.transAxes)
+    ax_map.text(0.75, 1.08, "Target", fontsize=FONT_SIZE_LABEL, ha="center",
+                va="bottom", fontweight="bold", color="#e53935", transform=ax_map.transAxes)
     ax_map.set_title(
         mathtext_safe_arrows("Object Map  F: C → D"),
         fontsize=FONT_SIZE_LABEL,
@@ -397,9 +397,13 @@ def plot_monoidal_functor_security(
 
     for i in range(n):
         for j in range(n):
-            color = "white"
+            # Per-cell text: white on blue (#2563EB, 5.2:1), dark slate on amber
+            # (#D97706, 4.6:1) - replaces all-white text whose amber contrast
+            # was 3.2:1. Dark-on-blue would be 2.8:1, so the color must follow
+            # the cell fill.
+            text_color = "white" if table[i, j] == 1.0 else "#1F2937"
             ax_tensor.text(j, i, annotations[i][j], ha="center", va="center",
-                           fontsize=FONT_SIZE_LABEL, fontweight="bold", color=color)
+                           fontsize=FONT_SIZE_LABEL, fontweight="bold", color=text_color)
 
     legend_handles = [
         Patch(facecolor="#2563EB", label="Policy satisfied"),

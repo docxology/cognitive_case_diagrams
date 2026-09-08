@@ -204,7 +204,7 @@ def plot_alignment_frame_belief_dynamics(
         fontweight="bold",
     )
     ax3.grid(True, alpha=GRID_ALPHA)
-    ax3.legend(fontsize=FONT_SIZE_FLOOR, framealpha=0.9, loc="upper right")
+    ax3.legend(fontsize=FONT_SIZE_FLOOR, framealpha=0.9, loc="upper left", bbox_to_anchor=(1.01, 1.0))
     ax3.set_xticks(x_steps)
     ax3.set_xticklabels([str(int(s)) for s in x_steps])
 

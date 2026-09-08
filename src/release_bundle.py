@@ -107,7 +107,7 @@ def collect_release_files(project_root: Path) -> list[Path]:
                 for path in directory.rglob("*"):
                     relative = path.relative_to(directory)
                     if (
-                        any(part.startswith(".") or part in _CACHE_PARTS for part in relative.parts)
+                        any(part.startswith(".") or part.endswith(".egg-info") or part in _CACHE_PARTS for part in relative.parts)
                         or not path.is_file()
                         or path.suffix not in suffixes
                     ):
@@ -270,6 +270,8 @@ def verify_release_archive(archive_path: Path) -> dict[str, Any]:
         for name in names:
             if name not in _EXPLICIT_HIDDEN_FILES:
                 _safe_relative(name)
+            if any(part.endswith(".egg-info") for part in PurePosixPath(name).parts):
+                raise ValueError(f"Release archive contains build residue: {name}")
             info = archive.getinfo(name)
             if info.is_dir() or stat.S_ISLNK(info.external_attr >> 16):
                 raise ValueError("Release archive must contain regular files only")

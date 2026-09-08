@@ -11,6 +11,7 @@ from src.release_validation import (
     QUALITY_JUNIT,
     QUALITY_RECEIPT,
     file_sha256,
+    is_quality_input,
     quality_input_fingerprint,
     validate_quality_receipt,
     write_json_atomic,
@@ -237,3 +238,15 @@ def test_public_receipt_is_readable_and_atomic(quality_tree: Path) -> None:
     import stat
     create_receipt(quality_tree)
     assert stat.S_IMODE((quality_tree / QUALITY_RECEIPT).stat().st_mode) == 0o644
+
+
+def test_egg_info_residue_never_enters_fingerprint(quality_tree: Path) -> None:
+    """Build residue is excluded from fingerprints and archive membership."""
+    before = quality_input_fingerprint(quality_tree)
+    residue = quality_tree / "src" / "example.egg-info"
+    residue.mkdir()
+    (residue / "SOURCES.txt").write_text("example.py\n")
+    (residue / "requires.txt").write_text("numpy\n")
+    assert quality_input_fingerprint(quality_tree) == before
+    assert not is_quality_input("src/example.egg-info/SOURCES.txt")
+    assert not is_quality_input("src/example.egg-info/PKG-INFO")

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import zipfile
 from pathlib import Path
@@ -193,3 +194,41 @@ def test_dotted_filename_preserves_full_stem(release_tree: Path, tmp_path: Path)
 def test_additional_hook_cannot_publish_private_in_root_file(release_tree: Path, tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="collection policy"):
         build_release_archive(release_tree, tmp_path / "bad.zip", version="2.4.0", publication_date="2026-09-07", additional_files=[release_tree / ".env"])
+
+
+def test_egg_info_residue_is_never_collected(release_tree: Path) -> None:
+    residue = release_tree / "src" / "cognitive_case_diagrams.egg-info"
+    residue.mkdir()
+    (residue / "SOURCES.txt").write_text("example.py\n")
+    (residue / "requires.txt").write_text("numpy\n")
+    collected = collect_release_files(release_tree)
+    names = {path.relative_to(release_tree).as_posix() for path in collected}
+    assert not any("egg-info" in name for name in names)
+
+
+def test_verify_rejects_egg_info_members(release_tree: Path, tmp_path: Path) -> None:
+    good = tmp_path / "clean.zip"
+    build(release_tree, good)
+    with zipfile.ZipFile(good) as bundle:
+        entries = {name: bundle.read(name) for name in bundle.namelist()}
+        manifest = json.loads(entries["RELEASE_MANIFEST.json"])
+    payload = b"example.py\n"
+    member = "src/cognitive_case_diagrams.egg-info/SOURCES.txt"
+    entries[member] = payload
+    manifest["files"][member] = {
+        "sha256": hashlib.sha256(payload).hexdigest(),
+        "bytes": len(payload),
+    }
+    entries["RELEASE_MANIFEST.json"] = (
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n"
+    ).encode()
+    residue_zip = tmp_path / "residue.zip"
+    with zipfile.ZipFile(residue_zip, "w", zipfile.ZIP_DEFLATED) as bundle:
+        for name in sorted(entries):
+            info = zipfile.ZipInfo(name, date_time=(2026, 9, 7, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.create_system = 3
+            info.external_attr = 0o100644 << 16
+            bundle.writestr(info, entries[name])
+    with pytest.raises(ValueError, match="residue"):
+        verify_release_archive(residue_zip)

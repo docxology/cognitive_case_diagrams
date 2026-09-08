@@ -580,7 +580,9 @@ def case_povm_assignment(
     weight_array = np.asarray(weights, dtype=np.float64)
     if np.any(weight_array < 0):
         raise ValueError("weights must be non-negative")
-    if weight_array.sum() <= 0:
+    with np.errstate(over="ignore"):
+        total = float(weight_array.sum())
+    if not np.isfinite(total) or total <= 0:
         raise ValueError("weights must sum to a positive value")
     povm = crisp_case_povm(roles)
     density = semantic_state(dict(zip(roles, weight_array)), roles=roles)

@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cognitive_case_diagrams"
-version = "2.4.0"
+version = "2.5.0"
 description = "Category-theoretic formalization of linguistic case systems with DisCoPy visualizations"
 authors = [
     {name = "Daniel Ari Friedman", email = "danielarifriedman@gmail.com"}

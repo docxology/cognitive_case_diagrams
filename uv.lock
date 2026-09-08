@@ -226,7 +226,7 @@ wheels = [
 
 [[package]]
 name = "cognitive-case-diagrams"
-version = "2.4.0"
+version = "2.5.0"
 source = { editable = "." }
 dependencies = [
     { name = "discopy" },

@@ -31,11 +31,11 @@ authors:
   orcid: https://orcid.org/0000-0001-6232-9096
   affiliation: Active Inference Institute
   email: daniel@activeinference.institute
-version: 2.4.0
-date-released: '2026-09-07'
+version: 2.5.0
+date-released: '2026-09-08'
 license: Apache-2.0
 repository-code: https://github.com/docxology/cognitive_case_diagrams
-url: https://github.com/docxology/cognitive_case_diagrams/releases/tag/v2.4.0
+url: https://github.com/docxology/cognitive_case_diagrams/releases/tag/v2.5.0
 keywords:
 - linguistic case
 - category theory

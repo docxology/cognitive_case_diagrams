@@ -32,11 +32,11 @@
     "docs/manuscript/config.yaml": "8269904b9d36217b6575364663b7f6e9cab4ae7a298391381084d447cb28a778",
     "docs/manuscript/preamble.md": "e61d8cbb0f1a77465adf113f2cb6633163235f723e20b81b6d515c7885623b43",
     "docs/manuscript/references.bib": "fca8fef4d9fbc7b60f9dc4a9bdf6840fbb13748b1ee8325d51d1806ce9bce7b7",
-    "output/experiments/results.json": "8abd348f035333b06a9902633c073577170627a1dab3c4609ffdc508a1cbc6af",
-    "output/figures/figure_registry.json": "744d86560d3759aec224a6042697d80cdac48836af7be664340e7bf4a716c29f",
-    "output/reports/quality_receipt.json": "9e780d03c7a595c140d80666a3e650aa1717ec0abfea54b4882c4dc487c9e090"
+    "output/experiments/results.json": "9f4ff02556b77dcb81822811a2c428b6fe55140fbe2f13a2413726119bed1367",
+    "output/figures/figure_registry.json": "ed8418c1adcb1ff7c4fda1031f48931acd89d55c06a7c0071d536d005c481059",
+    "output/reports/quality_receipt.json": "49081701916950dd1efb408acc73d55b70ff8352de779ae3d270da5de8b0cee2"
   },
-  "quality_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+  "quality_input_fingerprint": "80819a3816e450bc99be2260ceabc4db22c328b6b938a698544474ab428d77d2",
   "schema": "ccd-manuscript-variables-v1",
   "variables": {
     "alignment_extra_label_count": {
@@ -145,7 +145,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_covered",
         "unit": "count"
       },
-      "value": "6170"
+      "value": "6175"
     },
     "coverage_lines_total": {
       "spec": {
@@ -157,7 +157,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_total",
         "unit": "count"
       },
-      "value": "6486"
+      "value": "6490"
     },
     "coverage_percent": {
       "spec": {
@@ -169,7 +169,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_percent",
         "unit": "percent"
       },
-      "value": "93.15"
+      "value": "93.17"
     },
     "daif_assignment_iterations": {
       "spec": {
@@ -1273,7 +1273,7 @@
         "source": "src.release_validation.validate_quality_receipt -> quality_input_fingerprint[:12]",
         "unit": "text"
       },
-      "value": "6539bdaffcf7"
+      "value": "80819a3816e4"
     },
     "quality_receipt_generated_at": {
       "spec": {
@@ -1285,7 +1285,7 @@
         "source": "src.release_validation.validate_quality_receipt -> generated_at",
         "unit": "timestamp"
       },
-      "value": "2026-09-08T06:43:37.903622+00:00"
+      "value": "2026-09-08T07:04:03.730105+00:00"
     },
     "quantum_acc_probability": {
       "spec": {
@@ -1453,7 +1453,7 @@
         "source": "src.generate_manuscript_metrics._count_collected_tests",
         "unit": "count"
       },
-      "value": "1623"
+      "value": "1627"
     },
     "total_test_files": {
       "spec": {
@@ -1501,7 +1501,7 @@
         "source": "src.release_validation.validate_quality_receipt -> pytest_passed",
         "unit": "count"
       },
-      "value": "1623"
+      "value": "1627"
     },
     "total_tests_skipped": {
       "spec": {

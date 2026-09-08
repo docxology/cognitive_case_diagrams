@@ -3779,19 +3779,19 @@
       "src/experiments/rng.py": "cc2e4ab6115b8f06af0c87135b08f22e9ee808ce14e0bafb1a012815a2eb65da",
       "src/experiments/runner.py": "039e25b81e440e8301d8a52dd018f55c59823efb2bcbd53c01c9ce243fdbaa98",
       "src/experiments/serialization.py": "cf33114676d927deec8a043a2f27cdf719fc5dd0ea2249d6720fda76caabf069",
-      "src/experiments/stats.py": "5c35550a90184c25d0dcd888a3e7482e0f62c18abd31a06a830dc48df53b9719",
+      "src/experiments/stats.py": "42b452f5f30247d0fac2fd84c67e714bde4d6dddc077ca57e490fe8024c2869f",
       "src/experiments/studies.py": "5b532beec630b9fbf37720058e23ac8a926b0439f8a69bd321627a407434ae67",
       "src/experiments/synthetic.py": "bc80fd6cec2d56ab22cf46d1fe87aa24e63c933b39807e77f7193d6b7db4dd9f",
       "src/numerics.py": "140b14331214e307912ebcfd8920d3022a5baf90b0318155d10e937d9775117e",
       "src/quantum/__init__.py": "d6aafbb8ce403553cd115b25f63648e4a4ee1fe781f6cbe666ce191a0d63ccfc",
       "src/quantum/figure_data.py": "18cdaff601dfef1132390477acef153d4bacb1001c00cd0f09527fd42cafb9d5",
-      "src/quantum/quantum_case.py": "3fb0abe153c07df657afd0bd86b3be0d78ff13b285c744cd6c3124721e46f304",
+      "src/quantum/quantum_case.py": "f91a1b4b0269f7e949169b8198c10ea1002a5b8c3bd5f5f082a63f2ebe533913",
       "src/security/__init__.py": "837b1c18168ce431da40f4dea6d09a42dded313030c5823739fc3b7a463b3e80",
       "src/security/cognitive_security.py": "687d08d9dcd3954981466cf2561a453d04d48c3b49df15ce3a708288f654e725",
       "src/topos_theory/__init__.py": "b18f95ba4da17edfc13142479e2496421ee2aaa806297025602387a33f932abb",
       "src/topos_theory/topos.py": "3c6715948201bf5984dc3e21b66475a6b5f0d1bfff62d0f59ed9cb96efbc5fda"
     },
-    "source_sha256": "0cf85fdfb0716fde6db69c813915b764c7bd9e3c393b67a7414dadd7246c3733"
+    "source_sha256": "e7b19228f19eebd51d51b307ec57b9fa12bf62c905a69b792b7889e478d205c4"
   },
   "schema_version": "1.0",
   "variables": {

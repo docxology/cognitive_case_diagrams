@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T06:52:58.602402+00:00",
+  "generated_at": "2026-09-08T07:11:06.867794+00:00",
   "inputs": {
     "files": {
       "docs/figure_alt_text.json": "7220d5d50aa1eb84fa73ffeb28fa37496a32140dbdb83be60ce3d8ee702977fe",
@@ -34,7 +34,7 @@
       "docs/manuscript/config.yaml": "8269904b9d36217b6575364663b7f6e9cab4ae7a298391381084d447cb28a778",
       "docs/manuscript/preamble.md": "e61d8cbb0f1a77465adf113f2cb6633163235f723e20b81b6d515c7885623b43",
       "docs/manuscript/references.bib": "fca8fef4d9fbc7b60f9dc4a9bdf6840fbb13748b1ee8325d51d1806ce9bce7b7",
-      "output/experiments/results.json": "8abd348f035333b06a9902633c073577170627a1dab3c4609ffdc508a1cbc6af",
+      "output/experiments/results.json": "9f4ff02556b77dcb81822811a2c428b6fe55140fbe2f13a2413726119bed1367",
       "output/figures/AGENTS.md": "403c0e18a21d41a502fadda55cd75aad90f316798a32f887adc875446a7b0c1f",
       "output/figures/README.md": "8ee01085476d926874aa282253f406e34ef1fec453b8d64cfae35bc2a76db127",
       "output/figures/active_inference_belief.png": "f395a9f2325ccc3a0b50a06562b841bac5dab8122f2476f542aa1d0cd1715021",
@@ -62,7 +62,7 @@
       "output/figures/experiment_calibration.png": "beb630fa199c9eb2138780679486b569ee12a65ee3b7a38a0b6f8934ce6c5cfb",
       "output/figures/experiment_filtering.png": "c9269b904d58d228a53a540e7380d247fded8a2ef072b08b9a8de99709ac6dfc",
       "output/figures/experiment_sensitivity.png": "cd9338e99c93b27d624af4437afcb2473120be49ddd385f5ab6daaa425ccd24f",
-      "output/figures/figure_registry.json": "744d86560d3759aec224a6042697d80cdac48836af7be664340e7bf4a716c29f",
+      "output/figures/figure_registry.json": "ed8418c1adcb1ff7c4fda1031f48931acd89d55c06a7c0071d536d005c481059",
       "output/figures/fluid_s_volition_landscape.png": "60ee16954ef2e5e2a21182e878047e65a7408fcb3fe799fcc1de99e46b71954a",
       "output/figures/functor_alignment.png": "ec590a093fdb3e7376dbcbd5ada950de32b885ccfa2e7868f9c58a6a31e26aa9",
       "output/figures/monoidal_functor_security.png": "eb291b0ef949d31061c5a880caa658c0171ff9e9eddd331bb516a7a8ec198398",
@@ -72,7 +72,7 @@
       "output/figures/snake_equation_unpacking.png": "b2eee1b6ff873cbb706f5444ae62fae88a3fe4e159be774e983b3674af501820",
       "output/figures/string_diagram_discocat.png": "b27b4f96d2c94a902ffafb75e6f8c204b593b0b1662e84409e535f43a72ab459",
       "output/figures/syntactic_case_panel.png": "be323d75349baf8d837a26e86d6553f8ea41077008c48575590e294f41dafaf4",
-      "output/manuscript/00_abstract.md": "e609c5193f933be0919d96228833eb7f30482bf3a4ade4604ea0132df8666c14",
+      "output/manuscript/00_abstract.md": "03f3471d9aa818a423e462f8353b82c10daa658abf3c916d2e43bd5a9589ac79",
       "output/manuscript/01_introduction.md": "d9e0cea547282e52ba6f14bfb7f8d6074d57b1beecee0730b319a0e6996d4f66",
       "output/manuscript/01a_research_questions.md": "ba9e608a3198cf8373849af881b132c75da31378ce38279f33064cef9feeca4b",
       "output/manuscript/02_case_systems.md": "8fa9aaa95a7e147c13927d4da8a3c7e3d001c19ff54cb32e922f786aa659787a",
@@ -96,22 +96,22 @@
       "output/manuscript/10_conclusion.md": "e2827a1635eb730a100f0c17ada22a49f29e1cb85a363649aa61c7fb5ef0c9cc",
       "output/manuscript/11_syntactic_sentence_diagrams.md": "94627cce0451f875f3b4927a34914f04806f2bfa083c5722066656db267c6903",
       "output/manuscript/11b_notation.md": "5173808da175a8e129f38e5165994ecca559df7cf5e64f753db773920a3c4195",
-      "output/manuscript/11c_automated_test_inventory.md": "f97a23b09a4b3cc183ca97eabd45f31827d9145e90ce5e8483992767a773f8ba",
+      "output/manuscript/11c_automated_test_inventory.md": "1485cc047474196394bd7477d12133f749e5222575804fa4b71afcc87cbeba60",
       "output/manuscript/AGENTS.md": "4405e5e1b2aa0eaeeba282dd4cd09a0742b4697e240037560f6c64d401808cb1",
       "output/manuscript/MANUSCRIPT_STATUS.md": "8d02dbc2e59c2d75903e45c7032b7be3a7f5394f63d164c4cea79262a22322a6",
       "output/manuscript/README.md": "8879d90deebc88da22fbf0778784d15d7d0902d8a1923fb9ed7074f34d8ccec1",
       "output/manuscript/config.yaml": "8269904b9d36217b6575364663b7f6e9cab4ae7a298391381084d447cb28a778",
       "output/manuscript/preamble.md": "e61d8cbb0f1a77465adf113f2cb6633163235f723e20b81b6d515c7885623b43",
       "output/manuscript/references.bib": "fca8fef4d9fbc7b60f9dc4a9bdf6840fbb13748b1ee8325d51d1806ce9bce7b7",
-      "output/manuscript_variables.json": "c3152527b4513620a76ac14bdb477b00ced73a086a1b7847b9c37d474c5ebdc1",
-      "output/metrics.json": "f39e9abb47f1f545befc190549ca00f86c3c246cbd8f5ddf60335fe3d4f510f1",
-      "output/pdf/cognitive_case_diagrams_combined.pdf": "a9e906054f71cf56a53fd3e95a10cae9a11008b60ed39bb5fabe1695606c55ba",
+      "output/manuscript_variables.json": "19cb3ebe368de58f14d4dc5390f08bb1d430d6e597ea77ff44a7e376a79bcbd2",
+      "output/metrics.json": "9552f6805061a7393a1a1d34878288cf93e0b51a8c804929e4a1ce0a4082a0b0",
+      "output/pdf/cognitive_case_diagrams_combined.pdf": "318e0dc50c92703ea39fd249d14ce115bc9c580bfea38f76c5d411aea52c8be2",
       "output/web/AGENTS.md": "f3b388050f1c8577dc1e19ca439c7ef6ec17d67b3e86cd2b4463adc781d56ecc",
       "output/web/README.md": "e53117d7968e2bd8b09769fce0b9f128d81c3cf601ff4acf475172b3730548cf",
-      "output/web/_combined_manuscript.md": "95da005873258ddca6776bbebe8c05a681614ee66126e72b83387ab2edb20a45",
+      "output/web/_combined_manuscript.md": "5ce4a74555852d99dc077e9983353b773382fee94fe131e7aaa6ac74822f2aaf",
       "output/web/favicon.ico": "6ca6e9ffbb22550f6d94bf216e743cc7469a7fc50d8dcf0737b11bf800de7dad",
-      "output/web/index.html": "2ddd209e115e0cad10931a89c067974696fb5a5e79254d6c70b04cda0f7eef8f",
-      "output/web/manuscript__00_abstract.html": "73eb4e9a2f6f7725d7c7fe55113950c93bbc184577f962b50501a9c36bfe6b6a",
+      "output/web/index.html": "ccba7e2aa9024b8f3947a2118bbf1260c2e5788202b99c7398d54ce20cab2b93",
+      "output/web/manuscript__00_abstract.html": "936a8922b2b3379556fff28c4f9873fc9a67f0cb749219efde43335be0dcc5a0",
       "output/web/manuscript__01_introduction.html": "87d610111248e8cda7d751125d32702178620c0f0e5071c8adf551bf387b573c",
       "output/web/manuscript__01a_research_questions.html": "cada4688768c5f7da4cfb227b2c6cf53772db4e41e6bf591bed16d1a2575cf6d",
       "output/web/manuscript__02_case_systems.html": "f9630a862f16f8fc3a8dc8ebc038591b08be9aa19265321088e556c8a933d262",
@@ -135,10 +135,10 @@
       "output/web/manuscript__10_conclusion.html": "6c11c66183334ca113056d8ea8506ae5a6cccb264d6cb1589076cbb180019ef5",
       "output/web/manuscript__11_syntactic_sentence_diagrams.html": "26e56d37cc64c4e525c5d390bdfe751a22c226e59802ff6708ca104324619f95",
       "output/web/manuscript__11b_notation.html": "e46088581162b2a5f348b47fc64c9ee582abaab1d99080e1bef98940eda3e538",
-      "output/web/manuscript__11c_automated_test_inventory.html": "81c1cbefda94462a0c48f954053f1e9c63595a3b29af557f39f32c8190a14742"
+      "output/web/manuscript__11c_automated_test_inventory.html": "27f8614f86c8efe1afd41c5760e7e26d0d3657374491c94d203f1093acc32f23"
     },
-    "quality_source": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
-    "sha256": "8a21e4d0f9819a88e5611a1e2694e27d7cef095e2c308d4d44f7e62386a1ed4e"
+    "quality_source": "80819a3816e450bc99be2260ceabc4db22c328b6b938a698544474ab428d77d2",
+    "sha256": "9f9c9c5174ac87531d9c36dfd5950d35a9e1ebae926202714c308d3063587cd4"
   },
   "observations": {
     "browser_checks": {

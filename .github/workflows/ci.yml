@@ -96,38 +96,50 @@ jobs:
           assert verify_release_archive(destination / f'candidate-{version}.zip') == first
           print('verified candidate archive sha256:', first['archive_sha256'])
           PY
-      - name: Install the built wheel in a clean interpreter outside the checkout
+      - name: Install the built wheel with the MCP extra in a clean interpreter
         run: |
           uv build --no-sources
+          wheel_path="$(ls dist/cognitive_case_diagrams-*.whl)"
+          test "$(printf '%s\n' "$wheel_path" | wc -l)" -eq 1
           uv venv /tmp/ccd-release-smoke --python 3.12
-          uv pip install --python /tmp/ccd-release-smoke/bin/python dist/*.whl
+          uv pip install --python /tmp/ccd-release-smoke/bin/python "${wheel_path}[mcp]"
+          /tmp/ccd-release-smoke/bin/python -c "import mcp, src; print('wheel imports: sdk + package ok')"
           /tmp/ccd-release-smoke/bin/ccd-mcp --version
           /tmp/ccd-release-smoke/bin/ccd-mcp --list-tools
-          # Mid-pipeline evidence states are expected to exit 1; the report is
-          # recorded honestly instead of being treated as a failure signal.
-          /tmp/ccd-release-smoke/bin/ccd-evidence-status --project-root . || \
-            echo "evidence-status reported an expected non-validated mid-pipeline state"
-      - name: SDK stdio smoke against the installed wheel
+      - name: Evidence-status exit contract from the wheel
+        run: |
+          set +e
+          report="$(/tmp/ccd-release-smoke/bin/ccd-evidence-status --project-root "$GITHUB_WORKSPACE" 2>/tmp/ccd-evidence-status.stderr)"
+          status=$?
+          set -e
+          test ! -s /tmp/ccd-evidence-status.stderr || { cat /tmp/ccd-evidence-status.stderr >&2; echo "unexpected evidence-status stderr"; exit 1; }
+          echo "$report"
+          test "$status" -eq 1 || { echo "evidence-status exited $status; expected 1 for the mid-pipeline tree"; exit 1; }
+          EVIDENCE_REPORT="$report" uv run --frozen python -c "import json, os; report = json.loads(os.environ['EVIDENCE_REPORT']); assert report['schema'] == 'ccd-evidence-status-v1'; assert report['overall'] in {'validated', 'incomplete'}; assert report['exit_code'] == 1; assert set(report['evidence']) == {'quality', 'experiments', 'manuscript', 'metadata', 'visual_review', 'release'}; print('evidence-status contract ok:', report['overall'])"
+      - name: SDK stdio smoke against the installed wheel in an isolated cwd
         run: |
           uv run --frozen python - <<'PY'
           import asyncio
           import json
 
-          from mcp import ClientSession, StdioServerParameters
-          from mcp.client.stdio import stdio_client
+          from mcp import Client, StdioServerParameters
 
 
           async def main() -> None:
-              params = StdioServerParameters(command='/tmp/ccd-release-smoke/bin/ccd-mcp')
-              async with stdio_client(params) as (read, write):
-                  async with ClientSession(read, write) as session:
-                      await session.initialize()
-                      tools = await session.list_tools()
-                      assert len(tools.tools) >= 17, 'wheel serves fewer tools than advertised'
-                      capabilities = await session.read_resource('ccd://capabilities')
-                      payload = json.loads(capabilities.contents[0].text)
-                      assert payload['server'] == 'cognitive-case-diagrams'
-                      print(f'wheel stdio smoke ok: {len(tools.tools)} tools')
+              # cwd=/tmp keeps the server on wheel-resolved modules only: the
+              # checkout's src/ tree is invisible from that working directory.
+              params = StdioServerParameters(
+                  command='/tmp/ccd-release-smoke/bin/ccd-mcp', cwd='/tmp'
+              )
+              async with Client(params) as client:
+                  tools = (await client.list_tools()).tools
+                  assert len(tools) >= 17, 'wheel serves fewer tools than advertised'
+                  capabilities = (await client.read_resource('ccd://capabilities')).contents[0].text
+                  payload = json.loads(capabilities)
+                  assert payload['server'] == 'cognitive-case-diagrams'
+                  receipt = payload['quality_receipt']
+                  assert receipt['status'] in {'validated', 'missing', 'stale_or_invalid'}
+                  print(f'wheel stdio smoke ok: {len(tools)} tools, receipt {receipt["status"]}')
 
 
           asyncio.run(main())

@@ -131,13 +131,20 @@ class TestSemanticState:
         with pytest.raises(ValueError, match="positive"):
             semantic_state({CaseRole.NOM: 0.0, CaseRole.ACC: 0.0}, roles=roles)
 
-    def test_overflowing_weight_total_is_rejected(self) -> None:
-        """Finite weights whose sum overflows are rejected, never zeroed."""
-        overflowing = {CaseRole.NOM: 1e308, CaseRole.ACC: 1e308, CaseRole.DAT: 1e308}
-        with pytest.raises(ValueError, match="positive finite value"):
-            semantic_state(overflowing)
-        with pytest.raises(ValueError, match="positive finite value"):
-            semantic_state({CaseRole.NOM: 1e308, CaseRole.ACC: 1e308})
+    def test_equal_extreme_weights_normalize(self) -> None:
+        """Equal 1e308 weights normalize like ordinary ones (stable recipe)."""
+        rho = semantic_state({CaseRole.NOM: 1e308, CaseRole.ACC: 1e308, CaseRole.DAT: 1e308})
+        assert np.allclose(np.diag(rho).real, [1 / 3, 1 / 3, 1 / 3], atol=1e-15)
+        assert np.isclose(np.trace(rho).real, 1.0)
+
+    def test_subnormal_only_weights_normalize(self) -> None:
+        rho = semantic_state({CaseRole.NOM: 5e-324, CaseRole.ACC: 5e-324})
+        assert np.array_equal(np.diag(rho).real, np.array([0.5, 0.5]))
+
+    def test_extreme_unequal_weights_normalize(self) -> None:
+        """A weight below the scaled representable range flushes to zero."""
+        rho = semantic_state({CaseRole.NOM: 5e-324, CaseRole.ACC: 1e308})
+        assert np.array_equal(np.diag(rho).real, np.array([0.0, 1.0]))
 
     def test_ordinary_outputs_are_byte_stable(self) -> None:
         """The finite-total normalization path is unchanged by the guard."""

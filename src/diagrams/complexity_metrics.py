@@ -126,13 +126,39 @@ def count_caps(diagram: "Diagram") -> int:
     return sum(1 for box in diagram.boxes if isinstance(box, Cap))
 
 
-def diagram_depth(diagram: "Diagram") -> int:
-    """Number of sequential layers in the DisCoPy inside-representation.
+def _layer_span_depth(diagram: "Diagram") -> int:
+    """Layer-span longest path: the true depth of a pregroup diagram.
 
-    Uses ``depth()`` when the diagram supports it, else ``len(inside)``.
-    A discrete structural statistic used as the manuscript's synthetic
-    complexity proxy (eq. 4-4); no compilation to quantum hardware is
-    performed and no hardware claim follows.
+    A box at offset ``o`` with domain width ``w`` occupies the half-open
+    wire span ``[o, o + w)``; a box depends on earlier boxes iff its span
+    intersects theirs, and identity wire entries (bare types) carry no
+    depth. Equals ``Diagram.depth()`` wherever that succeeds and remains
+    defined for the rigid pregroup diagrams whose ``depth()`` raises
+    ``AxiomError`` (no symmetric hypergraph conversion involved).
+    """
+    ty_types = (diagram.ty_factory,)
+    spans = []
+    for layer in diagram.inside:
+        for entry, off in layer.boxes_and_offsets:
+            if isinstance(entry, ty_types) or not hasattr(entry, "dom"):
+                continue
+            spans.append((off, off + len(entry.dom)))
+    depth = [0] * len(spans)
+    for j, (start, end) in enumerate(spans):
+        deps = [depth[i] for i in range(j) if spans[i][0] < end and start < spans[i][1]]
+        depth[j] = 1 + (max(deps) if deps else 0)
+    return max(depth) if depth else 0
+
+
+def diagram_depth(diagram: "Diagram") -> int:
+    """Depth of a diagram as the layer-span longest path.
+
+    Uses ``Diagram.depth()`` when it succeeds and the equivalent
+    ``_layer_span_depth`` longest-path computation for the rigid pregroup
+    diagrams whose ``depth()`` raises ``AxiomError``. A discrete structural
+    statistic used as the manuscript's synthetic complexity proxy (eq. 4-4);
+    no compilation to quantum hardware is performed and no hardware claim
+    follows.
 
     Args:
         diagram: A DisCoPy rigid Diagram.
@@ -144,10 +170,15 @@ def diagram_depth(diagram: "Diagram") -> int:
         raise RuntimeError("discopy required for depth computation")
     try:
         return diagram.depth()
-    except (AttributeError, TypeError, AxiomError):
-        # discopy raises AxiomError for diagrams without a layer structure;
-        # grammar.pregroup diagrams may not support depth() directly.
-        return len(diagram.inside) if hasattr(diagram, 'inside') else len(diagram.boxes)
+    except (AttributeError, TypeError, AxiomError, UnboundLocalError):
+        # depth() raises AxiomError on lawful rigid pregroup diagrams (its
+        # symmetric to_hypergraph conversion does not apply), and discopy
+        # 1.2.2's Layer.merge can raise UnboundLocalError on adjoint
+        # compositions. Both are discopy-internal failures on lawful input;
+        # the fallback computes the SAME layer-span longest-path measure
+        # directly. The interim len(inside) box count in 7331d43 was crash
+        # containment only and is superseded.
+        return _layer_span_depth(diagram)
 
 
 def diagram_width(diagram: "Diagram") -> int:

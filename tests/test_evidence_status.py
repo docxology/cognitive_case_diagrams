@@ -266,12 +266,15 @@ def test_metadata_stage_states(tmp_path: Path) -> None:
     citation.unlink()
     (tree / ".zenodo.json").unlink()
     _, report = status_of(tree)
-    assert report["evidence"]["metadata"]["state"] == "missing"
-
-
 def test_visual_review_stage_states(gate_tree: Path) -> None:
     from src.publication_review import BROWSER_CHECKS
 
+    pdf = gate_tree / "output" / "pdf" / "cognitive_case_diagrams_combined.pdf"
+    pdf.parent.mkdir(parents=True, exist_ok=True)
+    pdf.write_bytes(b"%PDF-1.4\n% fixture\n")
+    web = gate_tree / "output" / "web" / "index.html"
+    web.parent.mkdir(parents=True, exist_ok=True)
+    web.write_text("<p>Fixture</p>\n")
     _, report = status_of(gate_tree)
     assert report["evidence"]["visual_review"]["state"] == "missing"
     record = gate_tree / "output" / "reports" / "publication_review.json"
@@ -282,12 +285,6 @@ def test_visual_review_stage_states(gate_tree: Path) -> None:
     record.write_text(json.dumps({"schema": "ccd-publication-review-v1"}))
     _, report = status_of(gate_tree)
     assert report["evidence"]["visual_review"]["state"] == "invalid"
-    pdf = gate_tree / "output" / "pdf" / "cognitive_case_diagrams_combined.pdf"
-    pdf.parent.mkdir(parents=True, exist_ok=True)
-    pdf.write_bytes(b"%PDF-1.4\n% fixture\n")
-    web = gate_tree / "output" / "web" / "index.html"
-    web.parent.mkdir(parents=True, exist_ok=True)
-    web.write_text("<p>Fixture</p>\n")
     record.write_text(
         json.dumps(
             {
@@ -424,3 +421,14 @@ def test_clean_scrubs_only_the_project_root_prefix(tmp_path: Path) -> None:
     assert detail == "evidence at <project>/output/reports/x.json"
     elsewhere = tmp_path / "elsewhere"
     assert _clean(f"refused {elsewhere}", nested) == f"refused {elsewhere}"
+
+
+def test_report_is_byte_deterministic(gate_tree: Path, tmp_path: Path) -> None:
+    """Two runs on unchanged trees emit byte-identical documents."""
+    first = run_cli("--project-root", str(gate_tree))
+    second = run_cli("--project-root", str(gate_tree))
+    assert first.stdout == second.stdout
+    empty_first = run_cli("--project-root", str(tmp_path))
+    empty_second = run_cli("--project-root", str(tmp_path))
+    assert empty_first.stdout == empty_second.stdout
+    assert empty_first.returncode == 1

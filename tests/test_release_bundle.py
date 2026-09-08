@@ -232,3 +232,14 @@ def test_verify_rejects_egg_info_members(release_tree: Path, tmp_path: Path) -> 
             bundle.writestr(info, entries[name])
     with pytest.raises(ValueError, match="residue"):
         verify_release_archive(residue_zip)
+
+
+    (release_tree / "MANIFEST.in").write_text("include README.md\n")
+    (release_tree / "conftest.py").write_text("import sys\n")
+    _add_quality_evidence(release_tree)
+    (release_tree / "conftest.py").write_text("import sys\n")
+    destination = tmp_path / "candidate" / "candidate.zip"
+    manifest = build_release_archive(
+        release_tree, destination, version="2.4.0", publication_date="2026-09-07"
+    )
+    assert verify_release_archive(destination) == manifest

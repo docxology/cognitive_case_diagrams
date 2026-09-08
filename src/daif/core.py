@@ -42,11 +42,25 @@ Moments are exact finite sums. Quantiles use the generalized inverse CDF
             f"Non-finite values in z_vec after score construction — check reward_vector "
             f"and transition_matrix for NaN/inf. z_vec={z_vec!r}"
         )
-
-    mean_z = float(current_q @ z_vec)
-
-    z_second_moment = float(current_q @ (z_vec ** 2))
-    var_z = max(0.0, z_second_moment - mean_z ** 2)
+    # Stable moments via a reference-shifted computation: offsets from the
+    # first score keep the arithmetic small, so a constant return law has
+    # variance exactly 0 at any magnitude (the naive second moment and the
+    # mean-centered form both lose the constant case to catastrophic
+    # rounding at ~1e160 scales). ValueError is reserved for genuinely
+    # unrepresentable results: a non-finite mean, or a centered variance
+    # beyond float range.
+    reference = z_vec[0]
+    offsets = z_vec - reference
+    mean_offset = float(current_q @ offsets)
+    mean_z = float(reference + mean_offset)
+    centered = offsets - mean_offset
+    with np.errstate(over="ignore"):
+        spread = float(current_q @ (centered ** 2))
+    if not (np.isfinite(mean_z) and np.isfinite(spread)):
+        raise ValueError(
+            f"Score moments are not representable in floating point for z_vec={z_vec!r}."
+        )
+    var_z = max(0.0, spread)
 
     tau_levels = np.linspace(
         1 / (2 * n_quantiles), 1 - 1 / (2 * n_quantiles), n_quantiles

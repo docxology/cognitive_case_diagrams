@@ -3,7 +3,9 @@
 ``ccd-evidence-status`` composes the project's fail-closed validators into
 one read-only, per-stage status report. It never generates artifacts, never
 writes files, and never touches the network; it only reports the state of
-evidence that already exists on disk.
+evidence that already exists on disk. The report is deterministic for a
+given tree state: no wall-clock fields are emitted, so consumers can digest
+the document byte-stably.
 
 Stages and the validators they reuse (no receipt logic is duplicated):
 
@@ -32,8 +34,8 @@ binding: the current quality input fingerprint, the fingerprint embedded in
 the archived quality receipt, and ``release-validation.json``'s ``source``
 must agree. Archive record corruption (digest or publication-payload
 mismatch) is ``invalid``, not ``stale``. The MCP capability summary keeps
-its coarser ``stale_or_invalid`` vocabulary and is expected to consume this
-module's mapping so the two surfaces cannot drift.
+its coarser ``stale_or_invalid`` vocabulary and consumes this module's
+mapping so the two surfaces cannot drift.
 
 Artifact lookup is fixed to the version declared in ``pyproject.toml``;
 release directories are never auto-discovered, so leftover or partially
@@ -46,7 +48,6 @@ import argparse
 import json
 import sys
 import zipfile
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -82,6 +83,7 @@ def _clean(detail: str, root: Path) -> str:
 
 
 def quality_stage(root: Path) -> dict[str, Any]:
+    """Report the source-bound quality receipt through its own validator."""
     from src.release_validation import QUALITY_RECEIPT, validate_quality_receipt
 
     artifact = QUALITY_RECEIPT.as_posix()
@@ -93,10 +95,10 @@ def quality_stage(root: Path) -> dict[str, Any]:
         return {"state": "stale", "artifact": artifact, "detail": _clean(str(exc), root)}
     except Exception as exc:  # fail-closed: every validator escape is invalid
         return {"state": "invalid", "artifact": artifact, "detail": _clean(str(exc), root)}
-    skipped = int(receipt.get("pytest_skipped", 0))
+    skipped = int(receipt.get("pytest_skipped") or 0)
     detail = (
-        f"quality gate passed: {receipt['pytest_passed']} tests, "
-        f"{receipt['coverage_percent']}% line-and-branch coverage"
+        f"quality gate passed: {receipt.get('pytest_passed')} tests, "
+        f"{receipt.get('coverage_percent')}% line-and-branch coverage"
     )
     if skipped:
         detail += f"; {skipped} skipped (release assembly rejects skipped tests)"
@@ -106,6 +108,7 @@ def quality_stage(root: Path) -> dict[str, Any]:
         "detail": detail,
         "skipped": skipped,
     }
+
 
 def _stage_experiments(root: Path) -> dict[str, Any]:
     """Report synthetic experiment results through their fail-closed verdict."""
@@ -153,8 +156,8 @@ def _stage_manuscript(root: Path) -> dict[str, Any]:
     except Exception as exc:  # fail-closed: every validator escape is invalid
         return {"state": "invalid", "artifact": artifact, "detail": _clean(str(exc), root)}
     detail = (
-        f"{structure['chapters']} chapters, {structure['figures']} figures: "
-        f"{structure['status']}"
+        f"{structure.get('chapters')} chapters, {structure.get('figures')} figures: "
+        f"{structure.get('status', 'structural checks passed')}"
     )
     return {"state": "validated", "artifact": artifact, "detail": detail}
 
@@ -176,7 +179,7 @@ def _stage_metadata(root: Path) -> dict[str, Any]:
         return {"state": "stale", "artifact": artifact, "detail": _clean(str(exc), root)}
     except Exception as exc:  # fail-closed: every validator escape is invalid
         return {"state": "invalid", "artifact": artifact, "detail": _clean(str(exc), root)}
-    detail = f"citation and deposit sidecars match configuration for version {metadata['version']}"
+    detail = f"citation and deposit sidecars match configuration for version {metadata.get('version')}"
     return {"state": "validated", "artifact": artifact, "detail": detail}
 
 
@@ -185,6 +188,14 @@ def _stage_visual_review(root: Path) -> dict[str, Any]:
     from src.publication_review import REVIEW_PATH, validate_publication_review
 
     artifact = REVIEW_PATH.as_posix()
+    rendered = (
+        "output/pdf/cognitive_case_diagrams_combined.pdf",
+        "output/web/index.html",
+    )
+    absent = [name for name in rendered if not (root / name).is_file()]
+    if absent:
+        detail = f"Rendered publication artifacts are absent: {', '.join(absent)}"
+        return {"state": "missing", "artifact": artifact, "detail": detail}
     try:
         review = validate_publication_review(root)
     except FileNotFoundError as exc:
@@ -281,7 +292,7 @@ def _stage_release(root: Path, version: str) -> dict[str, Any]:
 
 
 def collect_evidence_status(project_root: Path) -> dict[str, Any]:
-    """Collect the per-stage evidence report; read-only, fail-closed."""
+    """Collect the per-stage evidence report; read-only, fail-closed, deterministic."""
     root = project_root.resolve(strict=True)
     version = _declared_version(root)
     evidence = {
@@ -299,7 +310,6 @@ def collect_evidence_status(project_root: Path) -> dict[str, Any]:
     )
     return {
         "schema": SCHEMA,
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "version": version,
         "overall": overall,
         "exit_code": EXIT_SUCCESS if overall == OVERALL_VALIDATED else EXIT_INCOMPLETE,
@@ -319,14 +329,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--project-root",
         type=Path,
-        default=PROJECT_ROOT,
-        help="Project whose evidence is reported (default: this checkout)",
+        default=None,
+        help="Project whose evidence is reported (default: the current directory)",
     )
     args = parser.parse_args(argv)
+    attempted = (args.project_root or Path.cwd()).resolve()
     try:
-        report = collect_evidence_status(args.project_root)
+        report = collect_evidence_status(args.project_root or Path.cwd())
     except (OSError, ValueError) as exc:
-        envelope = {"schema": SCHEMA, "overall": OVERALL_ERROR, "detail": str(exc)}
+        detail = _clean(str(exc), attempted)
+        if args.project_root is not None:
+            detail = detail.replace(str(args.project_root), "<project>")
+        envelope = {"schema": SCHEMA, "overall": OVERALL_ERROR, "detail": detail}
         print(json.dumps(envelope), file=sys.stderr)
         return EXIT_INCOMPLETE
     print(json.dumps(report, indent=2, sort_keys=True))

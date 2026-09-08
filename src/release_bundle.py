@@ -34,6 +34,7 @@ _ROOT_FILES = (
     "pyproject.toml",
     "uv.lock",
     "MANIFEST.in",
+    "conftest.py",
     ".zenodo.json",
     ".gitignore",
     ".github/workflows/ci.yml",

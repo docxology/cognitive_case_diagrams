@@ -387,13 +387,15 @@ def render_snake_equation_unpacking(
 
     Panels (left to right):
 
-    1. *LHS zigzag* — the composite $(\\varepsilon_n \\otimes 1_n) \\circ (1_n \\otimes \\eta_n)$
-       drawn with labelled cup (ε) and cap (η).
+    1. *LHS zigzag* — the DisCoPy-verified term
+       $(\\varepsilon_n \\otimes 1_n) \\circ (1_n \\otimes \\eta_n)$
+       (cap $\\eta_n: 1 \\to n^r \\otimes n$, cup
+       $\\varepsilon_n: n \\otimes n^r \\to 1$) drawn with labelled cup and cap.
     2. *Equality* — the identity wire $1_n$ with an explicit ``=`` bridging
        the two panels.
-    3. *Axiom recap* — the defining compact-closure equations
-       ``(ε_n ⊗ 1) ∘ (1 ⊗ η_n) = 1_n`` and
-       ``(1 ⊗ ε_n) ∘ (η_n ⊗ 1) = 1_n`` written out for reference.
+    3. *Axiom recap* — the defining compact-closure equation
+       ``(ε_n ⊗ 1) ∘ (1 ⊗ η_n) = 1_n`` and, for reference, the mirror
+       adjoint orientation ``(1 ⊗ ε'_n) ∘ (η'_n ⊗ 1) = 1_n``.
 
     Args:
         output_path: PNG path to save; defaults to
@@ -410,22 +412,21 @@ def render_snake_equation_unpacking(
     # panel 1 — zigzag LHS
     ax = axes[0]
     _clean_ax(ax)
-    # upper wire (vertical identity on top)
-    _wire(ax, 0.25, 0.92, 0.25, 0.58, color=wire_color, lw=2.6)
-    # cap η at middle
-    _cap(ax, 0.25, 0.55, 0.58, height=0.12, color=wire_color, lw=2.6)
-    # cup ε beneath cap
-    _cup(ax, 0.55, 0.85, 0.42, depth=0.12, color=wire_color, lw=2.6)
-    # lower wire continuation
-    _wire(ax, 0.85, 0.42, 0.85, 0.08, color=wire_color, lw=2.6)
-    # top / bottom type labels
+    # DisCoPy-verified SnakeA = (1_n ⊗ Cap(n^r, n)) then (Cup(n, n^r) ⊗ 1_n):
+    # input n upper-left into the cup's left tip; the n^r connector joins the
+    # cap's left leg to the cup's right tip; output n leaves the cap's right leg.
+    _wire(ax, 0.25, 0.92, 0.25, 0.42, color=wire_color, lw=2.6)
+    _cup(ax, 0.25, 0.55, 0.42, depth=0.12, color=wire_color, lw=2.6)
+    _wire(ax, 0.55, 0.58, 0.55, 0.42, color=wire_color, lw=2.6)
+    _cap(ax, 0.55, 0.85, 0.58, height=0.12, color=wire_color, lw=2.6)
+    _wire(ax, 0.85, 0.58, 0.85, 0.08, color=wire_color, lw=2.6)
+    # type labels: input n top-left, output n bottom-right
     ax.text(0.25, 0.97, r"$n$", ha="center", fontsize=FONT_SIZE_LABEL, color=wire_color, fontweight="bold")
     ax.text(0.85, 0.03, r"$n$", ha="center", fontsize=FONT_SIZE_LABEL, color=wire_color, fontweight="bold")
-    # cap/cup annotations
-    ax.text(0.40, 0.73, r"$\eta_n$", ha="center", fontsize=FONT_SIZE_LABEL, color=wire_color, fontweight="bold")
-    ax.text(0.70, 0.27, r"$\varepsilon_n$", ha="center", fontsize=FONT_SIZE_LABEL, color=wire_color, fontweight="bold")
-    # internal type labels on the bent wires
-    ax.text(0.42, 0.50, r"$n^r$", ha="center", fontsize=FONT_SIZE_ANNOTATION, color=COLOR_TEXT)
+    # η above the cap, ε below the cup, n^r beside the middle connector
+    ax.text(0.70, 0.70, r"$\eta_n$", ha="center", fontsize=FONT_SIZE_LABEL, color=wire_color, fontweight="bold")
+    ax.text(0.40, 0.30, r"$\varepsilon_n$", ha="center", fontsize=FONT_SIZE_LABEL, color=wire_color, fontweight="bold")
+    ax.text(0.52, 0.50, r"$n^r$", ha="right", fontsize=FONT_SIZE_ANNOTATION, color=COLOR_TEXT)
     ax.set_title(
         r"1. LHS zigzag $(\varepsilon_n \otimes 1_n)\circ(1_n \otimes \eta_n)$",
         fontsize=FONT_SIZE_LABEL, fontweight="bold",
@@ -451,13 +452,15 @@ def render_snake_equation_unpacking(
             r"$(\varepsilon_n \otimes 1_n) \circ (1_n \otimes \eta_n) \;=\; 1_n$",
             ha="center", fontsize=FONT_SIZE_LABEL, color=wire_color)
     ax.text(0.50, 0.42,
-            r"$(1_n \otimes \varepsilon_n) \circ (\eta_n \otimes 1_n) \;=\; 1_n$",
+            r"$(1_n \otimes \varepsilon'_n) \circ (\eta'_n \otimes 1_n) \;=\; 1_n$",
             ha="center", fontsize=FONT_SIZE_LABEL, color=wire_color)
     ax.text(0.50, 0.18,
-            "Both zigzags straighten.\n"
-            r"$\eta_n: 1 \to n \otimes n^r$ (cap)"
+            "Both zigzags straighten (lower line: the other adjoint orientation).\n"
+            r"$\eta_n: 1 \to n^r \otimes n$ (cap, $\mathrm{Cap}(n^r, n)$)"
             "\n"
-            r"$\varepsilon_n: n^r \otimes n \to 1$ (cup)",
+            r"$\varepsilon_n: n \otimes n^r \to 1$ (cup, $\mathrm{Cup}(n, n^r)$)"
+            "\n"
+            r"$\eta'_n: 1 \to n \otimes n^l$, $\varepsilon'_n: n^l \otimes n \to 1$",
             ha="center", fontsize=FONT_SIZE_ANNOTATION, color=COLOR_TEXT, fontstyle="italic",
             linespacing=1.5)
     ax.set_title("3. Axiom recap", fontsize=FONT_SIZE_LABEL, fontweight="bold")

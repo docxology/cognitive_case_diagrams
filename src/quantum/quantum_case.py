@@ -323,9 +323,12 @@ def semantic_state(
         semidefinite, diagonal).
 
     Raises:
-        ValueError: If the weight sum is not strictly positive, or if the
-            sum of the supplied weights overflows floating-point range; the
-            state is rejected instead of silently non-normalizable.
+        ValueError: If the weights are not finite and non-negative, or if no
+            positive weight is supplied (an all-zero vector cannot be
+            normalized). Normalization scales by the maximum weight before
+            summing, so every finite non-negative input with at least one
+            positive weight yields a valid trace-1 state; the earlier
+            finite-total rejection was intermediate containment only.
     """
     if roles is None:
         roles = list(weights.keys())
@@ -342,14 +345,21 @@ def semantic_state(
         if i < d:
             diag[i] = weights.get(role, 0.0)
 
-    with np.errstate(over="ignore"):
-        total = float(np.sum(diag).real)
-    if not np.isfinite(total):
-        raise ValueError("weights must sum to a positive finite value")
-    if total <= 0:
+    # Stable normalization: scale by the maximum weight BEFORE summing, so
+    # the sum lies in [1, d] and never overflows for finite non-negative
+    # inputs whose output is representable (equal 1e308 weights and
+    # subnormal-only weights normalize exactly like ordinary ones). The
+    # finite-total guard below is the intermediate containment from 7331d43,
+    # retained as belt-and-braces for the all-zero (unnormalizable) case.
+    real = diag.real
+    peak = float(real.max())
+    if peak <= 0:
         raise ValueError("weights must sum to a positive value")
-
-    diag /= total  # Normalize the allocated vector in place.
+    scaled = real / peak
+    total = float(scaled.sum())
+    if not np.isfinite(total) or total <= 0:
+        raise ValueError("weights must sum to a positive finite value")
+    diag = (scaled / total).astype(np.complex128)
     rho = np.diag(diag)
 
     logger.debug("Semantic state: Tr(ρ) = %.6f", np.trace(rho).real)

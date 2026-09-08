@@ -59,7 +59,7 @@ There is only one categorical distribution $q$, and $\widehat f_a$ is a normaliz
 
 ## Caller-defined policy scores {#sec:daif-policy}
 
-`G_policy()` evaluates $-q\cdot\ell-q\cdot e-\gamma q\cdot u+\beta\operatorname{Var}(Z)$ for supplied finite vectors $\ell,e,u$. This can express a chosen surprise, information-value, utility, and risk tradeoff. It is not a general expected-free-energy derivation. Expected log likelihood of one observation is not ambiguity entropy, and posterior entropy is not information gain. Units must be made compatible by the coefficients.
+`G_policy()` evaluates $-q\cdot\ell-q\cdot e-\gamma q\cdot u+\beta\operatorname{Var}(Z)$ for supplied finite vectors $\ell,e,u$, with $Z$ the scalar score distribution of the chosen policy. This can express a chosen surprise, information-value, utility, and risk tradeoff. It is not a general expected-free-energy derivation. Expected log likelihood of one observation is not ambiguity entropy, and posterior entropy is not information gain. Units must be made compatible by the coefficients.
 
 Policy probabilities are computed by a stable softmax of negative scores. Subtraction precedes temperature scaling to avoid overflow. Low temperature concentrates mass on minima, including equal treatment of tied minima; no optimality theorem about the environment follows.
 

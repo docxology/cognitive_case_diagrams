@@ -6,7 +6,7 @@ Three meanings of *case* must remain separate. Morphological case concerns forms
 
 ![A hand-specified ${introductory_figure_role_count}-role graph used to introduce the notation. Nodes denote selected role labels and arrows denote named relations. This is a modeling example, not a graph extracted from a corpus.](output/figures/case_category_minimal.png){#fig:case-minimal}
 
-Categorical compositional distributional semantics provides a mathematical account of how typed grammatical reductions can guide operations on word representations [@coecke2010mathematical]. Enriched-category constructions give a different route from suitable text-extension probabilities to mathematical structure [@fritz2021enriched]. Neither result implies that an arbitrary role graph, attention matrix, or probability table automatically satisfies the relevant categorical axioms.
+Categorical compositional distributional semantics provides a mathematical account of how typed grammatical reductions can guide operations on word representations [@coecke2010mathematical]. Enriched-category constructions give a different route from suitable text-extension probabilities to mathematical structure [@bradley2021enriched]. Neither result implies that an arbitrary role graph, attention matrix, or probability table automatically satisfies the relevant categorical axioms.
 
 ## Contributions and evidence {#sec:whats-new}
 

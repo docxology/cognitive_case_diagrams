@@ -13,10 +13,10 @@ S, A, and P denote the argument primitives defined in [@sec:case-systems]. NOM, 
 | $g\circ f$ | First $f$, then $g$ |
 | $\otimes$ | Monoidal product in a specified category |
 | $n,s,n^l,n^r$ | Noun, sentence, and adjoint types |
-| $Z_{ij}$ | Candidate or verified hom-value, distinguished in context |
+|$Z$|Candidate or verified hom-value matrix (entries $Z_{ij}$) or similarity matrix, distinguished in context; in [@sec:daif-policy] the scalar score random variable in $\operatorname{Var}(Z)$|
 | $|Z|$ | Weighting/coweighting sum when defined |
 | $q,p,L,T$ | Posterior, prior, likelihood, row-stochastic transition matrix |
-| $F$ | Variational free energy for a specified fixed model |
+|$F$|Variational free energy for a specified fixed model; in quantile-coverage contexts ([@sec:exp-calibration]) the distribution function of the return law, as in $F(Q(\tau))$|
 | $G$ | Caller-defined policy score in the compatibility API |
 | $\tau,Q(\tau)$ | Quantile probability level and value |
 | $E_c,\rho$ | POVM effect and density matrix |

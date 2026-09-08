@@ -250,3 +250,12 @@ def test_egg_info_residue_never_enters_fingerprint(quality_tree: Path) -> None:
     assert quality_input_fingerprint(quality_tree) == before
     assert not is_quality_input("src/example.egg-info/SOURCES.txt")
     assert not is_quality_input("src/example.egg-info/PKG-INFO")
+
+
+def test_root_conftest_binds_the_quality_receipt(quality_tree: Path) -> None:
+    """A modified root conftest.py must stale the receipt like any test input."""
+    create_receipt(quality_tree)
+    (quality_tree / "conftest.py").write_text("import sys  # changed\n")
+    with pytest.raises(ValueError, match="stale"):
+        validate_quality_receipt(quality_tree)
+    assert is_quality_input("conftest.py")

@@ -105,6 +105,18 @@ class TestPushForwardReturn:
         with pytest.raises(ValueError, match="gamma"):
             push_forward_return(three_role_belief, identity_T, np.zeros(3), gamma=1.5)
 
+    def test_constant_return_moments_are_representable(self, three_role_belief, identity_T):
+        huge = np.array([1e160, 1e160, 1e160])
+        result = push_forward_return(three_role_belief, identity_T, huge, gamma=1.0)
+        assert result.mean == pytest.approx(1e160, rel=1e-12)
+        assert result.variance == 0.0
+
+    def test_spread_overflow_raises_value_error(self, three_role_belief, identity_T):
+        with pytest.raises(ValueError, match="not representable"):
+            push_forward_return(
+                three_role_belief, identity_T, np.array([1e200, -1e200, 0.0]), gamma=1.0
+            )
+
     def test_non_stochastic_raises(self, three_role_belief):
         bad = np.array([[0.5, 0.5, 0.5], [0.3, 0.3, 0.4], [0.1, 0.1, 0.1]])
         with pytest.raises(ValueError, match="rows must sum"):

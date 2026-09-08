@@ -89,3 +89,36 @@ class TestBuildComplexityExamples:
                 "Examples should be ordered by non-decreasing total complexity κ = boxes + cups."
             )
 
+
+
+def test_diagram_depth_matches_reference_rows() -> None:
+    """diagram_depth implements the layer-span longest path (11 reference rows)."""
+    import discopy.monoidal as monoidal
+    from discopy.rigid import Box, Cap, Cup, Id, Ty
+
+    from src.diagrams.complexity_metrics import diagram_depth
+    from src.diagrams.string_diagram import (
+        create_swap_passive,
+        create_word_diagram_ditransitive,
+    )
+
+    x = monoidal.Ty("x")
+    f = monoidal.Box("f", x, x)
+    n = Ty("n")
+    b = Box("b", n, n)
+    eta, eps = Cap(n.r, n), Cup(n, n.r)
+    rows = [
+        (Id(n), 0),
+        (Id(Ty()), 0),
+        (f >> f, 2),
+        (f @ f, 1),
+        (f @ f >> monoidal.Id(x) @ f, 2),
+        ((eps @ Id(n)) << (Id(n) @ eta), 2),
+        (b @ b >> Id(n) @ b, 2),
+        (eta, 1),
+        ((Id(n) @ eta) >> (eps @ Id(n)), 2),
+        (create_swap_passive("Alice", "chases", "Bob"), 3),
+        (create_word_diagram_ditransitive("Alice", "gives", "Bob", "book"), 3),
+    ]
+    for index, (diagram, expected) in enumerate(rows):
+        assert diagram_depth(diagram) == expected, f"reference row {index} failed"

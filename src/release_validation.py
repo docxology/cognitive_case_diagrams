@@ -55,8 +55,8 @@ def file_sha256(path: Path) -> str:
 
 QUALITY_CACHE_PARTS = frozenset({"__pycache__", "node_modules", "build", "dist", "target", ".venv"})
 _QUALITY_SUFFIXES = frozenset({".py", ".md", ".json", ".yaml", ".yml", ".toml", ".bib", ".txt"})
+_QUALITY_ROOT_FILES = frozenset({"pyproject.toml", "uv.lock", "README.md", "AGENTS.md", "SKILL.md", "MANIFEST.in", "conftest.py", ".github/workflows/ci.yml"})
 _QUALITY_DIRECTORIES = ("src", "scripts", "tests", "docs", "skills")
-_QUALITY_ROOT_FILES = frozenset({"pyproject.toml", "uv.lock", "README.md", "AGENTS.md", "SKILL.md", "MANIFEST.in", ".github/workflows/ci.yml"})
 
 
 def is_quality_input(relative: str) -> bool:

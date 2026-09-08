@@ -4,6 +4,7 @@ Bar chart of case-assignment probabilities P(c|ρ) = Tr(E_c ρ) for each POVM
 element (see ``quantum_case.case_probability``).
 """
 
+from .styles import save_publication_figure
 import logging
 from typing import Optional
 
@@ -15,7 +16,7 @@ import matplotlib.pyplot as plt
 from ..quantum.quantum_case import CasePOVM, case_probability
 from .styles import (
     CASE_COLORS, FONT_SIZE_FLOOR, FONT_SIZE_TITLE, FONT_SIZE_LABEL,
-    FIGURE_DPI, COLOR_UNKNOWN, mathtext_safe_arrows,
+    FIGURE_DPI, COLOR_UNKNOWN,
 )
 
 logger = logging.getLogger(__name__)
@@ -45,48 +46,23 @@ def plot_povm_probabilities(
     probs = [case_probability(povm.elements[r], density_matrix) for r in povm.roles]
     colors = [CASE_COLORS.get(r, COLOR_UNKNOWN) for r in roles]
 
-    # Cognitive state-space (1D semantic space)
-    x = np.linspace(0, 10, 500)
-    
-    for i, (role, prob, color) in enumerate(zip(roles, probs, colors)):
-        # Synthesize a gaussian representing the POVM element's density spread in state-space
-        # Distribute them evenly out along the x-axis based on index
-        center = 1.0 + (8.0 * i / max(1, len(roles) - 1))
-        # Width scales inversely with probability mass (more confident = sharper peak)
-        width = 0.6 + (1.0 - prob) * 1.5
-        
-        # Base gaussian
-        y = prob * np.exp(-0.5 * ((x - center) / width) ** 2)
-        
-        ax.plot(x, y, color=color, linewidth=2.5, label=f"{role} (Tr={prob:.3f})")
-        ax.fill_between(x, 0, y, color=color, alpha=0.35)
-        
-        # Intersecting peak annotation
-        ax.annotate(
-            f"{role}",
-            xy=(center, np.max(y)),
-            xytext=(0, 6),
-            textcoords="offset points",
-            ha="center", va="bottom",
-            fontsize=FONT_SIZE_LABEL,
-            fontweight="bold",
-            color=color,
-        )
-
-    ax.set_ylim(0, 1.2)
-    ax.set_xlim(0, 10)
-    ax.set_xlabel(mathtext_safe_arrows("Cognitive State-Space $\\theta$"), fontsize=FONT_SIZE_LABEL)
-    ax.set_ylabel("POVM Interference Density", fontsize=FONT_SIZE_LABEL)
+    if not povm.is_complete():
+        raise ValueError("Cannot plot an incomplete POVM")
+    ax.bar(roles, probs, color=colors, edgecolor="white")
+    for i, prob in enumerate(probs):
+        ax.text(i, prob + 0.025, f"{prob:.3f}", ha="center", fontsize=FONT_SIZE_FLOOR)
+    ax.set_ylim(0, 1.05)
+    ax.set_xlabel("Measurement outcome (case label)", fontsize=FONT_SIZE_LABEL)
+    ax.set_ylabel("Born-rule probability", fontsize=FONT_SIZE_LABEL)
     ax.set_title(title, fontsize=FONT_SIZE_TITLE)
-    ax.grid(True, linestyle="--", alpha=0.4)
-    ax.set_xticks([])
-    ax.legend(loc="upper right", fontsize=FONT_SIZE_FLOOR - 2, framealpha=0.9)
+    ax.tick_params(labelsize=FONT_SIZE_FLOOR)
+    ax.grid(axis="y", alpha=0.2)
 
     plt.tight_layout()
 
     if output_path is None:
         output_path = f"povm_{povm.name}.png"
-    plt.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+    save_publication_figure(plt.gcf(), output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved POVM plot to %s", output_path)
 

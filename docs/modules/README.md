@@ -1,56 +1,13 @@
-# docs/modules/ — Per-Module Technical Reference
+# Module guides
 
-Detailed documentation for each of the 9 `src/` subpackages, organized by manuscript section. Section numbers match [`docs/manuscript/AGENTS.md`](../../docs/manuscript/AGENTS.md) and [`../README.md`](../README.md#canonical-manuscript--src-map).
+- [case_systems ](case_systems.md): Finite role graphs, labelled path composition, alignment maps, and natural-transformation helpers. Endpoint and weight predicates do not certify arbitrary categories or functors. `MonoidalFunctor.preserves_tensor()` is a role-separation policy, not a monoidal-law test. Fluid-S probabilities are supplied modeling inputs.
+- [diagrams ](diagrams.md): Explicit DisCoPy pregroup constructions, tensor examples, diagram counts, and entity-name bookkeeping. `Discourse` does not infer coreference or implement a complete DisCoCirc semantic state update. `MagnitudeHomologyMetrics` contains a synthetic cup/cap score, not homology or measured decoherence.
+- [enriched_cat ](enriched_cat.md): Candidate hom-matrices, explicit multiplicative composition checks, max-product closure, and matrix magnitude. The standard matrix is synthetic and violates composition before closure. Pseudoinverse magnitudes require valid left/right weighting residuals. Threshold clusters are weak connected components, not pairwise-close cliques.
+- [topos_theory ](topos_theory.md): Textual theory presentations and profile comparisons. `ClassifyingTopos` stores presentation statistics only. `compare_theory_presentations()` is the canonical comparison; matching counts are neither necessary nor sufficient for Morita equivalence. `bridge_transfer()` never authorizes theorem transfer without a witness (none is implemented).
+- [cognitive ](cognitive.md): Categorical probabilities, fixed-model KL/free energy, Bayesian updates, and uncalibrated mismatch scores. Likelihoods must be finite and nonnegative and have positive evidence. Sequential updates consume each supplied likelihood once. Policy-score inputs are caller-defined; neural interpretations require additional evidence.
+- [daif ](daif.md): Experimental role-score distributions, pairwise quantile updates, finite quantile updates under risk distortion, Bayesian filtering, and diagnostics. Legacy Bellman names do not implement a Bellman return backup. VMP is a fixed single-factor softmax; `factor_consistency_score` is the accurate alias for the legacy Bethe function. ERP amplitudes are model units, not microvolts.
+- [quantum ](quantum.md): Finite POVMs and density matrices with explicit Hermitian/PSD/normalization checks. The canonical figure uses orthogonal projectors and a diagonal mixture, so it shows classical outcome probabilities, not interference. No quantum hardware, sheaf model, or TQNN is implemented.
+- [security ](security.md): A finite, supplied-label role-policy checker. Unknown roles are rejected before identity checks; mutable category adjacency is refreshed. Assignment checks use pairwise connectivity in either direction, not a directed authorization trace. No text classifier, authentication service, runtime reference monitor, or measured attack detector is provided.
+- [visualization ](visualization.md): Source-generated diagrams and synthetic numerical plots. Captions, labels, units, and provenance must agree with the data. Never create arbitrary confidence bands, empirical comparisons, or physical interpretations from synthetic scores. DisCoPy is a required project dependency; schematic native drawings are not independent proofs.
 
-## Module Index
-
-| Module | Manuscript | Description | Source Files |
-| ------ | ---------- | ----------- | ------------ |
-| [case_systems](case_systems.md) | §2 | Categorical case theory: CaseRole, Morphism, Functor, Natural Transformation | 4 modules |
-| [diagrams](diagrams.md) | §3–§4c | String diagrams, DisCoCat, DisCoCirc, complexity metrics | 4 modules |
-| [enriched_cat](enriched_cat.md) | §5–§5b | [0,1]-enriched categories, magnitude, weighting | 1 module |
-| [topos_theory](topos_theory.md) | §6 | Geometric theories, classifying toposes, Morita equivalence | 1 module |
-| [cognitive](cognitive.md) | §7 | Scalar active inference: beliefs, free energy, prediction error | 7 modules |
-| [daif](daif.md) | §7c | Distributional Active Inference: return distributions, VMP, ERP | 7 modules |
-| [quantum](quantum.md) | §8–§8b | POVM-based case assignment: crisp, graded, Fluid-S | 2 modules |
-| [security](security.md) | §9b | Cognitive security: type violations, injection scoring, robustness | 1 module |
-| [visualization](visualization.md) | All | Publication-quality figure generation (30 figures) | 15 modules |
-
-## Dependency DAG
-
-Imports follow [`../architecture_overview.md`](../architecture_overview.md). `case_systems` has no internal `src/` dependencies; `visualization` may import all packages for rendering.
-
-```text
-                         topos_theory (§6)
-                        ↗
-case_systems (§2) ──┬──→ diagrams (§3–§4c)
-                    ├──→ enriched_cat (§5) ──┬──→ cognitive (§7) ──→ daif (§7c)
-                    │                        │         │
-                    │                        └─────────┴──→ security (§9b)
-                    ├──→ quantum (§8)
-                    │
-                    └──────────────────────────────→ visualization (all sections)
-```
-
-## Each Module Document Contains
-
-1. **Purpose** — what the module does and why it exists
-2. **Architecture** — file layout and dependency position
-3. **Module Reference** — every exported class, function, and constant
-4. **Usage Examples** — runnable Python code
-5. **Manuscript Equations Implemented** — equation-to-function mapping
-6. **Related Documentation** — cross-links to other docs
-
-## Conventions
-
-- All source-of-truth references point to `__init__.py` exports
-- API signatures are derived from actual code inspection (zero mock)
-- Cross-links use relative paths to sibling module docs and parent-level `docs/` files
-- Figure references correspond to [manuscript_figure_index.md](../manuscript_figure_index.md)
-
----
-
-*Last updated: 2026-04-22 (v2.3 release). 9 domain subpackages documented. Live
-test, figure, and coverage counts are generated, not transcribed here — read
-`output/metrics.json` (`total_test_count`, `total_test_files`, `total_figures`,
-`coverage_percent`).*
+[API index](../api_reference.md) · [Method contracts](../method_contracts.md)

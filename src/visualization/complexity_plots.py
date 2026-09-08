@@ -5,7 +5,9 @@ complexity across different sentence types and structures.
 """
 from __future__ import annotations
 
+from .styles import save_publication_figure
 import logging
+import textwrap
 
 import matplotlib
 matplotlib.use("Agg")
@@ -14,9 +16,8 @@ import numpy as np
 
 from .styles import (
     CASE_COLORS, FONT_SIZE_FLOOR, FIGURE_DPI,
-    NARROW_FIGSIZE, POLAR_FIGSIZE, COMPARISON_FIGSIZE,
+    NARROW_FIGSIZE, POLAR_FIGSIZE,
     BAR_WIDTH_NARROW, BAR_WIDTH_STANDARD, BAR_ALPHA, GRID_ALPHA,
-    COLOR_ANNOTATION_DARK,
 )
 
 # Local aliases for convenience
@@ -48,58 +49,40 @@ def render_complexity_comparison(
         box_counts: Total box counts per sentence type.
         word_counts: Word box counts per sentence type.
         cup_counts: Cup contraction counts per sentence type.
-        sentences: Text of the sentences to overlay on the plot.
+        sentences: Sentence text included in the row labels.
         output_path: Path to save the figure.
 
     Returns:
         The output path.
     """
-    fig, ax = plt.subplots(figsize=COMPARISON_FIGSIZE)
-
-    x = np.arange(len(labels))
+    if not labels or any(len(values) != len(labels) for values in
+                         (box_counts, word_counts, cup_counts, sentences)):
+        raise ValueError("Nonempty labels and all count/text series must have equal lengths")
+    counts = np.asarray([box_counts, word_counts, cup_counts], dtype=float)
+    if not np.all(np.isfinite(counts)) or np.any(counts < 0) or np.any(counts != np.floor(counts)):
+        raise ValueError("Diagram counts must be finite nonnegative integers")
+    fig, ax = plt.subplots(figsize=(14, max(6, len(labels) * .95)))
+    y = np.arange(len(labels))
     width = BAR_WIDTH_NARROW
-
-    bars1 = ax.bar(x - width, box_counts, width, label="Total Boxes",
-                   color=COLORS["primary"], alpha=BAR_ALPHA)
-    bars2 = ax.bar(x, word_counts, width, label="Word Boxes",
-                   color=COLORS["secondary"], alpha=BAR_ALPHA)
-    bars3 = ax.bar(x + width, cup_counts, width, label="Cup Contractions",
-                   color=COLORS["accent"], alpha=BAR_ALPHA)
-
-    ax.set_xlabel("Sentence Type", fontsize=FONT_SIZE)
-    ax.set_ylabel("Count", fontsize=FONT_SIZE)
-    ax.set_title("DisCoCat Diagram Complexity Comparison",
-                 fontsize=FONT_SIZE + 2, fontweight="bold")
-    ax.set_xticks(x)
-    ax.set_xticklabels(labels, fontsize=FONT_SIZE - 2, rotation=15, ha="right")
-    ax.tick_params(axis="y", labelsize=FONT_SIZE - 2)
-    ax.legend(fontsize=FONT_SIZE - 2, loc='upper left')
-    ax.grid(axis="y", alpha=GRID_ALPHA)
-
-    # Add value labels on bars
-    for bars in [bars1, bars2, bars3]:
-        for bar in bars:
-            height = bar.get_height()
-            if height > 0:
-                ax.text(
-                    bar.get_x() + bar.get_width() / 2., height + 0.1,
-                    f"{int(height)}", ha="center", va="bottom",
-                    fontsize=FONT_SIZE - 4,
-                )
-
-    # Overlay sentence text under the bars
-    max_height = max(max(box_counts), max(word_counts), max(cup_counts))
-    for i, sentence in enumerate(sentences):
-        ax.text(
-            x[i], max_height + 0.8,
-            f'"{sentence}"', ha="center", va="bottom",
-            fontsize=FONT_SIZE - 4, rotation=45, color=COLOR_ANNOTATION_DARK
-        )
-    
-    ax.set_ylim(0, max_height + 3.0) # make room for text at top
+    for offset, values, label, color in zip(
+        (-width, 0, width), counts,
+        ("Total boxes", "Word boxes", "Cup contractions"), COLORS.values(),
+    ):
+        bars = ax.barh(y + offset, values, width, label=label, color=color, alpha=BAR_ALPHA)
+        ax.bar_label(bars, fmt="%.0f", padding=3, fontsize=FONT_SIZE_FLOOR)
+    row_labels = [label + "\n" + textwrap.fill(sentence, 36)
+                  for label, sentence in zip(labels, sentences)]
+    ax.set_yticks(y, row_labels, fontsize=FONT_SIZE_FLOOR)
+    ax.invert_yaxis()
+    ax.set_xlabel("Count in the explicitly constructed diagram", fontsize=16)
+    ax.set_title("Diagram size by example", fontsize=18, fontweight="bold", pad=95)
+    ax.tick_params(axis="x", labelsize=FONT_SIZE_FLOOR)
+    ax.set_xlim(0, max(float(counts.max()), 1) * 1.16)
+    ax.legend(fontsize=FONT_SIZE_FLOOR, loc="lower center", bbox_to_anchor=(0.5, 1.05), ncol=3)
+    ax.grid(axis="x", alpha=GRID_ALPHA)
 
     fig.tight_layout()
-    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+    save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved complexity comparison plot to %s", output_path)
     return output_path
@@ -143,7 +126,7 @@ def render_normal_form_comparison(
     ax.grid(axis="y", alpha=GRID_ALPHA)
 
     fig.tight_layout()
-    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+    save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved normal form comparison plot to %s", output_path)
     return output_path
@@ -185,7 +168,7 @@ def render_syntactic_complexity_radar(
               fontsize=FONT_SIZE - 2)
 
     fig.tight_layout()
-    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+    save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved complexity radar chart to %s", output_path)
     return output_path

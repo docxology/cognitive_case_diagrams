@@ -1,34 +1,22 @@
-# Appendix C: Automated Test Suite Inventory {#sec:test-suite-inventory}
+# Appendix C: Reproduction and Verification Scope {#sec:test-suite-inventory}
 
-This appendix summarizes the **categories** of tests behind the counts in \autoref{sec:diagrammatic-cognition}. Aggregate figures are injected at build time (**1225** tests, **66** files, **9** domain packages under ``src/``; 95.79% line-and-branch coverage on ``src/`` (measured; see ``output/metrics.json`` and ``tests/AGENTS.md`` for provenance); see `src/generate_manuscript_metrics.py` and `output/metrics.json`). API summary: [`docs/api_reference.md`](../api_reference.md#manuscript-metrics-helper-srcgenerate_manuscript_metrics). The open-source package [@cognitive_case_diagrams2026code] holds the implementation exercised by these tests. Every test uses real mathematical computations—no mocks or fakes.
+Two different counts matter and must not be conflated. The suite *collects* 1623 tests in 81 files across 11 source subpackages; a collection count alone certifies nothing. A passing run is certified only by the source-bound quality receipt, which records 1623 passed, 0 failed, and 0 skipped tests with 6170 of 6486 statements covered (93.15% combined). The receipt binds that evidence to source fingerprint 6539bdaffcf7 and was recorded at 2026-09-08T06:43:37.903622+00:00; a receipt whose fingerprint no longer matches the tree is rejected. The metrics writer records installed NumPy 2.4.4 and DisCoPy 1.2.2.
 
-- **Categorical axiom tests**: Identity morphism existence, composition associativity, weight invariants, `is_well_formed()` full axiom check
-- **Enriched category tests**: Hom-value constraints, composition inequality, categorical magnitude, magnitude deficit, full composition check, role clustering
-- **Diagram type tests**: Pregroup diagrams validated for `dom == Ty()` and `cod == s`, correct box counts, diagram equality
-- **Metrics tests**: Normal form preservation, depth computation with graceful fallback for pregroup diagrams
-- **Natural transformation tests**: Component morphism construction, `naturality_holds` / `verify_naturality` on identity and incomplete maps, identity transformation generation, vertical composition of transformations, completeness checking over domain objects
-- **Complexity metrics tests**: DisCoPy box/cup/cap counting on transitive/ditransitive diagrams, normal form computation and snake equation verification, syntactic complexity scoring with configurable weights, cross-diagram comparison utilities
-- **Topos theory tests**: Geometric theory construction from standard and minimal case categories, classifying topos invariant computation, Morita equivalence verification (positive and negative cases), bridge transfer between equivalent theories with transfer-blocking for non-equivalent theories, enriched theory construction
-- **Fluid-S tests**: Volitional/non-volitional mapping, probability splits, Bats language examples, kernel computation, enriched weight scaling
-- **Active inference tests** (`tests/test_cognitive_*.py`): Belief construction and entropy, KL divergence (Gibbs' inequality, asymmetry), variational free energy, Bayesian belief update with zero-likelihood edge case, sequential multi-word belief update (five-step generative loop with entropy convergence), prediction error scaling including P600 ERP prediction with boundary weights, expected free energy decomposition (epistemic vs pragmatic), magnitude-based garden-path reanalysis cost with symmetry, N400 semantic violation proxy (including `test_cognitive_integration.py`)
-- **Quantum case tests**: Crisp POVM orthogonal projectors, graded proto-role POVM, Fluid-S basis rotation, density matrix creation, \autoref{eq:eq-8-1} (in \autoref{sec:quantum-semantics}) $P(c\mid\rho) = \mathrm{Tr}(E_c\,\rho)$ verification
-- **Cognitive security tests**: Type-violation detection, case frame validation, injection score computation, magnitude-based topological robustness, composition inequality as security boundary
-- **Ditransitive tests**: Three-argument sentence creation, NOM/ACC/DAT case assignment, DisCoPy diagram with three cups, complexity comparison with transitive
-- **Visualization tests** (`tests/test_visualization_*.py`): Category graphs, enriched heatmaps, functor panels, string and DisCoPy diagrams, complexity and DAIF plots, quantum and security plots, Fluid-S landscapes, syntactic panels—PNG output and structural checks where applicable
-- **DAIF subpackage tests** (232 tests across 8 test files):
-  - `test_daif_core.py`: Distributional Bellman operator, push-forward return, C51 categorical projection
-  - `test_daif_quantile.py`: QR-DQN quantile Huber loss, IQN risk distortion (neutral/optimistic/pessimistic/CVaR), Wasserstein distances $W_1$/$W_2$
-  - `test_daif_inference.py`: `distributional_case_assignment()` posterior convergence, variational message passing, Bethe free energy, expected information gain
-  - `test_daif_prediction.py`: DPE precision-weighting, N400/P600 amplitude from return distributions, full `ERPProfile` waveform generation and peak latency
-  - `test_daif_policy.py`: `G_policy()` EFE + risk term, Boltzmann policy temperature scaling, distributional epistemic value
-  - `test_daif_metrics.py`: Convergence diagnostics (monotonicity, relative reduction), distributional KL divergence, quantile calibration error, return entropy
-  - `test_daif_types.py`: `DistributionalReturn` helpers, `DAIFResult` / `ERPProfile` properties (with integration coverage of re-exported DAIF entrypoints)
+The suite covers role-graph construction; sampled endpoint and weight laws; explicit pregroup reductions; tensor evaluation; finite probability calculations; quantile update conventions; matrix magnitude and composition checks; POVM and density validation; finite role-policy checks; the seeded synthetic studies of [@sec:synthetic-statistics]; figure generation; and manuscript substitution. It uses real numerical arrays, files, and subprocesses. Test counts, coverage, and synthetic study outputs are not mathematical proofs or empirical effect sizes.
 
-- **Cross-module and structural coverage tests** (`test_cross_module_coverage.py`): Integration paths across enriched category and case_category modules not reached by per-module unit tests; verifies composition chaining, morphism weight transitivity (\autoref{eq:eq-2-1}), and magnitude consistency across module boundaries
-- **Property-based and parametric tests** (`test_property_based.py`): Algebraic invariants exercised over parametric inputs—enriched composition inequality, magnitude positivity, and morphism weight bounds in $[0,1]$—confirming structural properties hold generically rather than only for specific examples used in unit tests
-- **Visualization multi-module tests** (`test_visualization_plot_modules.py`, `test_visualization_syntactic_coverage.py`): Multi-module rendering pipelines and syntactic panel coverage paths not hit by per-module visualization tests; verifies that all registered plot functions execute to file without exception
-- **Script and metrics tests** (`test_diagrams_generator.py`, `test_generate_manuscript_metrics.py`): Round-trip invocation of `scripts/generate_diagrams.py` domain dispatcher and `src/generate_manuscript_metrics.py`; verifies domain registry completeness, figure-path collection, and manuscript variable extraction against the live test suite and installed package versions
+Negative controls include malformed probability inputs, impossible observations, non-Hermitian effects, incompatible quantile grids, a composition-violating matrix, a matching theory profile without a transfer witness, manuscript math containing literal dollar delimiters, unregistered or nonfinite manuscript variables, and prose or captions containing numeric literals that no registry identifier backs. These cases matter because a validator that accepts everything can produce a superficially green run.
 
-```{=latex}
-\newpage
+From the project root, install and verify with:
+
+```bash
+uv sync --frozen --extra mcp
+uv run python scripts/quality_gate.py --coverage
+uv run python scripts/run_experiments.py
+uv run python scripts/generate_diagrams.py
+uv run python scripts/inject_variables.py
+uv run python scripts/validate_project.py
 ```
+
+All canonical numerical examples are synthetic. Seeds or fixed arrays are declared in source. The project has no corpus split, participant sample, EEG dataset, quantum-hardware receipt, or operational-agent security evaluation. This revision is identified by [10.5281/zenodo.22653315](https://zenodo.org/records/22653315); the series uses DOI 10.5281/zenodo.19695259. The live deposit state is reported at the version-record link.
+
+The first command uses the lockfile; the quality gate runs lint, types, and the full coverage-enforced suite and writes the receipt under `output/reports/`. The experiments runner writes the schema-annotated synthetic results consumed by injection. Figure generation writes `output/figures/` and the figure registry, binding each entry to the source fingerprint it was rendered from. Injection writes `output/manuscript/` and the variable manifest from the canonical numbered sources; validation re-checks every binding. Render through the sibling template engine using the lifecycle-qualified project selector documented in the repository README. Rendered PDFs require visual inspection in addition to text, link, and citation checks.

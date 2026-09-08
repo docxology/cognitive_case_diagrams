@@ -49,6 +49,10 @@ class TypeViolation:
     severity: float
     description: str
 
+    def __post_init__(self) -> None:
+        if not 0.0 <= self.severity <= 1.0:
+            raise ValueError("severity must be in [0,1]")
+
 
 class CaseFrameValidator:
     """Validates case frames against categorical type constraints.
@@ -83,7 +87,8 @@ class CaseFrameValidator:
         )
 
     def _build_valid_pairs(self) -> None:
-        """Cache the set of valid (source, target) morphism pairs."""
+        """Refresh the set of valid (source, target) morphism pairs."""
+        self._valid_morphism_pairs.clear()
         for m in self.category.morphisms:
             self._valid_morphism_pairs.add((m.source, m.target))
         # Identity morphisms are always valid
@@ -102,6 +107,7 @@ class CaseFrameValidator:
         Returns:
             List of TypeViolation objects (empty if well-typed).
         """
+        self._build_valid_pairs()
         violations = []
         entities = list(assignments.keys())
 
@@ -159,7 +165,10 @@ def detect_type_violation(
     Returns:
         TypeViolation if ill-typed, None if well-typed.
     """
-    # Identity morphisms are always well-typed
+    if source not in category.objects or target not in category.objects:
+        return TypeViolation(source, target, "unknown_role", 1.0,
+                             "Both endpoints must belong to the case category")
+    # Identities are licensed only on category objects.
     if source == target:
         return None
 

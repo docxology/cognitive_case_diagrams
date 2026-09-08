@@ -31,10 +31,10 @@ def make_return_dist(n=21, offset=0.0):
 
 class TestQuantileTDUpdate:
 
-    def test_identical_input_output_no_change(self):
+    def test_identical_quantile_samples_are_not_huber_fixed_point(self):
         q = np.array([0.1, 0.3, 0.5, 0.7, 0.9])
         updated = quantile_td_update(q, q, learning_rate=0.5)
-        np.testing.assert_allclose(updated, q, atol=1e-10)
+        np.testing.assert_allclose(updated, [0.12, 0.322, 0.5, 0.678, 0.88], atol=1e-10)
 
     def test_moves_toward_target(self):
         current = np.array([0.1, 0.3, 0.5])
@@ -48,17 +48,17 @@ class TestQuantileTDUpdate:
         q = np.array([0.2, 0.5, 0.8])
         assert quantile_td_update(q, q + 0.1).shape == q.shape
 
-    def test_full_lr_converges_to_target(self):
-        """With lr=1 and kappa→∞ (no Huber clip), updates converge."""
+    def test_pairwise_update_matches_hand_computed_gradient(self):
+        """All targets contribute, including those below the current quantile."""
         current = np.array([0.1, 0.5, 0.9])
         target = np.array([0.2, 0.6, 0.99])
         updated = quantile_td_update(current, target, learning_rate=1.0, kappa=100.0)
         # With large kappa, Huber ≈ L2; update direction correct
-        assert np.all(updated >= current - 0.01)
+        np.testing.assert_allclose(updated, [0.1827777777777778, 0.5483333333333333, 0.8694444444444445])
 
-    def test_mismatched_shapes_raises(self):
-        with pytest.raises(ValueError, match="Quantile arrays must match"):
-            quantile_td_update(np.array([0.1, 0.5]), np.array([0.1]))
+    def test_different_target_sample_count_is_supported(self):
+        result = quantile_td_update(np.array([0.1, 0.5]), np.array([0.1]))
+        np.testing.assert_allclose(result, [0.1, 0.49])
 
     def test_zero_lr_raises(self):
         with pytest.raises(ValueError, match="learning_rate"):
@@ -309,19 +309,19 @@ class TestIQNDistortionDirection:
         tl = cl.copy()
         return cq, cl, tq, tl
 
-    def test_pessimistic_inflates_update_vs_neutral(self):
+    def test_pessimistic_lowers_update_vs_neutral(self):
         cq, cl, tq, tl = self._base_inputs()
         neutral = implicit_quantile_network_update(cq, cl, tq, tl, risk_distortion="neutral")
         pess = implicit_quantile_network_update(cq, cl, tq, tl, risk_distortion="pessimistic")
         # All TD errors here are positive ⇒ 1-(1-τ)^(1/η) > τ inflates updates.
-        assert np.sum(pess - cq) >= np.sum(neutral - cq) - 1e-9
+        assert np.sum(pess - cq) < np.sum(neutral - cq)
 
-    def test_optimistic_dampens_update_vs_neutral(self):
+    def test_optimistic_raises_update_vs_neutral(self):
         cq, cl, tq, tl = self._base_inputs()
         neutral = implicit_quantile_network_update(cq, cl, tq, tl, risk_distortion="neutral")
         opt = implicit_quantile_network_update(cq, cl, tq, tl, risk_distortion="optimistic")
         # τ^(1/η) < τ with η<1 ⇒ shrunk positive-error weight ⇒ smaller update.
-        assert np.sum(opt - cq) <= np.sum(neutral - cq) + 1e-9
+        assert np.sum(opt - cq) > np.sum(neutral - cq)
 
     def test_cvar_shrinks_update_magnitude(self):
         cq, cl, tq, tl = self._base_inputs()

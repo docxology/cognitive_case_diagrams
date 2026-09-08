@@ -47,6 +47,10 @@ class DistributionalReturn(NamedTuple):
         Returns:
             (lower, upper) quantile values.
         """
+        if not 0. < alpha < 1.:
+            raise ValueError("alpha must be in (0,1)")
+        from ..numerics import quantile_grid
+        quantile_grid(self.quantiles, self.quantile_levels)
         lo = float(np.interp(alpha / 2, self.quantile_levels, self.quantiles))
         hi = float(np.interp(1 - alpha / 2, self.quantile_levels, self.quantiles))
         return lo, hi
@@ -62,13 +66,10 @@ class DistributionalReturn(NamedTuple):
         Returns:
             Probability mass on each atom (sums to 1).
         """
-        atoms = np.linspace(v_min, v_max, n_atoms)
-        # Histogram the quantiles onto atoms
-        counts, _ = np.histogram(self.quantiles, bins=np.append(atoms, v_max + 1e-8))
-        total = counts.sum()
-        if total == 0:
-            return np.full(n_atoms, 1.0 / n_atoms)
-        return counts.astype(np.float64) / total
+        # One projection contract for the method and module-level API.
+        from .core import categorical_return_distribution
+        return categorical_return_distribution(self, v_min, v_max, n_atoms)[1]
+
 
 
 @dataclass
@@ -108,16 +109,16 @@ class DAIFResult:
 
 @dataclass
 class ERPProfile:
-    """Predicted electrophysiological response profile from DAIF.
+    """Synthetic N400/P600-inspired proxy profile.
 
-    Contains predicted N400 and P600 amplitudes and simulated
-    waveform arrays for visualization and comparison with empirical data.
+    Contains model amplitudes and optional waveform templates. The legacy
+    `_uV` field name does not establish physiological units or calibration.
 
     Attributes:
-        n400_amplitude: Predicted N400 amplitude in μV (negative = larger N400).
-        p600_amplitude: Predicted P600 amplitude in μV (positive).
+        n400_amplitude: Signed N400-inspired amplitude in model units.
+        p600_amplitude: P600-inspired amplitude in model units.
         waveform_ms: Time axis in milliseconds (e.g., −200 to 900 ms).
-        waveform_uV: Voltage trace in μV.
+        waveform_uV: Synthetic amplitude trace; legacy name, uncalibrated model units.
         condition: Label for the violation condition (e.g., 'congruent').
         dpe: Distributional prediction error that generated both ERP components.
     """

@@ -1,31 +1,12 @@
 ---
 name: ccd-security
-description: Cognitive security — type violations, CaseFrameValidator, injection scoring, topological robustness, semantic integrity. Use for §9b adversarial and type-checking narratives.
+description: Source-grounded routing for the security examples in cognitive_case_diagrams.
 ---
 
-# `src/security/`
+# security workflow
 
-## When to use
+Use when changing or explaining `src/security`. Read [README.md](README.md) and [AGENTS.md](AGENTS.md), then inspect the source signature and relevant tests before calling an API.
 
-- Validating frames against an enriched case category, scoring adversarial injections, or reporting robustness / integrity diagnostics.
+A finite, supplied-label role-policy checker. Unknown roles are rejected before identity checks; mutable category adjacency is refreshed. Assignment checks use pairwise connectivity in either direction, not a directed authorization trace. No text classifier, authentication service, runtime reference monitor, or measured attack detector is provided.
 
-## Primary imports
-
-```python
-from src.security import (
-    TypeViolation,
-    CaseFrameValidator,
-    detect_type_violation,
-    injection_score,
-    topological_robustness,
-    semantic_integrity_check,
-)
-```
-
-## Manuscript
-
-§9b ([`09b_cognitive_security.md`](../../docs/manuscript/09b_cognitive_security.md)).
-
-## See also
-
-- [`AGENTS.md`](AGENTS.md) · [`README.md`](README.md)
+Verification: from the project root, `uv run python scripts/quality_gate.py --coverage`. Update the [method contracts](../../docs/method_contracts.md) if behavior changes. Do not promote synthetic examples or compatibility names to mathematical, empirical, or operational guarantees.

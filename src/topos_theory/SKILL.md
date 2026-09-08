@@ -1,33 +1,12 @@
 ---
 name: ccd-topos-theory
-description: Geometric theories, classifying toposes, Morita necessary-condition screens, theory builders. Use for §6 topos-theoretic semantics and bridges between syntactic/semantic theories.
+description: Source-grounded routing for the topos_theory examples in cognitive_case_diagrams.
 ---
 
-# `src/topos_theory/`
+# topos_theory workflow
 
-## When to use
+Use when changing or explaining `src/topos_theory`. Read [README.md](README.md) and [AGENTS.md](AGENTS.md), then inspect the source signature and relevant tests before calling an API.
 
-- Encoding geometric theories, classifying toposes, or comparing theories via Morita equivalence helpers.
-- Connecting typological or enriched setups to topos-level structure.
+Textual theory presentations and profile comparisons. `ClassifyingTopos` stores presentation statistics only. `compare_theory_presentations()` is the canonical comparison; matching counts are neither necessary nor sufficient for Morita equivalence. `bridge_transfer()` never authorizes theorem transfer without a witness (none is implemented).
 
-`check_morita_equivalence(topos1, topos2)` takes two `ClassifyingTopos` values and
-returns `(not_ruled_out, mismatches)`. It screens **necessary conditions only** —
-a `True` never establishes equivalence.
-
-## Primary imports
-
-```python
-from src.topos_theory import (
-    TheoryType, Axiom, GeometricTheory, ClassifyingTopos,
-    check_morita_equivalence,
-    build_typological_theory, build_enriched_theory,
-)
-```
-
-## Manuscript
-
-§6.
-
-## See also
-
-- [`AGENTS.md`](AGENTS.md) · [`README.md`](README.md)
+Verification: from the project root, `uv run python scripts/quality_gate.py --coverage`. Update the [method contracts](../../docs/method_contracts.md) if behavior changes. Do not promote synthetic examples or compatibility names to mathematical, empirical, or operational guarantees.

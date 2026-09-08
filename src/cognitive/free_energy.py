@@ -8,6 +8,8 @@ import logging
 
 import numpy as np
 
+from ..numerics import probability_vector
+
 logger = logging.getLogger(__name__)
 
 
@@ -30,8 +32,8 @@ def kl_divergence(
     Raises:
         ValueError: If distributions are invalid or have different lengths.
     """
-    q = np.asarray(q, dtype=np.float64)
-    p = np.asarray(p, dtype=np.float64)
+    q = probability_vector(q, "q")
+    p = probability_vector(p, "p")
 
     if len(q) != len(p):
         raise ValueError(f"q ({len(q)}) and p ({len(p)}) must have same length")
@@ -79,12 +81,16 @@ def variational_free_energy(
     Returns:
         Variational free energy (lower is better fit to data).
     """
-    q = np.asarray(q, dtype=np.float64)
+    q = probability_vector(q, "q")
     log_likelihood = np.asarray(log_likelihood, dtype=np.float64)
     log_prior = np.asarray(log_prior, dtype=np.float64)
 
     if not np.isclose(q.sum(), 1.0):
         raise ValueError(f"q must sum to 1.0, got {q.sum():.6f}")
+
+    for name, values in (("log_likelihood", log_likelihood), ("log_prior", log_prior)):
+        if values.shape != q.shape or np.any(np.isnan(values)) or np.any(np.isposinf(values)):
+            raise ValueError(f"{name} must match q and contain no NaN or positive infinity")
 
     # Avoid log(0) by masking zeros
     nonzero = q > 0

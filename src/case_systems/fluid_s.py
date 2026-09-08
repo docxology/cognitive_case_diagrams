@@ -217,11 +217,10 @@ def create_fluid_s_functor(
 
 
 def bats_fluid_s() -> tuple:
-    """Create the canonical Bats language Fluid-S functor pair.
+    """Create two schematic Fluid-S mappings with opposite volition contexts.
 
-    In Bats (Nakh-Daghestanian), the verb 'fall' takes:
-        - ABS when accidental: "The child-ABS fell"
-        - ERG when volitional: "The child-ERG fell [on purpose]"
+    The legacy language name is a motivating analogy. These mappings carry
+    no language-specific forms, corpus observations, or validated grammar.
 
     Returns:
         Tuple of (volitional_functor, non_volitional_functor).

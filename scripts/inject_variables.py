@@ -10,9 +10,7 @@ template root) automatically renders from ``output/manuscript/`` when that
 directory contains ``.md`` files.
 
 Thin orchestrator: substitution logic lives in
-``src/manuscript_injection.py`` (standalone fallback) or the template
-monorepo's ``projects.template.src.template.inject_metrics`` (used
-automatically when the monorepo is available).
+``src/manuscript_injection.py`` in every environment.
 
 Usage:
     python scripts/inject_variables.py
@@ -61,14 +59,8 @@ from src.manuscript_injection import (
     resolve_manuscript_dir,
 )
 
-# Prefer the template monorepo's inject_metrics infrastructure when available;
-# standalone checkouts delegate to the equivalent src/ implementation.
-try:
-    from projects.template.src.template.inject_metrics import (
-        render_all_chapters,
-    )
-except ImportError:
-    from src.manuscript_injection import render_all_chapters
+from src.manuscript_injection import render_all_chapters
+from src.manuscript_variables import scan_hard_coded_claims, write_variables_manifest
 
 
 logger = get_logger(__name__)
@@ -105,6 +97,9 @@ def main() -> int:
     # Step 1: Collect metrics
     logger.info("Collecting metrics from project structure...")
     metrics = collect_metrics(_PROJECT_ROOT)
+    findings = scan_hard_coded_claims({p.name: p.read_text() for p in chapters})
+    if findings:
+        raise ValueError("Hard-coded manuscript claims: " + "; ".join(findings))
     logger.info(f"Collected {len(metrics)} variables:")
     for key in sorted(metrics.keys()):
         logger.info(f"  ${{{key}}} = {metrics[key]}")
@@ -123,6 +118,7 @@ def main() -> int:
     # Step 3: Render all chapters with substitution
     logger.info(f"Injecting variables into manuscript → {rendered_dir}")
     written = render_all_chapters(manuscript_dir, metrics, rendered_dir)
+    write_variables_manifest(_PROJECT_ROOT, metrics)
     logger.info(f"Wrote {len(written)} files to {rendered_dir}")
 
     # Step 4: Verify no unresolved ${...} in critical files

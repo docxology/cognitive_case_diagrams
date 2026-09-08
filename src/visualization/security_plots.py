@@ -4,6 +4,7 @@ Bar chart of ``TypeViolation`` severities with colour bands (high / medium / low
 """
 from __future__ import annotations
 
+from .styles import save_publication_figure
 import logging
 from typing import Optional
 
@@ -123,8 +124,8 @@ def plot_type_violations(
         handles=legend_handles,
         title="Severity band",
         loc="upper right",
-        fontsize=FONT_SIZE_FLOOR - 2,
-        title_fontsize=FONT_SIZE_FLOOR - 2,
+        fontsize=FONT_SIZE_FLOOR,
+        title_fontsize=FONT_SIZE_FLOOR,
         framealpha=0.92,
     )
 
@@ -132,7 +133,7 @@ def plot_type_violations(
 
     if output_path is None:
         output_path = "type_violations.png"
-    plt.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+    save_publication_figure(plt.gcf(), output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved type violation plot to %s", output_path)
 
@@ -175,7 +176,7 @@ def plot_case_interaction_graph(
             ax.annotate("", xy=(x1 - 0.03, y_mid), xytext=(x0 + 0.03, y_mid),
                         arrowprops=dict(arrowstyle="->", color="#222222", lw=1.8))
             ax.text((x0 + x1) / 2, y_mid + 0.12, lbl,
-                    ha="center", va="bottom", fontsize=FONT_SIZE_FLOOR - 1,
+                    ha="center", va="bottom", fontsize=FONT_SIZE_FLOOR,
                     color="#333333")
 
     # ── Panel 1: legitimate trace ─────────────────────────────────────────────
@@ -201,12 +202,12 @@ def plot_case_interaction_graph(
     legit_commutes = not any(v is not None for v in legit_violations)
     ax_top.text(
         0.97, 0.92,
-        "✓" if legit_commutes else "✗",
+        "PASS" if legit_commutes else "FAIL",
         fontsize=22,
         color="#16a34a" if legit_commutes else COLOR_SEVERITY_HIGH,
         ha="right", va="top", fontweight="bold",
     )
-    ax_top.set_title("Legitimate Interaction — diagram commutes",
+    ax_top.set_title("Illustrative authorized data flow",
                      fontsize=FONT_SIZE_LABEL, pad=8, color="#16a34a")
 
     # ── Panel 2: injection attempt ────────────────────────────────────────────
@@ -227,7 +228,7 @@ def plot_case_interaction_graph(
     ax_bot.text(
         (xs[1] + xs[2]) / 2, y_mid + 0.42,
         mathtext_safe_arrows("φ: ACC→INS  (illicit promotion)"),
-        ha="center", va="bottom", fontsize=FONT_SIZE_FLOOR - 1,
+        ha="center", va="bottom", fontsize=FONT_SIZE_FLOOR,
         color=COLOR_SEVERITY_HIGH, fontstyle="italic",
     )
     # The illicit ACC→INS arc: verdict from the real detector, not hand-drawn.
@@ -235,7 +236,7 @@ def plot_case_interaction_graph(
     injection_violations = [injection_violation] if injection_violation else []
     score = injection_score(injection_violations)
     ax_bot.text(
-        0.97, 0.92, "✗" if injection_violations else "✓",
+        0.97, 0.92, "FAIL" if injection_violations else "PASS",
         fontsize=22,
         color=COLOR_SEVERITY_HIGH if injection_violations else "#16a34a",
         ha="right", va="top", fontweight="bold",
@@ -243,21 +244,21 @@ def plot_case_interaction_graph(
     ax_bot.text(
         0.5, 0.04,
         mathtext_safe_arrows(
-            f"injection score {score:.2f} — diagram does not commute"
+            f"hand-selected policy score {score:.2f}; no runtime enforcement"
         ),
-        ha="center", va="bottom", fontsize=FONT_SIZE_FLOOR - 1,
+        ha="center", va="bottom", fontsize=FONT_SIZE_FLOOR,
         color=COLOR_SEVERITY_HIGH, fontweight="bold",
         bbox=dict(boxstyle="round", facecolor="#fff3f3",
                   edgecolor=COLOR_SEVERITY_HIGH, alpha=0.9),
     )
-    ax_bot.set_title("Prompt Injection — fails type check",
+    ax_bot.set_title("Illustrative attempted authority promotion",
                      fontsize=FONT_SIZE_LABEL, pad=8, color=COLOR_SEVERITY_HIGH)
 
     fig.tight_layout(pad=1.5)
 
     if output_path is None:
         output_path = "security_type_violations.png"
-    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight", facecolor="white")
+    save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight", facecolor="white")
     plt.close(fig)
     logger.info("Saved case interaction graph to %s", output_path)
     return output_path
@@ -265,7 +266,7 @@ def plot_case_interaction_graph(
 
 def plot_monoidal_functor_security(
     functor,
-    title: str = "MonoidalFunctor tensor check (§9b)",
+    title: str = "Role-separation policy (synthetic specification)",
     output_path: Optional[str] = None,
 ) -> str:
     """Render a dual-panel figure for the §9b protocol narrative (specification-level).
@@ -355,9 +356,9 @@ def plot_monoidal_functor_security(
     # collide with the lowest source/target node labels.
     ax_map.text(0.5, 0.06,
                 mathtext_safe_arrows(
-                    "ACC → NOM: type violation  —  non-cartesian merge (§9b)"
+                    "Example policy forbids content-to-authority promotion"
                 ),
-                fontsize=FONT_SIZE_FLOOR - 2, ha="center", va="center",
+                fontsize=FONT_SIZE_FLOOR, ha="center", va="center",
                 color=COLOR_SEVERITY_HIGH, fontweight="bold",
                 bbox=dict(boxstyle="round,pad=0.25", facecolor="#fff3f3",
                           edgecolor=COLOR_SEVERITY_HIGH, alpha=0.95))
@@ -375,7 +376,7 @@ def plot_monoidal_functor_security(
             except (KeyError, ValueError):
                 ok = True
             table[i, j] = 1.0 if ok else 0.0
-            row_ann.append(mathtext_safe_arrows("✓" if ok else "✗"))
+            row_ann.append(mathtext_safe_arrows("Y" if ok else "N"))
         annotations.append(row_ann)
 
     # Colorblind-safe: amber = fails, blue = preserved (avoids red/green)
@@ -390,7 +391,7 @@ def plot_monoidal_functor_security(
     ax_tensor.set_xlabel("Role B", fontsize=FONT_SIZE_LABEL)
     ax_tensor.set_ylabel("Role A", fontsize=FONT_SIZE_LABEL)
     ax_tensor.set_title(
-        r"Tensor Preservation: $F(A \otimes B) \cong F(A) \otimes F(B)$?",
+        "Pairwise role separation and edge existence",
         fontsize=FONT_SIZE_LABEL, pad=10,
     )
 
@@ -401,18 +402,19 @@ def plot_monoidal_functor_security(
                            fontsize=FONT_SIZE_LABEL, fontweight="bold", color=color)
 
     legend_handles = [
-        Patch(facecolor="#2563EB", label="Preserved (safe)"),
-        Patch(facecolor="#D97706", label="Tensor check fails (§9b)"),
+        Patch(facecolor="#2563EB", label="Policy satisfied"),
+        Patch(facecolor="#D97706", label="Policy violated"),
     ]
-    ax_tensor.legend(handles=legend_handles, loc="lower right",
-                     fontsize=FONT_SIZE_FLOOR - 1, framealpha=0.95)
+    ax_tensor.legend(handles=legend_handles, loc="upper center",
+                     bbox_to_anchor=(0.5, -0.2), ncol=2,
+                     fontsize=FONT_SIZE_FLOOR, framealpha=0.95)
 
     fig.suptitle(title, fontsize=FONT_SIZE_TITLE + 1, fontweight="bold", y=1.01)
     fig.tight_layout()
 
     if output_path is None:
         output_path = "monoidal_functor_security.png"
-    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight", facecolor="white")
+    save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight", facecolor="white")
     plt.close(fig)
     logger.info("Saved MonoidalFunctor security plot to %s", output_path)
     return output_path

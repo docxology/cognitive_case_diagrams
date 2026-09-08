@@ -4,6 +4,7 @@ Renders DisCoCat and DisCoCirc-style string diagrams without DisCoPy,
 using direct matplotlib drawing for maximum control over layout.
 """
 
+from .styles import save_publication_figure
 import logging
 from typing import Optional
 
@@ -81,7 +82,7 @@ def render_discocat_sentence(
             ax.text(
                 x, 1.25, type_label,
                 ha="center", va="bottom",
-                fontsize=FONT_SIZE_FLOOR - 4, color=COLOR_TEXT,
+                fontsize=FONT_SIZE_FLOOR, color=COLOR_TEXT,
             )
 
     # Draw cup connections for transitive verbs
@@ -115,7 +116,7 @@ def render_discocat_sentence(
     fig.tight_layout()
 
     if output_path:
-        fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+        save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
         logger.info("Saved DisCoCat sentence to %s", output_path)
 
     return fig
@@ -126,7 +127,7 @@ def render_discourse_diagram(
     output_path: Optional[str] = None,
     title: Optional[str] = None,
 ) -> matplotlib.figure.Figure:
-    """Render a multi-sentence discourse as a DisCoCirc diagram.
+    """Render supplied entity identities across sentence schematics.
 
     Shows entity wires persisting across sentence boundaries with
     dynamic case role reassignment.
@@ -189,7 +190,7 @@ def render_discourse_diagram(
             )
             ax.add_patch(rect)
             ax.text(
-                (x_min + x_max) / 2, y, verb_name,
+                (x_min + x_max) / 2, y + 0.18, verb_name,
                 ha="center", va="center",
                 fontsize=FONT_SIZE_LABEL, fontweight="bold",
                 color="white",
@@ -199,15 +200,15 @@ def render_discourse_diagram(
         for entity, role in sentence.case_assignments.items():
             x = x_entity[entity]
             color = CASE_COLORS.get(role.name, COLOR_NEUTRAL)
-            ax.plot(x, y, "o", color=color, markersize=MARKER_SIZE, zorder=5)
+            ax.plot(x, y - 0.32, "o", color=color, markersize=MARKER_SIZE, zorder=5)
             ax.text(
                 x, y - 0.6, role.name,
                 ha="center", va="top",
-                fontsize=FONT_SIZE_FLOOR - 4, fontweight="bold",
+                fontsize=FONT_SIZE_FLOOR, fontweight="bold",
                 color=color,
             )
 
-    display_title = mathtext_safe_arrows(title or "DisCoCirc Discourse Diagram")
+    display_title = mathtext_safe_arrows(title or "Supplied entity role history")
     ax.set_title(display_title, fontsize=FONT_SIZE_TITLE, fontweight="bold", pad=20)
     ax.set_xlim(-1, n_entities * 2)
     ax.set_ylim(-0.5, (n_sentences + 2) * 2)
@@ -215,7 +216,7 @@ def render_discourse_diagram(
     fig.tight_layout()
 
     if output_path:
-        fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+        save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
         logger.info("Saved discourse diagram to %s", output_path)
 
     return fig
@@ -232,7 +233,7 @@ def render_discocirc_discourse(
     return render_discourse_diagram(
         discourse,
         output_path=output_path,
-        title='DisCoCirc: "Alice chases Bob. Bob runs."',
+        title='Entity role history: "Alice chases Bob. Bob runs."',
     )
 
 

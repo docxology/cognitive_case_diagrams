@@ -4,12 +4,12 @@ Uses the discopy library for mathematically rigorous compact closed
 categorical diagrams. This module requires discopy>=1.0.0.
 
 All functions produce publication-quality figures via discopy's
-native drawing backend, using draw(path=...) which is the only
-reliable rendering path for discopy diagrams.
+native drawing backend, then fit lexical borders to measured labels and
+export the resulting figure at the project's publication resolution.
 
 IMPORTANT: discopy's draw(ax=...) does NOT render visible content
-onto a provided matplotlib axes. Always use draw(path=...) or
-Equation().draw(path=...) for visible output.
+onto a provided matplotlib axes. Let DisCoPy create its native figure
+through draw(show=False), then export that figure.
 
 References:
     de Felice, Toumi & Coecke (2020) — DisCoPy
@@ -20,11 +20,13 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 from contextlib import contextmanager
-from typing import Iterator, Optional
+from typing import Any, Iterator, Optional
 
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+import numpy as np
 
-from .styles import FIGURE_DPI
+from .styles import FIGURE_DPI, FONT_SIZE_FLOOR, save_publication_figure
 
 from ..diagrams.string_diagram import (
     create_discopy_transitive,
@@ -48,8 +50,8 @@ def _resolve_path(output_path: Optional[str | Path], default_name: str) -> Path:
     return Path(output_path)
 
 # Standard draw kwargs for consistent, publication-quality output.
-# Increased fontsize to 22, broader margins to 0.15, and tight layouts for legibility
-DRAW_KWARGS = dict(fontsize=22, margins=(0.15, 0.15), nodesize=1.2, draw_types=True)
+# Native font sizes are explicit; lexical borders are fitted after native layout.
+DRAW_KWARGS = dict(fontsize=FONT_SIZE_FLOOR, fontsize_types=FONT_SIZE_FLOOR, margins=(0.15, 0.15), nodesize=1.2, draw_types=True)
 
 
 @contextmanager
@@ -76,6 +78,43 @@ def _glyph_safe_rc() -> Iterator[None]:
         yield
 
 
+def _draw_native(drawing: Any, destination: Path, **params: Any) -> None:
+    """Use DisCoPy's native geometry, fitting lexical borders to measured text.
+
+    DisCoPy fixes one-output box widths independently of the lexical label.
+    Long labels can cross those borders. Expand the horizontal border after
+    native layout without changing any wire, port, type or categorical box.
+    """
+    drawing.draw(show=False, **params)
+    fig = plt.gcf()
+    try:
+        canvas = FigureCanvasAgg(fig)
+        canvas.draw()
+        renderer = canvas.get_renderer()
+        for ax in fig.axes:
+            labels = [t for t in ax.texts if t.get_horizontalalignment() == "center" and t.get_verticalalignment() == "center"]
+            for patch in ax.patches:
+                if not patch.get_fill() or not hasattr(patch, "get_path"):
+                    continue
+                vertices = np.asarray(patch.get_path().vertices)
+                if len(vertices) != 5:
+                    continue
+                left, right = vertices[:, 0].min(), vertices[:, 0].max()
+                bottom, top = vertices[:, 1].min(), vertices[:, 1].max()
+                for label in labels:
+                    x, y = label.get_position()
+                    if not (left <= x <= right and bottom <= y <= top):
+                        continue
+                    extent = label.get_window_extent(renderer).transformed(ax.transData.inverted())
+                    padding = (right - left) * 0.12
+                    expanded_left = min(left, extent.x0 - padding)
+                    expanded_right = max(right, extent.x1 + padding)
+                    vertices[:, 0] = [expanded_left if value == left else expanded_right for value in vertices[:, 0]]
+        save_publication_figure(fig, destination, dpi=FIGURE_DPI, bbox_inches="tight")
+    finally:
+        plt.close(fig)
+
+
 def render_discopy_transitive(
     output_path: Optional[str] = None,
 ) -> None:
@@ -87,10 +126,9 @@ def render_discopy_transitive(
     resolved = _resolve_path(output_path, "discopy_transitive.png")
     diagram = create_discopy_complex_transitive()
     with _glyph_safe_rc():
-        diagram.draw(
-            path=str(resolved),
-            figsize=(16, 5),
-            **DRAW_KWARGS,
+        _draw_native(diagram, resolved,
+            figsize=(16, 16),
+            **{**DRAW_KWARGS, "fontsize": 18},
         )
     logger.info("Saved DisCoPy transitive to %s", resolved)
 
@@ -116,8 +154,7 @@ def render_discopy_composition(
     words, contracted = create_discopy_composition(subject, verb, obj)
     eq = Equation(words, contracted, symbol="→")
     with _glyph_safe_rc():
-        eq.draw(
-            path=str(resolved),
+        _draw_native(eq, resolved,
             figsize=(16, 6),
             **DRAW_KWARGS,
         )
@@ -137,8 +174,7 @@ def render_discopy_snake(
     left, identity, right = create_discopy_snake_equation()
     eq = Equation(left, identity, right)
     with _glyph_safe_rc():
-        eq.draw(
-            path=str(resolved),
+        _draw_native(eq, resolved,
             figsize=(18, 5),
             **DRAW_KWARGS,
         )
@@ -150,13 +186,12 @@ def render_discopy_passive(
 ) -> None:
     """Render a passive voice diagram.
 
-    'Bob is chased by Alice' — passivization as type permutation.
+    'Bob is chased by Alice' with a separately assigned passive lexical type.
     """
     resolved = _resolve_path(output_path, "discopy_passive.png")
     diagram = create_discopy_passive("Bob", "chased", "Alice")
     with _glyph_safe_rc():
-        diagram.draw(
-            path=str(resolved),
+        _draw_native(diagram, resolved,
             figsize=(10, 5),
             **DRAW_KWARGS,
         )
@@ -179,8 +214,7 @@ def render_discopy_sentence_progression(
     resolved = _resolve_path(output_path, "discopy_sentence_progression.png")
     eq = Equation(intrans, trans, passive, symbol="→")
     with _glyph_safe_rc():
-        eq.draw(
-            path=str(resolved),
+        _draw_native(eq, resolved,
             figsize=(24, 7),
             fontsize=18,
             margins=(0.12, 0.12),
@@ -205,8 +239,7 @@ def render_discopy_multilingual(
     resolved = _resolve_path(output_path, "discopy_multilingual.png")
     eq = Equation(*diagram_list[:3], symbol="≅")
     with _glyph_safe_rc():
-        eq.draw(
-            path=str(resolved),
+        _draw_native(eq, resolved,
             figsize=(26, 7),
             fontsize=18,
             margins=(0.08, 0.08),
@@ -240,8 +273,7 @@ def render_discopy_ditransitive(
 
     resolved = _resolve_path(output_path, "discopy_ditransitive.png")
     with _glyph_safe_rc():
-        diagram.draw(
-            path=str(resolved),
+        _draw_native(diagram, resolved,
             figsize=(12, 6),
             **DRAW_KWARGS,
         )
@@ -263,8 +295,7 @@ def render_discopy_discocirc_discourse(
     resolved = _resolve_path(output_path, "discopy_discourse.png")
     eq = Equation(trans, intrans, symbol="⊗")
     with _glyph_safe_rc():
-        eq.draw(
-            path=str(resolved),
+        _draw_native(eq, resolved,
             figsize=(16, 6),
             **DRAW_KWARGS,
         )
@@ -288,8 +319,7 @@ def render_discopy_three_sentence_discourse(
     resolved = _resolve_path(output_path, "discopy_three_sentence.png")
     eq = Equation(s1, s2, s3, symbol="⊗")
     with _glyph_safe_rc():
-        eq.draw(
-            path=str(resolved),
+        _draw_native(eq, resolved,
             figsize=(26, 7),
             fontsize=18,
             margins=(0.08, 0.08),

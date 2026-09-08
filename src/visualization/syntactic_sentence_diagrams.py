@@ -1,14 +1,16 @@
 """Syntactic and semantic sentence diagram visualizations.
 
 Renders a publication-quality multi-panel figure showing both syntactic
-parse structure (constituency-style trees) and categorical/pregroup type
+parse structure (dependency-style trees) and categorical/pregroup type
 strings for a curated set of linguistically informative case assignment
 scenarios. Uses matplotlib only for reliable headless rendering.
 
 Figure output: syntactic_case_panel.png
 """
 
+from .styles import save_publication_figure
 import logging
+import textwrap
 from typing import Optional
 
 import matplotlib
@@ -48,72 +50,58 @@ CASE_PALETTE = {
     "PP":  "#10B981",
 }
 
-PANELS = [
-    {
-        "title": "Intransitive (NOM)",
-        "words": ["Alice", "runs"],
-        "roles": ["NOM", "V"],
-        "type_str": r"$n \cdot (n^r \cdot s) \Rightarrow s$",
-        "desc": "Sole argument S assigned NOM;\nverb type $n^r s$ contracts with subject $n$.",
-        "arcs": [(0, 1, "subj")],
-    },
-    {
-        "title": "Transitive (NOM+ACC)",
-        "words": ["Alice", "chases", "Bob"],
-        "roles": ["NOM", "V", "ACC"],
-        "type_str": r"$n \cdot (n^r \cdot s \cdot n^l) \cdot n \Rightarrow s$",
-        "desc": "A=NOM, P=ACC;\nverb $n^r s n^l$ contracts both arguments.",
-        "arcs": [(0, 1, "subj"), (2, 1, "obj")],
-    },
-    {
-        "title": "Ditransitive (NOM+DAT+ACC)",
-        "words": ["Alice", "gives", "Bob", "a book"],
-        "roles": ["NOM", "V", "DAT", "ACC"],
-        "type_str": r"$n \cdot (n^r \cdot s \cdot n^l \cdot n^l) \cdot n \cdot n \Rightarrow s$",
-        "desc": "Three argument slots: subject NOM,\nrecipient DAT, theme ACC.",
-        "arcs": [(0, 1, "subj"), (2, 1, "iobj"), (3, 1, "obj")],
-    },
-    {
-        "title": "Passive Voice (Patient→NOM)",
-        "words": ["Bob", "is chased", "by Alice"],
-        "roles": ["NOM", "V", "INS"],
-        "type_str": r"$n \cdot (n^r \cdot s \cdot n^l) \cdot n \rightarrow^{\sigma} s$",
-        "desc": "Patient promoted to NOM via Swap $\\sigma$;\noriginal agent demoted to oblique INS.",
-        "arcs": [(0, 1, "subj"), (2, 1, "obl")],
-    },
-    {
-        "title": "Ergative Clause (ERG+ABS)",
-        "words": ["Mariyk", "-angku", "yapaku", "wawirri", "parnta-nu"],
-        "roles": ["ERG", "ERG", "ABS", "ABS", "V"],
-        "type_str": r"$n_{ERG} \cdot (n_{ERG}^r \cdot s \cdot n_{ABS}^l) \cdot n_{ABS} \Rightarrow s$",
-        "desc": "Warlpiri SOV: A=ERG (agent morpheme -ngku),\nS=P=ABS; same functor as ACC but ergative split.",
-        "arcs": [(0, 4, "erg"), (1, 4, "case"), (2, 4, "abs"), (3, 4, "abs")],
-    },
-    {
-        "title": "Benefactive (NOM+DAT+ACC+DAT)",
-        "words": ["Maria", "cooked", "dinner", "for Pablo"],
-        "roles": ["NOM", "V", "ACC", "DAT"],
-        "type_str": r"$n \cdot (n^r \cdot s \cdot n^l) \cdot n \cdot n^l \Rightarrow s$",
-        "desc": "Benefactive PP adjunct adds DAT-role argument;\nno additional verb slot required (oblique).",
-        "arcs": [(0, 1, "subj"), (2, 1, "obj"), (3, 1, "ben")],
-    },
-    {
-        "title": "Relative Clause (Embedded NOM)",
-        "words": ["The man", "the dog", "chased", "ran"],
-        "roles": ["NOM", "NOM", "V\u2082", "V\u2081"],
-        "type_str": r"$(n \cdot n^l) \cdot n \cdot (n^r \cdot n \cdot n^l) \cdot (n^r \cdot s) \Rightarrow s$",
-        "desc": "Head noun extracts from embedded object slot;\nRC verb type $n^r n n^l$ threads shared entity wire.",
-        "arcs": [(0, 3, "subj"), (1, 2, "obj-rc"), (3, 0, "head"), (2, 3, "rc-v")],
-    },
-    {
-        "title": "Causative + Adj + Adv (Complex)",
-        "words": ["The quick fox", "made", "the lazy dog", "jump", "suddenly"],
-        "roles": ["NOM", "V", "ACC", "V\u2082", "ADV"],
-        "type_str": r"$n \cdot (n^r \cdot s \cdot n^l \cdot VP^l) \cdot n \cdot VP \cdot (s^r \cdot s) \Rightarrow s$",
-        "desc": "Causative verb takes clausal complement VP;\ncomplexity: 12 boxes, 5 Cup contractions.",
-        "arcs": [(0, 1, "cause"), (2, 1, "causee"), (3, 1, "comp"), (4, 3, "adv")],
-    },
-]
+PANELS = [{'title': 'Intransitive (NOM)',
+  'words': ['Alice', 'runs'],
+  'roles': ['NOM', 'V'],
+  'type_str': '$n \\cdot (n^r \\cdot s) \\Rightarrow s$',
+  'desc': 'Sole argument S assigned NOM;\nverb type $n^r s$ contracts with subject $n$.',
+  'arcs': [(0, 1, 'subj')]},
+ {'title': 'Transitive (NOM+ACC)',
+  'words': ['Alice', 'chases', 'Bob'],
+  'roles': ['NOM', 'V', 'ACC'],
+  'type_str': '$n \\cdot (n^r \\cdot s \\cdot n^l) \\cdot n \\Rightarrow s$',
+  'desc': 'A=NOM, P=ACC;\nverb $n^r s n^l$ contracts both arguments.',
+  'arcs': [(0, 1, 'subj'), (2, 1, 'obj')]},
+ {'title': 'Ditransitive (NOM+DAT+ACC)',
+  'words': ['Alice', 'gives', 'Bob', 'a book'],
+  'roles': ['NOM', 'V', 'DAT', 'ACC'],
+  'type_str': '$n \\cdot (n^r \\cdot s \\cdot n^l \\cdot n^l) \\cdot n \\cdot n \\Rightarrow s$',
+  'desc': 'Three argument slots: subject NOM,\nrecipient DAT, theme ACC.',
+  'arcs': [(0, 1, 'subj'), (2, 1, 'iobj'), (3, 1, 'obj')]},
+ {'title': 'Passive Voice (Patient→NOM)',
+  'words': ['Bob', 'is chased', 'by Alice'],
+  'roles': ['NOM', 'V', 'INS'],
+  'type_str': '$n \\cdot (n^r \\cdot s \\cdot n^l) \\cdot n \\Rightarrow s$',
+  'desc': 'Assigned passive template; case labels are metadata.\n'
+          'The by-phrase is represented as an oblique slot.',
+  'arcs': [(0, 1, 'subj'), (2, 1, 'obl')]},
+ {'title': 'Ergative Clause (ERG+ABS)',
+  'words': ['Actor.ERG', 'Patient.ABS', 'verb'],
+  'roles': ['ERG', 'ABS', 'V'],
+  'type_str': '$a \\cdot p \\cdot (p^r \\cdot a^r \\cdot s) \\Rightarrow s$',
+  'desc': 'Schematic SOV template; a=ERG, p=ABS.\nNo language-specific sentence is asserted.',
+  'arcs': [(0, 2, 'A'), (1, 2, 'P')]},
+ {'title': 'Benefactive adjunct (schematic)',
+  'words': ['Maria', 'cooked', 'dinner', 'for Pablo'],
+  'roles': ['NOM', 'V', 'ACC', 'DAT'],
+  'type_str': '$n \\cdot (n^r \\cdot s \\cdot n^l) \\cdot n \\cdot (s^r \\cdot s) \\Rightarrow s$',
+  'desc': 'The complete for-phrase is assigned sentence-modifier type.\n'
+          'DAT is a semantic illustration, not English inflection.',
+  'arcs': [(0, 1, 'subj'), (2, 1, 'obj'), (3, 1, 'ben')]},
+ {'title': 'Relative Clause (Embedded NOM)',
+  'words': ['The man', 'the dog', 'chased', 'ran'],
+  'roles': ['NOM', 'NOM', 'V₂', 'V₁'],
+  'type_str': 'Relative-clause structure: no formal derivation supplied',
+  'desc': 'Head noun has two argument functions.\n'
+          'Arcs sketch dependencies; no coreference model is run.',
+  'arcs': [(0, 3, 'subj'), (1, 2, 'subj-rc'), (0, 2, 'obj-rc')]},
+ {'title': 'Causative + Adj + Adv (Complex)',
+  'words': ['The quick fox', 'made', 'the lazy dog', 'jump', 'suddenly'],
+  'roles': ['NOM', 'V', 'ACC', 'V₂', 'ADV'],
+  'type_str': 'Causative structure: no formal derivation supplied',
+  'desc': 'Causative and embedded predicate are annotated.\n'
+          'No measured box/cup complexity is claimed.',
+  'arcs': [(0, 1, 'cause'), (2, 1, 'causee'), (3, 1, 'comp'), (4, 3, 'adv')]}]
 
 
 def _draw_tree_panel(
@@ -122,7 +110,7 @@ def _draw_tree_panel(
     roles: list,
     arcs: list,
 ) -> None:
-    """Draw a constituency-style tree for one sentence panel.
+    """Draw a dependency-style tree for one sentence panel.
 
     Nodes are placed in a row; arcs curve above them.
     """
@@ -151,14 +139,14 @@ def _draw_tree_panel(
                 arrowstyle="->",
                 color="#374151",
                 lw=1.4,
-                connectionstyle=f"arc3,rad={-0.35 * (1 + dist)}",
+                connectionstyle=f"arc3,rad={-.18 if x2 < x1 else .18}",
             ),
             zorder=2,
         )
         # Arc label
         ax.text(
             xm, y_word + 0.04 + 0.15 * dist, lbl,
-            fontsize=9, ha="center", va="bottom", color="#374151",
+            fontsize=16, ha="center", va="bottom", color="#374151",
             fontstyle="italic", zorder=3,
         )
 
@@ -174,13 +162,13 @@ def _draw_tree_panel(
         # Case label inside circle
         ax.text(
             xs[i], y_word, role or "",
-            fontsize=8.5, ha="center", va="center", color="white",
+            fontsize=16, ha="center", va="center", color="white",
             fontweight="bold", zorder=5,
         )
         # Word label below circle
         ax.text(
             xs[i], y_word - 0.095,
-            word, fontsize=9, ha="center", va="top",
+            textwrap.fill(word, 12), fontsize=16, ha="center", va="top",
             color="#111827", fontweight="bold",
         )
 
@@ -195,8 +183,8 @@ def render_syntactic_panel(
 ) -> str:
     """Render the multi-panel syntactic + semantic case assignment figure.
 
-    Produces a 2-row × N-col panel figure where each column shows:
-      - Top row: constituency-style syntactic tree with case annotations
+    Produces two columns of example panels, each showing:
+      - Top row: dependency-style syntactic tree with case annotations
       - Bottom row: categorical pregroup type formula
 
     Args:
@@ -210,12 +198,12 @@ def render_syntactic_panel(
         panels = PANELS
     n_panels = len(panels)
 
-    # Layout: 2 rows per panel (tree + type), arranged in two horizontal rows of 4
-    n_cols = 4
+    # Two columns keep the examples legible on a portrait manuscript page.
+    n_cols = 2
     n_rows_of_panels = (n_panels + n_cols - 1) // n_cols   # ceil division
     # Each panel block = 2 matplotlib rows: tree (height 3) + type (height 1.2)
-    fig_height = n_rows_of_panels * 4.8
-    fig_width = n_cols * 4.0
+    fig_height = n_rows_of_panels * 4.0
+    fig_width = n_cols * 7.0
 
     fig = plt.figure(figsize=(fig_width, fig_height), facecolor="white")
 
@@ -238,7 +226,7 @@ def render_syntactic_panel(
         )
         ax_tree.set_title(
             mathtext_safe_arrows(panel["title"]),
-            fontsize=10, fontweight="bold", color="#111827",
+            fontsize=16, fontweight="bold", color="#111827",
             pad=4,
         )
 
@@ -252,7 +240,7 @@ def render_syntactic_panel(
         ax_type.text(
             0.5, 0.70,
             panel["type_str"],
-            ha="center", va="center", fontsize=9.5,
+            ha="center", va="center", fontsize=16,
             transform=ax_type.transAxes,
             bbox=dict(
                 boxstyle="round,pad=0.35",
@@ -264,16 +252,16 @@ def render_syntactic_panel(
         ax_type.text(
             0.5, 0.12,
             panel["desc"],
-            ha="center", va="center", fontsize=9,
+            ha="center", va="center", fontsize=16,
             color="#374151", transform=ax_type.transAxes,
         )
         ax_type.axis("off")
 
     # Global title
     fig.suptitle(
-        "Syntactic and Semantic (Categorical) Case Assignment Diagrams\n"
-        "Pregroup Type Derivations across Simple and Complex Constructions",
-        fontsize=14, fontweight="bold", y=1.005, color="#111827",
+        "Assigned role labels and selected pregroup types\n"
+        "Schematics for simple and complex constructions",
+        fontsize=16, fontweight="bold", y=1.005, color="#111827",
     )
 
     # Legend: case role colours
@@ -285,17 +273,17 @@ def render_syntactic_panel(
         handles=legend_elements,
         loc="lower center",
         ncol=8,
-        fontsize=9,
+        fontsize=16,
         framealpha=0.9,
         title="Case Roles",
-        title_fontsize=9,
-        bbox_to_anchor=(0.5, -0.03),
+        title_fontsize=16,
+        bbox_to_anchor=(0.5, -0.085),
     )
 
     if output_path is None:
         output_path = "syntactic_case_panel.png"
 
-    fig.savefig(
+    save_publication_figure(fig,
         output_path,
         dpi=FIGURE_DPI,
         bbox_inches="tight",

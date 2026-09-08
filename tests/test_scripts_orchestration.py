@@ -2,14 +2,18 @@
 
 Covers:
   - generate_manuscript_metrics.py: collect_metrics(), write_metrics()
-  - inject_variables.py: variable substitution pipeline
+  - inject_variables.py: strict variable substitution
   - generate_diagrams.py: _write_figure_registry(), run_domain() dispatch
+
+Metrics classes run against the real tmp gate tree from
+``tests/fixtures_manuscript.py`` so the gate itself never depends on a
+live-root receipt (which would be circular evidence).
 """
+
 import json
 import re
 import sys
 from pathlib import Path
-from string import Template
 
 import pytest
 
@@ -18,68 +22,76 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
+pytest_plugins = ("fixtures_manuscript",)
+
+_UNRESOLVED_VAR_RE = re.compile(r"\$\{([_a-zA-Z][_a-zA-Z0-9]*)\}")
+
 
 # ---------------------------------------------------------------------------
 # generate_manuscript_metrics
 # ---------------------------------------------------------------------------
 
+
 class TestCollectMetrics:
-    def test_returns_dict_with_required_keys(self):
+    def test_returns_registry_complete_mapping(self, gate_tree):
         from src.generate_manuscript_metrics import collect_metrics
-        metrics = collect_metrics(_PROJECT_ROOT)
-        required_keys = [
-            "total_test_count",
-            "total_test_files",
-            "daif_modules",
-            "daif_symbols",
-            "daif_tests",
-            "domain_subpackages",
-            "daif_modules_word",
-            "discopy_version_pretty",
-        ]
-        for key in required_keys:
-            assert key in metrics, f"Missing key: {key}"
+        from src.manuscript_variables import variable_specs
 
-    def test_total_test_files_is_positive_integer(self):
-        from src.generate_manuscript_metrics import collect_metrics
-        metrics = collect_metrics(_PROJECT_ROOT)
-        n = int(metrics["total_test_files"])
-        assert n > 0
+        metrics = collect_metrics(gate_tree)
+        # Every registry-required spec is present and nothing unregistered.
+        assert set(metrics) <= set(variable_specs())
+        for name, spec in variable_specs().items():
+            if spec.required:
+                assert name in metrics, f"Missing required key: {name}"
 
-    def test_domain_subpackages_at_least_five(self):
+    def test_collection_count_matches_fixture_tests(self, gate_tree):
         from src.generate_manuscript_metrics import collect_metrics
-        metrics = collect_metrics(_PROJECT_ROOT)
-        n = int(metrics["domain_subpackages"])
-        assert n >= 5, f"Expected ≥5 domain subpackages, got {n}"
 
-    def test_daif_modules_word_is_word_string(self):
-        from src.generate_manuscript_metrics import collect_metrics
-        metrics = collect_metrics(_PROJECT_ROOT)
-        word = metrics["daif_modules_word"]
-        assert isinstance(word, str)
-        assert len(word) > 0
+        metrics = collect_metrics(gate_tree)
+        assert metrics["total_test_count"] == "2"
+        assert metrics["total_test_files"] == "2"
 
-    def test_all_values_are_strings(self):
+    def test_receipt_backed_fields_bind_evidence(self, gate_tree):
         from src.generate_manuscript_metrics import collect_metrics
-        metrics = collect_metrics(_PROJECT_ROOT)
-        for k, v in metrics.items():
-            assert isinstance(v, str), f"Non-string value for key '{k}': {v!r}"
+
+        metrics = collect_metrics(gate_tree)
+        assert metrics["total_tests_passed"] == "2"
+        assert metrics["total_tests_failed"] == "0"
+        assert metrics["coverage_percent"] == "95.00"
+        assert metrics["coverage_lines_total"] == "100"
+        assert 0 < len(metrics["quality_fingerprint_short"]) <= 12
+
+    def test_experiment_fields_come_from_runner_output(self, gate_tree):
+        from src.generate_manuscript_metrics import collect_metrics
+        from src.experiments.runner import experiment_variable_definitions
+
+        metrics = collect_metrics(gate_tree)
+        for name in experiment_variable_definitions():
+            assert name in metrics, f"Missing experiment variable: {name}"
+        assert metrics["experiment_seed"].isdigit()
+
+    def test_all_values_are_strings(self, gate_tree):
+        from src.generate_manuscript_metrics import collect_metrics
+
+        for key, value in collect_metrics(gate_tree).items():
+            assert isinstance(value, str), f"Non-string value for key '{key}'"
 
 
 class TestWriteMetrics:
     def test_write_creates_valid_json(self, tmp_path):
-        from src.generate_manuscript_metrics import collect_metrics, write_metrics
-        metrics = collect_metrics(_PROJECT_ROOT)
+        from src.generate_manuscript_metrics import write_metrics
+
+        metrics = {"a": "1", "b": "two"}
         dest = write_metrics(metrics, tmp_path / "metrics.json")
         assert dest.exists()
         loaded = json.loads(dest.read_text(encoding="utf-8"))
         assert loaded == metrics
 
     def test_write_creates_parent_directory(self, tmp_path):
-        from src.generate_manuscript_metrics import collect_metrics, write_metrics
-        metrics = collect_metrics(_PROJECT_ROOT)
+        from src.generate_manuscript_metrics import write_metrics
+
         nested = tmp_path / "nested" / "dir" / "metrics.json"
-        dest = write_metrics(metrics, nested)
+        dest = write_metrics({"a": "1"}, nested)
         assert dest.exists()
 
 
@@ -122,60 +134,62 @@ class TestNumberToWord:
 
 
 # ---------------------------------------------------------------------------
-# inject_variables — variable substitution logic (no infrastructure logging)
+# inject_variables — strict variable substitution
 # ---------------------------------------------------------------------------
-
-_UNRESOLVED_VAR_RE = re.compile(r"\$\{([_a-zA-Z][_a-zA-Z0-9]*)\}")
-
-
-def _do_substitution(text: str, metrics: dict) -> str:
-    return Template(text).safe_substitute(metrics)
 
 
 class TestVariableSubstitution:
     def test_substitution_replaces_known_key(self):
+        from src.manuscript_injection import substitute_variables
+
         text = "We ran ${total_test_count} tests."
-        result = _do_substitution(text, {"total_test_count": "900"})
+        result = substitute_variables(text, {"total_test_count": "900"})
         assert "900" in result
         assert "${total_test_count}" not in result
 
-    def test_substitution_leaves_unknown_key_intact(self):
-        text = "Value is ${unknown_key}."
-        result = _do_substitution(text, {"other_key": "42"})
-        assert "${unknown_key}" in result
+    def test_substitution_rejects_unknown_key(self):
+        from src.manuscript_injection import substitute_variables
 
-    def test_all_metrics_resolvable(self, tmp_path):
-        """Manuscript placeholders actually used match keys in collect_metrics."""
+        with pytest.raises(ValueError, match="unknown_key"):
+            substitute_variables("Value is ${unknown_key}.", {"other_key": "42"})
+
+    def test_all_manuscript_tokens_resolve_from_registry_metrics(self, gate_tree):
+        """Every placeholder in the canonical chapters resolves strictly."""
         from src.generate_manuscript_metrics import collect_metrics
-        metrics = collect_metrics(_PROJECT_ROOT)
+        from src.manuscript_injection import substitute_variables
+
+        metrics = collect_metrics(gate_tree)
+        manuscript_dir = gate_tree / "docs" / "manuscript"
+        chapters = sorted(manuscript_dir.glob("[0-9]*.md"))
+        assert len(chapters) >= 1
+        for md in chapters:
+            substitute_variables(md.read_text(encoding="utf-8"), metrics)
+
+    def test_live_chapter_tokens_are_registry_declared(self):
+        """The authored sources never reference an undeclared identifier."""
+        from src.manuscript_variables import TOKEN_RE, variable_specs
+
         manuscript_dir = _PROJECT_ROOT / "docs" / "manuscript"
         chapters = sorted(manuscript_dir.glob("[0-9]*.md"))
-        # Non-emptiness guard: without it this gate silently passes on zero files
-        # whenever the manuscript directory moves (it did, in commit cdb051f).
         assert len(chapters) >= 20, (
             f"expected the numbered manuscript sections, found {len(chapters)} "
             f"in {manuscript_dir}"
         )
+        specs = variable_specs()
         unresolved: set[str] = set()
         for md in chapters:
-            text = md.read_text(encoding="utf-8")
-            rendered = _do_substitution(text, metrics)
-            still_unresolved = _UNRESOLVED_VAR_RE.findall(rendered)
-            unresolved.update(still_unresolved)
-        # Report but don't hard-fail — some vars may be intentionally unresolved
-        # (e.g., coverage_percent when no coverage.json exists)
-        expected_unresolvable = {"coverage_percent", "coverage_summary"}
-        truly_unexpected = unresolved - expected_unresolvable
-        assert truly_unexpected == set(), (
-            f"Unexpected unresolved variables in manuscript: {truly_unexpected}"
+            unresolved.update(TOKEN_RE.findall(md.read_text(encoding="utf-8")))
+        unknown = unresolved - set(specs)
+        assert unknown == set(), (
+            f"Chapters reference unregistered variables: {sorted(unknown)}"
         )
 
     def test_write_and_read_metrics_roundtrip(self, tmp_path):
-        from src.generate_manuscript_metrics import collect_metrics, write_metrics
-        metrics = collect_metrics(_PROJECT_ROOT)
-        out = write_metrics(metrics, tmp_path / "metrics.json")
+        from src.generate_manuscript_metrics import write_metrics
+
+        out = write_metrics({"domain_subpackages": "9"}, tmp_path / "metrics.json")
         reloaded = json.loads(out.read_text(encoding="utf-8"))
-        assert reloaded["domain_subpackages"] == metrics["domain_subpackages"]
+        assert reloaded["domain_subpackages"] == "9"
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,35 @@
+# Synthetic Statistical Behavior of the Utilities {#sec:synthetic-statistics}
+
+The preceding sections define what each utility computes. This section reports what those utilities *do* on their declared synthetic inputs, computed by the seeded runner in `src/experiments/`. Every quantity here is synthetic: inputs are fixed or seeded constructions, replication is resampling over seeded runs, and intervals summarize replication-to-replication variation of the computation itself. No corpus, participant, physiological, hardware, or deployed-agent evidence is involved, and none of these numbers estimates a property of any language or brain.
+
+The runner executes configured arms with a seeded PCG64 generator (seed 20260907, 256 replicates per study) and emits a schema-annotated result file whose configuration hash is `0ead4d99c7d6617c1d07342dd37636db5b07e14afe95214308f6b9a92fb7a5d1`; the manuscript quotes only registry-declared identifiers from that file through injection. Replicate-level means carry two-sided 95% normal-approximation intervals (normal quantile 1.95996); point maxima and residuals are reported as descriptive bounds without intervals. There are no p-values, significance labels, or comparisons with empirical work in this section, and all configured arms are reported without multiplicity adjustment.
+
+## Filtering and transition ablation {#sec:exp-filtering}
+
+The filtering study assimilates a known synthetic likelihood over 3 roles, repeating that same-likelihood assimilation 3 times per replicate with a tight convergence threshold, and compares the stored trajectory with the exact repeated-Bayes closed form. Mean posterior probability of the true role after the final assimilation is 0.997309 with interval [0.996974, 0.997644]. A paired arm re-runs the same repeated assimilation with a banded informative transition on identical draws, so the paired mean log-probability difference -0.0214211 nats with interval [-0.0225471, -0.0202951] isolates the effect of changing the transition while the likelihood is held fixed. The stored trajectory agrees with the closed form to a maximum deviation of 3.33067e-16, and the mean final free energy is 0.157986 nats with interval [0.150038, 0.165933]. Posterior mode match is reported descriptively as 1.
+
+![Synthetic Bayesian transition ablation across seeded replicates: identity-transition assimilation versus a banded informative transition on identical draws, with replicate-to-replicate uncertainty bands. The bands are replication intervals of a synthetic computation, not sampling error from empirical data, and the plotted quantities are model probabilities and nats.](output/figures/experiment_filtering.png){#fig:experiment-filtering}
+
+## Calibration of quantile coverage {#sec:exp-calibration}
+
+For a finite discrete return law, the exact coverage target of a quantile level is its distribution function $F(Q(\tau))$, which need not equal $\tau$ under the discrete generalized inverse; that atom gap is a separate descriptive quantity. With 19 levels and 200 observations per replicate, observed coverage of the stored quantiles is compared with that exact target. The mean absolute deviation from the exact discrete-law target is 0.0202648 with interval [0.0187924, 0.0217371]; this deviation quantifies Monte Carlo sampling error of the empirical coverage estimate around the exact discrete target, not distance from a continuous coverage convention. The largest per-replicate deviation is 0.0698747, and the largest per-level gap between mean observed coverage and the mean exact target is 0.00392405. These diagnostics are properties of the stored representation and the seeded sampling scheme, not estimates from data.
+
+![Empirical discrete coverage of stored quantile levels against the exact $F(Q(\tau))$ target of the same synthetic law, with paired per-replicate sampling errors. Coverage targets are exact arithmetic properties of the discrete law; no empirical calibration data is used.](output/figures/experiment_calibration.png){#fig:experiment-calibration}
+
+## Projection and quantile identities {#sec:exp-quantile-projection}
+
+The C51-style projection must conserve total mass and preserve the mean of clipped samples. Across seeded replicates and configured atom counts, the maximum mass residual is 2.22045e-16, the mean mean-exactness residual is 6.78033e-17 with interval [6.10892e-17, 7.45174e-17], and the largest such residual is 3.33067e-16. The Wasserstein reconstruction satisfies its self-distance identity to at most 0. The pairwise Huber update agrees with its finite-difference numerical gradient characterization to at most 8.15287e-11; this is a numerical agreement check of the implemented gradient, not a machine-precision identity proof.
+
+## Sensitivity sweeps {#sec:exp-sensitivity}
+
+Configured sweeps vary one configuration parameter at a time and report every arm against its reference. Summarizing those arms, the largest absolute paired mean effect is 0.252565 for the discount sweep, 0.120347 nats for the return-entropy bin-count sweep, and 0.757051 nats for the policy-temperature sweep. These are descriptive effect sizes of a synthetic computation under parameter changes; they measure the arithmetic sensitivity of the utilities, not any cognitive or empirical quantity.
+
+![All configured sensitivity arms (discount, return-entropy bin count, policy temperature) plotted against their reference arms with pointwise paired intervals over seeded replicates. All effects are synthetic-computation sensitivities in dimensionless score units or nats; they carry no empirical interpretation.](output/figures/experiment_sensitivity.png){#fig:experiment-sensitivity}
+
+## Validity controls {#sec:exp-controls}
+
+The runner also executes analytic negative controls. The analytic-identity control suite reports 1, and the invalid-input control suite reports 1, where 1 means all analytic identity checks passed and 1 means all malformed-input rejections behaved as declared. Separately, the crisp two-role POVM example satisfies completeness to a mean residual of 2.1684e-17 with interval [1.56478e-17, 2.77203e-17] and a maximum residual of 2.22045e-16 across replicates, consistent with the matrix contracts in [@sec:quantum-semantics].
+
+## Interpretation boundaries {#sec:exp-limits}
+
+Three boundaries delimit this section. First, replication intervals summarize variation across seeded runs of deterministic code; they are not sampling distributions over any population. Second, every configured arm is reported without multiplicity adjustment, and the configurations themselves are synthetic choices, not estimated models. Third, agreement with closed forms and numerical gradients validates the implementation of a stated computation; it neither extends the mathematics beyond its assumptions nor converts any utility into a Bellman solver, a general inference engine, or a measurement model. The reproduction path for every number in this section is documented in [@sec:test-suite-inventory].

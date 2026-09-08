@@ -15,13 +15,12 @@ def _make_belief(probs, name="test"):
 
 
 class TestDegenerateBeliefs:
-    def test_all_zero_likelihoods_stops_gracefully(self):
+    def test_all_zero_likelihoods_rejected(self):
         prior = _make_belief([0.5, 0.5])
         likelihoods = np.array([0.0, 0.0])
         T = np.eye(2)
-        result = distributional_case_assignment(prior, likelihoods, T, n_iterations=5)
-        # Should not raise; stops when all posteriors are zero
-        assert result is not None
+        with pytest.raises(ValueError, match="incompatible"):
+            distributional_case_assignment(prior, likelihoods, T, n_iterations=5)
 
     def test_dimension_mismatch_raises(self):
         prior = _make_belief([0.5, 0.5])
@@ -224,7 +223,7 @@ class TestBellmanEdgeCases:
         q = np.array([0.0, 0.0])
         T = np.eye(2)
         R = np.array([1.0, 2.0])
-        with pytest.raises(ValueError, match="Degenerate quantile"):
+        with pytest.raises(ValueError, match="sum to 1"):
             _single_bellman_step(q, T, R, gamma=0.5, n_quantiles=10)
 
     def test_normal_bellman_step_returns_finite_values(self):

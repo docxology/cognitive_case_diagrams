@@ -116,7 +116,9 @@ def run(out: Path) -> list[Path]:
         box_counts = [m.box_count for m in metrics_list]
         word_counts = [m.word_count for m in metrics_list]
         cup_counts = [m.cup_count for m in metrics_list]
-        sentences = [label for label, _ in diagrams]
+        sentences = [" ".join(box.name for box in diagram.boxes
+                              if len(box.dom) == 0 and box.name)
+                     for _, diagram in diagrams]
 
         path = out / "complexity_comparison.png"
         render_complexity_comparison(

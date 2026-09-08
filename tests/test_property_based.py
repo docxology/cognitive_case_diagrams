@@ -46,7 +46,7 @@ weight_strategy = st.floats(min_value=0.01, max_value=1.0, allow_nan=False)
 
 @st.composite
 def enriched_proximity_matrix(draw, n: int = 3):
-    """Generate a valid [0,1]-enriched proximity matrix of size n."""
+    """Generate a bounded unit-diagonal candidate; composition is not guaranteed."""
     roles = draw(st.just(ROLE_POOL[:n]))
     # Start with identity
     matrix = np.eye(n)
@@ -145,24 +145,23 @@ class TestEmptyMorphismCategory:
 class TestEnrichedCategoryAxioms:
     """Property-based tests for enriched category axioms."""
 
-    @given(enriched_proximity_matrix(n=3))
-    @settings(max_examples=30)
-    def test_non_unit_diagonal_raises(self, roles_matrix):
+    @pytest.mark.parametrize("diagonal", [0.0, 0.5, 0.99])
+    def test_non_unit_diagonal_raises(self, diagonal):
         """The real identity-axiom contract: a non-unit diagonal is rejected.
 
         (The previous version asserted the unit diagonal the strategy had
         already hardcoded, so it could never fail.)
         """
-        roles, _ = roles_matrix
+        roles = ROLE_POOL[:3]
         bad = np.eye(3)
-        bad[0, 0] = 0.5
+        bad[0, 0] = diagonal
         with pytest.raises(ValueError, match="Identity axiom"):
             EnrichedCategory(name="Bad3", roles=list(roles), proximity_matrix=bad)
 
     @given(enriched_proximity_matrix(n=3))
     @settings(max_examples=30)
     def test_magnitude_is_finite(self, roles_matrix):
-        """Categorical magnitude is always finite for valid enriched categories."""
+        """The sampled nonsingular candidate matrices have finite matrix magnitude."""
         roles, matrix = roles_matrix
         cat = EnrichedCategory(
             name="Random3",

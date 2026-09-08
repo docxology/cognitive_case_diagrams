@@ -1,37 +1,12 @@
 ---
 name: ccd-diagrams
-description: DisCoCat/DisCoCirc-style string diagrams, complexity metrics, ditransitive constructions, discourse-level prompt scanning. Use for manuscript §3–§4c (and cross-links to §5b magnitude homology metrics, §9b protocol-level checks where `Discourse` is used).
+description: Source-grounded routing for the diagrams examples in cognitive_case_diagrams.
 ---
 
-# `src/diagrams/`
+# diagrams workflow
 
-## When to use
+Use when changing or explaining `src/diagrams`. Read [README.md](README.md) and [AGENTS.md](AGENTS.md), then inspect the source signature and relevant tests before calling an API.
 
-- Building `Sentence` / `Discourse` diagrams and measuring their structural complexity.
-- Computing `MagnitudeHomologyMetrics` — a scalar syntactic complexity, a 1-D hole count, an estimated decoherence rate, and a commutation flag. It is **not** a graded homology object; see [`AGENTS.md`](AGENTS.md).
-- Scanning discourse histories for role-reversal patterns by feeding `Discourse.role_history` slices into `src.security.cognitive_security.CaseFrameValidator.validate_assignment()`.
-- Anything that composes case-theoretic types as string diagrams.
+Explicit DisCoPy pregroup constructions, tensor examples, diagram counts, and entity-name bookkeeping. `Discourse` does not infer coreference or implement a complete DisCoCirc semantic state update. `MagnitudeHomologyMetrics` contains a synthetic cup/cap score, not homology or measured decoherence.
 
-## Primary imports
-
-```python
-from src.diagrams import (
-    AtomicType, Wire, Box, Sentence, Discourse, N, S,
-    syntactic_complexity_score, compare_diagrams, DiagramMetrics,
-    diagram_depth, diagram_width,
-    DitransitiveSentence, create_ditransitive,
-)
-# Magnitude-homology helpers are not re-exported by the package __init__;
-# import them from the module directly.
-from src.diagrams.complexity_metrics import (
-    MagnitudeHomologyMetrics, compute_pqc_decoherence_proxy,
-)
-```
-
-## Manuscript
-
-§3–§4c (pregroups through DisCoCirc; §4b complexity; §4c discourse); `complexity_metrics` also supports magnitude-homology metrics tied to §5b in the theory map.
-
-## See also
-
-- [`AGENTS.md`](AGENTS.md) · [`README.md`](README.md)
+Verification: from the project root, `uv run python scripts/quality_gate.py --coverage`. Update the [method contracts](../../docs/method_contracts.md) if behavior changes. Do not promote synthetic examples or compatibility names to mathematical, empirical, or operational guarantees.

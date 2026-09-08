@@ -1,29 +1,12 @@
 ---
 name: ccd-enriched-cat
-description: "[0,1]-enriched categories, standard proximity matrix, categorical magnitude helpers. Use for §5 distributional proximity and enrichment that feeds cognitive/security modules."
+description: Source-grounded routing for the enriched_cat examples in cognitive_case_diagrams.
 ---
 
-# `src/enriched_cat/`
+# enriched_cat workflow
 
-## When to use
+Use when changing or explaining `src/enriched_cat`. Read [README.md](README.md) and [AGENTS.md](AGENTS.md), then inspect the source signature and relevant tests before calling an API.
 
-- Modelling graded proximity between case roles, standard enriched category construction, or magnitude-related structure shared with §5 and downstream belief / security code.
+Candidate hom-matrices, explicit multiplicative composition checks, max-product closure, and matrix magnitude. The standard matrix is synthetic and violates composition before closure. Pseudoinverse magnitudes require valid left/right weighting residuals. Threshold clusters are weak connected components, not pairwise-close cliques.
 
-## Primary imports
-
-```python
-from src.enriched_cat import (
-    EnrichedCategory,
-    standard_enriched_category,
-    STANDARD_ROLES,
-    STANDARD_PROXIMITY_MATRIX,
-)
-```
-
-## Manuscript
-
-§5, §5b (enrichment and magnitude narrative).
-
-## See also
-
-- [`AGENTS.md`](AGENTS.md) · [`README.md`](README.md)
+Verification: from the project root, `uv run python scripts/quality_gate.py --coverage`. Update the [method contracts](../../docs/method_contracts.md) if behavior changes. Do not promote synthetic examples or compatibility names to mathematical, empirical, or operational guarantees.

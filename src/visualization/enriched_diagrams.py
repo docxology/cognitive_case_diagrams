@@ -4,6 +4,7 @@ Renders [0,1]-valued proximity matrices as annotated heatmaps
 with proper axis labeling and identity diagonal highlighting.
 """
 
+from .styles import save_publication_figure
 import logging
 from pathlib import Path
 from typing import Optional, Union
@@ -58,10 +59,10 @@ def render_enriched_heatmap(
     cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cbar.set_label(
         "Distributional Proximity",
-        fontsize=FONT_SIZE_FLOOR - 2,
+        fontsize=FONT_SIZE_FLOOR,
         labelpad=10,
     )
-    cbar.ax.tick_params(labelsize=FONT_SIZE_ANNOTATION - 2)
+    cbar.ax.tick_params(labelsize=FONT_SIZE_ANNOTATION)
 
     # Add text annotations
     for i in range(n):
@@ -72,23 +73,23 @@ def render_enriched_heatmap(
             ax.text(
                 j, i, f"{value:.2f}",
                 ha="center", va="center",
-                color=color, fontsize=FONT_SIZE_ANNOTATION - 2,
+                color=color, fontsize=FONT_SIZE_ANNOTATION,
                 fontweight=fontweight,
             )
 
     # Axis labels
     ax.set_xticks(range(n))
     ax.set_yticks(range(n))
-    ax.set_xticklabels(labels, fontsize=FONT_SIZE_FLOOR - 2, rotation=45, ha="right")
-    ax.set_yticklabels(labels, fontsize=FONT_SIZE_FLOOR - 2)
+    ax.set_xticklabels(labels, fontsize=FONT_SIZE_FLOOR, rotation=45, ha="right")
+    ax.set_yticklabels(labels, fontsize=FONT_SIZE_FLOOR)
 
-    display_title = title or f"[0,1]-Enriched Hom-Values: {enriched.name}"
+    display_title = title or f"Candidate similarities (synthetic): {enriched.name}"
     ax.set_title(display_title, fontsize=FONT_SIZE_TITLE, fontweight="bold", pad=20)
 
     fig.tight_layout()
 
     if output_path:
-        fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+        save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
         logger.info("Saved enriched heatmap to %s", output_path)
 
     return fig
@@ -117,7 +118,7 @@ def write_magnitude_report(
     output_path.write_text(
         f"Enriched Category: {enriched.name}\n"
         f"Number of objects: {len(enriched.roles)}\n"
-        f"Categorical magnitude: {mag:.6f}\n"
+        f"Categorical magnitude: {mag:.6f} (matrix statistic; validate enrichment separately)\n"
         f"Weighting vector: {w.tolist()}\n"
     )
     logger.info("Saved enriched magnitude report to %s", output_path)

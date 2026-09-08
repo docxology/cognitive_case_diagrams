@@ -1,191 +1,60 @@
-# Cognitive Case Diagrams
+# Cognitive case diagrams
 
-**Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case** — category-theoretic approaches to linguistic case systems in total cognitive scenario understanding
+An executable review of case-role graphs, compositional grammar, synthetic uncertainty, and measurement models. Release identity comes from [package configuration](pyproject.toml), [manuscript configuration](docs/manuscript/config.yaml), and generated [citation metadata](CITATION.cff). The code provides explicit examples; it does not implement a complete linguistic parser, general topos bridge, full distributional active-inference learner, EEG model, or operational security system.
 
-*Daniel Ari Friedman · Active Inference Institute · v2.3 (2026-04-22) · DOI [10.5281/zenodo.19695260](https://doi.org/10.5281/zenodo.19695260)*
+Start with the [method contracts](docs/method_contracts.md), [claim ledger](docs/claim_ledger.md), and [manuscript](docs/manuscript/README.md). The [review report](docs/comprehensive_review.md) records changes and verification receipts.
 
----
+## Run locally
 
-## Location
-
-This repository **is** the project. Run tests and figure generation **from the repository root** (commands below).
-
-Inside the private `docxology/template` monorepo the same tree is reachable at **`projects/ongoing/ActiveInference/cognitive_case_diagrams/`**, and pipeline commands there take `--project ongoing/ActiveInference/cognitive_case_diagrams`. The rendering engine (`run.sh`, `scripts/pipeline/`, `infrastructure/`) lives in that monorepo and is **not** bundled here.
-
-## Versions (two numbers)
-
-| What | Where | Meaning |
-|------|--------|--------|
-| **Python package** | [`pyproject.toml`](pyproject.toml) `project.version` | Semver for the installable `cognitive_case_diagrams` package (currently **2.3.0**). |
-| **Manuscript / paper** | [`docs/manuscript/AGENTS.md`](docs/manuscript/AGENTS.md) authorship block, [`docs/manuscript/config.yaml`](docs/manuscript/config.yaml) | Research edition (currently **v2.3**, dated **2026-04-22**, DOI `10.5281/zenodo.19695260`). Bump this when the PDF content or metadata release changes independently of API semver. |
-
-They are intentionally separate: code releases can patch without a full manuscript revision, and manuscript edits do not always require a package version bump.
-
-## Overview
-
-This project formalizes linguistic case systems using category theory, integrating them into the Active Inference framework via the CEREBRUM architecture. The central argument: commutative diagrams are cognitively privileged representations because they simultaneously encode algebraic structure, distributional semantics, and inference processes.
-
-## Formal layers, sixth strand, extensions
-
-| § | Layer / strand | Implementation |
-|---|----------------|---------------|
-| §2 | Linguistic typology & case systems | `src/case_systems/` |
-| §3–4 | Categorial grammar & DisCoCat | `src/diagrams/` |
-| §4b | Compact closure, snake, diagram complexity | `src/diagrams/` |
-| §4c | DisCoCirc discourse (entity wires) | `src/diagrams/` |
-| §5 | [0,1]-enriched categories | `src/enriched_cat/` |
-| §6 | Topos theory & Morita equivalence | `src/topos_theory/` |
-| §7–§7b | Sixth strand: ROSE / biolinguistic–neuro interface | `src/cognitive/` + manuscript §7b |
-| §7c | DAIF & neurolinguistic metrics | `src/daif/` |
-
-**Extensions:** Quantum §8 (`src/quantum/`); AI implications §9; **protocol-level** cognitive security §9b (`src/security/`). Distributional inference code lives in `src/daif/`; §7b ties formal claims to the test suite and verification narrative.
-
-## Quick Start
-
-Everything below runs from the **repository root** of this standalone clone — no `cd` into a monorepo path, no engine checkout required.
+Python 3.10 or newer and `uv` are required. DisCoPy, NumPy, Matplotlib, and the development tools are declared in `pyproject.toml`; `uv.lock` fixes the resolved environment.
 
 ```bash
-uv sync
-
-# Tests with coverage
-uv run pytest tests/ --cov=src --cov-report=term-missing -v
-
-# Generate all manuscript figures into output/figures/
+uv sync --frozen
+uv run python scripts/quality_gate.py --coverage
+uv run python scripts/run_experiments.py
 uv run python scripts/generate_diagrams.py
-```
-
-Do not run `uv sync --group rendering` here — those groups are defined only on the **template root** `pyproject.toml`. Plain `uv sync` is enough (DisCoPy is a normal dependency of this package, and the test toolchain lives in `[dependency-groups] dev`).
-
-### Building the PDF (requires the `docxology/template` engine + Pandoc + TeX Live)
-
-The rendering pipeline is not part of this repository. From the **template monorepo root**, with this project linked in at `projects/ongoing/ActiveInference/cognitive_case_diagrams/`:
-
-```bash
-# Full pipeline
-./run.sh --project ongoing/ActiveInference/cognitive_case_diagrams
-
-# Or individual stages (scripts/pipeline/stage_*.py are the real entry points)
-uv run python scripts/pipeline/stage_01_test.py     --project ongoing/ActiveInference/cognitive_case_diagrams
-uv run python scripts/pipeline/stage_03_render.py   --project ongoing/ActiveInference/cognitive_case_diagrams
-uv run python scripts/pipeline/stage_04_validate.py --project ongoing/ActiveInference/cognitive_case_diagrams
-
-# Validate manuscript markdown
-uv run python -m infrastructure.validation.cli markdown \
-  projects/ongoing/ActiveInference/cognitive_case_diagrams/docs/manuscript/
-```
-
-## Manuscript `${variable}` injection (author workflow)
-
-Run steps 1–3 **from the repository root** so `tests/` and `src/` paths resolve as documented in [`tests/AGENTS.md`](tests/AGENTS.md):
-
-```bash
-# 1) Tests + JSON coverage (feeds real ${coverage_*} numbers; coverage.json commit policy — tests/AGENTS.md)
-uv run pytest tests/ --cov=src --cov-report=json:coverage.json
-
-# 2) Write output/metrics.json
-uv run python -m src.generate_manuscript_metrics
-
-# 3) Render substituted chapters to output/manuscript/ (PDF stage prefers this directory when present)
 uv run python scripts/inject_variables.py
+uv run python scripts/validate_project.py
 ```
 
-Step 4, the combined PDF, runs from the **template monorepo root** (see "Building the PDF" above):
+The quality gate runs Ruff, mypy, and the full suite with the configured line-and-branch coverage floor. Its receipt binds test and coverage counts to the tested source tree. Experiments use declared synthetic inputs and independent seeded replicates; their uncertainty does not measure performance on linguistic data. The artifact gate checks hydration, references, image files, registry labels, and checksums. Visual inspection remains a separate requirement.
+
+To render PDF and HTML, run from the sibling **template checkout root** after project injection:
 
 ```bash
-uv run python scripts/pipeline/stage_03_render.py --project ongoing/ActiveInference/cognitive_case_diagrams
+uv run python scripts/pipeline/stage_03_render.py --project ongoing/ActiveInference/cognitive_case_diagrams --skip-manuscript-hydration
+uv run python scripts/pipeline/stage_04_validate.py --project ongoing/ActiveInference/cognitive_case_diagrams
 ```
 
-Use `scripts/inject_variables.py --dry-run` to print metrics without writing `output/manuscript/`. See [`docs/manuscript/README.md`](docs/manuscript/README.md) and [`docs/api_reference.md`](docs/api_reference.md).
+The engine is external to this repository. Generated artifacts live in `output/`; edit their writers in `src/`, scripts, or numbered manuscript sources.
 
-## Project Structure
+The shared template validator has a documented integration limitation with this checkout's category symlink and ignored render outputs; see the [earlier review receipts](docs/comprehensive_review.md#6-verification-receipts). The standalone [release workflow](docs/release_workflow.md) validates the real project root, final artifacts, inspection record, metadata, and reproducibility archive. A local receipt records local evidence; publication requires separately verified remote results.
 
-```
-cognitive_case_diagrams/
-├── AGENTS.md                    # Agent operational guide (read first)
-├── README.md                    # This file
-├── pyproject.toml               # Package config + test/coverage settings
-├── docs/                        # Technical reference documentation
-│   └── manuscript/              # Research manuscript (24 section .md + config.yaml + preamble.md + references.bib)
-│       ├── 00_abstract.md            # Abstract
-│       ├── 01_introduction.md        # §1 Introduction
-│       ├── 01a_research_questions.md # §1a Research Questions
-│       ├── 02_case_systems.md        # §2 Case Systems
-│       ├── 02b_case_categories.md    # §2b Case Categories
-│       ├── 03_categorial_grammar.md  # §3 Categorial Grammar
-│       ├── 03b_case_type_logic.md    # §3b Case Type Logic
-│       ├── 04_categorical_semantics.md # §4 DisCoCat
-│       ├── 04b_compact_closure_complexity.md # §4b Snake equation & complexity metrics
-│       ├── 04c_discourse_complexity.md # §4c DisCoCirc discourse & QNLP
-│       ├── 05_enriched_categories.md # §5 Enriched Categories
-│       ├── 05b_magnitude_homology.md # §5b Magnitude Homology
-│       ├── 06_topos_theory.md        # §6 Topos Theory
-│       ├── 07_cognitive_integration.md # §7 Active Inference
-│       ├── 07b_diagrammatic_cognition.md # §7b Diagrammatic Cognition & ERP Predictions
-│       ├── 07c_daif_results.md       # §7c DAIF Results
-│       ├── 08_quantum_active_inference.md # §8 Quantum
-│       ├── 08b_quantum_semantics.md  # §8b Quantum Semantics
-│       ├── 09_ai_implications.md     # §9 AI Implications
-│       ├── 09b_cognitive_security.md # §9b Cognitive Security
-│       ├── 10_conclusion.md          # §10 Conclusion
-│       ├── 11_syntactic_sentence_diagrams.md # App A: Syntactic diagrams
-│       ├── 11b_notation.md           # App B: Complete notation reference (A–K)
-│       ├── 11c_automated_test_inventory.md # App C: Test suite inventory
-│       ├── config.yaml               # Paper metadata
-│       ├── preamble.md               # LaTeX package declarations for Pandoc rendering
-│       └── references.bib            # Bibliography (BibTeX)
-├── output/                      # Generated artifacts (metrics.json + the trees below)
-│   ├── figures/                 # Matplotlib publication figures
-│   ├── manuscript/              # ${variable}-substituted chapters (render source when present)
-│   ├── pdf/                     # Compiled PDFs
-│   ├── logs/                    # Pipeline run logs
-│   └── reports/                 # Analysis reports
-├── scripts/                     # Thin orchestrators
-│   ├── 01_generate_manuscript_metrics.py  # Collects test counts, DAIF symbols, coverage → output/metrics.json
-│   ├── generate_diagrams.py     # Master dispatcher — generates all 30 manuscript figures
-│   ├── generate_category_figures.py       # §2 case category + functor figures (5)
-│   ├── generate_category_unpacking_figures.py  # §3–§4c pedagogical unpacking PNGs (3)
-│   ├── generate_cognitive_figures.py      # §7 / §7c active inference + DAIF figures (5)
-│   ├── generate_discopy_figures.py        # §3–§4c DisCoPy + complexity figures (10)
-│   ├── generate_quantum_figures.py        # §8 / §9b quantum POVM + security figures (3)
-│   ├── generate_syntactic_figures.py      # App A syntactic case panel (1)
-│   └── inject_variables.py      # Manuscript ${variable} injection from output/metrics.json
-├── src/                         # Scientific source code
-│   ├── case_systems/            # §2: CaseRole, CaseCategory, FluidSFunctor
-│   ├── diagrams/                # §3–4b: String diagrams, DisCoCirc
-│   ├── enriched_cat/            # §5: EnrichedCategory, magnitude
-│   ├── topos_theory/            # §6: GeometricTheory, Morita equivalence
-│   ├── cognitive/               # §7: CaseDiagramBelief, free energy
-│   ├── daif/                    # §7c: DistributionalReturn, DAIF inference, ERP-linked metrics
-│   ├── quantum/                 # §8: CasePOVM, case_probability
-│   ├── security/                # §9b: TypeViolation, CaseFrameValidator
-│   └── visualization/           # Publication-quality figures (15 plot modules + __init__)
-└── tests/                       # Full suite — counts via pytest --collect-only
+## Agent access
+
+The optional [MCP integration](docs/agent_integrations.md) exposes bounded numerical operations and read-only project resources through `ccd-mcp`. The [installable skill](skills/cognitive-case-diagrams/SKILL.md) documents evidence boundaries and reproducible workflows. Install the MCP dependency with `uv sync --extra mcp`; downstream wheel users select the `mcp` extra.
+
+## Example
+
+```python
+import numpy as np
+from src.case_systems import CaseRole
+from src.cognitive import CaseDiagramBelief, update_belief
+prior = CaseDiagramBelief([CaseRole.NOM, CaseRole.ACC], np.array([0.5, 0.5]))
+posterior = update_belief(prior, np.array([0.8, 0.2]))
+np.testing.assert_allclose(posterior.probabilities, [0.8, 0.2])
 ```
 
-## Test & Coverage Status
+The likelihood is supplied synthetic evidence; this example does not parse a sentence.
 
-Latest snapshot (authoritative source: [`output/metrics.json`](output/metrics.json)):
+## Repository map
 
-| Metric | Value | How to verify |
-|--------|-------|----------------|
-| Total tests | see [`output/metrics.json`](output/metrics.json) → `total_test_count` / `total_test_files` — regenerate before quoting; a hardcoded count goes stale the next time anyone adds a test | `uv run pytest tests/ --collect-only -q` |
-| DAIF-specific tests | see [`output/metrics.json`](output/metrics.json) → `daif_tests` | `uv run pytest tests/test_daif*.py --collect-only -q` |
-| Line + branch coverage | see [`output/metrics.json`](output/metrics.json) → `coverage_percent` / `coverage_summary` — regenerate before quoting, the committed value goes stale as soon as `src/` or the coverage config changes | `uv run pytest tests/ --cov=src --cov-report=term-missing`; the ≥90% floor is `[tool.coverage.report] fail_under = 90`, applied on any `--cov` run (this repository ships no CI workflow) |
-| Figures | **30** PNGs in `output/figures/` | `ls output/figures/*.png \| wc -l` |
-| Policy | **Zero mocks** — all real computations | see `tests/AGENTS.md` |
+- [src](src/README.md): numerical and diagram implementations.
+- [tests](tests/README.md): real computations, analytic counterexamples, and artifact checks.
+- [scripts](scripts/README.md): thin generation and validation entry points.
+- [docs](docs/README.md): API, mathematical scope, provenance, and manuscript sources.
+- [experiments](src/experiments/README.md): typed synthetic-study configuration, paired controls, uncertainty, and provenance.
+- [integrations](src/integrations/README.md): MCP schemas, resources, and stdio entry point.
+- `output/`: derived figures, metrics, hydrated chapters, and render products.
 
-## Key Dependencies
-
-```toml
-[dependencies]
-numpy = ">=1.24"         # verified against 2.4.4 in metrics.json
-matplotlib = ">=3.7"
-networkx = ">=3.0"
-pyyaml = ">=6.0"
-discopy = ">=1.0.0"      # required in this package — DisCoPy diagrams (verified 1.2.2)
-```
-
-## Documentation
-
-Each directory has its own `AGENTS.md` (agent guide) and `README.md` (quick reference).  
-See [`AGENTS.md`](AGENTS.md) for the full agent operational guide.
+This is a self-versioned project. Publish from its own repository, never by force-adding its symlinked contents to the parent workspace or template engine. Software uses [Apache-2.0](LICENSE); the existing Zenodo manuscript series retains its publication license, recorded separately in the deposit metadata.

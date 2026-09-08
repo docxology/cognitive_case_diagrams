@@ -4,11 +4,9 @@ Reads the metrics produced by :mod:`src.generate_manuscript_metrics` and
 performs ``${variable}`` substitution in every numbered manuscript chapter
 under ``docs/manuscript/``, writing rendered copies to ``output/manuscript/``.
 
-This module is the standalone fallback used by ``scripts/inject_variables.py``
-when the template monorepo's ``projects.template.src.template.inject_metrics``
-is not importable; the two implement the same substitution contract:
-``string.Template.safe_substitute`` over the metrics mapping, numbered
-chapters substituted, ancillary files copied verbatim.
+Only braced identifier tokens are substituted; mathematical dollar delimiters
+and bare dollar-prefixed names are preserved. Unknown tokens reject the entire
+hydration before any chapter is written.
 """
 
 from __future__ import annotations
@@ -17,7 +15,6 @@ import logging
 import re
 import shutil
 from pathlib import Path
-from string import Template
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +47,13 @@ def render_all_chapters(
     manuscript_dir: Path, metrics: dict, output_dir: Path
 ) -> list[Path]:
     """Process all numbered chapter files and copy ancillary files."""
+    chapters = sorted(manuscript_dir.glob("[0-9]*.md"))
+    if not chapters:
+        raise ValueError("No numbered manuscript chapters")
+    rendered_chapters = {
+        item.name: substitute_variables(item.read_text(encoding="utf-8"), metrics)
+        for item in chapters
+    }
     output_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
 
@@ -59,20 +63,12 @@ def render_all_chapters(
 
         if _CHAPTER_PATTERN.match(item.name) and item.suffix == ".md":
             # Numbered chapter — apply substitution
-            source_text = item.read_text(encoding="utf-8")
-            rendered = Template(source_text).safe_substitute(metrics)
+            rendered = rendered_chapters[item.name]
 
             dest = output_dir / item.name
             dest.write_text(rendered, encoding="utf-8")
             written.append(dest)
 
-            # Warn about unresolved tokens (identifier-shaped only)
-            remaining = _UNRESOLVED_VAR_RE.findall(rendered)
-            if remaining:
-                logger.warning(
-                    f"{item.name}: {len(remaining)} unresolved: "
-                    + ", ".join(f"${{{t}}}" for t in sorted(set(remaining)))
-                )
         else:
             # Ancillary file — copy verbatim
             dest = output_dir / item.name
@@ -80,6 +76,17 @@ def render_all_chapters(
             written.append(dest)
 
     return written
+
+
+def substitute_variables(text: str, metrics: dict) -> str:
+    """Replace braced identifiers exactly and reject missing or nested tokens."""
+    missing = set(_UNRESOLVED_VAR_RE.findall(text)) - set(metrics)
+    if missing:
+        raise ValueError(f"Unresolved manuscript variables: {sorted(missing)}")
+    rendered = _UNRESOLVED_VAR_RE.sub(lambda match: str(metrics[match[1]]), text)
+    if _UNRESOLVED_VAR_RE.search(rendered):
+        raise ValueError("Injected values contain unresolved manuscript variables")
+    return rendered
 
 
 def count_unresolved_variables(rendered_dir: Path) -> int:

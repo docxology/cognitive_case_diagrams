@@ -1,0 +1,1519 @@
+{
+  "inputs": {
+    "docs/figure_alt_text.json": "7220d5d50aa1eb84fa73ffeb28fa37496a32140dbdb83be60ce3d8ee702977fe",
+    "docs/manuscript/00_abstract.md": "1c35280ee324d4c77a4442aa35163404297ae02b8e24b4de0b80aeedee3dd85f",
+    "docs/manuscript/01_introduction.md": "282581a3317b19c5894493f713c7f67f13b75dee0cb99b34b8f0baaf78da6413",
+    "docs/manuscript/01a_research_questions.md": "ba9e608a3198cf8373849af881b132c75da31378ce38279f33064cef9feeca4b",
+    "docs/manuscript/02_case_systems.md": "970ca3ec3d311f680fca09b23a1c7b0c28d3782442acceb6bca95746ff0634d7",
+    "docs/manuscript/02b_case_categories.md": "b1e3efc82fdf02d5a4734ba4594ac89faf17ea51b84d741f5311d4f05f48e6d9",
+    "docs/manuscript/03_categorial_grammar.md": "53b96fcacc58366e0cf84ce4d63b350a457c610eba09b756f0de802995f084ac",
+    "docs/manuscript/03b_case_type_logic.md": "c5e05693de3534adcf4120807accce8469ca675e7aa7240d93aad77fcaf13799",
+    "docs/manuscript/04_categorical_semantics.md": "2d874394866b2a8126c1cead98d8f598257ddd8843b8ecca80706a50f2e17269",
+    "docs/manuscript/04b_compact_closure_complexity.md": "98287efa0c86db3fa6d5934c5d53fc3640b8c3d111d80b9ad52897353058bd87",
+    "docs/manuscript/04c_discourse_complexity.md": "8802bc3909e0c5a849d18e2dc7b6d72f09e4655abbcd2e3834958fcabdacffd9",
+    "docs/manuscript/05_enriched_categories.md": "e02e4a8165943ff6996f6c12e2662c625aa194d2531678297a4e2bf7f00dc1fe",
+    "docs/manuscript/05b_magnitude_homology.md": "d23d54370f8168fd9f8dbeb946fabeb60ffdc75b9970ee3a8f5bfd7877952773",
+    "docs/manuscript/06_topos_theory.md": "95c6cae36e99e58e01a61aba5c18cbd7c1bf1e1e76592f7ddb8c7974a6aaa153",
+    "docs/manuscript/07_cognitive_integration.md": "3010d2afb67b4be5ee41885619587602d6be6eacbac8478c43fb9f39e3c12287",
+    "docs/manuscript/07b_diagrammatic_cognition.md": "9a28ac20048437cb8a477b6e8db31e893ef43e7a1a88277c096fffec8e8138cb",
+    "docs/manuscript/07c_daif_results.md": "0a764c98450e2b247b88e1a379bd24c972ff74dbd8f1d5b8b250501756dbb591",
+    "docs/manuscript/07d_synthetic_statistics.md": "42be8b1013247f91781f308af06b124cb2370487700c97275a21dae8cc7a7f03",
+    "docs/manuscript/08_quantum_active_inference.md": "32ea04f9b5595037266e9241b9fd911b02972f631163ab956490d8da93a43c74",
+    "docs/manuscript/08b_quantum_semantics.md": "463c309af60971dc8dcc030e5fb847b1333668967cdf936d89d928d96e37e7d2",
+    "docs/manuscript/09_ai_implications.md": "ad0dd70fbaa861bd41486af4ce08e3d8dd9139b605b0182756bf27f33bfbbc0c",
+    "docs/manuscript/09b_cognitive_security.md": "0357bb5142d254fc1a60750a0754839907214d7488c5a84489746d1defc4232a",
+    "docs/manuscript/10_conclusion.md": "e2827a1635eb730a100f0c17ada22a49f29e1cb85a363649aa61c7fb5ef0c9cc",
+    "docs/manuscript/11_syntactic_sentence_diagrams.md": "896da38534b04f99258063c9e21be4a42f61fc35134fd8dcd00dacc32c868037",
+    "docs/manuscript/11b_notation.md": "5173808da175a8e129f38e5165994ecca559df7cf5e64f753db773920a3c4195",
+    "docs/manuscript/11c_automated_test_inventory.md": "e5380601e2d804580e6ee6a6d59fbf11f22d50499be491e0a3e1f46c61881cbc",
+    "docs/manuscript/AGENTS.md": "4405e5e1b2aa0eaeeba282dd4cd09a0742b4697e240037560f6c64d401808cb1",
+    "docs/manuscript/MANUSCRIPT_STATUS.md": "8d02dbc2e59c2d75903e45c7032b7be3a7f5394f63d164c4cea79262a22322a6",
+    "docs/manuscript/README.md": "8879d90deebc88da22fbf0778784d15d7d0902d8a1923fb9ed7074f34d8ccec1",
+    "docs/manuscript/config.yaml": "8269904b9d36217b6575364663b7f6e9cab4ae7a298391381084d447cb28a778",
+    "docs/manuscript/preamble.md": "e61d8cbb0f1a77465adf113f2cb6633163235f723e20b81b6d515c7885623b43",
+    "docs/manuscript/references.bib": "fca8fef4d9fbc7b60f9dc4a9bdf6840fbb13748b1ee8325d51d1806ce9bce7b7",
+    "output/experiments/results.json": "8abd348f035333b06a9902633c073577170627a1dab3c4609ffdc508a1cbc6af",
+    "output/figures/figure_registry.json": "744d86560d3759aec224a6042697d80cdac48836af7be664340e7bf4a716c29f",
+    "output/reports/quality_receipt.json": "9e780d03c7a595c140d80666a3e650aa1717ec0abfea54b4882c4dc487c9e090"
+  },
+  "quality_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+  "schema": "ccd-manuscript-variables-v1",
+  "variables": {
+    "alignment_extra_label_count": {
+      "spec": {
+        "description": "Count of alignment-only CaseRole members",
+        "format": "integer",
+        "name": "alignment_extra_label_count",
+        "provenance": "computed",
+        "required": true,
+        "source": "len(CaseRole) minus standard inventory size",
+        "unit": "count"
+      },
+      "value": "5"
+    },
+    "alignment_extra_label_names": {
+      "spec": {
+        "description": "Alignment-only CaseRole members beyond the standard inventory",
+        "format": "string",
+        "name": "alignment_extra_label_names",
+        "provenance": "computed",
+        "required": true,
+        "source": "CaseRole members ERG, ABS, S, A, P",
+        "unit": "identifier"
+      },
+      "value": "ERG, ABS, S, A, and P"
+    },
+    "ci_level_percent": {
+      "spec": {
+        "description": "Confidence level of the experiment interval convention",
+        "format": "sig6",
+        "name": "ci_level_percent",
+        "provenance": "computed",
+        "required": true,
+        "source": "experiments.provenance.experiments_config.confidence_level",
+        "unit": "percent"
+      },
+      "value": "95"
+    },
+    "ci_z_score": {
+      "spec": {
+        "description": "Normal quantile used by the interval convention",
+        "format": "sig6",
+        "name": "ci_z_score",
+        "provenance": "computed",
+        "required": true,
+        "source": "statistics.NormalDist inverse CDF at the configured confidence level",
+        "unit": "dimensionless"
+      },
+      "value": "1.95996"
+    },
+    "complexity_weight_caps": {
+      "spec": {
+        "description": "Default weight for caps in the synthetic complexity score",
+        "format": "sig6",
+        "name": "complexity_weight_caps",
+        "provenance": "computed",
+        "required": true,
+        "source": "signature(syntactic_complexity_score).parameters[w_caps].default",
+        "unit": "dimensionless"
+      },
+      "value": "0.25"
+    },
+    "complexity_weight_cups": {
+      "spec": {
+        "description": "Default weight for cups in the synthetic complexity score",
+        "format": "sig6",
+        "name": "complexity_weight_cups",
+        "provenance": "computed",
+        "required": true,
+        "source": "signature(syntactic_complexity_score).parameters[w_cups].default",
+        "unit": "dimensionless"
+      },
+      "value": "0.5"
+    },
+    "complexity_weight_depth": {
+      "spec": {
+        "description": "Default weight for depth in the synthetic complexity score",
+        "format": "sig6",
+        "name": "complexity_weight_depth",
+        "provenance": "computed",
+        "required": true,
+        "source": "signature(syntactic_complexity_score).parameters[w_depth].default",
+        "unit": "dimensionless"
+      },
+      "value": "0.1"
+    },
+    "complexity_weight_words": {
+      "spec": {
+        "description": "Default weight for words in the synthetic complexity score",
+        "format": "sig6",
+        "name": "complexity_weight_words",
+        "provenance": "computed",
+        "required": true,
+        "source": "signature(syntactic_complexity_score).parameters[w_words].default",
+        "unit": "dimensionless"
+      },
+      "value": "1"
+    },
+    "coverage_lines_covered": {
+      "spec": {
+        "description": "Covered statements bound to the receipt's coverage.json hash",
+        "format": "integer",
+        "name": "coverage_lines_covered",
+        "provenance": "quality_receipt",
+        "required": true,
+        "source": "src.release_validation.validate_quality_receipt -> coverage_lines_covered",
+        "unit": "count"
+      },
+      "value": "6170"
+    },
+    "coverage_lines_total": {
+      "spec": {
+        "description": "Measured statements bound to the receipt's coverage.json hash",
+        "format": "integer",
+        "name": "coverage_lines_total",
+        "provenance": "quality_receipt",
+        "required": true,
+        "source": "src.release_validation.validate_quality_receipt -> coverage_lines_total",
+        "unit": "count"
+      },
+      "value": "6486"
+    },
+    "coverage_percent": {
+      "spec": {
+        "description": "Combined line-and-branch coverage recomputed from counts",
+        "format": "decimal2",
+        "name": "coverage_percent",
+        "provenance": "quality_receipt",
+        "required": true,
+        "source": "src.release_validation.validate_quality_receipt -> coverage_percent",
+        "unit": "percent"
+      },
+      "value": "93.15"
+    },
+    "daif_assignment_iterations": {
+      "spec": {
+        "description": "Evidence-repetition iterations per vector in the FE figure data",
+        "format": "integer",
+        "name": "daif_assignment_iterations",
+        "provenance": "computed",
+        "required": true,
+        "source": "n_iterations argument in src.cognitive.figure_data.make_free_energy_convergence_data",
+        "unit": "count"
+      },
+      "value": "3"
+    },
+    "daif_bellman_example_gamma": {
+      "spec": {
+        "description": "Discount of the Bellman counterexample input",
+        "format": "sig6",
+        "name": "daif_bellman_example_gamma",
+        "provenance": "computed",
+        "required": true,
+        "source": "CANONICAL_BELLMAN_EXAMPLE in src/generate_manuscript_metrics.py",
+        "unit": "dimensionless"
+      },
+      "value": "0.9"
+    },
+    "daif_bellman_example_reward_first": {
+      "spec": {
+        "description": "First reward entry of the Bellman counterexample input",
+        "format": "sig6",
+        "name": "daif_bellman_example_reward_first",
+        "provenance": "computed",
+        "required": true,
+        "source": "CANONICAL_BELLMAN_EXAMPLE in src/generate_manuscript_metrics.py",
+        "unit": "dimensionless"
+      },
+      "value": "1"
+    },
+    "daif_bellman_example_reward_second": {
+      "spec": {
+        "description": "Second reward entry of the Bellman counterexample input",
+        "format": "sig6",
+        "name": "daif_bellman_example_reward_second",
+        "provenance": "computed",
+        "required": true,
+        "source": "CANONICAL_BELLMAN_EXAMPLE in src/generate_manuscript_metrics.py",
+        "unit": "dimensionless"
+      },
+      "value": "0"
+    },
+    "daif_bellman_example_score_mean": {
+      "spec": {
+        "description": "Score mean the legacy operator reports for that input",
+        "format": "sig6",
+        "name": "daif_bellman_example_score_mean",
+        "provenance": "computed",
+        "required": true,
+        "source": "distributional_bellman_operator(...)[0].mean",
+        "unit": "dimensionless"
+      },
+      "value": "0.95"
+    },
+    "daif_bellman_example_transition": {
+      "spec": {
+        "description": "Uniform transition entry of the Bellman counterexample input",
+        "format": "sig6",
+        "name": "daif_bellman_example_transition",
+        "provenance": "computed",
+        "required": true,
+        "source": "CANONICAL_BELLMAN_EXAMPLE in src/generate_manuscript_metrics.py",
+        "unit": "dimensionless"
+      },
+      "value": "0.5"
+    },
+    "daif_bellman_example_true_return": {
+      "spec": {
+        "description": "Belief-weighted infinite-horizon return (I-gamma T)^-1 R",
+        "format": "sig6",
+        "name": "daif_bellman_example_true_return",
+        "provenance": "computed",
+        "required": true,
+        "source": "numpy.linalg.solve on the canonical transition and reward",
+        "unit": "dimensionless"
+      },
+      "value": "5"
+    },
+    "daif_modules": {
+      "spec": {
+        "description": "Python modules in src/daif/ excluding __init__.py",
+        "format": "integer",
+        "name": "daif_modules",
+        "provenance": "collection",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._count_daif_modules",
+        "unit": "count"
+      },
+      "value": "7"
+    },
+    "daif_modules_word": {
+      "spec": {
+        "description": "English word form of daif_modules",
+        "format": "word",
+        "name": "daif_modules_word",
+        "provenance": "collection",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._number_to_word",
+        "unit": "count"
+      },
+      "value": "seven"
+    },
+    "daif_projection_levels": {
+      "spec": {
+        "description": "Midpoint quantile levels of the four-level projection example",
+        "format": "string",
+        "name": "daif_projection_levels",
+        "provenance": "computed",
+        "required": true,
+        "source": "quantile_levels of push_forward_return canonical endpoint example",
+        "unit": "dimensionless"
+      },
+      "value": "0.125, 0.375, 0.625, 0.875"
+    },
+    "daif_projection_support_max": {
+      "spec": {
+        "description": "Upper endpoint of the projection example support",
+        "format": "sig6",
+        "name": "daif_projection_support_max",
+        "provenance": "computed",
+        "required": true,
+        "source": "canonical endpoint example configuration",
+        "unit": "dimensionless"
+      },
+      "value": "10"
+    },
+    "daif_projection_support_min": {
+      "spec": {
+        "description": "Lower endpoint of the projection example support",
+        "format": "sig6",
+        "name": "daif_projection_support_min",
+        "provenance": "computed",
+        "required": true,
+        "source": "canonical endpoint example configuration",
+        "unit": "dimensionless"
+      },
+      "value": "0"
+    },
+    "daif_projection_values": {
+      "spec": {
+        "description": "Quantile values at those levels for mass at the endpoints",
+        "format": "string",
+        "name": "daif_projection_values",
+        "provenance": "computed",
+        "required": true,
+        "source": "quantiles of push_forward_return canonical endpoint example",
+        "unit": "dimensionless"
+      },
+      "value": "0, 0, 10, 10"
+    },
+    "daif_symbols": {
+      "spec": {
+        "description": "Public symbols exported in src/daif/__init__.py __all__",
+        "format": "integer",
+        "name": "daif_symbols",
+        "provenance": "collection",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._count_daif_symbols",
+        "unit": "count"
+      },
+      "value": "26"
+    },
+    "daif_test_files": {
+      "spec": {
+        "description": "Number of test_daif*.py files",
+        "format": "integer",
+        "name": "daif_test_files",
+        "provenance": "collection",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._count_daif_test_files",
+        "unit": "count"
+      },
+      "value": "8"
+    },
+    "daif_tests": {
+      "spec": {
+        "description": "Tests collected in test_daif*.py files",
+        "format": "integer",
+        "name": "daif_tests",
+        "provenance": "collection",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._count_daif_tests",
+        "unit": "count"
+      },
+      "value": "232"
+    },
+    "daif_trajectory_evidence_count": {
+      "spec": {
+        "description": "Likelihood vectors in the belief-trajectory figure data",
+        "format": "integer",
+        "name": "daif_trajectory_evidence_count",
+        "provenance": "computed",
+        "required": true,
+        "source": "len(obs_sequence) in src.cognitive.figure_data.make_daif_belief_trajectory_data",
+        "unit": "count"
+      },
+      "value": "6"
+    },
+    "discopy_version": {
+      "spec": {
+        "description": "Installed DisCoPy distribution version (empty if absent)",
+        "format": "string",
+        "name": "discopy_version",
+        "provenance": "environment",
+        "required": false,
+        "source": "importlib.metadata.version('discopy')",
+        "unit": "version"
+      },
+      "value": "1.2.2"
+    },
+    "discopy_version_pretty": {
+      "spec": {
+        "description": "DisCoPy version safe for prose when the package is absent",
+        "format": "string",
+        "name": "discopy_version_pretty",
+        "provenance": "environment",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._optional_distribution_version",
+        "unit": "version"
+      },
+      "value": "1.2.2"
+    },
+    "domain_subpackages": {
+      "spec": {
+        "description": "First-level packages under src/",
+        "format": "integer",
+        "name": "domain_subpackages",
+        "provenance": "collection",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._count_domain_subpackages",
+        "unit": "count"
+      },
+      "value": "11"
+    },
+    "enriched_acc_dat_raw": {
+      "spec": {
+        "description": "Raw ACC-to-DAT similarity entry",
+        "format": "sig6",
+        "name": "enriched_acc_dat_raw",
+        "provenance": "computed",
+        "required": true,
+        "source": "standard_enriched_category().proximity_matrix[CaseRole.ACC, CaseRole.DAT]",
+        "unit": "dimensionless"
+      },
+      "value": "0.55"
+    },
+    "enriched_magnitude": {
+      "spec": {
+        "description": "Inverse-sum magnitude of the raw illustrative similarity matrix",
+        "format": "sig6",
+        "name": "enriched_magnitude",
+        "provenance": "computed",
+        "required": true,
+        "source": "src.enriched_cat.enriched.standard_enriched_category().magnitude()",
+        "unit": "dimensionless"
+      },
+      "value": "2.49608"
+    },
+    "enriched_magnitude_deficit": {
+      "spec": {
+        "description": "Object count minus magnitude for that matrix",
+        "format": "sig6",
+        "name": "enriched_magnitude_deficit",
+        "provenance": "computed",
+        "required": true,
+        "source": "src.enriched_cat.enriched.standard_enriched_category().magnitude_deficit()",
+        "unit": "dimensionless"
+      },
+      "value": "5.50392"
+    },
+    "enriched_nom_acc_dat_product": {
+      "spec": {
+        "description": "Two-step product that exceeds the direct entry (axiom failure)",
+        "format": "sig6",
+        "name": "enriched_nom_acc_dat_product",
+        "provenance": "computed",
+        "required": true,
+        "source": "product of the two raw entries above",
+        "unit": "dimensionless"
+      },
+      "value": "0.4675"
+    },
+    "enriched_nom_acc_raw": {
+      "spec": {
+        "description": "Raw NOM-to-ACC similarity entry",
+        "format": "sig6",
+        "name": "enriched_nom_acc_raw",
+        "provenance": "computed",
+        "required": true,
+        "source": "standard_enriched_category().proximity_matrix[CaseRole.NOM, CaseRole.ACC]",
+        "unit": "dimensionless"
+      },
+      "value": "0.85"
+    },
+    "enriched_nom_dat_raw": {
+      "spec": {
+        "description": "Raw NOM-to-DAT similarity entry",
+        "format": "sig6",
+        "name": "enriched_nom_dat_raw",
+        "provenance": "computed",
+        "required": true,
+        "source": "standard_enriched_category().proximity_matrix[CaseRole.NOM, CaseRole.DAT]",
+        "unit": "dimensionless"
+      },
+      "value": "0.45"
+    },
+    "enriched_object_count": {
+      "spec": {
+        "description": "Role count of the standard enriched example",
+        "format": "integer",
+        "name": "enriched_object_count",
+        "provenance": "computed",
+        "required": true,
+        "source": "len(standard_enriched_category().roles)",
+        "unit": "count"
+      },
+      "value": "8"
+    },
+    "enriched_z_condition": {
+      "spec": {
+        "description": "Two-norm condition number of the raw similarity matrix",
+        "format": "sig6",
+        "name": "enriched_z_condition",
+        "provenance": "computed",
+        "required": true,
+        "source": "numpy.linalg.cond on standard_enriched_category().proximity_matrix",
+        "unit": "dimensionless"
+      },
+      "value": "91.8505"
+    },
+    "exp_calibration_atom_gap_max": {
+      "spec": {
+        "description": "Largest per-replicate exact target gap F(Q(tau)) from the nominal level (descriptive atom-discretization gap).",
+        "format": "sig6",
+        "name": "exp_calibration_atom_gap_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "0.624411"
+    },
+    "exp_calibration_atom_gap_mean": {
+      "spec": {
+        "description": "Mean exact gap F(Q(tau)) - tau from the nominal level, an inherent property of quantile atoms on discrete laws, not an error.",
+        "format": "sig6",
+        "name": "exp_calibration_atom_gap_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "0.139219"
+    },
+    "exp_calibration_coverage_error_max_replicate": {
+      "spec": {
+        "description": "Largest per-replicate deviation from the exact discrete-law target.",
+        "format": "sig6",
+        "name": "exp_calibration_coverage_error_max_replicate",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "0.0698747"
+    },
+    "exp_calibration_coverage_error_mean": {
+      "spec": {
+        "description": "Mean |empirical coverage - exact discrete-law target F(Q(tau))| per level, averaged over replicates; validates the coverage diagnostic against the exact null, not the nominal level.",
+        "format": "sig6",
+        "name": "exp_calibration_coverage_error_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "0.0202648"
+    },
+    "exp_calibration_coverage_error_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the 95% interval for exp_calibration_coverage_error_mean",
+        "format": "sig6",
+        "name": "exp_calibration_coverage_error_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "0.0217371"
+    },
+    "exp_calibration_coverage_error_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the 95% interval for exp_calibration_coverage_error_mean",
+        "format": "sig6",
+        "name": "exp_calibration_coverage_error_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "0.0187924"
+    },
+    "exp_calibration_level_target_gap_max": {
+      "spec": {
+        "description": "Largest per-level gap between mean observed coverage and the mean exact target across replicates.",
+        "format": "sig6",
+        "name": "exp_calibration_level_target_gap_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "0.00392405"
+    },
+    "exp_filter_closed_form_residual_max": {
+      "spec": {
+        "description": "Max deviation of the filter trajectory from the exact repeated-Bayes closed form q_k proportional to prior * likelihood^(k+1).",
+        "format": "sig6",
+        "name": "exp_filter_closed_form_residual_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "3.33067e-16"
+    },
+    "exp_filter_free_energy_final_mean": {
+      "spec": {
+        "description": "Mean final variational free energy after the configured filter updates.",
+        "format": "sig6",
+        "name": "exp_filter_free_energy_final_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "nats"
+      },
+      "value": "0.157986"
+    },
+    "exp_filter_free_energy_final_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the 95% interval for exp_filter_free_energy_final_mean",
+        "format": "sig6",
+        "name": "exp_filter_free_energy_final_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "nats"
+      },
+      "value": "0.165933"
+    },
+    "exp_filter_free_energy_final_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the 95% interval for exp_filter_free_energy_final_mean",
+        "format": "sig6",
+        "name": "exp_filter_free_energy_final_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "nats"
+      },
+      "value": "0.150038"
+    },
+    "exp_filter_paired_loglik_diff_mean": {
+      "spec": {
+        "description": "Paired mean log P(true role) difference: informative minus identity transition, same draws.",
+        "format": "sig6",
+        "name": "exp_filter_paired_loglik_diff_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "nats"
+      },
+      "value": "-0.0214211"
+    },
+    "exp_filter_paired_loglik_diff_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the 95% interval for exp_filter_paired_loglik_diff_mean",
+        "format": "sig6",
+        "name": "exp_filter_paired_loglik_diff_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "nats"
+      },
+      "value": "-0.0202951"
+    },
+    "exp_filter_paired_loglik_diff_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the 95% interval for exp_filter_paired_loglik_diff_mean",
+        "format": "sig6",
+        "name": "exp_filter_paired_loglik_diff_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "nats"
+      },
+      "value": "-0.0225471"
+    },
+    "exp_filter_posterior_accuracy_mean": {
+      "spec": {
+        "description": "Mean P(true role) after the configured assimilations with the identity transition.",
+        "format": "sig6",
+        "name": "exp_filter_posterior_accuracy_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "0.997309"
+    },
+    "exp_filter_posterior_accuracy_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the 95% interval for exp_filter_posterior_accuracy_mean",
+        "format": "sig6",
+        "name": "exp_filter_posterior_accuracy_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "0.997644"
+    },
+    "exp_filter_posterior_accuracy_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the 95% interval for exp_filter_posterior_accuracy_mean",
+        "format": "sig6",
+        "name": "exp_filter_posterior_accuracy_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "0.996974"
+    },
+    "exp_filter_posterior_mode_match_rate": {
+      "spec": {
+        "description": "Descriptive fraction of replicates whose posterior mode is the true role; replicate indicators are not identically distributed, so no pooled binomial interval is attached.",
+        "format": "sig6",
+        "name": "exp_filter_posterior_mode_match_rate",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "probability"
+      },
+      "value": "1"
+    },
+    "exp_projection_clipping_effect_mean": {
+      "spec": {
+        "description": "Mean |projected mean - unclipped mean|; the support-truncation effect.",
+        "format": "sig6",
+        "name": "exp_projection_clipping_effect_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0.0124557"
+    },
+    "exp_projection_mass_residual_max": {
+      "spec": {
+        "description": "Max |sum of projected atom masses - 1| across replicates and atom counts.",
+        "format": "sig6",
+        "name": "exp_projection_mass_residual_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "2.22045e-16"
+    },
+    "exp_projection_mean_exactness_residual_max": {
+      "spec": {
+        "description": "Largest such mean-exactness residual.",
+        "format": "sig6",
+        "name": "exp_projection_mean_exactness_residual_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "3.33067e-16"
+    },
+    "exp_projection_mean_exactness_residual_mean": {
+      "spec": {
+        "description": "Mean |projected mean - mean of clipped quantile samples|; the projection is mean-exact by construction.",
+        "format": "sig6",
+        "name": "exp_projection_mean_exactness_residual_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "6.78033e-17"
+    },
+    "exp_projection_mean_exactness_residual_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the 95% interval for exp_projection_mean_exactness_residual_mean",
+        "format": "sig6",
+        "name": "exp_projection_mean_exactness_residual_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "7.45174e-17"
+    },
+    "exp_projection_mean_exactness_residual_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the 95% interval for exp_projection_mean_exactness_residual_mean",
+        "format": "sig6",
+        "name": "exp_projection_mean_exactness_residual_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "6.10892e-17"
+    },
+    "exp_projection_refinement_paired_diff_mean": {
+      "spec": {
+        "description": "Paired clipping-effect difference between the largest and smallest configured atom counts on identical laws (~0 when exact).",
+        "format": "sig6",
+        "name": "exp_projection_refinement_paired_diff_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "-1.22515e-17"
+    },
+    "exp_projection_refinement_paired_diff_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the 95% interval for exp_projection_refinement_paired_diff_mean",
+        "format": "sig6",
+        "name": "exp_projection_refinement_paired_diff_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "-4.88061e-18"
+    },
+    "exp_projection_refinement_paired_diff_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the 95% interval for exp_projection_refinement_paired_diff_mean",
+        "format": "sig6",
+        "name": "exp_projection_refinement_paired_diff_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "-1.96224e-17"
+    },
+    "exp_quantile_bruteforce_w1_crossing_residual_max": {
+      "spec": {
+        "description": "Absolute W1 discrepancy against trapezoidal integration for crossing quantile curves.",
+        "format": "sig6",
+        "name": "exp_quantile_bruteforce_w1_crossing_residual_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0"
+    },
+    "exp_quantile_bruteforce_w1_residual_max": {
+      "spec": {
+        "description": "Max |closed-form W1 - trapezoidal integral on the knot-refined grid|.",
+        "format": "sig6",
+        "name": "exp_quantile_bruteforce_w1_residual_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "4.44089e-16"
+    },
+    "exp_quantile_huber_fd_residual_max": {
+      "spec": {
+        "description": "Largest such finite-difference deviation across replicates.",
+        "format": "sig6",
+        "name": "exp_quantile_huber_fd_residual_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "8.15287e-11"
+    },
+    "exp_quantile_huber_fd_residual_mean": {
+      "spec": {
+        "description": "Mean max deviation of quantile_td_update from a finite-difference gradient step of the asymmetric-Huber objective.",
+        "format": "sig6",
+        "name": "exp_quantile_huber_fd_residual_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "4.17481e-11"
+    },
+    "exp_quantile_huber_fd_residual_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the 95% interval for exp_quantile_huber_fd_residual_mean",
+        "format": "sig6",
+        "name": "exp_quantile_huber_fd_residual_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "4.32483e-11"
+    },
+    "exp_quantile_huber_fd_residual_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the 95% interval for exp_quantile_huber_fd_residual_mean",
+        "format": "sig6",
+        "name": "exp_quantile_huber_fd_residual_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "4.02479e-11"
+    },
+    "exp_quantile_wasserstein_point_mass_residual_max": {
+      "spec": {
+        "description": "Max |W_p(point masses) - |c1 - c2|| across replicates.",
+        "format": "sig6",
+        "name": "exp_quantile_wasserstein_point_mass_residual_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "4.44089e-16"
+    },
+    "exp_quantile_wasserstein_selfdistance_max": {
+      "spec": {
+        "description": "Max Wasserstein self-distance over identical laws (must be ~0).",
+        "format": "sig6",
+        "name": "exp_quantile_wasserstein_selfdistance_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0"
+    },
+    "exp_quantile_wasserstein_shift_residual_max": {
+      "spec": {
+        "description": "Max |W_p(shifted grid law) - shift| across replicates.",
+        "format": "sig6",
+        "name": "exp_quantile_wasserstein_shift_residual_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "2.22045e-16"
+    },
+    "exp_quantile_wasserstein_triangle_violation_max": {
+      "spec": {
+        "description": "Max triangle-inequality violation for W1 on random quantile triplets.",
+        "format": "sig6",
+        "name": "exp_quantile_wasserstein_triangle_violation_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0"
+    },
+    "exp_quantum_completeness_residual_max": {
+      "spec": {
+        "description": "Largest completeness residual across replicates.",
+        "format": "sig6",
+        "name": "exp_quantum_completeness_residual_max",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "2.22045e-16"
+    },
+    "exp_quantum_completeness_residual_mean": {
+      "spec": {
+        "description": "Mean |sum of Born-rule probabilities - 1| under the crisp two-role POVM.",
+        "format": "sig6",
+        "name": "exp_quantum_completeness_residual_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "2.1684e-17"
+    },
+    "exp_quantum_completeness_residual_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the 95% interval for exp_quantum_completeness_residual_mean",
+        "format": "sig6",
+        "name": "exp_quantum_completeness_residual_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "2.77203e-17"
+    },
+    "exp_quantum_completeness_residual_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the 95% interval for exp_quantum_completeness_residual_mean",
+        "format": "sig6",
+        "name": "exp_quantum_completeness_residual_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "1.56478e-17"
+    },
+    "exp_sanity_analytic_identities_pass": {
+      "spec": {
+        "description": "Synthetic validation control status: analytic_identities_pass",
+        "format": "sig6",
+        "name": "exp_sanity_analytic_identities_pass",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "count"
+      },
+      "value": "1"
+    },
+    "exp_sanity_invalid_input_controls_pass": {
+      "spec": {
+        "description": "Synthetic validation control status: invalid_input_controls_pass",
+        "format": "sig6",
+        "name": "exp_sanity_invalid_input_controls_pass",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "count"
+      },
+      "value": "1"
+    },
+    "exp_sensitivity_entropy_bins_max_abs_effect": {
+      "spec": {
+        "description": "Descriptive largest paired effect of the prespecified return-entropy bin-count sweep against bins[0]; discretization sensitivity of the diagnostic; carries NO interval (all arms reported with pointwise intervals in experiments.sensitivity.arms).",
+        "format": "sig6",
+        "name": "exp_sensitivity_entropy_bins_max_abs_effect",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "nats"
+      },
+      "value": "0.120347"
+    },
+    "exp_sensitivity_gamma_max_abs_effect": {
+      "spec": {
+        "description": "Descriptive largest paired mean-score effect of the prespecified gamma sweep against gamma[0] at common random numbers; carries NO interval because the arm is selected by the data (prespecified per-arm pointwise intervals are in experiments.sensitivity.arms).",
+        "format": "sig6",
+        "name": "exp_sensitivity_gamma_max_abs_effect",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0.252565"
+    },
+    "exp_sensitivity_temperature_max_abs_effect": {
+      "spec": {
+        "description": "Descriptive largest paired effect of the prespecified policy-temperature sweep against temperatures[0] on the policy entropy; carries NO interval (all arms reported with pointwise intervals in experiments.sensitivity.arms).",
+        "format": "sig6",
+        "name": "exp_sensitivity_temperature_max_abs_effect",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "nats"
+      },
+      "value": "0.757051"
+    },
+    "experiment_calibration_levels": {
+      "spec": {
+        "description": "Quantile levels evaluated per calibration law",
+        "format": "integer",
+        "name": "experiment_calibration_levels",
+        "provenance": "computed",
+        "required": true,
+        "source": "experiments.provenance.experiments_config",
+        "unit": "count"
+      },
+      "value": "19"
+    },
+    "experiment_calibration_observations": {
+      "spec": {
+        "description": "Independent outcomes per calibration law",
+        "format": "integer",
+        "name": "experiment_calibration_observations",
+        "provenance": "computed",
+        "required": true,
+        "source": "experiments.provenance.experiments_config",
+        "unit": "count"
+      },
+      "value": "200"
+    },
+    "experiment_config_sha256": {
+      "spec": {
+        "description": "SHA-256 of the canonical experiment configuration",
+        "format": "string",
+        "name": "experiment_config_sha256",
+        "provenance": "computed",
+        "required": true,
+        "source": "experiments.provenance.config_sha256",
+        "unit": "text"
+      },
+      "value": "0ead4d99c7d6617c1d07342dd37636db5b07e14afe95214308f6b9a92fb7a5d1"
+    },
+    "experiment_filter_iterations": {
+      "spec": {
+        "description": "Configured assimilations in the filtering arm",
+        "format": "integer",
+        "name": "experiment_filter_iterations",
+        "provenance": "computed",
+        "required": true,
+        "source": "experiments.provenance.experiments_config",
+        "unit": "count"
+      },
+      "value": "3"
+    },
+    "experiment_filter_roles": {
+      "spec": {
+        "description": "Roles in the synthetic filtering experiment",
+        "format": "integer",
+        "name": "experiment_filter_roles",
+        "provenance": "computed",
+        "required": true,
+        "source": "experiments.provenance.experiments_config",
+        "unit": "count"
+      },
+      "value": "3"
+    },
+    "experiment_replicates": {
+      "spec": {
+        "description": "Independent seeded replicates per experiment",
+        "format": "integer",
+        "name": "experiment_replicates",
+        "provenance": "computed",
+        "required": true,
+        "source": "experiments.provenance.experiments_config",
+        "unit": "count"
+      },
+      "value": "256"
+    },
+    "experiment_seed": {
+      "spec": {
+        "description": "Master seed of the reported synthetic run",
+        "format": "integer",
+        "name": "experiment_seed",
+        "provenance": "computed",
+        "required": true,
+        "source": "experiments.provenance.experiments_config",
+        "unit": "count"
+      },
+      "value": "20260907"
+    },
+    "introductory_figure_role_count": {
+      "spec": {
+        "description": "Roles drawn in the introduction figure (fig:case-minimal)",
+        "format": "integer",
+        "name": "introductory_figure_role_count",
+        "provenance": "computed",
+        "required": true,
+        "source": "len(src.case_systems.case_category.introductory_case_category().roles)",
+        "unit": "count"
+      },
+      "value": "4"
+    },
+    "numpy_version": {
+      "spec": {
+        "description": "Installed NumPy distribution version (empty if absent)",
+        "format": "string",
+        "name": "numpy_version",
+        "provenance": "environment",
+        "required": false,
+        "source": "importlib.metadata.version('numpy')",
+        "unit": "version"
+      },
+      "value": "2.4.4"
+    },
+    "numpy_version_pretty": {
+      "spec": {
+        "description": "NumPy version safe for prose when the package is absent",
+        "format": "string",
+        "name": "numpy_version_pretty",
+        "provenance": "environment",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._optional_distribution_version",
+        "unit": "version"
+      },
+      "value": "2.4.4"
+    },
+    "paper_date": {
+      "spec": {
+        "description": "Working revision date declared in config.yaml",
+        "format": "string",
+        "name": "paper_date",
+        "provenance": "config",
+        "required": true,
+        "source": "config.yaml paper.date",
+        "unit": "date"
+      },
+      "value": "2026-09-07"
+    },
+    "paper_doi": {
+      "spec": {
+        "description": "Concept DOI for the paper (reserved draft until publication)",
+        "format": "string",
+        "name": "paper_doi",
+        "provenance": "config",
+        "required": false,
+        "source": "config.yaml publication.doi",
+        "unit": "identifier"
+      },
+      "value": "10.5281/zenodo.19695259"
+    },
+    "paper_prior_version_doi": {
+      "spec": {
+        "description": "Version DOI of the previously published record (history only)",
+        "format": "string",
+        "name": "paper_prior_version_doi",
+        "provenance": "config",
+        "required": false,
+        "source": "config.yaml publication.prior_version_doi",
+        "unit": "identifier"
+      },
+      "value": "10.5281/zenodo.19695260"
+    },
+    "paper_version": {
+      "spec": {
+        "description": "Working paper version declared in config.yaml",
+        "format": "string",
+        "name": "paper_version",
+        "provenance": "config",
+        "required": true,
+        "source": "config.yaml paper.version",
+        "unit": "version"
+      },
+      "value": "2.4.0"
+    },
+    "paper_version_doi": {
+      "spec": {
+        "description": "Reserved version DOI for this revision (not yet published)",
+        "format": "string",
+        "name": "paper_version_doi",
+        "provenance": "config",
+        "required": false,
+        "source": "config.yaml publication.version_doi",
+        "unit": "identifier"
+      },
+      "value": "10.5281/zenodo.22653315"
+    },
+    "paper_version_record_url": {
+      "spec": {
+        "description": "Zenodo record URL of the reserved version draft",
+        "format": "string",
+        "name": "paper_version_record_url",
+        "provenance": "config",
+        "required": false,
+        "source": "config.yaml publication.version_record",
+        "unit": "identifier"
+      },
+      "value": "https://zenodo.org/records/22653315"
+    },
+    "publication_status": {
+      "spec": {
+        "description": "Declared publication status of this revision",
+        "format": "string",
+        "name": "publication_status",
+        "provenance": "config",
+        "required": true,
+        "source": "config.yaml publication.status",
+        "unit": "text"
+      },
+      "value": "release manuscript"
+    },
+    "quality_fingerprint_short": {
+      "spec": {
+        "description": "First 12 hex digits of the source/config/test input fingerprint",
+        "format": "string",
+        "name": "quality_fingerprint_short",
+        "provenance": "quality_receipt",
+        "required": true,
+        "source": "src.release_validation.validate_quality_receipt -> quality_input_fingerprint[:12]",
+        "unit": "text"
+      },
+      "value": "6539bdaffcf7"
+    },
+    "quality_receipt_generated_at": {
+      "spec": {
+        "description": "UTC instant at which the receipt was recorded",
+        "format": "string",
+        "name": "quality_receipt_generated_at",
+        "provenance": "quality_receipt",
+        "required": true,
+        "source": "src.release_validation.validate_quality_receipt -> generated_at",
+        "unit": "timestamp"
+      },
+      "value": "2026-09-08T06:43:37.903622+00:00"
+    },
+    "quantum_acc_probability": {
+      "spec": {
+        "description": "Born-rule probability of ACC for the canonical figure state",
+        "format": "sig6",
+        "name": "quantum_acc_probability",
+        "provenance": "computed",
+        "required": true,
+        "source": "case_probability(crisp_case_povm, semantic_state) in src/quantum/figure_data.py",
+        "unit": "probability"
+      },
+      "value": "0.1"
+    },
+    "quantum_dat_probability": {
+      "spec": {
+        "description": "Born-rule probability of DAT for the canonical figure state",
+        "format": "sig6",
+        "name": "quantum_dat_probability",
+        "provenance": "computed",
+        "required": true,
+        "source": "case_probability(crisp_case_povm, semantic_state) in src/quantum/figure_data.py",
+        "unit": "probability"
+      },
+      "value": "0.1"
+    },
+    "quantum_nom_probability": {
+      "spec": {
+        "description": "Born-rule probability of NOM for the canonical figure state",
+        "format": "sig6",
+        "name": "quantum_nom_probability",
+        "provenance": "computed",
+        "required": true,
+        "source": "case_probability(crisp_case_povm, semantic_state) in src/quantum/figure_data.py",
+        "unit": "probability"
+      },
+      "value": "0.8"
+    },
+    "standard_inventory_count": {
+      "spec": {
+        "description": "Size of the standard case inventory",
+        "format": "integer",
+        "name": "standard_inventory_count",
+        "provenance": "computed",
+        "required": true,
+        "source": "len(standard inventory CaseRole members)",
+        "unit": "count"
+      },
+      "value": "8"
+    },
+    "standard_inventory_count_word": {
+      "spec": {
+        "description": "English word form of standard_inventory_count",
+        "format": "word",
+        "name": "standard_inventory_count_word",
+        "provenance": "computed",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._number_to_word",
+        "unit": "count"
+      },
+      "value": "eight"
+    },
+    "standard_inventory_names": {
+      "spec": {
+        "description": "Canonical standard case inventory as a prose name list",
+        "format": "string",
+        "name": "standard_inventory_names",
+        "provenance": "computed",
+        "required": true,
+        "source": "CaseRole members NOM..VOC (src/case_systems/case_category.py)",
+        "unit": "identifier"
+      },
+      "value": "NOM, ACC, GEN, DAT, INS, LOC, ABL, VOC"
+    },
+    "syntactic_panel_sketch_count": {
+      "spec": {
+        "description": "Hand-authored sketches in the appendix construction panel",
+        "format": "integer",
+        "name": "syntactic_panel_sketch_count",
+        "provenance": "computed",
+        "required": true,
+        "source": "len(src.visualization.syntactic_sentence_diagrams.PANELS)",
+        "unit": "count"
+      },
+      "value": "8"
+    },
+    "syntactic_panel_sketch_count_word": {
+      "spec": {
+        "description": "English word form of syntactic_panel_sketch_count",
+        "format": "word",
+        "name": "syntactic_panel_sketch_count_word",
+        "provenance": "computed",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._number_to_word",
+        "unit": "count"
+      },
+      "value": "eight"
+    },
+    "topos_minimal_relations": {
+      "spec": {
+        "description": "Relation symbols in the minimal typological theory presentation",
+        "format": "integer",
+        "name": "topos_minimal_relations",
+        "provenance": "computed",
+        "required": true,
+        "source": "build_typological_theory(minimal_case_category()).relation_symbols",
+        "unit": "count"
+      },
+      "value": "3"
+    },
+    "topos_minimal_sorts": {
+      "spec": {
+        "description": "Sorts in the minimal typological theory presentation",
+        "format": "integer",
+        "name": "topos_minimal_sorts",
+        "provenance": "computed",
+        "required": true,
+        "source": "build_typological_theory(minimal_case_category()).sorts",
+        "unit": "count"
+      },
+      "value": "3"
+    },
+    "topos_standard_relations": {
+      "spec": {
+        "description": "Relation symbols in the standard typological theory presentation",
+        "format": "integer",
+        "name": "topos_standard_relations",
+        "provenance": "computed",
+        "required": true,
+        "source": "build_typological_theory(standard_case_category()).relation_symbols",
+        "unit": "count"
+      },
+      "value": "8"
+    },
+    "topos_standard_sorts": {
+      "spec": {
+        "description": "Sorts in the standard typological theory presentation",
+        "format": "integer",
+        "name": "topos_standard_sorts",
+        "provenance": "computed",
+        "required": true,
+        "source": "src.topos_theory.topos.build_typological_theory(standard_case_category())",
+        "unit": "count"
+      },
+      "value": "8"
+    },
+    "total_figures": {
+      "spec": {
+        "description": "PNG figures in output/figures/, matching the figure registry",
+        "format": "integer",
+        "name": "total_figures",
+        "provenance": "collection",
+        "required": true,
+        "source": "output/figures/*.png count",
+        "unit": "count"
+      },
+      "value": "33"
+    },
+    "total_test_count": {
+      "spec": {
+        "description": "Tests collected by pytest --collect-only (no pass claim)",
+        "format": "integer",
+        "name": "total_test_count",
+        "provenance": "collection",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._count_collected_tests",
+        "unit": "count"
+      },
+      "value": "1623"
+    },
+    "total_test_files": {
+      "spec": {
+        "description": "Top-level test_*.py modules under tests/",
+        "format": "integer",
+        "name": "total_test_files",
+        "provenance": "collection",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._count_test_files",
+        "unit": "count"
+      },
+      "value": "81"
+    },
+    "total_test_files_word": {
+      "spec": {
+        "description": "English word form of total_test_files",
+        "format": "word",
+        "name": "total_test_files_word",
+        "provenance": "collection",
+        "required": true,
+        "source": "src.generate_manuscript_metrics._number_to_word",
+        "unit": "count"
+      },
+      "value": "eighty-one"
+    },
+    "total_tests_failed": {
+      "spec": {
+        "description": "Reported failures in the passing receipt (must be zero)",
+        "format": "integer",
+        "name": "total_tests_failed",
+        "provenance": "quality_receipt",
+        "required": true,
+        "source": "src.release_validation.validate_quality_receipt -> pytest_failed",
+        "unit": "count"
+      },
+      "value": "0"
+    },
+    "total_tests_passed": {
+      "spec": {
+        "description": "Tests that passed in the receipt-bound suite run",
+        "format": "integer",
+        "name": "total_tests_passed",
+        "provenance": "quality_receipt",
+        "required": true,
+        "source": "src.release_validation.validate_quality_receipt -> pytest_passed",
+        "unit": "count"
+      },
+      "value": "1623"
+    },
+    "total_tests_skipped": {
+      "spec": {
+        "description": "Reported skips in the receipt-bound suite run",
+        "format": "integer",
+        "name": "total_tests_skipped",
+        "provenance": "quality_receipt",
+        "required": true,
+        "source": "src.release_validation.validate_quality_receipt -> pytest_skipped",
+        "unit": "count"
+      },
+      "value": "0"
+    }
+  }
+}

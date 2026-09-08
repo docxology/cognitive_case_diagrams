@@ -24,6 +24,7 @@ over per-case wire colouring, annotations, and typography.
 """
 from __future__ import annotations
 
+from .styles import save_publication_figure
 import logging
 from typing import Optional
 
@@ -234,24 +235,24 @@ def render_pregroup_reduction_unpacking(
     # panel 4 — normal form
     ax = axes[3]
     _clean_ax(ax)
-    _word_box(ax, 0.50, 0.80, 0.50, 0.14, f"{subject} {verb} {obj}", sent)
+    _word_box(ax, 0.50, 0.80, 0.78, 0.14, "Sentence meaning", sent)
     _wire(ax, 0.50, 0.73, 0.50, 0.22, color=sent, lw=3.0)
     ax.text(0.50, 0.16, r"$s$", ha="center", fontsize=FONT_SIZE_TITLE, color=sent, fontweight="bold")
-    ax.set_title("4. Normal form", fontsize=FONT_SIZE_LABEL, fontweight="bold")
+    ax.set_title("4. Remaining output type", fontsize=FONT_SIZE_LABEL, fontweight="bold")
     ax.text(0.50, 0.06,
             "Only the $s$ wire survives — the sentence type",
             ha="center", fontsize=FONT_SIZE_ANNOTATION, color=COLOR_TEXT, fontstyle="italic")
 
     fig.suptitle(
         f"Pregroup reduction of “{subject} {verb} {obj}”: "
-        "raw types $\\to$ tensor $\\to$ cups $\\to$ normal form",
+        "raw types $\\to$ tensor $\\to$ cups $\\to$ output type",
         fontsize=FONT_SIZE_TITLE, fontweight="bold", y=1.02,
     )
     fig.tight_layout()
 
     if output_path is None:
         output_path = "pregroup_reduction_unpacking.png"
-    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+    save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved pregroup reduction unpacking to %s", output_path)
     return str(output_path)
@@ -262,7 +263,7 @@ def render_pregroup_reduction_unpacking(
 def render_discocirc_entity_persistence(
     output_path: Optional[str] = None,
 ) -> str:
-    """Three-panel DisCoCirc unpacking with entity-persistence ribbon.
+    """Three sentence schematics with a supplied-identity role-history ribbon.
 
     Shows the canonical discourse
     ``Alice chases Bob. Bob fears Alice. Alice smiles.`` with:
@@ -271,8 +272,7 @@ def render_discocirc_entity_persistence(
     * A bottom *role-history ribbon* explicitly labelling the case-role
       trajectory of Alice (NOM $\\to$ ACC $\\to$ NOM) and Bob (ACC $\\to$ NOM).
     * Coloured identity threads linking each entity's instances across
-      sentences — the diagrammatic signature of DisCoCirc's Frobenius-spider
-      entity wires.
+      sentences. These are bookkeeping links, not Frobenius-spider operations.
 
     Args:
         output_path: PNG path to save; defaults to
@@ -339,7 +339,7 @@ def render_discocirc_entity_persistence(
 
     # role-history ribbon at the bottom — non-equal aspect so it breathes
     _clean_ax(ribbon_ax, xlim=(0, 1), ylim=(0, 1), aspect="auto")
-    ribbon_ax.set_title("Role-history ribbon (entity persistence via Frobenius spiders)",
+    ribbon_ax.set_title("Role-history ribbon (supplied entity identities)",
                         fontsize=FONT_SIZE_LABEL, fontweight="bold", loc="left")
     # Alice track
     alice_y = 0.65
@@ -366,13 +366,13 @@ def render_discocirc_entity_persistence(
     ribbon_ax.text(0.82, bob_y, "(absent)", ha="center", fontsize=FONT_SIZE_ANNOTATION, color=COLOR_TEXT, fontstyle="italic", va="center")
 
     fig.suptitle(
-        "DisCoCirc entity persistence: case roles of the *same* entity across three sentences",
+        "Supplied entity identities: role history across three sentences",
         fontsize=FONT_SIZE_TITLE, fontweight="bold",
     )
 
     if output_path is None:
         output_path = "discocirc_entity_persistence.png"
-    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+    save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved DisCoCirc entity persistence to %s", output_path)
     return str(output_path)
@@ -428,7 +428,7 @@ def render_snake_equation_unpacking(
     ax.text(0.42, 0.50, r"$n^r$", ha="center", fontsize=FONT_SIZE_ANNOTATION, color=COLOR_TEXT)
     ax.set_title(
         r"1. LHS zigzag $(\varepsilon_n \otimes 1_n)\circ(1_n \otimes \eta_n)$",
-        fontsize=FONT_SIZE_LABEL - 1, fontweight="bold",
+        fontsize=FONT_SIZE_LABEL, fontweight="bold",
     )
 
     # panel 2 — identity RHS with explicit '='
@@ -470,7 +470,7 @@ def render_snake_equation_unpacking(
 
     if output_path is None:
         output_path = "snake_equation_unpacking.png"
-    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+    save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved snake equation unpacking to %s", output_path)
     return str(output_path)

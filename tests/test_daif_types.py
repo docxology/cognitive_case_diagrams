@@ -107,7 +107,7 @@ class TestDistributionalReturnHelpers:
         lo, hi = dr.ci(0.5)
         assert lo <= hi
 
-    def test_to_categorical_uniform_when_histogram_empty(self) -> None:
+    def test_to_categorical_clips_outside_mass(self) -> None:
         """Quantiles outside [v_min, v_max] yield zero counts → uniform fallback."""
         dr = DistributionalReturn(
             mean=0.0,
@@ -118,7 +118,7 @@ class TestDistributionalReturnHelpers:
         cat = dr.to_categorical(v_min=0.0, v_max=1.0, n_atoms=5)
         assert cat.shape == (5,)
         assert np.isclose(cat.sum(), 1.0)
-        assert np.allclose(cat, 1.0 / 5.0)
+        np.testing.assert_array_equal(cat, [1., 0., 0., 0., 0.])
 
 
 class TestDAIFResultProperties:

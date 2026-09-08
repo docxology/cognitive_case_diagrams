@@ -23,7 +23,24 @@ import numpy as np
 
 from ..case_systems.case_category import CaseRole
 
+from ..numerics import positive_integer
+
 logger = logging.getLogger(__name__)
+
+
+def _positive_matrix(values, name: str) -> np.ndarray:
+    """Validate finite square Hermitian positive-semidefinite input."""
+    matrix = np.asarray(values, dtype=np.complex128)
+    if matrix.ndim != 2 or matrix.shape[0] == 0 or matrix.shape[0] != matrix.shape[1]:
+        raise ValueError(f"{name} must be a nonempty square matrix")
+    if not np.all(np.isfinite(matrix)):
+        raise ValueError(f"{name} must contain finite values")
+    if not np.allclose(matrix, matrix.conj().T, atol=1e-10, rtol=0.):
+        raise ValueError(f"{name} must be Hermitian")
+    if np.linalg.eigvalsh(matrix).min() < -1e-10:
+        raise ValueError(f"{name} must be positive semidefinite")
+    return matrix
+
 
 
 @dataclass
@@ -46,6 +63,9 @@ class CasePOVM:
 
     def __post_init__(self) -> None:
         """Validate POVM elements if already provided."""
+        positive_integer(self.dimension, "dimension")
+        if not self.roles or len(set(self.roles)) != len(self.roles):
+            raise ValueError("POVM roles must be nonempty and unique")
         if self.elements:
             self._validate()
 
@@ -55,7 +75,7 @@ class CasePOVM:
         for role in self.roles:
             if role not in self.elements:
                 raise ValueError(f"Missing POVM element for {role}")
-            elem = self.elements[role]
+            elem = _positive_matrix(self.elements[role], f"Element for {role}")
             if elem.shape != (self.dimension, self.dimension):
                 raise ValueError(
                     f"Element for {role} has shape {elem.shape}, "
@@ -71,7 +91,7 @@ class CasePOVM:
             total += elem
 
         identity = np.eye(self.dimension, dtype=np.complex128)
-        if not np.allclose(total, identity, atol=1e-10):
+        if not np.allclose(total, identity, atol=1e-10, rtol=0.):
             raise ValueError(
                 f"POVM elements do not sum to identity: "
                 f"max deviation = {np.max(np.abs(total - identity)):.2e}"
@@ -87,9 +107,13 @@ class CasePOVM:
         Returns:
             True if ∑ E_c = I within the given tolerance.
         """
+        if not np.isfinite(atol) or atol < 0:
+            raise ValueError("atol must be finite and non-negative")
+        if any(r not in self.elements for r in self.roles):
+            return False
         total = sum(self.elements[r] for r in self.roles)
         identity = np.eye(self.dimension, dtype=np.complex128)
-        return bool(np.allclose(total, identity, atol=atol))
+        return bool(np.allclose(total, identity, atol=atol, rtol=0.))
 
 
 def case_probability(
@@ -107,8 +131,14 @@ def case_probability(
     Returns:
         Probability of case assignment (in [0,1]).
     """
-    povm_element = np.asarray(povm_element, dtype=np.complex128)
-    density_matrix = np.asarray(density_matrix, dtype=np.complex128)
+    povm_element = _positive_matrix(povm_element, "POVM effect")
+    density_matrix = _positive_matrix(density_matrix, "density_matrix")
+    if povm_element.shape != density_matrix.shape:
+        raise ValueError("POVM effect and density_matrix shapes must match")
+    if not np.isclose(np.trace(density_matrix), 1., atol=1e-10, rtol=0.):
+        raise ValueError("density_matrix must have trace 1")
+    if np.linalg.eigvalsh(povm_element).max() > 1. + 1e-10:
+        raise ValueError("POVM effect must be bounded above by identity")
 
     prob = np.real(np.trace(povm_element @ density_matrix))
     logger.debug("P(c|ρ) = Tr(E·ρ) = %.6f", prob)
@@ -128,7 +158,9 @@ def crisp_case_povm(roles: list, dimension: int | None = None) -> CasePOVM:
     Returns:
         CasePOVM with orthogonal projection elements.
     """
-    n = dimension or len(roles)
+    n = len(roles) if dimension is None else positive_integer(dimension, "dimension")
+    if n != len(roles):
+        raise ValueError("crisp_case_povm requires one basis projector per role")
     elements = {}
     for i, role in enumerate(roles):
         proj = np.zeros((n, n), dtype=np.complex128)
@@ -163,7 +195,11 @@ def graded_case_povm(
         CasePOVM with overlapping (non-orthogonal) elements.
     """
     overlap = np.asarray(overlap_matrix, dtype=np.float64)
+    if overlap.ndim != 2 or not np.all(np.isfinite(overlap)) or np.any(overlap < 0):
+        raise ValueError("overlap_matrix must be finite, non-negative, and two-dimensional")
     n = overlap.shape[0]
+    if len(roles) != n:
+        raise ValueError("roles must match overlap_matrix rows")
 
     if overlap.shape != (n, n):
         raise ValueError(f"overlap_matrix must be square, got {overlap.shape}")
@@ -270,12 +306,10 @@ def semantic_state(
     to trace 1, so the caller need not pre-normalise — but the
     dictionary MUST be non-negative and have strictly positive sum.
 
-    For states with genuine quantum coherence or entanglement
-    (required for the interference panel illustrated in §8b,
-    Fig. fig:quantum-povm (b)), construct the density matrix
-    directly using outer products of superposition state vectors
-    and pass the resulting ρ to ``case_probability()``. This
-    convenience constructor deliberately does not build such ρ.
+    To explore off-diagonal coherence, construct a density matrix from
+    a normalized state vector and pass it to ``case_probability()``. A
+    tensor-product structure must be specified before discussing entanglement.
+    The canonical figure uses only the diagonal mixture constructed here.
 
     Args:
         weights: Dictionary mapping CaseRole → non-negative weight.
@@ -293,7 +327,13 @@ def semantic_state(
     """
     if roles is None:
         roles = list(weights.keys())
-    d = dimension or len(roles)
+    d = len(roles) if dimension is None else positive_integer(dimension, "dimension")
+    if not roles or len(set(roles)) != len(roles) or d < len(roles):
+        raise ValueError("roles must be nonempty, unique, and fit the dimension")
+    if set(weights) - set(roles):
+        raise ValueError("roles must include every weighted role")
+    if any(not np.isfinite(v) or v < 0 for v in weights.values()):
+        raise ValueError("weights must be finite and non-negative")
 
     diag = np.zeros(d, dtype=np.complex128)
     for i, role in enumerate(roles):

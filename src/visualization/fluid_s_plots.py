@@ -1,12 +1,13 @@
 """Fluid-S alignment visualization.
 
 Renders the volition–agentivity landscape as a 2D decision surface
-with functor boundary, overlaid Bats verb exemplars, and ERG/ABS regions.
+with a synthetic boundary, hand-selected verb coordinates, and ERG/ABS labels.
 
 Figure 2 of the manuscript.
 """
 from __future__ import annotations
 
+from .styles import save_publication_figure
 import logging
 from typing import Optional
 import numpy as np
@@ -24,7 +25,8 @@ from .styles import (
 
 logger = logging.getLogger(__name__)
 
-# Bats verb exemplars: (verb, volition_probability, proto_agentivity)
+# Synthetic illustrative coordinates; no corpus or elicitation data.
+# Legacy constant name retained for compatibility.
 BATS_VERBS = [
     ("sneeze", 0.10, 0.15),
     ("fall (acc.)", 0.15, 0.20),
@@ -48,17 +50,17 @@ def plot_fluid_s_volition_landscape(
     functors: list[FluidSFunctor] | None = None,
     probabilities: list[float] | None = None,
     verb_names: list[str] | None = None,
-    title: str = "Fluid-S Volition Landscape: Context-Dependent Case Assignment",
+    title: str = "Fluid-S: synthetic context-weight example",
     output_path: Optional[str] = None,
 ) -> str:
     """Plot the 2D volition-agentivity landscape with functor decision boundary.
 
     Renders a heatmap where:
       - x-axis = volitional control theta in [0,1]
-      - y-axis = proto-agentivity (Dowty 1991) in [0,1]
+      - y-axis = hand-selected agentivity coordinate in [0,1]
       - color = P(ERG | theta, agentivity)
-    Overlays Bats verb exemplars at their coordinates and draws the
-    F_theta functor decision boundary curve.
+    Overlays hand-selected verb coordinates and a logistic decision boundary.
+    This is an illustration, not a fitted linguistic model.
 
     Note: ``functors``, ``probabilities``, and ``verb_names`` are accepted
     for backward compatibility but not used. The plot uses the canonical
@@ -130,7 +132,7 @@ def plot_fluid_s_volition_landscape(
         ax.annotate(
             verb, (vol, agent),
             xytext=(offset_x, 0.03), textcoords="offset fontsize",
-            fontsize=FONT_SIZE_FLOOR - 1, color="#1a1a1a",
+            fontsize=FONT_SIZE_FLOOR, color="#1a1a1a",
             fontweight="bold", ha=ha, va="bottom",
             path_effects=[
                 pe.withStroke(linewidth=3, foreground="white")
@@ -139,13 +141,13 @@ def plot_fluid_s_volition_landscape(
 
     # --- Region annotations ---
     ax.text(
-        0.13, 0.87, "ABS\n(Patient-like)",
+        0.13, 0.68, "ABS",
         fontsize=FONT_SIZE_LABEL, color="#ffffff", fontweight="bold",
         ha="center", va="center",
         bbox=dict(boxstyle="round,pad=0.4", facecolor=abs_color, alpha=0.85, edgecolor="white"),
     )
     ax.text(
-        0.87, 0.87, "ERG\n(Agent-like)",
+        0.85, 0.38, "ERG",
         fontsize=FONT_SIZE_LABEL, color="#ffffff", fontweight="bold",
         ha="center", va="center",
         bbox=dict(boxstyle="round,pad=0.4", facecolor=erg_color, alpha=0.85, edgecolor="white"),
@@ -173,8 +175,8 @@ def plot_fluid_s_volition_landscape(
         labelcolor="#111111",
     )
 
-    ax.set_xlabel("Volitional Control θ", fontsize=FONT_SIZE_LABEL, color="#111111")
-    ax.set_ylabel("Proto-Agentivity (Dowty 1991)", fontsize=FONT_SIZE_LABEL, color="#111111")
+    ax.set_xlabel("Hand-selected volition coordinate θ", fontsize=FONT_SIZE_LABEL, color="#111111")
+    ax.set_ylabel("Hand-selected agentivity coordinate", fontsize=FONT_SIZE_LABEL, color="#111111")
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.set_title(title, fontsize=FONT_SIZE_TITLE, fontweight="bold", pad=15, color="#111111")
@@ -185,7 +187,7 @@ def plot_fluid_s_volition_landscape(
 
     if output_path is None:
         output_path = "fluid_s_volition_landscape.png"
-    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches='tight',
+    save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches='tight',
                 facecolor='white')
     plt.close(fig)
     logger.info("Saved Fluid-S volition landscape to %s", output_path)

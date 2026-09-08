@@ -8,6 +8,35 @@ import os
 import tempfile
 
 
+def test_shared_text_sizes_respect_declared_floor() -> None:
+    from src.visualization.styles import (
+        FONT_SIZE_ANNOTATION, FONT_SIZE_FLOOR, FONT_SIZE_LABEL, FONT_SIZE_TITLE,
+    )
+
+    assert min(FONT_SIZE_ANNOTATION, FONT_SIZE_LABEL, FONT_SIZE_TITLE) >= FONT_SIZE_FLOOR
+
+
+def test_saved_figure_applies_floor_to_actual_artists(tmp_path) -> None:
+    import matplotlib.pyplot as plt
+    from matplotlib.text import Text
+    from PIL import Image
+    from src.visualization.styles import FONT_SIZE_FLOOR, save_publication_figure
+
+    fig, ax = plt.subplots()
+    ax.plot([0, 1], [0, 1])
+    ax.set_xlabel("Dimensionless coordinate", fontsize=8)
+    ax.text(0.5, 0.5, "Synthetic example", fontsize=9)
+    target = tmp_path / "typography.png"
+    try:
+        save_publication_figure(fig, target, dpi=90, bbox_inches="tight")
+        visible = [text for text in fig.findobj(match=Text) if text.get_visible() and text.get_text()]
+        assert visible and all(text.get_fontsize() >= FONT_SIZE_FLOOR for text in visible)
+        with Image.open(target) as image:
+            image.verify()
+    finally:
+        plt.close(fig)
+
+
 from src.visualization.complexity_plots import (
     render_complexity_comparison,
     render_normal_form_comparison,
@@ -111,4 +140,3 @@ class TestMathtextSafeArrows:
         assert "rightarrow" in s and "Rightarrow" in s
         assert "checkmark" in s and "times" in s and "circ" in s
         assert "→" not in s and "✓" not in s and "∘" not in s
-

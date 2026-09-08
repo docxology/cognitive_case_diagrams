@@ -1,0 +1,11 @@
+include LICENSE README.md AGENTS.md SKILL.md CITATION.cff pyproject.toml uv.lock
+recursive-include src *.py *.md *.yaml *.json
+recursive-include scripts *.py *.md
+recursive-include tests *.py *.md
+recursive-include docs *.md *.yaml *.json *.bib
+recursive-include skills *.md *.yaml *.json
+global-exclude __pycache__ *.py[cod] .DS_Store
+prune output
+prune .venv
+prune build
+prune dist

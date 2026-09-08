@@ -102,8 +102,8 @@ def make_daif_belief_trajectory_data() -> dict[str, Any]:
     trajectory = sequential_belief_update(prior, obs_sequence)
     return {
         "trajectory": trajectory,
-        "word_labels": ["Der", "Hund", "jagt", "die", "Katze", "schnell"],
-        "gloss_labels": ["the.NOM", "dog.NOM", "chases", "the.ACC", "cat.ACC", "quickly"],
+        "word_labels": ["E1", "E2", "E3", "E4", "E5", "E6"],
+        "gloss_labels": ["synthetic"] * 6,
     }
 
 
@@ -133,7 +133,7 @@ def make_free_energy_convergence_data() -> dict[str, Any]:
         np.array([0.80, 0.12, 0.05, 0.03]),
         np.array([0.85, 0.08, 0.04, 0.03]),
     ]
-    word_labels = ["Der", "Hund", "jagt", "die", "Katze", "schnell"]
+    word_labels = ["E1", "E2", "E3", "E4", "E5", "E6"]
 
     all_fe: list[float] = []
     all_kl: list[float] = []
@@ -183,7 +183,7 @@ def make_erp_prediction_data() -> dict[str, Any]:
         for i, w in enumerate(enriched_weights)
     ]
 
-    # Real N400 / P600 amplitudes via the manuscript Eqs. (7c-n400, 7c-p600).
+    # Uncalibrated N400 / P600 proxy amplitudes via the manuscript Eqs. (7c-n400, 7c-p600).
     n = len(enriched_weights)
     T_id = np.eye(n)
     R = np.array(enriched_weights, dtype=np.float64)

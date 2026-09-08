@@ -2,7 +2,7 @@
 
 Implements enriched categories where hom-values are real numbers in [0,1]
 representing distributional proximity between case roles, following
-Bradley, Terilla & Weyhrich (2021).
+Bradley, Terilla & Vlassopoulos (2021).
 
 Key concepts:
     - Hom-values: C(A, B) ∈ [0,1] as distributional relatedness
@@ -26,36 +26,8 @@ from ..case_systems.case_category import CaseRole
 logger = logging.getLogger(__name__)
 
 
-# ---------------------------------------------------------------------------
-# Standard 8-case proximity matrix.
-#
-# Provenance.  Following Bradley, Terilla & Weyhrich (2021), the matrix
-# encodes pairwise *distributional proximity* between core case roles as
-# hom-values in [0, 1] of a [0, 1]-enriched category.  The numbers are an
-# illustrative reference inventory rather than a corpus extraction; they were
-# chosen to satisfy three qualitative constraints derived from typology and
-# proto-role theory (Dowty 1991; Blake 2001; Haspelmath 2009):
-#
-#   1. Identity:  C(A, A) = 1                       (enriched-category axiom)
-#   2. Symmetry:  C(A, B) = C(B, A)                 (this matrix is symmetric)
-#   3. Compositionality:  C(A, C) >= C(A, B) * C(B, C)
-#                                                   (verified by ``_validate``)
-#
-# Qualitative ordering reflected in the entries:
-#   - NOM↔ACC are closest (~0.85): both core grammatical relations of agent-
-#     and patient-marking; share argument-structure neighbours.
-#   - NOM↔VOC (~0.70): vocative is morphologically close to nominative in
-#     many IE languages but pragmatically distinct.
-#   - LOC↔ABL (~0.65), INS↔LOC (~0.55): spatial / instrumental cases form
-#     a coherent peripheral cluster.
-#   - VOC vs. spatial cases (~0.15-0.20): maximally distant — vocative is
-#     interpersonal, spatial cases are referential.
-#
-# Row / column order is fixed by ``STANDARD_ROLES`` below and corresponds to
-# manuscript §5 (Enriched Categories) and Bradley et al. (2021) §3.  Anyone
-# substituting a corpus-derived matrix should preserve identity and the
-# composition inequality so that ``_validate`` continues to pass.
-# ---------------------------------------------------------------------------
+# Synthetic candidate similarities; not corpus estimates and not composition closed.
+# Use composition_closure() explicitly before interpreting this as an enriched category.
 STANDARD_ROLES = [
     CaseRole.NOM, CaseRole.ACC, CaseRole.GEN, CaseRole.DAT,
     CaseRole.INS, CaseRole.LOC, CaseRole.ABL, CaseRole.VOC,
@@ -92,9 +64,12 @@ class EnrichedCategory:
     roles: list[CaseRole] = field(default_factory=list)
     proximity_matrix: np.ndarray = field(default_factory=lambda: np.array([]))
 
+    _z_matrix_cache: np.ndarray | None = field(default=None, init=False, repr=False)
+
     def __post_init__(self) -> None:
         """Validate the enriched category axioms after initialization."""
-        if self.proximity_matrix.size > 0:
+        self.proximity_matrix = np.asarray(self.proximity_matrix, dtype=np.float64).copy()
+        if self.proximity_matrix.size > 0 or self.roles:
             self._validate()
 
     def _validate(self) -> None:
@@ -109,6 +84,10 @@ class EnrichedCategory:
             ValueError: If identity axiom or shape constraints are violated.
         """
         n = len(self.roles)
+        if len(set(self.roles)) != n:
+            raise ValueError("roles must be unique")
+        if not np.all(np.isfinite(self.proximity_matrix)):
+            raise ValueError("Hom-values must be finite")
         if self.proximity_matrix.shape != (n, n):
             raise ValueError(
                 f"Proximity matrix shape {self.proximity_matrix.shape} "
@@ -138,7 +117,10 @@ class EnrichedCategory:
         Falls back to pseudo-inverse for singular or near-singular matrices,
         logging a warning. The result is cached for the lifetime of the instance.
         """
-        if not hasattr(self, "_z_inv_cache"):
+        self._validate()
+        if (not hasattr(self, "_z_inv_cache") or self._z_matrix_cache is None
+                or not np.array_equal(self.proximity_matrix, self._z_matrix_cache)):
+            self._z_matrix_cache = self.proximity_matrix.copy()
             cond = np.linalg.cond(self.proximity_matrix)
             if cond > 1e12:
                 logger.warning(
@@ -146,7 +128,7 @@ class EnrichedCategory:
                     "using pseudo-inverse — magnitude is approximate",
                     self.name, cond,
                 )
-                self._z_inv_cache: np.ndarray = np.linalg.pinv(self.proximity_matrix)
+                self._z_inv_cache: np.ndarray = np.linalg.pinv(self.proximity_matrix, rcond=1e-12)
             else:
                 try:
                     self._z_inv_cache = np.linalg.inv(self.proximity_matrix)
@@ -156,7 +138,13 @@ class EnrichedCategory:
                         "using pseudo-inverse — magnitude is approximate",
                         self.name,
                     )
-                    self._z_inv_cache = np.linalg.pinv(self.proximity_matrix)
+                    self._z_inv_cache = np.linalg.pinv(self.proximity_matrix, rcond=1e-12)
+        one = np.ones(len(self.roles))
+        if (not np.allclose(self.proximity_matrix @ self._z_inv_cache @ one, one,
+                            atol=1e-8, rtol=1e-8)
+                or not np.allclose(one @ self._z_inv_cache @ self.proximity_matrix, one,
+                                   atol=1e-8, rtol=1e-8)):
+            raise ValueError("Magnitude undefined: no consistent weighting and coweighting")
         return self._z_inv_cache
 
     def hom(self, source: CaseRole, target: CaseRole) -> float:
@@ -204,18 +192,13 @@ class EnrichedCategory:
         return holds
 
     def magnitude(self) -> float:
-        """Compute the categorical magnitude |C| = Σ_{i,j} (Z^{-1})_{ij}.
+        """Compute the weighting/coweighting sum for the supplied matrix.
 
-        Categorical magnitude is an information-theoretic invariant that
-        quantifies the "effective size" of the case system — how much
-        distributional information the category encodes.
-
-        For singular or near-singular proximity matrices, uses the
-        pseudo-inverse as a fallback (approximate magnitude).
-
-        Returns:
-            The magnitude as a scalar (always finite).
-        """
+Uses inverse sums when nonsingular and residual-checked pseudoinverse sums
+otherwise. Raises if weighting equations cannot be satisfied numerically.
+Interpretation as categorical magnitude requires an appropriate validated
+similarity matrix; no generic information-theoretic interpretation is assumed.
+"""
         z_inv = self._z_inverse()
         mag = float(np.sum(z_inv))
         logger.info("Categorical magnitude of %s: %.6f", self.name, mag)
@@ -225,7 +208,7 @@ class EnrichedCategory:
         """Compute the weighting vector w where Zw = 1.
 
         The solution of ``Z w = 1`` is ``Z^{-1} 1``, i.e. the ROW sums of
-        ``Z^{-1}``. Represents the "importance" of each role in the category.
+        ``Z^{-1}``. Weights need not be positive or represent empirical importance.
         Uses pseudo-inverse for singular matrices.
 
         Note: row and column sums coincide for symmetric hom-matrices, so the
@@ -242,17 +225,10 @@ class EnrichedCategory:
         return np.sum(self._z_inverse(), axis=0)
 
     def magnitude_deficit(self) -> float:
-        """Compute the magnitude deficit: n - |C|.
+        """Return the signed statistic n - magnitude.
 
-        The deficit quantifies information lost by distributional overlap.
-        A deficit of 0 means all roles are maximally distinct;
-        a large deficit means significant redundancy.
-
-        Returns:
-            Signed deficit ``n - |C|``. This is negative when ``|C| > n``, which
-            a hom-matrix violating the composition inequality can produce;
-            ``_validate`` does not enforce that axiom.
-        """
+This is not automatically information loss, redundancy, or a security bound.
+"""
         n = len(self.roles)
         deficit = n - self.magnitude()
         logger.info("Magnitude deficit for %s: %.4f", self.name, deficit)
@@ -301,10 +277,12 @@ class EnrichedCategory:
             threshold: Minimum hom-value to consider roles as clustered.
 
         Returns:
-            List of sets, each containing mutually close roles.
+            Weakly connected components; pairs within a component need not all be close.
         """
+        if not 0. <= threshold <= 1.:
+            raise ValueError("threshold must be in [0,1]")
         n = len(self.roles)
-        # Build adjacency based on threshold
+        # Weakly connected components: either directed proximity passes threshold.
         visited = [False] * n
         clusters = []
 
@@ -319,7 +297,7 @@ class EnrichedCategory:
                 for j in range(n):
                     if visited[j]:
                         continue
-                    if self.proximity_matrix[current, j] >= threshold:
+                    if max(self.proximity_matrix[current, j], self.proximity_matrix[j, current]) >= threshold:
                         cluster.add(self.roles[j])
                         visited[j] = True
                         queue.append(j)
@@ -331,11 +309,25 @@ class EnrichedCategory:
         )
         return clusters
 
+    def composition_closure(self) -> EnrichedCategory:
+        """Return the least entrywise majorant closed under max-product paths.
+
+        Floyd-Warshall over the max-product semiring. This is a mathematical
+        projection of the supplied matrix, not an empirical calibration.
+        """
+        self._validate()
+        z = self.proximity_matrix.copy()
+        for k in range(len(self.roles)):
+            z = np.maximum(z, z[:, k, None] * z[None, k, :])
+        return EnrichedCategory(f"{self.name}_closure", list(self.roles), z)
+
 
 def standard_enriched_category() -> EnrichedCategory:
     """Create the standard 8-case enriched category.
 
-    Uses the empirically motivated proximity matrix from the manuscript.
+    Uses a hand-chosen illustrative matrix, not corpus measurements.
+    This candidate matrix is not composition-closed; inspect
+    ``full_composition_check()`` or explicitly call ``composition_closure()``.
     """
     return EnrichedCategory(
         name="Standard8CaseEnriched",

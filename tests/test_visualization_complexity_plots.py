@@ -6,6 +6,7 @@ and render_syntactic_complexity_radar produce valid output files.
 
 import logging
 import os
+import pytest
 
 
 from src.visualization.complexity_plots import (
@@ -103,3 +104,11 @@ class TestRenderSyntacticComplexityRadar:
         )
         assert os.path.getsize(out) > 0
         logger.info("Radar chart created at %s", out)
+
+
+@pytest.mark.parametrize("counts", [[], [-1], [float("nan")], [1.5]])
+def test_complexity_rejects_misaligned_or_invalid_counts(tmp_path, counts):
+    with pytest.raises(ValueError):
+        render_complexity_comparison(["Example"], counts, [2], [1], ["Alice runs"],
+                                     str(tmp_path / "invalid.png"))
+    assert not (tmp_path / "invalid.png").exists()

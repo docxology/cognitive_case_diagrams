@@ -4,9 +4,9 @@
 Thin orchestrator for cognitive-domain figures:
     1. active_inference_belief.png     — Scalar alignment-frame trajectory (3-panel)
     2. fluid_s_volition_landscape.png  — Fluid-S functor landscape
-    3. daif_belief_trajectory.png      — DAIF sentence parse trajectory
+    3. daif_belief_trajectory.png      — Synthetic role-belief trajectory
     4. daif_free_energy_convergence.png — DAIF FE decomposition (2-panel)
-    5. daif_erp_predictions.png        — N400/P600 ERP predictions (3-panel)
+    5. daif_erp_predictions.png        — N400/P600-inspired proxies (2-panel)
 
 Usage::
 

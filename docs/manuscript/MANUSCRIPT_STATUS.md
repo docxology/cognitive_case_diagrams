@@ -1,7 +1,5 @@
-# Manuscript Status
+# Manuscript status
 
-- **Project:** cognitive_case_diagrams
-- **Manuscript title:** Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case
-- **Location:** `docs/manuscript/` (canonical default; legacy `manuscript/` fallback resolved by `infrastructure.core.project_paths.resolve_source_manuscript_dir`)
-- **Type:** Active publication-target manuscript (24 numbered section files; derive with `ls docs/manuscript/[0-9]*.md | wc -l`)
-- **Status file purpose:** Tracks publication-readiness of the manuscript content in this directory. Migrated from the legacy project-root `manuscript/` location, which no longer exists.
+The working version and date are declared in `config.yaml` and injected into prose; this file does not restate them. The substantive manuscript and its caption set were rewritten to match the implemented contracts. The project reports synthetic examples and explicitly scoped mathematical constructions, with no new corpus, EEG, hardware, or deployed-security result. Publication roles are neutral: the version DOI identifies this revision, the concept DOI identifies the series, and the live deposit state is whatever the configured `version_record` link reports at read time; release notes report the verified remote status.
+
+See [review report](../comprehensive_review.md) for current test, artifact, rendering, and visual-inspection receipts. Those receipts describe the render they were recorded against; a later render requires a repeat, and this file does not assert render-dependent counts. The source-bound quality receipt (Appendix C) is the only authority for passing-test and coverage claims. Automated LLM reviews and translations remain disabled by the author's existing configuration.

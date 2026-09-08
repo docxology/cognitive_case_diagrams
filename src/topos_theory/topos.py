@@ -1,25 +1,12 @@
-"""Topos-theoretic bridges and inter-theoretic transfer.
+"""Textual theory presentations and profile comparison.
 
-Implements geometric theory axiomatization for case systems,
-classifying topos interface, and Morita equivalence checking
-following Caramello's bridge technique.
-
-While a full topos implementation requires heavy machinery (sheaf theory,
-sites, etc.), this module provides the core algebraic interface:
-- GeometricTheory: axiomatization of case-theoretic frameworks
-- ClassifyingTopos: the classifying topos envelope
-- Morita equivalence detection via invariant comparison
-- Bridge theorem verification
-
-References:
-    Caramello (2016) — Theories, Sites, Toposes
-    Caramello (2021) — Five ways to build a topos
-    Caramello (2023) — Syntactic learning via classifying toposes
-    Phillips (2024) — Language of Thought as universal topos constructions
+No classifying topos, Morita-equivalence witness, or theorem transfer is
+constructed. Counts and arities are not topos-theoretic invariants.
 """
 from __future__ import annotations
 
 import logging
+import warnings
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -124,10 +111,10 @@ class GeometricTheory:
         logger.debug("Added axiom '%s' to theory %s", axiom.name, self.name)
 
     def signature_invariant(self) -> tuple[int, int, int]:
-        """Compute a signature invariant (sorts, relations, axioms).
+        """Count the supplied sorts, relations, and axioms.
 
-        This is a basic Morita-equivalence invariant: theories with
-        different signature shapes cannot be Morita equivalent.
+        These counts describe the presentation. Adding a redundant axiom
+        changes them without changing the theory or its classifying topos.
 
         Returns:
             Tuple of (num_sorts, num_relations, num_axioms).
@@ -137,7 +124,7 @@ class GeometricTheory:
     def arity_spectrum(self) -> list[int]:
         """Compute the sorted list of relation arities.
 
-        The arity spectrum is a Morita-equivalence invariant.
+        The arity spectrum depends on the chosen signature.
 
         Returns:
             Sorted list of arity lengths.
@@ -147,14 +134,14 @@ class GeometricTheory:
 
 @dataclass
 class ClassifyingTopos:
-    """The classifying topos of a geometric theory.
+    """Legacy-named container for finite presentation statistics.
 
-    This wraps a GeometricTheory with additional invariant computations
-    that characterize its classifying topos E_T.
+    This does not construct a classifying topos or its invariants. The
+    ``invariants`` field name is retained for compatibility only.
 
     Attributes:
         theory: The underlying geometric theory.
-        invariants: Computed topos-theoretic invariants.
+        invariants: Presentation statistics (not equivalence invariants).
     """
 
     theory: GeometricTheory
@@ -165,21 +152,17 @@ class ClassifyingTopos:
         self._compute_invariants()
 
     def _compute_invariants(self) -> None:
-        """Compute topos-theoretic invariants.
+        """Refresh signature shape, arity spectrum, axiom count, and theory label.
 
-        Computes:
-        - signature_shape: (sorts, relations, axioms)
-        - arity_spectrum: sorted arity lengths
-        - axiom_count: total axioms
-        - theory_type: the framework type
-        """
+These are presentation statistics; the field name is retained for compatibility.
+"""
         self.invariants["signature_shape"] = self.theory.signature_invariant()
         self.invariants["arity_spectrum"] = self.theory.arity_spectrum()
         self.invariants["axiom_count"] = len(self.theory.axioms)
         self.invariants["theory_type"] = self.theory.theory_type.value
 
         logger.info(
-            "Computed invariants for classifying topos of %s: "
+            "Computed presentation profile for %s: "
             "signature=%s, arities=%s",
             self.theory.name,
             self.invariants["signature_shape"],
@@ -187,31 +170,19 @@ class ClassifyingTopos:
         )
 
 
-def check_morita_equivalence(
+def compare_theory_presentations(
     topos1: ClassifyingTopos,
     topos2: ClassifyingTopos,
 ) -> tuple[bool, list[str]]:
-    """Check necessary conditions for Morita equivalence of two theories.
+    """Compare counts in two finite theory presentations.
 
-    Two geometric theories T1 and T2 are Morita equivalent if their
-    classifying toposes are equivalent: E_{T1} ≃ E_{T2}.
-
-    This function checks NECESSARY (never sufficient) conditions:
-    - Same signature shape (sorts, relations, axioms) — compared exactly
-    - Same arity spectrum
-
-    A ``True`` result means "not ruled out", NOT "equivalent". Two signatures
-    can agree on every invariant computed here and still classify different
-    theories; establishing equivalence requires exhibiting the equivalence of
-    classifying toposes, which this module does not do.
-
-    Args:
-        topos1: First classifying topos.
-        topos2: Second classifying topos.
-
-    Returns:
-        Tuple of (not_ruled_out, list_of_mismatches).
+    Signature counts and arities are presentation-dependent, not Morita
+    invariants. A match is neither necessary nor sufficient for equivalence
+    of classifying toposes. This function compares no axiom semantics.
     """
+    # Recompute because the wrapped theory can be modified after construction.
+    topos1._compute_invariants()
+    topos2._compute_invariants()
     mismatches: list[str] = []
 
     # Check arity spectrum
@@ -235,12 +206,25 @@ def check_morita_equivalence(
 
     not_ruled_out = len(mismatches) == 0
     logger.info(
-        "Morita necessary-condition check %s ≃ %s: %s (%d mismatches)",
+        "Presentation comparison %s / %s: %s (%d mismatches)",
         topos1.theory.name, topos2.theory.name,
-        "NOT RULED OUT" if not_ruled_out else "RULED OUT",
+        "MATCH" if not_ruled_out else "DIFFERENT",
         len(mismatches),
     )
     return not_ruled_out, mismatches
+
+
+def check_morita_equivalence(
+    topos1: ClassifyingTopos, topos2: ClassifyingTopos,
+) -> tuple[bool, list[str]]:
+    """Deprecated presentation comparator; does not decide Morita equivalence.
+
+    Returns the same pair as ``compare_theory_presentations`` for compatibility.
+    Neither Boolean outcome proves or rules out equivalence.
+    """
+    warnings.warn("check_morita_equivalence only compares presentations; use "
+                  "compare_theory_presentations", DeprecationWarning, stacklevel=2)
+    return compare_theory_presentations(topos1, topos2)
 
 
 def build_typological_theory(
@@ -265,7 +249,7 @@ def build_typological_theory(
     )
 
     # Add sorts from objects (CaseRole enum members)
-    for role in category.objects:
+    for role in sorted(category.objects, key=lambda r: r.name):
         theory.add_sort(role.name)
 
     # Add relation symbols from morphisms
@@ -357,43 +341,21 @@ def bridge_transfer(
     target_topos: ClassifyingTopos,
     property_name: str,
 ) -> dict[str, object]:
-    """Attempt inter-theoretic transfer via bridge theorem.
+    """Report a requested transfer as unverified; no theorem prover is present.
 
-    If two theories are Morita equivalent, properties expressed as
-    invariants of the classifying topos transfer automatically.
-
-    Args:
-        source_topos: The topos where the property is known.
-        target_topos: The topos where we want to transfer the property.
-        property_name: Name of the property to transfer.
-
-    Returns:
-        Dictionary with transfer result and status.
+    Profile matching is exposed for inspection, but never authorizes transfer.
+    ``morita_equivalent=None`` means unknown, not disproven.
     """
-    not_ruled_out, mismatches = check_morita_equivalence(source_topos, target_topos)
-
-    result = {
+    match, mismatches = compare_theory_presentations(source_topos, target_topos)
+    return {
         "property": property_name,
         "source_theory": source_topos.theory.name,
         "target_theory": target_topos.theory.name,
-        "morita_equivalent": not_ruled_out,
-        "transfer_possible": not_ruled_out,
-        # check_morita_equivalence tests necessary conditions only, so a True
-        # here licenses attempting the transfer, never asserting its validity.
-        "necessary_conditions_only": True,
+        "presentation_match": match,
+        "morita_equivalent": None,
+        "transfer_possible": False,
+        "necessary_conditions_only": False,
+        "status": "unverified",
+        "reason": "No equivalence witness or property translation has been provided",
         "mismatches": mismatches,
     }
-
-    if not_ruled_out:
-        logger.info(
-            "Bridge transfer: property '%s' is NOT RULED OUT for transfer from %s "
-            "to %s (necessary conditions only — equivalence is not established)",
-            property_name, source_topos.theory.name, target_topos.theory.name,
-        )
-    else:
-        logger.warning(
-            "Bridge transfer blocked: theories not Morita equivalent (%s)",
-            "; ".join(mismatches),
-        )
-
-    return result

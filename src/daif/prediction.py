@@ -21,6 +21,7 @@ import numpy as np
 from ..cognitive.belief import CaseDiagramBelief
 from .quantile import wasserstein_return_distance
 from .types import DistributionalReturn, ERPProfile
+from ..numerics import positive_integer
 
 logger = logging.getLogger(__name__)
 
@@ -126,7 +127,7 @@ def n400_from_return_distribution(
     The N400 component reflects semantic prediction error, following
     the manuscript decomposition:
 
-        N400(c) = DPE_semantic · w_c · S_violation
+        N400(c) = -DPE_semantic · w_c · S_violation
 
     where DPE_semantic is the absolute mean-return mismatch, w_c is
     the enriched morphism weight (precision), and S_violation encodes
@@ -139,22 +140,24 @@ def n400_from_return_distribution(
         violation_severity: S_violation ∈ [0, 1] (0=congruent, 0.5=mild, 1=strong).
 
     Returns:
-        N400 amplitude in μV (negative for mismatch, 0 for congruent).
+        N400 proxy in return units (uncalibrated) (negative for mismatch, 0 for congruent).
 
     Raises:
         ValueError: If precision is negative or severity out of range.
     """
-    if precision < 0:
+    if not np.isfinite(precision) or precision < 0:
         raise ValueError(f"precision must be non-negative, got {precision}")
     if not 0.0 <= violation_severity <= 1.0:
         raise ValueError(f"violation_severity must be in [0,1], got {violation_severity}")
 
+    if not np.isfinite(baseline_return) or not np.isfinite(return_dist.mean):
+        raise ValueError("Return means must be finite")
     # DPE_semantic: absolute mean-return mismatch
     dpe_semantic = abs(baseline_return - return_dist.mean)
     # N400 = -DPE_semantic · w_c · S_violation (negative convention)
     n400 = -dpe_semantic * precision * violation_severity
     logger.debug(
-        "N400: DPE_sem=%.3f, w_c=%.3f, S=%.1f → N400=%.3f μV",
+        "N400: DPE_sem=%.3f, w_c=%.3f, S=%.1f → N400=%.3f model units",
         dpe_semantic, precision, violation_severity, n400,
     )
     return float(n400)
@@ -190,18 +193,18 @@ def p600_from_precision_update(
         violation_severity: S_violation ∈ [0, 1] (0=congruent, 0.5=mild, 1=strong).
 
     Returns:
-        P600 amplitude in μV (positive for syntactic reanalysis).
+        P600 proxy in scaled DPE units (uncalibrated) (positive for syntactic reanalysis).
 
     Raises:
         ValueError: On negative precision or scaling values.
     """
-    if prior_precision < 0:
+    if not np.isfinite(prior_precision) or prior_precision < 0:
         raise ValueError(f"prior_precision must be non-negative, got {prior_precision}")
-    if posterior_precision < 0:
+    if not np.isfinite(posterior_precision) or posterior_precision < 0:
         raise ValueError(f"posterior_precision must be non-negative, got {posterior_precision}")
-    if scaling < 0:
+    if not np.isfinite(scaling) or scaling < 0:
         raise ValueError(f"scaling must be non-negative, got {scaling}")
-    if dpe < 0:
+    if not np.isfinite(dpe) or dpe < 0:
         raise ValueError(f"dpe must be non-negative, got {dpe}")
     if not 0.0 <= violation_severity <= 1.0:
         raise ValueError(f"violation_severity must be in [0,1], got {violation_severity}")
@@ -209,7 +212,7 @@ def p600_from_precision_update(
     delta_lambda = max(0.0, posterior_precision - prior_precision)
     p600 = scaling * delta_lambda * dpe * violation_severity
     logger.debug(
-        "P600: ΔΛ=%.3f × DPE=%.3f × scale=%.2f × S=%.1f → P600=%.3f μV",
+        "P600: ΔΛ=%.3f × DPE=%.3f × scale=%.2f × S=%.1f → P600=%.3f model units",
         delta_lambda, dpe, scaling, violation_severity, p600,
     )
     return float(p600)
@@ -239,7 +242,7 @@ def erp_amplitude_profile(
       - Baseline correction: mean 0 in [-200, 0] ms window
       - N400 (200–500 ms): Gaussian centred at 380 ms, amplitude = DPE-scaled
       - P600 (500–900 ms): Gaussian centred at 600 ms, amplitude = precision-scaled
-      - Background: low-amplitude Gaussian noise (σ=0.2 μV)
+      - Background: low-amplitude Gaussian noise (σ=0.2 model units)
 
     Args:
         belief: Current case-role belief distribution.
@@ -262,6 +265,12 @@ def erp_amplitude_profile(
     Raises:
         ValueError: On invalid inputs.
     """
+    positive_integer(n_timepoints, "n_timepoints", 2)
+    if not all(np.isfinite(x) for x in (t_start_ms, t_end_ms, n400_peak_ms, p600_peak_ms,
+                                       n400_sigma_ms, p600_sigma_ms)):
+        raise ValueError("ERP timing parameters must be finite")
+    if n400_sigma_ms <= 0 or p600_sigma_ms <= 0:
+        raise ValueError("ERP Gaussian widths must be positive")
     if t_start_ms >= t_end_ms:
         raise ValueError(f"t_start_ms ({t_start_ms}) must be < t_end_ms ({t_end_ms})")
     if n_timepoints < 2:
@@ -291,7 +300,7 @@ def erp_amplitude_profile(
         waveform = waveform - waveform[baseline_mask].mean()
 
     logger.debug(
-        "ERP profile [%s]: N400=%.2f μV, P600=%.2f μV, DPE=%.4f",
+        "ERP profile [%s]: N400=%.2f model units, P600=%.2f model units, DPE=%.4f",
         condition, n400_amp, p600_amp, dpe,
     )
     return ERPProfile(

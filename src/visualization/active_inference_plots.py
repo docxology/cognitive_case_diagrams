@@ -8,6 +8,7 @@ bar chart for diagnostics.
 
 from __future__ import annotations
 
+from .styles import save_publication_figure
 import logging
 from typing import Optional, Sequence
 
@@ -109,7 +110,7 @@ def plot_alignment_frame_belief_dynamics(
     ax1.set_ylim(0.0, 1.0)
     ax1.legend(
         loc="upper right",
-        fontsize=FONT_SIZE_FLOOR - 2,
+        fontsize=FONT_SIZE_FLOOR,
         ncol=min(len(role_names), 2),
         framealpha=0.92,
     )
@@ -189,7 +190,7 @@ def plot_alignment_frame_belief_dynamics(
             xv,
             y_text * 0.94,
             f"  {wl}",
-            fontsize=FONT_SIZE_ANNOTATION - 2,
+            fontsize=FONT_SIZE_ANNOTATION,
             color="#374151",
             fontstyle="italic",
             rotation=90,
@@ -203,7 +204,7 @@ def plot_alignment_frame_belief_dynamics(
         fontweight="bold",
     )
     ax3.grid(True, alpha=GRID_ALPHA)
-    ax3.legend(fontsize=FONT_SIZE_FLOOR - 2, framealpha=0.9, loc="upper right")
+    ax3.legend(fontsize=FONT_SIZE_FLOOR, framealpha=0.9, loc="upper right")
     ax3.set_xticks(x_steps)
     ax3.set_xticklabels([str(int(s)) for s in x_steps])
 
@@ -212,7 +213,7 @@ def plot_alignment_frame_belief_dynamics(
 
     if output_path is None:
         output_path = "active_inference_belief.png"
-    fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+    save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved alignment-frame belief dynamics to %s", output_path)
     return output_path
@@ -251,7 +252,7 @@ def plot_belief_distribution(
     plt.tight_layout()
     if output_path is None:
         output_path = f"belief_dist_{belief.name}.png" if belief.name else "belief_distribution.png"
-    plt.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+    save_publication_figure(plt.gcf(), output_path, dpi=FIGURE_DPI, bbox_inches="tight")
     plt.close(fig)
     logger.info("Saved belief distribution plot to %s", output_path)
     return output_path

@@ -98,7 +98,7 @@ class TestPushForwardReturn:
             push_forward_return(three_role_belief, np.eye(4), np.zeros(3))
 
     def test_mismatched_reward_raises(self, three_role_belief, identity_T):
-        with pytest.raises(ValueError, match="Reward vector length"):
+        with pytest.raises(ValueError, match="Reward vector"):
             push_forward_return(three_role_belief, identity_T, np.zeros(4))
 
     def test_invalid_gamma_raises(self, three_role_belief, identity_T):

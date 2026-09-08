@@ -5,6 +5,7 @@ and composition triangles for the manuscript figures.
 """
 from __future__ import annotations
 
+from .styles import save_publication_figure
 import logging
 from typing import Optional, Union
 
@@ -146,7 +147,7 @@ def render_case_category(
         )
 
     # Draw licensed edges (solid, green-tinted), grouped by connectionstyle
-    licensed_color = "#22c55e"  # green
+    licensed_color = "#15803d"  # green
     default_cs = "arc3,rad=0.12"
     edge_by_style: dict[str, list[tuple[str, str]]] = {}
     for u, v in G.edges():
@@ -159,7 +160,7 @@ def render_case_category(
         edge_by_style.setdefault(cs, []).append((u, v))
     for cs, edgelist in edge_by_style.items():
         nx.draw_networkx_edges(
-            G, pos, ax=ax, edgelist=edgelist,
+            G, pos, ax=ax, edgelist=edgelist, node_size=2800,
             edge_color=licensed_color, arrows=True,
             arrowsize=24, arrowstyle="-|>", connectionstyle=cs, width=2.75,
             alpha=0.85,
@@ -175,7 +176,7 @@ def render_case_category(
             edge_labels[(u, v)] = mathtext_safe_arrows(f"{pfx}✓ {lbl}\n(w={w:.1f})")
         nx.draw_networkx_edge_labels(
             G, pos, edge_labels=edge_labels, ax=ax,
-            font_size=FONT_SIZE_FLOOR - 4, font_color=licensed_color,
+            font_size=FONT_SIZE_FLOOR, font_color=licensed_color,
             font_family="sans-serif",
         )
 
@@ -186,21 +187,20 @@ def render_case_category(
                 P = nx.DiGraph()
                 P.add_edge(src_name, tgt_name)
                 nx.draw_networkx_edges(
-                    P, pos, ax=ax, edge_color=prohibited_color,
+                    P, pos, ax=ax, edge_color=prohibited_color, node_size=2800,
                     arrows=True, arrowsize=18, arrowstyle="-|>", width=1.6,
                     style="dashed", alpha=0.65,
                     connectionstyle="arc3,rad=0.15",
                 )
-                sx, sy = pos[src_name]
-                tx, ty = pos[tgt_name]
-                mx, my = (sx + tx) / 2, (sy + ty) / 2
-                ax.annotate(
-                    mathtext_safe_arrows(f"✗ {label}"), (mx, my),
-                    fontsize=FONT_SIZE_FLOOR - 4,
-                    color=prohibited_color, ha="center", va="center",
-                    fontweight="bold", fontstyle="italic",
-                    fontfamily="sans-serif",
-                )
+        if prohibited_morphisms:
+            ax.text(
+                0.5, -0.03,
+                "\n".join(mathtext_safe_arrows(f"✗ {source} → {target}: {label}")
+                          for source, target, label in prohibited_morphisms),
+                transform=ax.transAxes, fontsize=FONT_SIZE_FLOOR,
+                color=prohibited_color, ha="center", va="top",
+                fontfamily="sans-serif",
+            )
 
         # Legend
         licensed_patch = mpatches.Patch(
@@ -224,7 +224,7 @@ def render_case_category(
                 "Dashed edges not in Mor($\\mathcal{C}$)."
             ),
             transform=ax.transAxes,
-            fontsize=max(FONT_SIZE_FLOOR - 6, 11),
+            fontsize=max(FONT_SIZE_FLOOR, 11),
             va="bottom",
             ha="right",
             color=COLOR_TEXT,
@@ -245,7 +245,7 @@ def render_case_category(
             }
         nx.draw_networkx_edge_labels(
             G, pos, edge_labels=edge_labels, ax=ax,
-            font_size=FONT_SIZE_FLOOR - 4, font_color=COLOR_TEXT,
+            font_size=FONT_SIZE_FLOOR, font_color=COLOR_TEXT,
             font_family="sans-serif",
         )
 
@@ -262,7 +262,7 @@ def render_case_category(
     fig.tight_layout()
 
     if output_path:
-        fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight", facecolor="white")
+        save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight", facecolor="white")
         logger.info("Saved case category figure to %s", output_path)
 
     return fig
@@ -323,7 +323,7 @@ def render_alignment_comparison(
             node_size=1500, node_color=target_colors, alpha=0.9
         )
         nx.draw_networkx_labels(
-            G, pos, ax=ax, font_size=FONT_SIZE_LABEL - 2,
+            G, pos, ax=ax, font_size=FONT_SIZE_LABEL,
             font_weight="bold", font_color="white"
         )
         nx.draw_networkx_edges(
@@ -342,7 +342,7 @@ def render_alignment_comparison(
     fig.tight_layout()
 
     if output_path:
-        fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+        save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
         logger.info("Saved alignment comparison to %s", output_path)
 
     return fig
@@ -382,8 +382,8 @@ def render_composition_triangle(
         G, pos, ax=ax, node_size=5200, node_color=colors, alpha=0.9
     )
     nx.draw_networkx_labels(
-        G, pos, ax=ax, font_size=FONT_SIZE_LABEL - 2,
-        font_weight="bold", font_color="white"
+        G, pos, ax=ax, labels={name: name.replace(" (", "\n(") for name in nodes},
+        font_size=FONT_SIZE_LABEL, font_weight="bold", font_color="white"
     )
 
     # Draw edges with different styles
@@ -391,11 +391,11 @@ def render_composition_triangle(
     composed_edge = [(nodes[0], nodes[2])]
 
     nx.draw_networkx_edges(
-        G, pos, edgelist=straight_edges, ax=ax,
+        G, pos, edgelist=straight_edges, ax=ax, node_size=5200,
         edge_color=COLOR_TEXT, arrows=True, arrowsize=20, width=2
     )
     nx.draw_networkx_edges(
-        G, pos, edgelist=composed_edge, ax=ax,
+        G, pos, edgelist=composed_edge, ax=ax, node_size=5200,
         edge_color=CASE_COLORS["ACC"], arrows=True, arrowsize=20, width=2.5,
         style="dashed"
     )
@@ -406,7 +406,7 @@ def render_composition_triangle(
     }
     nx.draw_networkx_edge_labels(
         G, pos, edge_labels=edge_labels, ax=ax,
-        font_size=FONT_SIZE_FLOOR - 4, font_color=COLOR_TEXT
+        font_size=FONT_SIZE_FLOOR, font_color=COLOR_TEXT
     )
 
     ax.set_title(
@@ -418,7 +418,7 @@ def render_composition_triangle(
     fig.tight_layout()
 
     if output_path:
-        fig.savefig(output_path, dpi=FIGURE_DPI, bbox_inches="tight")
+        save_publication_figure(fig, output_path, dpi=FIGURE_DPI, bbox_inches="tight")
         logger.info("Saved composition triangle to %s", output_path)
 
     return fig

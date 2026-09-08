@@ -3,180 +3,330 @@
     "filename": "active_inference_belief.png",
     "path": "output/figures/active_inference_belief.png",
     "label": "fig:active-inference-belief",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Three panels for synthetic alignment-frame evidence: the accusative-frame posterior increases, posterior entropy decreases, and per-update free energy varies. A separately labelled running minimum is an envelope, not the measured trajectory.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "f395a9f2325ccc3a0b50a06562b841bac5dab8122f2476f542aa1d0cd1715021",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "alignment_comparison.png",
     "path": "output/figures/alignment_comparison.png",
     "label": "fig:alignment",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Three schematic mappings of S, A, and P: nominative-accusative groups S with A; ergative-absolutive groups S with P; tripartite gives each a separate label.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "f202cf9cd95b8eb24542c139c91b7f717086979f55a063f1a9d8061b5ab2837c",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "case_category_minimal.png",
     "path": "output/figures/case_category_minimal.png",
     "label": "fig:case-minimal",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Four coloured role nodes, NOM, ACC, INS, and VOC, linked by selected directed generators. Solid green arrows are admitted by the example specification; dashed red arrows illustrate excluded role promotions.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "7bec6907b425eeafa3f530041b1f14fca0453fa70c975dc7d45c68c383c14bd3",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "case_category_standard.png",
     "path": "output/figures/case_category_standard.png",
     "label": "fig:case-standard",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Eight case-role nodes and hand-authored directed generators, with synthetic weights and separately marked prohibited edges. The graph is a modelling specification, not a grammar inferred from language data.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "e4ac12b59d0f69a0a52612c329607f9bf4ed59897fb815dd809251935c5bc0b5",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "complexity_comparison.png",
     "path": "output/figures/complexity_comparison.png",
     "label": "fig:complexity-comparison",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Horizontal grouped bars compare total boxes, word boxes, and cups for ten explicitly constructed sentence examples. Row labels identify the example and lexical box contents; counts concern the implemented diagrams.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "1e52ef3007b8ae7542db046896bf01096c9fcfb594bea4efada98cf6715c6404",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "composition_triangle.png",
     "path": "output/figures/composition_triangle.png",
     "label": "fig:composition",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "A triangular path from NOM through ACC to DAT, with a direct dashed arrow labelled h equals g composed with f. The direct arrow denotes the composite path.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "2e799051c49ae872e60ddc450a015e64bf69016bba02cf89b76d3ea5cd9f8383",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "daif_belief_trajectory.png",
     "path": "output/figures/daif_belief_trajectory.png",
     "label": "fig:daif-belief-trajectory",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "The ordered synthetic evidence updates concentrate posterior mass on NOM. Separate panels show role probabilities, decreasing entropy, and total variation between successive stored beliefs; the first undefined change is displayed as zero.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "856d99d3de20b4cb7d9d0332d7c4552979389ba51e0bf6f64c098adb3dc41fed",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "daif_erp_predictions.png",
     "path": "output/figures/daif_erp_predictions.png",
     "label": "fig:daif-erp-predictions",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Left: hand-selected role weights versus model prediction errors. Right: negative N400-inspired and positive P600-inspired amplitude proxies by role, explicitly labelled as uncalibrated model units.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "3a827a8a988240c1eabb77fe24f2f9eac9324aea8c29d2d43be8ea47f422a7f9",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "daif_free_energy_convergence.png",
     "path": "output/figures/daif_free_energy_convergence.png",
     "label": "fig:daif-free-energy",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Synthetic filter updates show per-update free energy. A companion panel plots KL from the predicted prior and negative expected log likelihood; their plotted sum equals the free-energy trajectory.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "295e043ad940a87eafd6c4defb942f36fc8a11ac60b850b5748f8a6d32fd2fc6",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discocirc_entity_persistence.png",
     "path": "output/figures/discocirc_entity_persistence.png",
     "label": "fig:discocirc-persistence",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Three sentence schematics reuse the supplied names Alice and Bob. A lower ribbon tracks Alice through NOM, ACC, NOM and Bob through ACC, NOM, then absence; no inferred coreference or semantic state update is shown.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "9f8a635fc39feb972c7e9ead50bcc5c918eb70a8e5b06e0f5e16236c25037f60",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discopy_composition.png",
     "path": "output/figures/discopy_composition.png",
     "label": "fig:discopy-discocat",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Two native DisCoPy renderings show the tensor of Alice, chases, and Bob before and after attaching noun-type cups; the sentence output wire remains.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "33244e707482d021653ac2508c34245db49eaf4b1cbc7cf01e2c789ecd0bf04b",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discopy_discocirc_discourse.png",
     "path": "output/figures/discopy_discocirc_discourse.png",
     "label": "fig:discourse",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Native diagrams for Alice chases Bob and Bob runs appear in parallel. Bob is a repeated lexical label; the combined output is a tensor of sentence outputs.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "1768390df1f5e472be21a9c5ad928ce6d1f9b6a9c7c481b1c337263acc4da451",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discopy_ditransitive.png",
     "path": "output/figures/discopy_ditransitive.png",
     "label": "fig:discopy-ditransitive",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "A native typed diagram for Alice gives Bob a book contracts three noun arguments against the verb slots and leaves one sentence wire.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "4747c775dd83e398e198efcd065930c74281237419435f65650d6dfb136cf913",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discopy_multilingual.png",
     "path": "output/figures/discopy_multilingual.png",
     "label": "fig:multilingual-isomorphism",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "English, Latin-inspired, and Japanese-inspired lexical substitutions share one normalized transitive diagram template. The displayed order is a template convention, not a verified surface grammar for all three languages.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "510c7da3f5c1fbf55ab864ab57a145c431304c974b2e7c92c74d0e77a1108ca2",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discopy_passive.png",
     "path": "output/figures/discopy_passive.png",
     "label": "fig:discopy-passive",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "A native diagram for Bob is chased by Alice uses a separately assigned passive predicate type and two noun cups, leaving sentence output s.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "9fcad3d0ccd8a80feb2987280c141a8cda886fe94a027c742fadfda99a45ac79",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discopy_sentence_progression.png",
     "path": "output/figures/discopy_sentence_progression.png",
     "label": "fig:string-diagram",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Intransitive, transitive, and passive typed examples are shown side by side. Arrows separate examples and do not assert a semantics-preserving rewrite between sentences.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "45b1ab87c41be42762f271794c16162d7932a24be0efef7fcba91b394fdb9fbb",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discopy_snake.png",
     "path": "output/figures/discopy_snake.png",
     "label": "fig:discopy-snake",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "A left cup-cap zigzag, straight identity wire, and right zigzag are equated in the specified rigid diagram calculus.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "c266fa8ba409dc31a8cc1902b23e5f54b5f8546ab4253522e160bfb2501c34e9",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discopy_three_sentence_discourse.png",
     "path": "output/figures/discopy_three_sentence_discourse.png",
     "label": "fig:three-sentence-discourse",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Three independent native diagrams for Alice chases Bob, Bob fears Alice, and Alice smiles are tensored together. Shared names do not constitute a state-update circuit.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "b0a1221c3fa2d361a4a55d1cfd68625bdca5ff63025dbb591301e3aca46b41b6",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discopy_transitive.png",
     "path": "output/figures/discopy_transitive.png",
     "label": "fig:discopy-transitive",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "A larger native pregroup diagram contracts determiners, modifiers, and two noun arguments in the sentence about an agent intercepting a payload. Lexical types are supplied explicitly.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "2885eba4dbb96d692825e129dc2847c05b607ff603cf141adf23d6a0f7a91162",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "discourse_string_diagram.png",
     "path": "output/figures/discourse_string_diagram.png",
     "label": "fig:native-discourse",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Two vertical entity tracks labelled Alice and Bob intersect sentence boxes for chases and runs. Role dots record supplied NOM and ACC assignments across these sentence schematics.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "317c4cdbd086fb74078ce1561eeae0d1ae32c7a399fd594648ea756fb01dbe13",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "enriched_hom_matrix.png",
     "path": "output/figures/enriched_hom_matrix.png",
     "label": "fig:enriched-heatmap",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "An eight-by-eight heatmap prints hand-selected similarity values between case roles, with unit diagonal. It is labelled a synthetic candidate matrix because some multiplicative composition inequalities fail.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "234bd9c1f07f5c381338a6c35306ab7e589d63442438915764e17a48367364a4",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
+  },
+  {
+    "filename": "experiment_calibration.png",
+    "path": "output/figures/experiment_calibration.png",
+    "label": "fig:experiment-calibration",
+    "alt_text": "Empirical coverage of synthetic discrete outcomes is compared with the exact cumulative probability at each model quantile. A separate error panel shows replicate uncertainty relative to this discrete target; nominal quantile levels are not treated as exact attainable coverage.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "beb630fa199c9eb2138780679486b569ee12a65ee3b7a38a0b6f8934ce6c5cfb",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
+  },
+  {
+    "filename": "experiment_filtering.png",
+    "path": "output/figures/experiment_filtering.png",
+    "label": "fig:experiment-filtering",
+    "alt_text": "Synthetic filtering and ablation results across independently seeded replicates. Points summarize replicate outcomes; labelled intervals quantify simulation uncertainty under the supplied model, with no linguistic measurements.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "c9269b904d58d228a53a540e7380d247fded8a2ef072b08b9a8de99709ac6dfc",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
+  },
+  {
+    "filename": "experiment_sensitivity.png",
+    "path": "output/figures/experiment_sensitivity.png",
+    "label": "fig:experiment-sensitivity",
+    "alt_text": "Prespecified parameter sweeps show paired changes relative to each declared baseline using common random inputs. Every arm is displayed with pointwise simulation uncertainty; intervals do not correct for simultaneous comparisons.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "cd9338e99c93b27d624af4437afcb2473120be49ddd385f5ab6daaa425ccd24f",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "fluid_s_volition_landscape.png",
     "path": "output/figures/fluid_s_volition_landscape.png",
     "label": "fig:fluid-s",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "A synthetic logistic surface maps hand-selected volition and agentivity coordinates to an ERG-labelled probability. Verb labels are illustrative coordinates; a dashed line marks probability one-half.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "60ee16954ef2e5e2a21182e878047e65a7408fcb3fe799fcc1de99e46b71954a",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "functor_alignment.png",
     "path": "output/figures/functor_alignment.png",
     "label": "fig:functor-alignment",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Two role-label graphs illustrate nominative-accusative and ergative-absolutive groupings. Dashed correspondence arrows show a chosen relabelling between the expanded diagrams, including merged labels.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "ec590a093fdb3e7376dbcbd5ada950de32b885ccfa2e7868f9c58a6a31e26aa9",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "monoidal_functor_security.png",
     "path": "output/figures/monoidal_functor_security.png",
     "label": "fig:monoidal-functor-security",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "A chosen role map is paired with a yes/no matrix for role separation and edge existence. The title identifies a synthetic policy, not a proof of monoidal functor laws.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "eb291b0ef949d31061c5a880caa658c0171ff9e9eddd331bb516a7a8ec198398",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "pregroup_reduction_unpacking.png",
     "path": "output/figures/pregroup_reduction_unpacking.png",
     "label": "fig:pregroup-unpacking",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Four pedagogical panels show lexical types for Alice chases Bob, their tensor product, two noun cups, and a sentence-meaning box with remaining output type s.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "9c2ce39add257a988b50a77bac300b41e36c3f35c6ef4ec1b223d1870578f24a",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "quantum_povm_probabilities.png",
     "path": "output/figures/quantum_povm_probabilities.png",
     "label": "fig:quantum-povm",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "A bar chart shows Born-rule outcome probabilities for a supplied diagonal density and crisp case projectors. NOM has the largest mass, ACC and DAT share smaller equal masses, and the remaining labels have zero mass.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "d04f13c94b1067fd24403b73cb60d99f576d668f366b4e1b204f4b701c8d5ce6",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "security_type_violations.png",
     "path": "output/figures/security_type_violations.png",
     "label": "fig:security-violations",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Two supplied-label data-flow examples compare an admitted trace with an attempted webpage-to-tool authority promotion. PASS and FAIL refer to the example policy; the hand-selected score is explicitly not runtime enforcement.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "3efd127c5816b4c3878c76fb13b84f6dd5eaa1620bf834c14eff2281c0b15872",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "snake_equation_unpacking.png",
     "path": "output/figures/snake_equation_unpacking.png",
     "label": "fig:snake-unpacking",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "A pedagogical cup-cap zigzag is paired with a straight identity wire and the two typed duality identities. The equality applies inside the specified categorical calculus.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "b2eee1b6ff873cbb706f5444ae62fae88a3fe4e159be774e983b3674af501820",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "string_diagram_discocat.png",
     "path": "output/figures/string_diagram_discocat.png",
     "label": "fig:native-discocat",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "A native schematic places Alice, Bob, and chases in separate boxes. Noun and sentence wires and dashed role connections illustrate supplied metadata rather than an executable cup reduction.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "b27b4f96d2c94a902ffafb75e6f8c204b593b0b1662e84409e535f43a72ab459",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   },
   {
     "filename": "syntactic_case_panel.png",
     "path": "output/figures/syntactic_case_panel.png",
     "label": "fig:syntactic-panel",
-    "generated_by": "scripts/generate_diagrams.py"
+    "alt_text": "Eight hand-authored dependency-style sketches cover intransitive, transitive, ditransitive, passive, schematic ergative, benefactive, relative-clause, and causative constructions. The last two explicitly state that no formal derivation is supplied.",
+    "generated_by": "scripts/generate_diagrams.py",
+    "generator_input_fingerprint": "6539bdaffcf75fcf010d9be690db001decdf8f987c06285c104aa64853b3abd4",
+    "sha256": "be323d75349baf8d837a26e86d6553f8ea41077008c48575590e294f41dafaf4",
+    "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption"
   }
 ]

@@ -18,6 +18,7 @@ References:
 from __future__ import annotations
 
 import logging
+import math
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
@@ -330,15 +331,11 @@ def compare_diagrams(
 
 @dataclass
 class MagnitudeHomologyMetrics:
-    """Magnitude Homology analysis for categorical "holes" (cf. §5b).
-    
-    As demonstrated by Leinster and Shulman, and instantiated on text
-    by Bradley and Vigneaux (2025), magnitude homology
-    upgrades a flat scalar invariant into graded homological constraints.
-    
-    This dataclass bridges pregroup grammar complexities with 
-    environmental quantum noise boundaries (Decoherence penalties).
-    """
+    """Legacy container for a cup/cap-based synthetic score.
+
+Field names do not denote computed homology, decoherence, or commutation.
+See compute_pqc_decoherence_proxy for the exact arbitrary formula.
+"""
     base_syntactic_complexity: float
     topological_holes_1d: int = 0
     estimated_decoherence_rate: float = 0.0
@@ -373,6 +370,8 @@ def compute_pqc_decoherence_proxy(
     if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required")
         
+    if not math.isfinite(environmental_noise) or not 0 <= environmental_noise <= 1:
+        raise ValueError("environmental_noise must be finite and in [0,1]")
     base_score = syntactic_complexity_score(diagram)
     
     # 1D holes synthetically correspond to missing tensor transversals (nested caps inside cups)
@@ -386,7 +385,8 @@ def compute_pqc_decoherence_proxy(
     _DECOHERENCE_HOLE_BASE = 1.5
     # Threshold below which homological structure is preserved under decoherence
     _COMMUTATION_THRESHOLD = 0.25
-    effective_decoherence = min(1.0, environmental_noise * (_DECOHERENCE_HOLE_BASE ** holes_1d))
+    effective_decoherence = (0.0 if environmental_noise == 0 else
+        math.exp(min(0.0, math.log(environmental_noise) + holes_1d * math.log(_DECOHERENCE_HOLE_BASE))))
 
     commutes = effective_decoherence < _COMMUTATION_THRESHOLD
     

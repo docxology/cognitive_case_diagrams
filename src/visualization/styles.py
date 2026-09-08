@@ -2,29 +2,33 @@
 
 Palette design
 --------------
-CASE_COLORS uses dark, saturated hues chosen for maximum luminance
-contrast between adjacent roles. The primary NOM/ACC pair (blue/red)
-maintains a ~40% relative luminance difference, distinguishable under
-protanopia and deuteranopia. GEN (emerald) and DAT (violet) separate
-on the blue-yellow axis preserved in all common dichromacies. For
-monochrome reproduction, roles remain separable by lightness ordering.
-All figures additionally use text labels and distinct markers to avoid
-relying on color alone (WCAG 2.1 §1.4.1).
+CASE_COLORS consistently identifies roles across the figures. Text labels and
+plot-specific markers carry the same information where practical. The palette
+has not been certified for every color-vision deficiency or grayscale medium;
+rendered inspection remains necessary. Color choice is not an accessibility
+conformance test.
 
 Typography
 ----------
-All visualization functions enforce a 16 pt font floor for axis labels
-and annotations, following RASP accessibility standards.
+Shared text sizes use a 16 pt source-figure minimum. This is a project layout
+convention, not a physiological or accessibility standard; final-page scaling
+and the individual plotting functions still require inspection.
 """
 from __future__ import annotations
 
-# 16pt minimum font size for accessibility (RASP standard)
+from pathlib import Path
+from typing import Any
+
+from matplotlib.figure import Figure
+from matplotlib.text import Text
+
+# Project source-figure typography convention.
 FONT_SIZE_FLOOR = 16
 FONT_SIZE_TITLE = 20
 FONT_SIZE_LABEL = 16
-FONT_SIZE_ANNOTATION = 14
+FONT_SIZE_ANNOTATION = FONT_SIZE_FLOOR
 
-# Case role color palette — dark, saturated, colorblind-friendly
+# Consistent role colors; readable role labels carry their meaning as well.
 CASE_COLORS: dict[str, str] = {
     "NOM": "#2563EB",   # Blue
     "ACC": "#DC2626",   # Red
@@ -109,3 +113,17 @@ def mathtext_safe_arrows(text: str) -> str:
         .replace("\u2717", r"$\times$")
         .replace("\u2218", r"$\circ$")
     )
+
+
+def save_publication_figure(figure: Figure, path: str | Path, **kwargs: Any) -> None:
+    """Apply the declared text floor to actual artists before saving a figure.
+
+    Drawing instantiates tick labels before their size is checked. Tight-layout
+    decisions remain with each plotting function because some schematics use
+    deliberately positioned axes. The final PDF must still be inspected.
+    """
+    figure.canvas.draw()
+    for artist in figure.findobj(match=Text):
+        if artist.get_visible() and artist.get_text():
+            artist.set_fontsize(max(FONT_SIZE_FLOOR, artist.get_fontsize()))
+    figure.savefig(path, **kwargs)

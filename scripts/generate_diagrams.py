@@ -13,7 +13,7 @@ Domain sub-scripts (also callable independently):
     scripts/generate_string_figures.py     — string diagrams + enriched hom heatmap
     scripts/generate_category_unpacking_figures.py — pedagogical unpacking panels
 
-Canonical Outputs (30 PNGs total, plus enriched_magnitude.txt):
+Canonical outputs (see the domain registry and generated figure manifest):
     Category domain (5):
         case_category_standard.png, case_category_minimal.png,
         composition_triangle.png, alignment_comparison.png, functor_alignment.png
@@ -60,6 +60,7 @@ Usage::
 
 import argparse
 import json
+import hashlib
 import logging
 import re
 import sys
@@ -74,7 +75,7 @@ try:
     from infrastructure.core.logging.utils import get_logger as _get_logger
     logger = _get_logger("generate_diagrams")
     _INFRASTRUCTURE_AVAILABLE = True
-except Exception:
+except ImportError:
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -104,11 +105,13 @@ DOMAINS: dict[str, str] = {
     "syntactic": "generate_syntactic_figures",
     "unpacking": "generate_category_unpacking_figures",
     "strings": "generate_string_figures",
+    "experiments": "generate_experiment_figures",
 }
 
 _DOMAIN_ALIASES: dict[str, str] = {
     "daif":     "cognitive",
     "enriched": "strings",
+    "category_unpacking": "unpacking",
 }
 
 
@@ -273,6 +276,9 @@ def _write_figure_registry(paths: list[Path], out_dir: Path) -> None:
     """Write figure_registry.json consumed by the PDF rendering pipeline."""
     project_root = Path(__file__).resolve().parent.parent
     manuscript_labels = _manuscript_figure_labels(project_root)
+    alt_texts = json.loads((project_root / "docs/figure_alt_text.json").read_text())
+    from src.release_validation import quality_input_fingerprint
+    generation_inputs = quality_input_fingerprint(project_root)["sha256"]
 
     seen: set[str] = set()
     registry: list[dict] = []
@@ -299,7 +305,11 @@ def _write_figure_registry(paths: list[Path], out_dir: Path) -> None:
             # directory in a repo that ships to GitHub and Zenodo.
             "path": str(rel),
             "label": label,
+            "alt_text": alt_texts.get(p.name, ""),
             "generated_by": "scripts/generate_diagrams.py",
+            "generator_input_fingerprint": generation_inputs,
+            "sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
+            "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption",
         })
     dest = out_dir / "figure_registry.json"
     # Merge with the existing registry instead of replacing it: a

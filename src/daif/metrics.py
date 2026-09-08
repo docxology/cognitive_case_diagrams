@@ -18,6 +18,7 @@ import logging
 import numpy as np
 
 from .types import DistributionalReturn
+from ..numerics import finite_vector, positive_integer, quantile_grid
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +53,7 @@ def convergence_diagnostics(
             f"fe_trajectory length ({len(fe_trajectory)}) < min_iterations ({min_iterations})"
         )
 
-    fe = np.array(fe_trajectory, dtype=np.float64)
+    fe = finite_vector(fe_trajectory, "fe_trajectory")
     deltas = np.diff(fe)
     n = len(fe)
 
@@ -114,9 +115,14 @@ def distributional_kl(
     Raises:
         ValueError: If n_bins < 2.
     """
+    positive_integer(n_bins, "n_bins", 2)
+    if not np.isfinite(epsilon) or epsilon <= 0:
+        raise ValueError("epsilon must be finite and positive")
     if n_bins < 2:
         raise ValueError(f"n_bins must be >= 2, got {n_bins}")
 
+    quantile_grid(dist_p.quantiles, dist_p.quantile_levels)
+    quantile_grid(dist_q.quantiles, dist_q.quantile_levels)
     # Determine shared support
     all_vals = np.concatenate([dist_p.quantiles, dist_q.quantiles])
     v_min = float(all_vals.min()) - 0.5 * float(np.std(all_vals))
@@ -166,9 +172,9 @@ def quantile_coverage(
     Raises:
         ValueError: On shape mismatch or invalid levels.
     """
-    qvals = np.asarray(predicted_quantiles, dtype=np.float64)
-    taus = np.asarray(predicted_levels, dtype=np.float64)
-    obs = np.asarray(observed_values, dtype=np.float64)
+    qvals = finite_vector(predicted_quantiles, "predicted_quantiles")
+    taus = finite_vector(predicted_levels, "predicted_levels")
+    obs = finite_vector(observed_values, "observed_values")
 
     if len(qvals) != len(taus):
         raise ValueError(f"predicted_quantiles/levels length mismatch: {len(qvals)} != {len(taus)}")
@@ -222,10 +228,13 @@ def return_distribution_entropy(
     Raises:
         ValueError: If n_bins < 2.
     """
+    positive_integer(n_bins, "n_bins", 2)
+    if not np.isfinite(epsilon) or epsilon <= 0:
+        raise ValueError("epsilon must be finite and positive")
     if n_bins < 2:
         raise ValueError(f"n_bins must be >= 2, got {n_bins}")
 
-    q = return_dist.quantiles
+    q, _ = quantile_grid(return_dist.quantiles, return_dist.quantile_levels)
     v_min = float(q.min()) - 1e-8
     v_max = float(q.max()) + 1e-8
     if v_min >= v_max:

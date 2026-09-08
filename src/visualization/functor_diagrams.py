@@ -13,6 +13,7 @@ and tight bounding-box export.
 """
 from __future__ import annotations
 
+from .styles import save_publication_figure
 import logging
 from collections import defaultdict
 from typing import Optional
@@ -264,7 +265,7 @@ def render_functor_diagram(
     )
 
     if output_path:
-        fig.savefig(
+        save_publication_figure(fig,
             output_path, dpi=FIGURE_DPI,
             bbox_inches="tight", facecolor="white",
         )
@@ -313,7 +314,7 @@ def _draw_category_panel(
         ax.text(
             cx, cy - halo_r - 0.02, group_label,
             ha="center", va="top",
-            fontsize=FONT_SIZE_FLOOR - 5,
+            fontsize=FONT_SIZE_FLOOR,
             color="#374151", style="italic",
         )
 

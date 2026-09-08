@@ -11,6 +11,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from ..case_systems.case_category import CaseRole
+from ..numerics import probability_vector
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ class CaseDiagramBelief:
 
     def __post_init__(self) -> None:
         """Validate probability distribution."""
-        self.probabilities = np.asarray(self.probabilities, dtype=np.float64)
+        self.probabilities = probability_vector(self.probabilities).copy()
         if len(self.roles) != len(self.probabilities):
             raise ValueError(
                 f"roles ({len(self.roles)}) and probabilities "

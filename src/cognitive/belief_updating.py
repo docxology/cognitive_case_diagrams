@@ -11,6 +11,7 @@ from typing import Sequence
 import numpy as np
 
 from .belief import CaseDiagramBelief
+from ..numerics import finite_vector
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,9 @@ def update_belief(
     Returns:
         Updated CaseDiagramBelief (posterior).
     """
-    likelihoods = np.asarray(observation_likelihoods, dtype=np.float64)
+    likelihoods = finite_vector(observation_likelihoods, "likelihoods")
+    if np.any(likelihoods < 0):
+        raise ValueError("likelihoods must be non-negative")
     if len(likelihoods) != len(prior.roles):
         raise ValueError(
             f"likelihoods ({len(likelihoods)}) must match "
@@ -41,7 +44,8 @@ def update_belief(
         )
 
     # Unnormalized posterior: p(o|s) * q(s)
-    unnormalized = likelihoods * prior.probabilities
+    scale = likelihoods.max()
+    unnormalized = (likelihoods / scale if scale > 0 else likelihoods) * prior.probabilities
     total = unnormalized.sum()
 
     if total <= 0:
@@ -85,7 +89,7 @@ def sequential_belief_update(
     Raises:
         ValueError: If any observation has wrong length.
     """
-    if not observation_sequence:
+    if len(observation_sequence) == 0:
         logger.warning("Empty observation sequence; returning empty trajectory")
         return []
 

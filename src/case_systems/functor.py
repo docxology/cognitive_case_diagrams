@@ -26,18 +26,12 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class AlignmentFunctor:
-    """A functor F: C → D mapping between case categories.
+    """Labelled object/arrow map with endpoint and weight consistency checks.
 
-    Maps objects (case roles) and morphisms (grammatical relations)
-    from a source alignment system to a target alignment system,
-    preserving composition and identities.
-
-    Attributes:
-        name: Descriptive name of the functor.
-        source: Source case category.
-        target: Target case category.
-        object_map: Mapping from source roles to target roles.
-    """
+Images receive descriptive labels F(label); checks ignore label equality
+and do not prove membership in every target hom-set. The class provides
+a finite presentation utility, not a general functor verification engine.
+"""
 
     name: str
     source: CaseCategory
@@ -218,41 +212,20 @@ def tripartite_functor() -> AlignmentFunctor:
 
 @dataclass
 class MonoidalFunctor(AlignmentFunctor):
-    """Monoidal functor for tensor-preservation checks on case-alignment maps (cf. §9b).
+    """Legacy role-separation policy over an alignment map.
 
-    Under a **Categorical Communication Protocol**, non-cartesian tensor structure can be
-    specified so that disallowed wire manipulations (e.g., merging roles that must stay
-    distinct) are detectable. This class implements **specification-level** tensor checks
-    aligned with the case-theoretic analysis of prompt injection in
-    ``docs/manuscript/09b_cognitive_security.md``; it does **not** secure a deployed LLM API
-    by itself. Multi-turn context attacks remain an open systems problem; see empirical
-    motivation in adversarial LLM-agent work (e.g. ARLAS 2025, cited in §9b).
-
-    Use :meth:`preserves_tensor` to test whether ``F`` preserves tensor structure for
-    role pairs; collapsing distinct roles models the kind of illicit ACC/NOM merge
-    discussed in §9b.
-    """
+The check combines pairwise injectivity and directed-edge existence. No
+tensor objects, tensorator, unit coherence, or monoidal-law proof is modeled.
+Monoidal functors need not be injective on objects: failure here is a policy
+failure, not mathematical nonmonoidality or evidence of malicious intent.
+"""
     
     def preserves_tensor(self, role_a: CaseRole, role_b: CaseRole) -> bool:
-        """Check that F(A ⊗ B) ≅ F(A) ⊗ F(B) for a pair of roles.
+        """Check mapped role separation and existence of images of supplied edges.
 
-        Tensor preservation requires:
-        1. Both roles are in the functor's domain.
-        2. Distinct roles map to distinct images (no tensor collapse).
-        3. If a morphism A→B exists in the source, F(A)→F(B) exists in the target.
-
-        In pregroup grammars, wires cannot be arbitrarily copied or deleted.
-        A tensor collapse (two distinct roles mapping to the same image)
-        represents loss of structural information — e.g., an adversary
-        merging ACC (data) with NOM (authority).
-
-        Args:
-            role_a: First role in the tensor product.
-            role_b: Second role in the tensor product.
-
-        Returns:
-            True if tensor structure is preserved for this pair.
-        """
+Legacy name only: this predicate does not check F(A tensor B). It returns
+False for an unmapped role, a distinct-role merge, or a missing target edge.
+"""
         try:
             fa = self.map_object(role_a)
             fb = self.map_object(role_b)

@@ -18,10 +18,12 @@ from src.generate_manuscript_metrics import (
     _count_test_files,
     _number_to_word,
     _optional_distribution_version,
-    _read_coverage_totals,
+    _receipt_metrics,
     collect_metrics,
     write_metrics,
 )
+
+pytest_plugins = ("fixtures_manuscript",)
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 TESTS_DIR = PROJECT_ROOT / "tests"
@@ -56,8 +58,8 @@ def test_number_to_word_small_integers() -> None:
 
 
 @pytest.mark.timeout(1800)  # spawns nested `pytest --collect-only` — minutes on external/slow storage
-def test_collect_metrics_expected_keys() -> None:
-    m = collect_metrics(PROJECT_ROOT)
+def test_collect_metrics_expected_keys(gate_tree: Path) -> None:
+    m = collect_metrics(gate_tree)
     for key in (
         "total_test_count",
         "total_test_files",
@@ -69,20 +71,20 @@ def test_collect_metrics_expected_keys() -> None:
         "total_test_files_word",
         "domain_subpackages",
         "total_figures",
-        "coverage_summary",
+        "coverage_percent",
         "discopy_version",
         "numpy_version",
         "discopy_version_pretty",
         "numpy_version_pretty",
     ):
         assert key in m
-    assert int(m["total_test_count"]) >= 100
-    assert int(m["total_test_files"]) == _count_test_files(TESTS_DIR)
-    assert int(m["domain_subpackages"]) >= 9
+    assert int(m["total_test_count"]) == 2
+    assert int(m["total_test_files"]) == _count_test_files(gate_tree / "tests")
+    assert int(m["domain_subpackages"]) >= 1
     # total_figures should reflect the actual PNG count when output/figures/ exists;
     # if the build hasn't run yet the value may be 0, so use a non-strict lower bound.
     assert int(m["total_figures"]) >= 0
-    assert len(m["coverage_summary"]) > 10
+    assert m["coverage_percent"] == "95.00"
 
 
 def test_write_metrics_roundtrip(tmp_path: Path) -> None:
@@ -94,15 +96,15 @@ def test_write_metrics_roundtrip(tmp_path: Path) -> None:
 
 
 @pytest.mark.timeout(1800)  # spawns nested `pytest --collect-only` — minutes on external/slow storage
-def test_main_dry_run_exit_zero() -> None:
+def test_main_dry_run_exit_zero(gate_tree: Path) -> None:
     result = subprocess.run(
-        [sys.executable, "-m", "src.generate_manuscript_metrics", "--dry-run"],
+        [sys.executable, "-m", "src.generate_manuscript_metrics", "--dry-run", "--project-root", str(gate_tree)],
         capture_output=True,
         text=True,
         timeout=1800,
     )
     assert result.returncode == 0
-    assert "total_test_count" in result.stdout
+    assert json.loads(result.stdout)["total_test_count"] == "2"
 
 
 def test_count_daif_symbols_zero_without_all_list(tmp_path: Path) -> None:
@@ -120,7 +122,7 @@ def test_count_daif_symbols_empty_all(tmp_path: Path) -> None:
 
 
 @pytest.mark.timeout(1800)  # spawns nested `pytest --collect-only` — minutes on external/slow storage
-def test_main_writes_metrics_file(tmp_path: Path) -> None:
+def test_main_writes_metrics_file(tmp_path: Path, gate_tree: Path) -> None:
     out = tmp_path / "metrics.json"
     result = subprocess.run(
         [
@@ -129,6 +131,8 @@ def test_main_writes_metrics_file(tmp_path: Path) -> None:
             "src.generate_manuscript_metrics",
             "--output",
             str(out),
+            "--project-root",
+            str(gate_tree),
         ],
         cwd=str(PROJECT_ROOT),
         capture_output=True,
@@ -142,7 +146,7 @@ def test_main_writes_metrics_file(tmp_path: Path) -> None:
     assert "Wrote" in result.stdout
 
 
-def test_count_collected_tests_fallback(tmp_path: Path) -> None:
+def test_count_collected_tests_uses_actual_collection(tmp_path: Path) -> None:
     from src.generate_manuscript_metrics import _count_collected_tests
 
     # Create a fake project with test files but no valid pytest config
@@ -154,9 +158,9 @@ def test_count_collected_tests_fallback(tmp_path: Path) -> None:
         "def test_a():\n    pass\n\ndef test_b():\n    pass\n",
         encoding="utf-8",
     )
-    # This will fail pytest --collect-only (no pyproject.toml), triggering fallback
+    # A standalone test directory is collected by pytest even without project configuration.
     count = _count_collected_tests(fake_root)
-    assert count >= 2
+    assert count == 2
 
 
 def test_count_daif_symbols_missing_init(tmp_path: Path) -> None:
@@ -181,93 +185,29 @@ def test_number_to_word_boundary_values() -> None:
 
 
 @pytest.mark.timeout(1800)  # spawns nested `pytest --collect-only` — minutes on external/slow storage
-def test_collect_metrics_values_are_strings() -> None:
+def test_collect_metrics_values_are_strings(gate_tree: Path) -> None:
     """All values returned by collect_metrics should be strings."""
-    m = collect_metrics(PROJECT_ROOT)
+    m = collect_metrics(gate_tree)
     for k, v in m.items():
         assert isinstance(v, str), f"Key {k} has non-string value: {type(v)}"
 
 
-def _make_tmp_project(tmp_path: Path, with_coverage: bool = True) -> Path:
-    """Build a minimal project layout collect_metrics can introspect."""
-    root = tmp_path / "proj"
-    tests = root / "tests"
-    tests.mkdir(parents=True)
-    (tests / "test_example.py").write_text(
-        "def test_a():\n    pass\n", encoding="utf-8"
-    )
-    daif = root / "src" / "daif"
-    daif.mkdir(parents=True)
-    (daif / "core.py").write_text("", encoding="utf-8")
-    figures = root / "output" / "figures"
-    figures.mkdir(parents=True)
-    (figures / "fig.png").write_bytes(b"\x89PNG\r\n\x1a\n")
-    if with_coverage:
-        (root / "coverage.json").write_text(json.dumps({
-            "totals": {
-                "percent_covered_display": "91.00%",
-                "percent_covered": 91.0,
-                "covered_lines": 91,
-                "num_statements": 100,
-                "covered_branches": 4,
-                "num_branches": 5,
-            }
-        }), encoding="utf-8")
-    return root
+@pytest.mark.parametrize("coverage", [None, "{not json", "{}", '{"totals":{"percent_covered":100}}'])
+def test_bare_coverage_cannot_make_a_passing_claim(tmp_path: Path, coverage: str | None) -> None:
+    if coverage is not None:
+        (tmp_path / "coverage.json").write_text(coverage)
+    with pytest.raises((FileNotFoundError, ValueError)):
+        _receipt_metrics(tmp_path)
 
 
-def test_coverage_json_populates_percent_when_present(tmp_path: Path) -> None:
-    """A project with coverage.json gets real percent keys, never prose fallbacks."""
-    root = _make_tmp_project(tmp_path)
-    m = collect_metrics(root)
-    assert m["coverage_percent"] == "91.00"
-    assert "91.00%" in m["coverage_summary"]
-
-
-def test_collect_metrics_requires_coverage_json(tmp_path: Path) -> None:
-    """Missing coverage.json fails loudly instead of rendering instructions
-    into the published abstract."""
-    root = _make_tmp_project(tmp_path, with_coverage=False)
-    with pytest.raises(RuntimeError, match="coverage.json"):
-        collect_metrics(root)
-
-
-def test_read_coverage_totals_minimal_json(tmp_path: Path) -> None:
-    """Parse a minimal coverage.json totals block."""
-    payload = {
-        "totals": {
-            "percent_covered_display": "91.00%",
-            "percent_covered": 91.0,
-            "covered_lines": 100,
-            "num_statements": 110,
-            "covered_branches": 40,
-            "num_branches": 50,
-        }
-    }
-    (tmp_path / "coverage.json").write_text(json.dumps(payload), encoding="utf-8")
-    got = _read_coverage_totals(tmp_path)
-    assert got["coverage_percent"] == "91.00"
-    assert got["coverage_lines_covered"] == "100"
-    assert "91.00%" in got["coverage_summary"]
-
-
-def test_read_coverage_totals_invalid_json(tmp_path: Path) -> None:
-    (tmp_path / "coverage.json").write_text("{not json", encoding="utf-8")
-    assert _read_coverage_totals(tmp_path) == {}
-
-
-def test_read_coverage_totals_empty_totals_object(tmp_path: Path) -> None:
-    (tmp_path / "coverage.json").write_text(json.dumps({"totals": {}}), encoding="utf-8")
-    assert _read_coverage_totals(tmp_path) == {}
-
-
-def test_read_coverage_totals_raw_percent_only(tmp_path: Path) -> None:
-    """When display string is absent, raw percent still drives coverage_summary."""
-    payload = {"totals": {"percent_covered": 88.456}}
-    (tmp_path / "coverage.json").write_text(json.dumps(payload), encoding="utf-8")
-    got = _read_coverage_totals(tmp_path)
-    assert got["coverage_percent_raw"] == "88.46"
-    assert "88.46%" in got["coverage_summary"]
+def test_receipt_fields_are_recomputed_from_bound_evidence(gate_tree: Path) -> None:
+    metrics = _receipt_metrics(gate_tree)
+    assert metrics["coverage_percent"] == "95.00"
+    assert metrics["coverage_lines_covered"] == "95"
+    assert metrics["total_tests_passed"] == "2"
+    (gate_tree / "coverage.json").write_text('{"totals":{"percent_covered":100}}')
+    with pytest.raises((ValueError, KeyError)):
+        _receipt_metrics(gate_tree)
 
 
 def test_optional_distribution_version_missing_package() -> None:

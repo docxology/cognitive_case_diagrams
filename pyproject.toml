@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cognitive_case_diagrams"
-version = "2.3.0"
+version = "2.4.0"
 description = "Category-theoretic formalization of linguistic case systems with DisCoPy visualizations"
 authors = [
     {name = "Daniel Ari Friedman", email = "danielarifriedman@gmail.com"}
@@ -17,10 +17,12 @@ readme = "docs/README.md"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 dependencies = [
+    "tomli>=2; python_version < '3.11'",
     "numpy>=1.24.0",
     "matplotlib>=3.7.0",
     "networkx>=3.0",
     "pyyaml>=6.0",
+    "pillow>=9.5",
     "discopy>=1.0.0",
 ]
 
@@ -29,12 +31,28 @@ dependencies = [
 Repository = "https://github.com/docxology/cognitive_case_diagrams"
 Documentation = "https://github.com/docxology/cognitive_case_diagrams/blob/main/docs/README.md"
 
+[project.scripts]
+# MCP stdio server entry point (requires the `mcp` extra or dev group).
+ccd-mcp = "src.integrations.server:main"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
     "pytest-timeout>=2.1.0",  # required for [tool.pytest.ini_options] timeout
 ]
+
+# Model Context Protocol integration (official SDK v2 line); used by
+# src/integrations and its tests. `uv sync` covers it via the dev group below;
+# downstream users install `.[mcp]`.
+mcp = ["mcp>=2.0.0,<3"]
+
+[tool.setuptools.packages.find]
+# The project intentionally ships the historical top-level package name `src`;
+# explicit discovery keeps wheel contents independent of auto-discovery edge
+# cases and guarantees src.integrations is included.
+include = ["src*"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py310"
@@ -119,6 +137,7 @@ exclude_lines = [
 dev = [
     "hypothesis>=6.151.11",
     "mypy>=1.11",
+    "mcp>=2.0.0,<3",
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
     "pytest-timeout>=2.1.0",

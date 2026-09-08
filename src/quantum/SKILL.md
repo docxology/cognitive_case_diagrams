@@ -1,29 +1,12 @@
 ---
 name: ccd-quantum
-description: POVM-based quantum case assignment — CasePOVM, case probabilities, crisp/graded/fluid-S POVM factories, semantic state helpers. Use for §8 and §8b quantum semantics.
+description: Source-grounded routing for the quantum examples in cognitive_case_diagrams.
 ---
 
-# `src/quantum/`
+# quantum workflow
 
-## When to use
+Use when changing or explaining `src/quantum`. Read [README.md](README.md) and [AGENTS.md](AGENTS.md), then inspect the source signature and relevant tests before calling an API.
 
-- Quantum measurement models of case: POVM elements per case role, Born-rule probabilities, or hardware-oriented case assignment sketches.
+Finite POVMs and density matrices with explicit Hermitian/PSD/normalization checks. The canonical figure uses orthogonal projectors and a diagonal mixture, so it shows classical outcome probabilities, not interference. No quantum hardware, sheaf model, or TQNN is implemented.
 
-## Primary imports
-
-```python
-from src.quantum import (
-    CasePOVM,
-    case_probability,
-    crisp_case_povm, graded_case_povm, fluid_s_povm,
-    semantic_state,
-)
-```
-
-## Manuscript
-
-§8, §8b.
-
-## See also
-
-- [`AGENTS.md`](AGENTS.md) · [`README.md`](README.md)
+Verification: from the project root, `uv run python scripts/quality_gate.py --coverage`. Update the [method contracts](../../docs/method_contracts.md) if behavior changes. Do not promote synthetic examples or compatibility names to mathematical, empirical, or operational guarantees.

@@ -1,15 +1,7 @@
-"""DAIF Core: Push-Forward & Distributional Bellman Operator.
+"""Finite distributions of dimensionless role scores and C51-style projection.
 
-Implements the foundational distributional RL machinery of DAIF:
-
-- push_forward_return(): Distributional Bellman Z = R + γ T^⊤ q
-- distributional_bellman_operator(): Multi-step Bellman iteration Tⁿ Z₀
-- categorical_return_distribution(): C51-style atom projection
-
-References:
-    Akgül et al. (2026) — Distributional Active Inference
-    Bellemare et al. (2017) — C51 distributional RL
-    Dabney et al. (2018) — Quantile Regression DQN
+Legacy return/Bellman names are retained for compatibility. The score is
+R + gamma * T.T @ q; it is not a discounted cumulative reward.
 """
 from __future__ import annotations
 
@@ -20,6 +12,8 @@ import numpy as np
 
 from ..cognitive.belief import CaseDiagramBelief
 from .types import DistributionalReturn
+from ..numerics import (finite_vector, stochastic_matrix, positive_integer,
+                        weighted_quantiles, quantile_grid)
 
 logger = logging.getLogger(__name__)
 
@@ -31,52 +25,21 @@ def _single_bellman_step(
     gamma: float,
     n_quantiles: int,
 ) -> DistributionalReturn:
-    """Compute one step of the distributional Bellman operator.
+    """Compute the law of score z_i = R_i + gamma*(T.T@q)_i with mass q_i.
 
-    Shared computation extracted from push_forward_return() and the inner
-    loop of distributional_bellman_operator(). Given belief weights q,
-    transition matrix T, and reward vector R, computes a mean-field
-    approximation of the distributional Bellman equation (Eq. 7c-bellman):
-
-        z_vec = R + γ · T^⊤ q
-
-    This is a mean-field approximation: instead of maintaining per-state
-    return distributions Z(s) and pushing each forward independently,
-    we compute a single belief-weighted return vector. The push-forward
-    T^⊤ q propagates the belief through the transition dynamics, and
-    the reward R provides immediate returns. The resulting z_vec gives
-    the expected return contribution for each role under the current
-    belief, from which we extract quantile statistics.
-
-    Args:
-        current_q: Belief probability vector, shape (n,).
-        transition_matrix: Row-stochastic T[i,j], shape (n,n).
-        reward_vector: Reward per role, shape (n,).
-        gamma: Discount factor in [0,1].
-        n_quantiles: Number of quantile levels.
-
-    Returns:
-        DistributionalReturn with mean, variance, quantiles, quantile_levels.
-
-    Note on degenerate beliefs:
-        If ``current_q`` assigns exactly zero probability to some role i,
-        the induced cumulative distribution has a flat plateau at the
-        z-value of role i, and quantile levels τ falling inside that
-        plateau are mathematically indeterminate. The implementation
-        uses ``np.interp`` which returns the left endpoint of the flat
-        region — any value in the plateau would be an equally valid
-        quantile, so this is an arbitrary-but-consistent choice. The
-        quantile vector is still non-decreasing by construction.
-    """
+Moments are exact finite sums. Quantiles use the generalized inverse CDF
+(with zero-mass support removed), not interpolation between distinct atoms.
+"""
+    positive_integer(n_quantiles, "n_quantiles", 2)
     T = transition_matrix
     R = reward_vector
 
-    # Mean-field Bellman: per-role return under belief-weighted dynamics
+    # Dimensionless per-role score with predicted occupancy
     z_vec = R + gamma * T.T @ current_q
 
     if not np.all(np.isfinite(z_vec)):
         raise ValueError(
-            f"Non-finite values in z_vec after Bellman step — check reward_vector "
+            f"Non-finite values in z_vec after score construction — check reward_vector "
             f"and transition_matrix for NaN/inf. z_vec={z_vec!r}"
         )
 
@@ -88,16 +51,7 @@ def _single_bellman_step(
     tau_levels = np.linspace(
         1 / (2 * n_quantiles), 1 - 1 / (2 * n_quantiles), n_quantiles
     )
-    role_sorted_idx = np.argsort(z_vec)
-    cumulative = np.cumsum(current_q[role_sorted_idx])
-    cumulative = np.maximum.accumulate(cumulative)
-    if cumulative[-1] <= 0:
-        raise ValueError(
-            "Degenerate quantile distribution: cumulative probability sums to zero. "
-            "Ensure current_q is a valid probability distribution (non-negative, sums > 0)."
-        )
-    cumulative = cumulative / cumulative[-1]
-    quantile_vals = np.interp(tau_levels, cumulative, z_vec[role_sorted_idx])
+    quantile_vals = weighted_quantiles(z_vec, current_q, tau_levels)
 
     return DistributionalReturn(
         mean=mean_z,
@@ -114,37 +68,18 @@ def push_forward_return(
     gamma: float = 0.99,
     n_quantiles: int = 51,
 ) -> DistributionalReturn:
-    """Compute the push-forward return distribution via distributional Bellman.
+    """Return the finite law of dimensionless scores R + gamma * (T.T @ q).
 
-    Implements Eq. 7-1 from the manuscript (push-forward return integral).
-    Given current belief q over case roles and transition matrix T[i,j] = P(s'=j|s=i),
-    computes the one-step push-forward distribution:
-
-        Z(s) = R(s) + γ Σ_{s'} T(s,s') Z(s')
-
-    For the fixed-point single-step approximation:
-        mean(Z) = R + γ T^⊤ q
-
-    The full quantile representation is constructed by sampling from
-    the resulting distribution.
-
-    Args:
-        belief: Current belief distribution over case roles.
-        transition_matrix: Row-stochastic matrix T[i,j], shape (n,n).
-        reward_vector: Reward for each case role, shape (n,).
-        gamma: Discount factor ∈ [0,1].
-        n_quantiles: Number of quantiles to compute for Z.
-
-    Returns:
-        DistributionalReturn with mean, variance, quantiles, quantile_levels.
-
-    Raises:
-        ValueError: On dimension mismatch or invalid parameters.
-    """
-    T = np.asarray(transition_matrix, dtype=np.float64)
-    R = np.asarray(reward_vector, dtype=np.float64)
+Inputs: normalized role belief, nonnegative row-stochastic square T, finite
+role score R, gamma in [0,1], and integer n_quantiles >= 2. Mass q_i is
+placed at score z_i. This push-forward is a heuristic score distribution,
+not a distributional Bellman backup or a value function.
+"""
     q = belief.probabilities
     n = len(q)
+    T = stochastic_matrix(transition_matrix, n)
+    R = finite_vector(reward_vector, "Reward vector", n)
+    positive_integer(n_quantiles, "n_quantiles", 2)
 
     if T.shape != (n, n):
         raise ValueError(f"Transition matrix shape {T.shape} != ({n}, {n})")
@@ -198,22 +133,23 @@ def distributional_bellman_operator(
         transition_matrix: Row-stochastic T[i,j], shape (n,n).
         reward_vector: Reward for each role, shape (n,).
         gamma: Discount factor ∈ [0,1].
-        n_steps: Number of Bellman applications.
+        n_steps: Number of score-and-belief updates.
         n_quantiles: Quantiles to track.
         convergence_tol: If not None, terminate early when the absolute
             change in mean between successive steps is below this threshold.
             Default None preserves legacy behaviour (always run n_steps).
 
     Returns:
-        List of DistributionalReturn, one per Bellman step.
+        List of DistributionalReturn, one per score-and-belief update.
 
     Raises:
         ValueError: On invalid inputs.
     """
-    T = np.asarray(transition_matrix, dtype=np.float64)
-    R = np.asarray(reward_vector, dtype=np.float64)
     q = belief.probabilities
     n = len(q)
+    T = stochastic_matrix(transition_matrix, n)
+    R = finite_vector(reward_vector, "Reward vector", n)
+    positive_integer(n_quantiles, "n_quantiles", 2)
 
     if T.shape != (n, n):
         raise ValueError(f"Transition matrix shape {T.shape} != ({n}, {n})")
@@ -226,6 +162,9 @@ def distributional_bellman_operator(
     if n_steps < 1:
         raise ValueError(f"n_steps must be >= 1, got {n_steps}")
 
+    positive_integer(n_steps, "n_steps")
+    if convergence_tol is not None and (not np.isfinite(convergence_tol) or convergence_tol <= 0):
+        raise ValueError("convergence_tol must be finite and positive")
     results: list[DistributionalReturn] = []
     current_q = q.copy()
     prev_mean: Optional[float] = None
@@ -235,7 +174,7 @@ def distributional_bellman_operator(
         results.append(result)
 
         logger.debug(
-            "Bellman step %d/%d: mean=%.4f, std=%.4f",
+            "Score step %d/%d: mean=%.4f, std=%.4f",
             step + 1, n_steps, result.mean, np.sqrt(result.variance),
         )
 
@@ -244,7 +183,7 @@ def distributional_bellman_operator(
             delta = abs(result.mean - prev_mean)
             if delta < convergence_tol:
                 logger.info(
-                    "Bellman operator converged at step %d/%d "
+                    "Score iteration converged at step %d/%d "
                     "(|delta_mean|=%.2e < tol=%.2e)",
                     step + 1, n_steps, delta, convergence_tol,
                 )
@@ -285,7 +224,9 @@ def categorical_return_distribution(
     Raises:
         ValueError: If v_min >= v_max or n_atoms < 2.
     """
-    if v_min >= v_max:
+    quantiles, _ = quantile_grid(return_dist.quantiles, return_dist.quantile_levels)
+    positive_integer(n_atoms, "n_atoms", 2)
+    if not np.isfinite(v_min) or not np.isfinite(v_max) or v_min >= v_max:
         raise ValueError(f"v_min ({v_min}) must be < v_max ({v_max})")
     if n_atoms < 2:
         raise ValueError(f"n_atoms must be >= 2, got {n_atoms}")
@@ -295,7 +236,7 @@ def categorical_return_distribution(
     probs = np.zeros(n_atoms)
 
     # Distributional projection: each quantile contributes linearly to two atoms
-    for tau_val in return_dist.quantiles:
+    for tau_val in quantiles:
         clipped = np.clip(tau_val, v_min, v_max)
         lo_idx = int(np.floor((clipped - v_min) / delta_z))
         hi_idx = min(lo_idx + 1, n_atoms - 1)

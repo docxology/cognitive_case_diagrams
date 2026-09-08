@@ -4,46 +4,46 @@
 paper:
   title: "Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case"
   subtitle: ""
-  version: "2.3"
-  date: "2026-04-22"
+  version: "2.4.0"
+  date: "2026-09-07"
 
 authors:
   - name: "Daniel Ari Friedman"
+    given_names: "Daniel Ari"
+    family_name: "Friedman"
     orcid: "0000-0001-6232-9096"
     email: "daniel@activeinference.institute"
     affiliation: "Active Inference Institute"
     corresponding: true
 
 publication:
-  doi: "10.5281/zenodo.19695260"
-  journal: "Active Inference Journal"
+  # Concept DOI: identifies the publication as a whole (all versions).
+  doi: "10.5281/zenodo.19695259"
+  # Exact revision DOI; check version_record for the live deposit state.
+  version_doi: "10.5281/zenodo.22653315"
+  version_record: "https://zenodo.org/records/22653315"
+  # Historical record of the previously published version; kept for
+  # provenance only and does not certify this revision.
+  prior_version_doi: "10.5281/zenodo.19695260"
+  status: "release manuscript"
+  journal: ""
   volume: ""
   pages: ""
   year: "2026"
 
 keywords:
+  - "linguistic case"
   - "category theory"
-  - "linguistic case systems"
   - "DisCoCat"
-  - "DisCoCirc"
-  - "active inference"
-  - "CEREBRUM"
-  - "string diagrams"
+  - "pregroup grammar"
   - "enriched categories"
-  - "topos theory"
-  - "diagrammatic reasoning"
-  - "quantum NLP"
-  - "cognitive security"
-  - "magnitude homology"
-  - "distributional active inference"
-  - "biolinguistics"
-  - "neuropragmatics"
-  - "ROSE model"
-  - "prompt injection"
-  - "compositional semantics"
+  - "Bayesian filtering"
+  - "distributional representations"
+  - "POVM"
+  - "reproducible research"
 
 metadata:
-  license: "Apache-2.0"
+  license: "CC-BY-4.0"
   language: "en"
 
 llm:
@@ -65,28 +65,50 @@ testing:
   max_project_test_failures: 0
 
 # Manuscript Variable Injection
-# Variables below are auto-computed by src/generate_manuscript_metrics.py
-# and injected into docs/manuscript/*.md via scripts/inject_variables.py.
-# In manuscript files, use ${variable_name} syntax.
+# Every quantitative claim in docs/manuscript/*.md is injected through the
+# typed registry in src/manuscript_variables.py; collectors live in
+# src/generate_manuscript_metrics.py and scripts/inject_variables.py
+# performs the ${variable_name} substitution into output/manuscript/.
 #
-# Available variables:
-#   ${total_test_count}     - Total pytest-collected test count
-#   ${total_test_files}     - Number of test_*.py files
-#   ${total_test_files_word} - English words for total_test_files (e.g. "forty-nine")
-#   ${domain_subpackages}   - Count of first-level packages under src/ (domain layers)
-#   ${daif_modules}         - Number of .py modules in src/daif/
-#   ${daif_symbols}         - Number of public symbols in daif.__all__
-#   ${daif_tests}           - Test count in test_daif*.py files
-#   ${daif_test_files}      - Number of test_daif*.py files
-#   ${daif_modules_word}    - English word for daif_modules (e.g. "seven")
-#   ${total_figures}        - PNG count in output/figures/ (matches generate_diagrams.py)
-#   ${coverage_summary}     - One-line coverage blurb from coverage.json (or instructions if missing)
-#   ${coverage_percent}     - Display percent string when coverage.json exists (else empty)
-#   ${coverage_lines_covered} / ${coverage_lines_total} - Optional line totals from coverage.json
-#   ${discopy_version} / ${numpy_version} - Installed package versions (may be empty)
-#   ${discopy_version_pretty} / ${numpy_version_pretty} - Versions safe for prose
-#   ${paper_version}        - Publication edition from paper.version (e.g. "2.3")
-#   ${paper_doi}            - DOI from publication.doi (canonical short form)
-#   ${paper_repo_url}       - Repository URL from pyproject [project.urls]
+# Provenance classes: quality_receipt (source-bound receipt, never a bare
+# coverage.json), experiments (schema-1.0 synthetic runner output at
+# output/experiments/results.json), computed (public src APIs
+# on canonical synthetic inputs), config (this file / pyproject),
+# collection (pytest --collect-only and structural counts), environment
+# (installed distribution versions).
+#
+# The authoritative identifier list with units, formats, provenance, and
+# descriptions is `variable_specs()` in src/manuscript_variables.py; the
+# groups most visible in prose are:
+#   total_test_count / total_tests_passed / total_tests_failed /
+#     total_tests_skipped  - collection count versus passing receipt
+#   coverage_percent / coverage_lines_covered / coverage_lines_total /
+#     quality_fingerprint_short / quality_receipt_generated_at
+#   total_test_files(_word), domain_subpackages, daif_*, total_figures
+#   discopy_version(_pretty), numpy_version(_pretty)
+#   paper_version, paper_date, paper_doi, paper_version_doi,
+#     paper_version_record_url, paper_prior_version_doi, publication_status
+#   ci_level_percent, ci_z_score
+#   enriched_*, topos_*, quantum_*_probability,
+#     daif_bellman_example_*, daif_projection_*,
+#     daif_trajectory_evidence_count, daif_assignment_iterations,
+#     standard_inventory_*, alignment_extra_label_*,
+#     introductory_figure_role_count, syntactic_panel_sketch_count(_word)
+#   exp_* (synthetic experiments; see 07d and the methods lane registry)
+#
 # To inject: python scripts/inject_variables.py
 # The render pipeline auto-detects output/manuscript/ for injection.
+
+# The manuscript is maintained as a paper and web article. Slides require
+# separate design. Interval metadata (confidence level and the NormalDist
+# quantile) is computed by the experiments runner from its declared
+# configuration; no duplicate constants are kept in this file.
+
+
+render:
+  formats:
+    pdf: true
+    html: true
+    slides: false
+    docx: false
+    epub: false

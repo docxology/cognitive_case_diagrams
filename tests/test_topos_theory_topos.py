@@ -19,7 +19,7 @@ from src.topos_theory.topos import (
     GeometricTheory,
     ClassifyingTopos,
     TheoryType,
-    check_morita_equivalence,
+    compare_theory_presentations,
     build_typological_theory,
     build_enriched_theory,
     bridge_transfer,
@@ -161,7 +161,7 @@ class TestMoritaEquivalence:
 
         topos1 = ClassifyingTopos(theory=t)
         topos2 = ClassifyingTopos(theory=t)
-        equiv, mismatches = check_morita_equivalence(topos1, topos2)
+        equiv, mismatches = compare_theory_presentations(topos1, topos2)
         assert equiv is True
         assert len(mismatches) == 0
 
@@ -180,7 +180,7 @@ class TestMoritaEquivalence:
 
         topos1 = ClassifyingTopos(theory=t1)
         topos2 = ClassifyingTopos(theory=t2)
-        equiv, mismatches = check_morita_equivalence(topos1, topos2)
+        equiv, mismatches = compare_theory_presentations(topos1, topos2)
         assert equiv is False
         assert len(mismatches) > 0
 
@@ -219,7 +219,7 @@ class TestBuildTheories:
         t2 = build_typological_theory(min_cat, "min")
         topos1 = ClassifyingTopos(theory=t1)
         topos2 = ClassifyingTopos(theory=t2)
-        equiv, _ = check_morita_equivalence(topos1, topos2)
+        equiv, _ = compare_theory_presentations(topos1, topos2)
         # Different sort counts, so not equivalent
         assert equiv is False
 
@@ -249,7 +249,7 @@ class TestClassifyingToposMinimalTheory:
             return t
         topos1 = ClassifyingTopos(theory=_make_nom_acc())
         topos2 = ClassifyingTopos(theory=_make_nom_acc())
-        equiv, mismatches = check_morita_equivalence(topos1, topos2)
+        equiv, mismatches = compare_theory_presentations(topos1, topos2)
         assert equiv is True
         assert mismatches == []
 
@@ -286,7 +286,9 @@ class TestBridgeTransfer:
         topos2 = ClassifyingTopos(theory=t)
 
         result = bridge_transfer(topos1, topos2, "composition_associativity")
-        assert result["transfer_possible"] is True
+        assert result["transfer_possible"] is False
+        assert result["presentation_match"] is True
+        assert result["status"] == "unverified"
         assert result["property"] == "composition_associativity"
 
     def test_transfer_blocked_for_non_equivalent(self) -> None:
@@ -345,7 +347,7 @@ class TestBridgeTransfer:
 
         result = bridge_transfer(topos1, topos2, "composition_associativity")
         assert result["transfer_possible"] is False
-        assert result["morita_equivalent"] is False
+        assert result["morita_equivalent"] is None
         # At least one mismatch message must mention the arity spectrum.
         assert any(
             "arity" in msg.lower() for msg in result["mismatches"]

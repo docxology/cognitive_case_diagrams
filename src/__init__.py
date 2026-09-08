@@ -1,15 +1,15 @@
-"""Cognitive Case Diagrams: Category-theoretic formalization of linguistic case systems.
+"""Cognitive Case Diagrams: Executable categorical examples and synthetic case-role models.
 
 Subpackages (manuscript-aligned):
     case_systems  — §2: CaseRole, Morphism, CaseCategory, AlignmentFunctor, FluidSFunctor
-    diagrams      — §3–4c: DisCoCat/DisCoCirc string diagrams, complexity metrics, ditransitive
-    enriched_cat  — §5: [0,1]-enriched categories with categorical magnitude
-    topos_theory  — §6: Geometric theories, classifying toposes, Morita equivalence
+    diagrams      — §3–4c: Explicit pregroup diagrams, entity bookkeeping, diagram counts
+    enriched_cat  — §5: Candidate similarities, explicit composition closure, matrix magnitude
+    topos_theory  — §6: Finite theory presentations and profile comparisons
     cognitive     — §7: Scalar active inference (free energy, belief update, prediction error)
-    daif          — §7c: Distributional Active Inference Framework
+    daif          — §7c: Experimental finite score distributions and filtering
     quantum       — §8: POVM-based quantum case assignment
     security      — §9b: Cognitive security (type-violation detection, injection scoring)
-    visualization — Publication-quality figure generation for all modules
+    visualization — Figure generation for all modules
 """
 
 import logging
@@ -36,6 +36,7 @@ from .enriched_cat import EnrichedCategory, standard_enriched_category
 from .topos_theory import (
     GeometricTheory, ClassifyingTopos, TheoryType,
     check_morita_equivalence,
+    compare_theory_presentations,
 )
 
 # §7 Cognitive (Active Inference)
@@ -52,7 +53,7 @@ from .cognitive import (
     n400_amplitude_proxy,
 )
 
-# §7c Distributional Active Inference Framework (DAIF)
+# §7c Experimental finite score distributions and filtering (DAIF)
 from .daif import (
     DistributionalReturn, DAIFResult, ERPProfile,
     push_forward_return, distributional_bellman_operator, categorical_return_distribution,
@@ -89,6 +90,7 @@ __all__ = [
     "standard_enriched_category",
     # §6
     "GeometricTheory", "ClassifyingTopos", "TheoryType", "check_morita_equivalence",
+    "compare_theory_presentations",
     # §7
     "CaseDiagramBelief",
     "kl_divergence", "variational_free_energy",

@@ -1,89 +1,17 @@
-# Quantum Meaning Spaces: Case Roles as Hilbert-Space Measurements {#sec:quantum-semantics}
+# Case Labels as Measurement Outcomes {#sec:quantum-semantics}
 
-**Where we are in the argument.** \autoref{sec:quantum-active-inference} positioned the work as a literature bridge to TQNNs, ZX-calculus, and lambeq. This chapter delivers the one piece of that picture that is *concretely implemented* in the repository: case assignment as a Positive-Operator-Valued Measurement, with $P(c \mid \rho) = \operatorname{Tr}(E_c \rho)$ reducing the Born rule to a case-theoretic statement. Crisp orthogonal and context-dependent (Fluid-S) POVM families are shipped; the non-diagonal-$\rho$ interference regime is left as an explicit extension point (discussed in the *Implementation scope* paragraph below).
+A positive-operator-valued measure (POVM) is a family of positive semidefinite Hermitian effects $E_c$ that sum to the identity. A density matrix $\rho$ is positive semidefinite and Hermitian with trace one. Under these assumptions,
 
-## Case Probabilities via POVM: $P(c\mid\rho)=\mathrm{Tr}(E_c\rho)$
+$$
+P(c\mid\rho)=\operatorname{Tr}(E_c\rho),\qquad\sum_cP(c\mid\rho)=1.
+$$ {#eq:eq-8-1}
 
-To connect TQNNs and ZX circuits to *distributional semantics*, we reinterpret the amplitudes and correlations in these topological diagrams as semantic quantities. Recent work on quantum semantic communication supplies the necessary bridge, modeling meaning spaces as Hilbert spaces at nodes of an interaction graph connected by completely positive trace-preserving (CPTP) channels along edges [@thomas2025quantum]:
+The sum identity follows by linearity of trace. The implementation checks finite entries, dimensions, Hermiticity, positivity, completeness, and density normalization within explicit floating-point tolerances. A symmetric eigenvalue routine alone would not validate Hermiticity, which is checked separately. An individual effect is also required to lie below the identity.
 
-> "Multi-agent semantic networks are modeled as quantum sheaves, where agents' meaning spaces are Hilbert spaces connected by quantum channels." [@thomas2025quantum]
+`crisp_case_povm()` constructs orthogonal coordinate projectors. A projective measurement does not guarantee a deterministic outcome for every state: a mixture or superposition can yield several outcomes. The convenience `semantic_state()` constructs a diagonal mixture from supplied nonnegative role weights; it does not create coherence or entanglement.
 
-A *quantum semantic sheaf* over a communication graph $G=(V,E)$ is a triple $(H,F,\rho)$ where each vertex $v$ carries a finite-dimensional semantic Hilbert space $H_v$, edges carry CPTP maps $F_e$, and each vertex holds a density operator $\rho_v$ encoding its current semantic state. This instantiates a distributional-semantics picture: meanings are vectors or density operators in high-dimensional spaces, with co-occurrence and pragmatic context encoded in the functorial connections across the network.
+![Born-rule probabilities for orthogonal projectors and the synthetic diagonal mixture, with computed outcome probabilities 0.8 on NOM, 0.1 on ACC, and 0.1 on DAT. Remaining outcomes have zero probability. These bars are computed traces; they show neither interference fringes nor a continuous semantic-state density.](output/figures/quantum_povm_probabilities.png){#fig:quantum-povm}
 
-**Case assignment as quantum measurement.** The connection to classical case systems becomes concrete when we model case assignment as a *quantum measurement* on the semantic state. Define POVM elements corresponding to cases $\{E_{\text{NOM}}, E_{\text{ACC}}, E_{\text{DAT}}, \ldots\}$ satisfying $\sum_c E_c = I$, where each $E_c$ projects onto the subspace of semantic states consistent with case role $c$. The probability of assigning case $c$ to a noun phrase in semantic state $\rho$ is:
+`graded_case_povm()` creates diagonal effects from normalized role weights on basis coordinates. `fluid_s_povm()` rotates a two-role measurement according to a supplied context parameter. These are finite mathematical models. Interpreting their outcomes as case assignments is a chosen labeling convention, not a proof that grammatical alignment equals a quantum reference frame.
 
-\begin{equation}
-P(c \mid \rho) = \text{Tr}(E_c \rho)
-\label{eq:eq-8-1}
-\end{equation}
-
-![Overlapping POVM elements produce graded case probabilities via quantum interference. Born-rule probability densities $P(c \mid \rho) = \mathrm{Tr}(E_c \rho)$ (\autoref{eq:eq-8-1}) plotted for all eight case roles over the one-dimensional cognitive state-space parameter $\theta$. The NOM element is sharply localized (Tr=0.800) while ACC and DAT elements overlap with NOM in the low-$\theta$ region (Tr=0.100 each), creating an interference pattern in the semantic belief space — a graded proto-role assignment realizing the $[0,1]$-enrichment of \autoref{sec:enriched-categories} as physical measurement. Non-overlapping (orthogonal) POVM elements would instead yield crisp, deterministic case assignment. Rotation into a different measurement basis (a different quantum reference frame) corresponds to a different alignment system, e.g., ACC $\to$ ERG. Generated programmatically from `src/visualization/quantum_plots.plot_povm_probabilities()`.](output/figures/quantum_povm_probabilities.png){#fig:quantum-povm}
-
-As illustrated in \autoref{fig:quantum-povm}, crisp case systems (NOM/ACC) use orthogonal POVM projectors ($E_c E_{c'} = \delta_{cc'} E_c$, a special POVM case in which the elements are one-dimensional orthogonal projectors — usually called a *projective* or von-Neumann measurement), yielding deterministic case assignment. For graded proto-roles (Dowty's [-@dowty1991thematic] agent/patient continuum), the POVM elements overlap, yielding probabilistic case assignment — precisely the quantum generalization of the $[0,1]$-enrichment from \autoref{sec:enriched-categories}. The enriched hom-value $\mathcal{C}(v, c)$ is identified with $P(c \mid \rho_v)$, grounding the abstract enrichment in physical measurement theory. Fluid-S alignment (\autoref{sec:case-systems}) then corresponds to a context-dependent POVM: the measurement basis rotates by $\theta = (\pi/2)(1 - p_{\text{vol}})$, so full volition ($p_{\text{vol}}=1$) leaves the computational NOM/ACC basis unchanged, the fully non-volitional limit ($p_{\text{vol}}=0$) rotates by $\pi/2$ and exchanges the two projectors, and the same noun phrase receives different case probabilities depending on whether the agent construes the action as volitional.
-
-Because $\sum_c E_c = I$ is enforced at construction in `CasePOVM._validate()`, $\sum_c P(c \mid \rho) = \operatorname{Tr}\!\bigl((\sum_c E_c)\rho\bigr) = \operatorname{Tr}(\rho) = 1$, so every POVM case-assignment is a bona-fide probability distribution over roles — no extra normalisation step is required.
-
-**Implementation scope (coherence and entanglement).** The interference pattern in \autoref{fig:quantum-povm} is a theoretical illustration of what overlapping POVM elements would measure on a state with non-zero off-diagonal entries; the convenience constructor `semantic_state()` in `src/quantum/quantum_case.py` instantiates only *diagonal* density matrices $\rho = \operatorname{diag}(p_1,\dots,p_n)$, i.e. classical probability mixtures over case roles. Fully coherent superposition states and multi-argument entanglement (e.g. entangled subject–object POVM readouts on ditransitive predicates) are left as explicit extension points: the caller may pass a pre-constructed off-diagonal $\rho$ to `case_probability()` directly, but the convenience constructor does not build one automatically. No quantitative claim in this paper depends on running the framework on a non-diagonal $\rho$.
-
-The same scalar-belief dynamics appear in \autoref{fig:active-inference-belief} (\autoref{sec:cognitive-integration}): variational free energy separates competing case frames before the POVM readout in \autoref{eq:eq-8-1} is applied to semantic density matrices.
-
-## Three Correspondences: Wires, Spiders, and Topology
-
-When this sheaf-theoretic semantics is grafted onto the TQNN/ZX architecture, three structural correspondences emerge:
-
-1. **Edges as semantic feature channels**: In a TQNN or ZX-diagram, each wire carries not merely an abstract qubit but a semantic Hilbert space $H_v$ associated with a context, concept, or agent. Amplitudes or density matrices on that wire encode a distribution over semantic features—exactly as word vectors encode distributional meaning in classical compositional distributional semantics.
-
-2. **Nodes as compositional operations**: Spiders/gates in ZX or intertwiners in TQNNs become *semantic composition maps*: they take distributed meanings on input wires and produce new distributed meanings on output wires, analogous to how DisCoCat composes word meanings into phrase/sentence meanings via multilinear maps.
-
-3. **Topological wiring as contextual structure**: The topology of the diagram—the way wires and nodes are connected—encodes which semantic spaces interact and in what causal/structural pattern. This is the semantic analogue of syntactic structure in distributional semantics, realized as a topological quantum circuit.
-
-In this reading, a topological quantum flow neural network becomes a *distributional semantic machine*: a functor that sends a topological diagram (graph of contexts and interactions) to a family of Hilbert spaces and maps where vectors/densities represent distributed meanings and their probabilistic transformations.
-
-## Sheaf Cohomology Governs Semantic Alignment
-
-### Contextuality, Entanglement, and Discord as Semantic Resources
-
-The sheaf-based framework proves that semantic alignment between agents is governed by cohomology classes of the quantum semantic sheaf; contextuality and entanglement act as resources that remove obstructions to alignment [@thomas2025quantum]:
-
-> "We derive semantic channel capacity when sender and receiver share prior entanglement, proving it strictly exceeds classical capacity. The quantum advantage grows as channel noise increases—precisely when semantic communication most benefits over bit-level transmission." [@thomas2025quantum]
-
-Two further results from this framework are particularly relevant:
-
-- **Contextuality as a semantic resource**: "Quantum contextuality reduces cohomological obstructions to semantic alignment. Contextual correlations act as 'pre-shared semantic resolution,' establishing contextuality as a resource for semantic communication" [@thomas2025quantum].
-- **Discord as integrated semantic information**: "Quantum discord equals integrated semantic information, linking quantum correlations to irreducible semantic content and connecting our framework to integrated information theory" [@thomas2025quantum].
-
-These results establish that the topology of the semantic sheaf (and its cohomology) constrains how probabilistic semantic information can be transferred; quantum features (entanglement, contextuality, discord) change these constraints in well-defined ways.
-
-### The TQNN/ZX Circuit as the Base Graph of a Quantum Semantic Sheaf
-
-A TQNN/ZX circuit implementing a quantum communication or computation protocol is itself a diagram over which one can define a sheaf of semantic spaces and channels. The underlying graph of the TQNN/ZX diagram serves as the base graph $G=(V,E)$ of the semantic sheaf: vertices inherit meaning spaces $H_v$, edges inherit CPTP maps $F_e$, and the TQFT/ZX functor gives the global linear map representing the protocol. Distributional semantics as diagram evaluation then becomes literal: passing an initial semantic state (distribution over meanings) through the TQNN/ZX diagram yields an output state whose components encode the posterior semantic distributions at boundary wires.
-
-ZX rewrite rules, which change the internal topology of the diagram while preserving its overall semantics as a linear map, correspond to alternative factorizations of the same semantic transformation—different internal "flow architectures" for realizing the same semantic map.
-
-## Case Assignment as Holographic Measurement
-
-### A Table of Correspondences: Classical Case Assignment Versus the Quantum Topological Model
-
-The active inference model of case reasoning (\autoref{sec:cognitive-integration}) acquires a new dimension in this quantum topological setting. Case assignment—the cognitive process of determining *who does what to whom*—can be modeled as a quantum measurement process on a holographic screen, with the following correspondences:
-
-| Classical Case Assignment | Quantum Topological Model |
-| :--- | :--- |
-| Case role (NOM, ACC, ...) | Pointer state selected by QRF |
-| Case frame (alignment system) | Quantum reference frame |
-| Relational structure of event | Spin-network topology |
-| Free-energy minimization | TQFT evaluation of diagram |
-| Prediction-error (P600/N400) | Symmetry-breaking on holographic screen |
-
-Table: Correspondences between classical case assignment and the quantum topological model. {#tbl:classical-quantum-case}
-
-### From Predictive Processing to Topological Flow
-
-In the predictive processing account, a cognitive agent maintains a generative model that predicts the relational structure of incoming linguistic material. When this model is realized as a TQNN, prediction becomes evaluation of the topological diagram; prediction error becomes the discrepancy between the predicted TQFT evaluation and the observed data; and belief updating becomes modification of the spin-network's edge labels (representation labels) and vertex intertwiners.
-
-The topological character of this computation confers advantages for active inference on case structure: topological invariants are robust to continuous deformation, so the generative model's predictions are stable under small perturbations of the input—a desirable property for language understanding in noisy environments.
-
-### Entanglement Strictly Exceeds Classical Semantic Capacity
-
-The sheaf-theoretic results of Thomas and Chen [-@thomas2025quantum] suggest that quantum features provide genuine advantages for semantic communication—not merely computational speedup, but qualitative enhancements in semantic alignment. Specifically, sheaf cohomology defines the absolute *thermodynamic limits* of semantic transfer over quantum channels; achieving mutual semantic understanding equates strictly to extracting a consistent "global section" across the interaction sheaf. If case-marked relational structure is communicated between agents via quantum channels, entanglement provides additional semantic capacity, contextuality removes alignment obstructions, and discord captures irreducible semantic content.
-
-These are not abstract possibilities but operational consequences of the mathematical framework developed across this review. Recent work by Krawchuk et al. [-@krawchuk2025paramqnlp] demonstrates this concretely: DisCoCirc string diagrams that represent discourse-level semantics (including case role assignments across sentences) can be *automatically* compiled into **Parameterized Quantum Circuits (PQCs)**. By adopting modular PQC execution strategies, these linguistic frameworks can seamlessly scale their structural expressivity despite the decoherence constraints of *near-term (NISQ) quantum hardware*. This closes the loop from linguistic case structure, through categorical formalism, directly to physically viable quantum state preparation.
+A general caller can provide a coherent density matrix directly, subject to validation. Demonstrating an interference effect would require a specified state family and measurement whose probabilities depend on off-diagonal components. The canonical figure uses commuting diagonal objects and admits an ordinary classical probability interpretation. No physical quantum advantage or semantic channel-capacity result is established. The seeded completeness check of the canonical example is reported in [@sec:exp-controls].

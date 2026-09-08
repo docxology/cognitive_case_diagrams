@@ -1,32 +1,12 @@
 ---
 name: ccd-cognitive
-description: Scalar active inference on case diagrams — beliefs, variational free energy, belief updates, prediction error, EFE, N400/P600 proxies. Use for §7; use src.daif for distributional returns and full ERP pipeline (§7c).
+description: Source-grounded routing for the cognitive examples in cognitive_case_diagrams.
 ---
 
-# `src/cognitive/`
+# cognitive workflow
 
-## When to use
+Use when changing or explaining `src/cognitive`. Read [README.md](README.md) and [AGENTS.md](AGENTS.md), then inspect the source signature and relevant tests before calling an API.
 
-- Scalar (single-distribution) FEP quantities: KL / variational FE, Bayesian belief updates, precision-weighted PE, expected free energy, simple ERP amplitude proxies.
-- **Not** for full return distributions, quantile TD, or Bethe/VMP blocks — those live in [`daif/`](../daif/).
+Categorical probabilities, fixed-model KL/free energy, Bayesian updates, and uncalibrated mismatch scores. Likelihoods must be finite and nonnegative and have positive evidence. Sequential updates consume each supplied likelihood once. Policy-score inputs are caller-defined; neural interpretations require additional evidence.
 
-## Primary imports
-
-```python
-from src.cognitive import (
-    CaseDiagramBelief,
-    kl_divergence, variational_free_energy,
-    update_belief, sequential_belief_update,
-    prediction_error, p600_amplitude_ratio,
-    expected_free_energy,
-    magnitude_reanalysis_cost, n400_amplitude_proxy,
-)
-```
-
-## Manuscript
-
-§7, §7b (scalar process theory and verification narrative).
-
-## See also
-
-- [`AGENTS.md`](AGENTS.md) · [`README.md`](README.md)
+Verification: from the project root, `uv run python scripts/quality_gate.py --coverage`. Update the [method contracts](../../docs/method_contracts.md) if behavior changes. Do not promote synthetic examples or compatibility names to mathematical, empirical, or operational guarantees.

@@ -9,9 +9,19 @@ from __future__ import annotations
 import numpy as np
 
 
+def _as_float_array(values, name: str) -> np.ndarray:
+    """Cast to float64, rejecting booleans and complex input outright."""
+    raw = np.asarray(values)
+    if raw.dtype == np.bool_:
+        raise ValueError(f"{name} must contain numeric values, not booleans")
+    if np.issubdtype(raw.dtype, np.complexfloating):
+        raise ValueError(f"{name} must be real-valued; complex input is rejected")
+    return raw.astype(np.float64)
+
+
 def finite_vector(values, name: str, size: int | None = None) -> np.ndarray:
     """Return a non-empty finite one-dimensional float array."""
-    array = np.asarray(values, dtype=np.float64)
+    array = _as_float_array(values, name)
     if array.ndim != 1 or array.size == 0:
         raise ValueError(f"{name} must be a non-empty one-dimensional vector")
     if size is not None and array.shape != (size,):
@@ -33,7 +43,8 @@ def probability_vector(values, name: str = "probabilities") -> np.ndarray:
 
 def stochastic_matrix(values, n: int) -> np.ndarray:
     """Validate row-stochastic transition probabilities."""
-    array = np.asarray(values, dtype=np.float64)
+    n = positive_integer(n, "matrix dimension")
+    array = _as_float_array(values, "Transition matrix")
     if array.shape != (n, n):
         raise ValueError(f"Transition matrix shape {array.shape} != ({n}, {n})")
     if not np.all(np.isfinite(array)) or np.any(array < 0):

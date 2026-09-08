@@ -98,15 +98,15 @@ jobs:
       - name: Automated candidate assembly (no visual-review receipt is created or demanded)
         # The tracked publication-review record binds committed-era bytes that
         # CI has just regenerated, so the candidate archive intentionally
-        # omits it; verify passes without it (embedded evidence is
-        # conditional). The tracked record is restored untouched afterwards.
+        # omits it (removed in Python before assembly). The D2 guard asserts
+        # the archive does not carry it.
         run: |
-          review_record="output/reports/publication_review.json"
-          if [ -f "$review_record" ]; then mv "$review_record" /tmp/ccd-candidate-review.json; fi
-          restore() { if [ -f /tmp/ccd-candidate-review.json ]; then mv /tmp/ccd-candidate-review.json "$review_record"; fi; }
-          trap restore EXIT
           uv run --frozen python - <<'PY'
           from pathlib import Path
+
+          review = Path('output/reports/publication_review.json')
+          if review.exists():
+              review.unlink()
 
           from src.release_bundle import build_release_archive, verify_release_archive
           from src.release_metadata import validate_release_metadata

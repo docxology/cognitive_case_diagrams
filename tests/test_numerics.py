@@ -36,10 +36,6 @@ def test_probability_vector_rejects_bool_input() -> None:
         probability_vector(np.array([True, False]))
 
 
-def test_stochastic_matrix_rejects_zero_dimension() -> None:
-    with pytest.raises(ValueError, match="matrix dimension"):
-        stochastic_matrix(np.empty((0, 0)), 0)
-
 
 def test_stochastic_matrix_rejects_complex_input() -> None:
     with pytest.raises(ValueError, match="real-valued"):

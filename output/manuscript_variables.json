@@ -34,7 +34,7 @@
     "docs/manuscript/references.bib": "6b94894db015da32b02a7bf421352e7ee75cefba6448d73ac669524172dd2a44",
     "output/experiments/results.json": "38ee005e6504bdce2edca2bf78e483f881bb3a67dd41fd804f0c90d12d41e1ca",
     "output/figures/figure_registry.json": "a55123182dd70d08ee2b7f62b759b59a7b87a19736e32b4908157778f82293dc",
-    "output/reports/quality_receipt.json": "f6eac193664fa263826937be153145ccf9f3679b2d83baf8d11d196e603bf9bf"
+    "output/reports/quality_receipt.json": "705ff2cafd11cdc4baf94205385a328ff0e693c2b03ce4de3faf37897a501628"
   },
   "quality_input_fingerprint": "bac101a70d09420f936c1bcaaf2d0588eeb99a018d94352d068a77b0111ce9d4",
   "schema": "ccd-manuscript-variables-v1",
@@ -1285,7 +1285,7 @@
         "source": "src.release_validation.validate_quality_receipt -> generated_at",
         "unit": "timestamp"
       },
-      "value": "2026-09-08T19:10:20.441689+00:00"
+      "value": "2026-09-08T19:19:32.967234+00:00"
     },
     "quantum_acc_probability": {
       "spec": {

@@ -73,6 +73,7 @@ def _integrated_tree(gate_tree: Path) -> Path:
 
     (gate_tree / "pyproject.toml").write_text(
         '[project]\nname = "cognitive_case_diagrams"\nversion = "2.4.0"\n'
+        'license = "Apache-2.0"\n'
         '[project.urls]\nRepository = "https://github.com/docxology/cognitive_case_diagrams"\n'
         "\n[tool.coverage.report]\nfail_under = 90\n"
     )
@@ -89,6 +90,7 @@ def _integrated_tree(gate_tree: Path) -> Path:
         "authors": [{"name": "Daniel Ari Friedman"}],
         "keywords": ["fixture"],
     }
+    config["metadata"] = {"license": "CC-BY-4.0"}
     (gate_tree / "docs" / "manuscript" / "config.yaml").write_text(
         yaml.safe_dump(config, sort_keys=False)
     )
@@ -247,10 +249,12 @@ def test_metadata_stage_states(tmp_path: Path) -> None:
         },
         "authors": [{"name": "Daniel Ari Friedman"}],
         "keywords": ["fixture"],
+        "metadata": {"license": "CC-BY-4.0"},
     }
     (tree / "docs" / "manuscript" / "config.yaml").write_text(yaml.safe_dump(config))
     (tree / "pyproject.toml").write_text(
         '[project]\nname = "cognitive_case_diagrams"\nversion = "2.4.0"\n'
+        'license = "Apache-2.0"\n'
         '[project.urls]\nRepository = "https://github.com/docxology/cognitive_case_diagrams"\n'
     )
     write_release_metadata(tree)

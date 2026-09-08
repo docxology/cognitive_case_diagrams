@@ -580,6 +580,13 @@ def _read_publication_metadata(root: Path) -> dict[str, str]:
         ).strip()
     except (OSError, ValueError, TypeError):
         pass
+    # Validation seam: malformed DOI/record values must fail collection so
+    # they can never reach hydrated manuscript prose (CH18/AC1). Empty
+    # optional values pass; role collisions (concept/version/prior) also
+    # fail here.
+    from src.release_metadata import validate_publication_identifiers
+
+    validate_publication_identifiers(out)
     return out
 
 

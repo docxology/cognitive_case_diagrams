@@ -53,8 +53,13 @@ class TestIdentityNaturalTransformation:
 
 
 class TestPartialMorphismHandling:
-    def test_morphism_outside_object_map_skipped_not_error(self):
-        """Morphisms with endpoints outside the functor's domain must be silently skipped."""
+    def test_morphism_outside_object_map_raises_listing_missing(self):
+        """A partial object map must RAISE listing the unmapped source roles.
+
+        Queue P1-10 (strict semantics, statistics-accepted): a silently
+        partial identity natural transformation is a defect — every object of
+        the source category needs a verified per-object component.
+        """
         src = CaseCategory(name="full")
         for r in [CaseRole.NOM, CaseRole.ACC, CaseRole.DAT]:
             src.add_role(r)
@@ -73,10 +78,8 @@ class TestPartialMorphismHandling:
             source=src,
             target=tgt,
         )
-        id_nat = IdentityNaturalTransformation(f)
-        # Should not raise; DAT morphism is silently skipped
-        result = id_nat.naturality_holds()
-        assert result is True
+        with pytest.raises(ValueError, match="DAT"):
+            IdentityNaturalTransformation(f)
 
 
 class TestComposeTransformations:

@@ -69,13 +69,30 @@ class NaturalTransformation:
     components: dict[CaseRole, ComponentMorphism] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        """Validate that source and target functors share source categories."""
-        if (self.source_functor.source.name !=
-                self.target_functor.source.name):
+        """Log a warning when F and G do not share the source category.
+
+        Base semantics preserved (queue P1-10 criterion 4 option: keep the
+        warning): the source-category mismatch stays a WARNING, now backed by
+        a structural comparison (contents, not names) so the warning fires
+        exactly when the categories genuinely differ. The name-only practice
+        (two same-named but different categories passing silently) is
+        superseded. The IDENTITY constructor and compose_transformations
+        carry the strict checks (missing-role rejection) for this queue
+        item; document the warning-vs-raise choice in the delivery.
+
+        Components alpha_A: F(A) -> G(A) are arrows of the shared codomain
+        between the two images; the functors may act on different source
+        categories (statistics' controls construct such chains), so no raise
+        here.
+        """
+        if (self.source_functor.source != self.target_functor.source
+                or self.source_functor.target != self.target_functor.target):
             logger.warning(
-                "Source functors have different source categories: %s vs %s",
+                "F and G do not share categories: F: %s -> %s vs G: %s -> %s",
                 self.source_functor.source.name,
+                self.source_functor.target.name,
                 self.target_functor.source.name,
+                self.target_functor.target.name,
             )
 
     def set_component(self, role: CaseRole, component: ComponentMorphism) -> None:
@@ -242,12 +259,27 @@ class IdentityNaturalTransformation(NaturalTransformation):
 
         Args:
             functor: The functor F for which id_F is constructed.
+
+        Raises:
+            ValueError: If the functor's object map does not cover every
+                object of the shared source category (id_F would have
+                unverified or missing per-object components).
         """
         super().__init__(
             name=f"id_{functor.name}",
             source_functor=functor,
             target_functor=functor,
         )
+        missing = sorted(
+            r.name for r in functor.source.objects if r not in functor.object_map
+        )
+        if missing or not functor.object_map:
+            detail = ", ".join(missing) if missing else "<object map empty>"
+            raise ValueError(
+                f"Cannot construct identity natural transformation on functor "
+                f"'{functor.name}': the functor's object map must cover every "
+                f"object of the source category; missing roles: {detail}"
+            )
         # Set identity components for every object in the functor
         for role, image in functor.object_map.items():
             self.components[role] = ComponentMorphism(
@@ -280,7 +312,7 @@ def compose_transformations(
             composite component weight is the enriched product
             ``w(α_A) · w(β_A)``.
     """
-    if alpha.target_functor.name != beta.source_functor.name:
+    if alpha.target_functor != beta.source_functor:
         raise ValueError(
             f"Cannot compose: α target functor ({alpha.target_functor.name}) "
             f"!= β source functor ({beta.source_functor.name})"
@@ -292,8 +324,18 @@ def compose_transformations(
         target_functor=beta.target_functor,
     )
 
+    # Component role sets must be identical: a partial vertical composite
+    # would be silently incomplete (queue P1-10; documented strict semantics).
+    missing_in_beta = sorted(r.name for r in alpha.components if r not in beta.components)
+    missing_in_alpha = sorted(r.name for r in beta.components if r not in alpha.components)
+    if missing_in_beta or missing_in_alpha:
+        raise ValueError(
+            "Cannot compose: component role sets must be identical — "
+            f"beta lacks: {missing_in_beta}; alpha lacks: {missing_in_alpha} "
+            "(the vertical composite would be silently incomplete)"
+        )
+
     for role in alpha.components:
-        if role in beta.components:
             alpha_comp = alpha.components[role]
             beta_comp = beta.components[role]
             # Componentwise composability: α_A must land where β_A starts.

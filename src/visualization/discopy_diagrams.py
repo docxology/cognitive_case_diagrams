@@ -110,7 +110,7 @@ def _draw_native(drawing: Any, destination: Path, **params: Any) -> None:
                     expanded_left = min(left, extent.x0 - padding)
                     expanded_right = max(right, extent.x1 + padding)
                     vertices[:, 0] = [expanded_left if value == left else expanded_right for value in vertices[:, 0]]
-        save_publication_figure(fig, destination, dpi=FIGURE_DPI, bbox_inches="tight")
+        save_publication_figure(fig, destination, dpi=FIGURE_DPI, bbox_inches=None)
     finally:
         plt.close(fig)
 
@@ -215,7 +215,7 @@ def render_discopy_sentence_progression(
     eq = Equation(intrans, trans, passive, symbol="→")
     with _glyph_safe_rc():
         _draw_native(eq, resolved,
-            figsize=(24, 7),
+            figsize=(19, 6),
             fontsize=18,
             margins=(0.12, 0.12),
         )
@@ -240,7 +240,7 @@ def render_discopy_multilingual(
     eq = Equation(*diagram_list[:3], symbol="≅")
     with _glyph_safe_rc():
         _draw_native(eq, resolved,
-            figsize=(26, 7),
+            figsize=(19, 6),
             fontsize=18,
             margins=(0.08, 0.08),
         )
@@ -320,7 +320,7 @@ def render_discopy_three_sentence_discourse(
     eq = Equation(s1, s2, s3, symbol="⊗")
     with _glyph_safe_rc():
         _draw_native(eq, resolved,
-            figsize=(26, 7),
+            figsize=(19, 6),
             fontsize=18,
             margins=(0.08, 0.08),
         )

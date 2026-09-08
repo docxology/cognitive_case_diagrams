@@ -143,7 +143,9 @@ def n400_from_return_distribution(
         N400 proxy in return units (uncalibrated) (negative for mismatch, 0 for congruent).
 
     Raises:
-        ValueError: If precision is negative or severity out of range.
+        ValueError: If precision is negative or severity out of range, or if
+            the computed amplitude overflows floating-point range (the
+            mismatch is finite but the scaled product is not representable).
     """
     if not np.isfinite(precision) or precision < 0:
         raise ValueError(f"precision must be non-negative, got {precision}")
@@ -152,10 +154,19 @@ def n400_from_return_distribution(
 
     if not np.isfinite(baseline_return) or not np.isfinite(return_dist.mean):
         raise ValueError("Return means must be finite")
+    # Exact-zero short-circuit: a zero factor gives an exactly representable
+    # 0.0 even when other factors overflow (inf * 0 would be nan).
+    if precision == 0.0 or violation_severity == 0.0:
+        return 0.0
     # DPE_semantic: absolute mean-return mismatch
     dpe_semantic = abs(baseline_return - return_dist.mean)
-    # N400 = -DPE_semantic · w_c · S_violation (negative convention)
     n400 = -dpe_semantic * precision * violation_severity
+    if not np.isfinite(n400):
+        raise ValueError(
+            f"N400 result is not representable in floating point: "
+            f"|{baseline_return!r} - {return_dist.mean!r}| * {precision!r} * "
+            f"{violation_severity!r} overflows"
+        )
     logger.debug(
         "N400: DPE_sem=%.3f, w_c=%.3f, S=%.1f → N400=%.3f model units",
         dpe_semantic, precision, violation_severity, n400,
@@ -196,7 +207,9 @@ def p600_from_precision_update(
         P600 proxy in scaled DPE units (uncalibrated) (positive for syntactic reanalysis).
 
     Raises:
-        ValueError: On negative precision or scaling values.
+        ValueError: On negative precision or scaling values, or if the
+            computed amplitude overflows floating-point range (each factor is
+            finite but the product is not representable).
     """
     if not np.isfinite(prior_precision) or prior_precision < 0:
         raise ValueError(f"prior_precision must be non-negative, got {prior_precision}")
@@ -210,7 +223,16 @@ def p600_from_precision_update(
         raise ValueError(f"violation_severity must be in [0,1], got {violation_severity}")
 
     delta_lambda = max(0.0, posterior_precision - prior_precision)
+    # Exact-zero short-circuit (same rationale as the N400 guard above).
+    if scaling == 0.0 or delta_lambda == 0.0 or dpe == 0.0 or violation_severity == 0.0:
+        return 0.0
     p600 = scaling * delta_lambda * dpe * violation_severity
+    if not np.isfinite(p600):
+        raise ValueError(
+            f"P600 result is not representable in floating point: "
+            f"{scaling!r} * {delta_lambda!r} * {dpe!r} * {violation_severity!r} "
+            f"overflows"
+        )
     logger.debug(
         "P600: ΔΛ=%.3f × DPE=%.3f × scale=%.2f × S=%.1f → P600=%.3f model units",
         delta_lambda, dpe, scaling, violation_severity, p600,

@@ -14,6 +14,7 @@ References:
 from __future__ import annotations
 
 import logging
+import math
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -268,7 +269,15 @@ class CaseCategory:
 
         Returns:
             Dictionary with keys ``N400_amplitude`` and ``P600_amplitude``.
+
+        Raises:
+            ValueError: If predicted_weight is not finite or is outside [0, 1];
+                this amplitude model validates its own prior-weight input.
         """
+        if not math.isfinite(predicted_weight) or not 0.0 <= predicted_weight <= 1.0:
+            raise ValueError(
+                f"predicted_weight must be finite and in [0,1], got {predicted_weight!r}"
+            )
         n400_semantic_surprise = abs(predicted_weight - observed.weight)
         
         # P600 triggers geometrically if the fundamental morphism isn't structurally licensed

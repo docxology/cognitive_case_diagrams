@@ -50,6 +50,7 @@ from .metrics import (
     convergence_diagnostics,
     distributional_kl,
     quantile_coverage,
+    quantile_atom_gap,
     return_distribution_entropy,
 )
 
@@ -85,5 +86,6 @@ __all__ = [
     "convergence_diagnostics",
     "distributional_kl",
     "quantile_coverage",
+    "quantile_atom_gap",
     "return_distribution_entropy",
 ]

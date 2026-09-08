@@ -65,6 +65,7 @@ from .daif import (
     wasserstein_prediction_error,
     G_policy, softmax_policy_selection, distributional_epistemic_value,
     convergence_diagnostics, distributional_kl, quantile_coverage,
+    quantile_atom_gap,
     return_distribution_entropy,
 )
 
@@ -109,6 +110,7 @@ __all__ = [
     "wasserstein_prediction_error",
     "G_policy", "softmax_policy_selection", "distributional_epistemic_value",
     "convergence_diagnostics", "distributional_kl", "quantile_coverage",
+    "quantile_atom_gap",
     "return_distribution_entropy",
     # §8
     "CasePOVM",

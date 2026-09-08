@@ -5,6 +5,7 @@ for the DAIF framework:
 - convergence_diagnostics(): R-hat, ESS, monotone FE check
 - distributional_kl(): KL divergence between discretised return distributions
 - quantile_coverage(): Calibration diagnostic for quantile estimates
+- quantile_atom_gap(): Deterministic discretization gap F(Q(tau)) - tau
 - return_distribution_entropy(): Shannon entropy of discretised Z
 
 References:
@@ -155,7 +156,14 @@ def quantile_coverage(
     empirical coverage at each quantile level and the overall calibration
     error (mean absolute difference between nominal and empirical coverage).
 
-    A perfectly calibrated quantile model has coverage(τ) == τ for all τ.
+    For a CONTINUOUS law (no atoms) a perfectly calibrated model has
+    coverage(τ) == τ at every level. For a DISCRETE law the generalized
+    inverse Q is a step function, so F(Q(τ)) ≥ τ with equality only at atom
+    boundaries: the deterministic discretization gap F(Q(τ)) − τ (exposed by
+    :func:`quantile_atom_gap`) lower-bounds the reported deviation, and a
+    perfectly calibrated discrete model still reports a positive calibration
+    error. src/experiments/studies.py computes the exact discrete-law target
+    F(Q(τ)) for its coverage arms.
 
     Args:
         predicted_quantiles: Predicted quantile values, shape (n_quantiles,).
@@ -203,6 +211,48 @@ def quantile_coverage(
         "max_calibration_error": max_cal_error,
         "coverage_table": coverage_table,
     }
+
+
+def quantile_atom_gap(
+    predicted_quantiles: np.ndarray,
+    predicted_levels: np.ndarray,
+) -> dict:
+    """Deterministic discretization gap F(Q(τ)) − τ for a quantile grid.
+
+    For a discrete law the generalized inverse Q is a step function and the
+    law CDF at the quantile value, F(Q(τ)), exceeds τ away from atom
+    boundaries. Given the (levels, values) grid this recovers
+    F(Q(τ_i)) = max{τ_j : Q(τ_j) ≤ Q(τ_i)} (Q is nondecreasing), so the gap
+    is exactly the deterministic discretization gap of the law represented by
+    the grid: ≥ 0, zero at atom boundaries, and 0 for a strictly increasing
+    (atom-free) grid. This is a property of the grid, not a model error; use
+    it to separate discretization effects from calibration error in
+    :func:`quantile_coverage`.
+
+    Args:
+        predicted_quantiles: Predicted quantile values (nondecreasing).
+        predicted_levels: Quantile levels τ ∈ (0, 1).
+
+    Returns:
+        Dict with:
+          'atom_gap': array of F(Q(τ_i)) − τ_i per level
+          'max_atom_gap': maximum gap (float)
+
+    Raises:
+        ValueError: On shape mismatch, non-finite values, nondecreasing
+            violations, or invalid levels.
+    """
+    qvals = finite_vector(predicted_quantiles, "predicted_quantiles")
+    taus = finite_vector(predicted_levels, "predicted_levels")
+    if len(qvals) != len(taus):
+        raise ValueError(f"predicted_quantiles/levels length mismatch: {len(qvals)} != {len(taus)}")
+    if np.any((taus <= 0) | (taus >= 1)):
+        raise ValueError("predicted_levels must be in (0, 1)")
+    if np.any(np.diff(qvals) < 0):
+        raise ValueError("predicted_quantiles must be nondecreasing")
+    f_of_q = np.array([taus[qvals <= q].max() for q in qvals])
+    gap = f_of_q - taus
+    return {"atom_gap": gap, "max_atom_gap": float(gap.max())}
 
 
 def return_distribution_entropy(

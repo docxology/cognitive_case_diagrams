@@ -359,8 +359,8 @@ def semantic_state(
     total = float(scaled.sum())
     if not np.isfinite(total) or total <= 0:
         raise ValueError("weights must sum to a positive finite value")
-    diag = (scaled / total).astype(np.complex128)
-    rho = np.diag(diag)
+    normalized = (scaled / total).astype(np.complex128)
+    rho = np.diag(normalized)
 
     logger.debug("Semantic state: Tr(ρ) = %.6f", np.trace(rho).real)
     return rho

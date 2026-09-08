@@ -147,6 +147,7 @@ def build_release_archive(
     version: str,
     publication_date: str,
     additional_files: Iterable[Path] = (),
+    exclude_review_record: bool = False,
 ) -> dict[str, Any]:
     """Create a deterministic ZIP with an internal, independently checked manifest."""
     if not re.fullmatch(r"\d+\.\d+\.\d+(?:[a-zA-Z0-9.+-]*)?", version):
@@ -156,6 +157,11 @@ def build_release_archive(
         raise ValueError("Publication year is outside ZIP timestamp support")
     root = project_root.resolve(strict=True)
     selected = set(collect_release_files(root))
+    if exclude_review_record:
+        selected = {
+            p for p in selected
+            if p.relative_to(root).as_posix() != "output/reports/publication_review.json"
+        }
     extras = set(additional_files)
     if not extras <= selected:
         raise ValueError("Additional release files must satisfy the public collection policy")

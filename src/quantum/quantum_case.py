@@ -344,7 +344,7 @@ def semantic_state(
     if total <= 0:
         raise ValueError("weights must sum to a positive value")
 
-    diag = diag / total  # Normalize
+    diag /= total  # Normalize the allocated vector in place.
     rho = np.diag(diag)
 
     logger.debug("Semantic state: Tr(ρ) = %.6f", np.trace(rho).real)

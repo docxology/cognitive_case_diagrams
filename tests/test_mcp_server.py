@@ -69,6 +69,33 @@ async def artifact_client(tmp_path: Path) -> Any:
         yield connected
 
 
+@pytest.fixture(params=["fresh", "absent", "stale"])
+async def experiment_client(tmp_path: Path, request: Any) -> Any:
+    """Generate real evidence in the tested runtime and exercise freshness states."""
+    from src.experiments import ExperimentConfig, run_experiments, write_results
+
+    output = tmp_path / "output"
+    output.mkdir()
+    payload = None
+    if request.param != "absent":
+        payload = run_experiments(ExperimentConfig(n_replicates=2))
+        for relative in payload["provenance"]["source_files"]:
+            target = tmp_path / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((PROJECT_ROOT / relative).read_bytes())
+        if request.param == "stale":
+            payload["provenance"]["numpy_version"] = "0.0.0"
+        write_results(payload, output / "experiments/results.json")
+    params = StdioServerParameters(
+        command=sys.executable,
+        args=["-m", "src.integrations.server"],
+        cwd=str(PROJECT_ROOT),
+        env={**os.environ, "CCD_ARTIFACT_ROOT": str(output)},
+    )
+    async with Client(params) as connected:
+        yield connected, request.param, payload
+
+
 # ---------------------------------------------------------------------------
 # Initialization and discovery
 
@@ -190,26 +217,22 @@ async def test_unknown_tool_is_an_explicit_error(client: Any) -> None:
     assert "Unknown tool" in result.content[0].text
 
 
-async def test_experiment_variables_tool_matches_canonical_file(client: Any) -> None:
-    from src.integrations.artifacts import ArtifactIndex
-    from src.integrations.experiments import experiments_path
-
-    result = await client.call_tool("list_experiment_variables", {})
-    canonical = experiments_path(ArtifactIndex().root)
-    if canonical.is_file():
+async def test_experiment_variables_tool_matches_canonical_file(experiment_client: Any) -> None:
+    connected, state, payload = experiment_client
+    result = await connected.call_tool("list_experiment_variables", {})
+    if state == "fresh":
         assert result.is_error is False
         variables = result.structured_content["variables"]
-        assert variables
+        assert len(variables) == len(payload["variables"])
         for variable in variables:
-            assert set(variable) == {
-                "identifier", "value", "unit", "ci_low", "ci_high",
-                "confidence_level", "sample_unit", "interpretation",
-            }
+            identifier = variable["identifier"]
+            assert {key: value for key, value in variable.items() if key != "identifier"} == (
+                payload["variables"][identifier]
+            )
     else:
-        # The canonical results file does not exist until the experiments
-        # stage runs; the tool must say so in a model-readable error.
         assert result.is_error is True
-        assert "not yet generated" in result.content[0].text
+        expected = "not yet generated" if state == "absent" else "current runtime"
+        assert expected in result.content[0].text
 
 
 # ---------------------------------------------------------------------------
@@ -279,17 +302,17 @@ async def test_traversal_and_non_allowlisted_uris_are_refused(client: Any) -> No
 
 
 async def test_experiments_resource_reports_absence_or_valid_results(
-    client: Any,
+    experiment_client: Any,
 ) -> None:
-    contents = (await client.read_resource("ccd://experiments/results")).contents[0]
+    connected, state, expected = experiment_client
+    if state == "stale":
+        with pytest.raises(MCPError):
+            await connected.read_resource("ccd://experiments/results")
+        return
+    contents = (await connected.read_resource("ccd://experiments/results")).contents[0]
     payload = json.loads(contents.text)
-    from src.integrations.experiments import experiments_path
-    from src.integrations.artifacts import ArtifactIndex
-
-    canonical = experiments_path(ArtifactIndex().root)
-    if canonical.is_file():
-        assert payload["schema_version"] == "1.0"
-        assert payload["provenance"]["config_sha256"]
+    if state == "fresh":
+        assert payload == expected
     else:
         assert payload["available"] is False
         assert "not yet generated" in payload["reason"]

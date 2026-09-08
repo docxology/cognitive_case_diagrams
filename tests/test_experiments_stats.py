@@ -57,6 +57,15 @@ def test_wilson_extremes_and_numpy_integers():
     lo_all, hi_all = wilson_score_interval(10, 10)
     assert lo_all == pytest.approx(1.0 - z * z / (10 + z * z))
     assert hi_all == 1.0
+    # Several counts and quantiles expose cancellation on different libm builds.
+    for n in (1, 3, 7, 10, 100, 10000):
+        for quantile in (0.1, 1.5, 2.0, 3.0, z):
+            lower, upper = wilson_score_interval(0, n, z=quantile)
+            assert lower == 0.0
+            assert upper == pytest.approx(quantile**2 / (n + quantile**2))
+            lower, upper = wilson_score_interval(n, n, z=quantile)
+            assert upper == 1.0
+            assert lower == pytest.approx(n / (n + quantile**2))
     lo_np, hi_np = wilson_score_interval(np.int64(3), np.int64(10))
     assert lo_np == pytest.approx(wilson_score_interval(3, 10)[0])
     assert hi_np == pytest.approx(wilson_score_interval(3, 10)[1])

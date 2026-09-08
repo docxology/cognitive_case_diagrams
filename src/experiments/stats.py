@@ -80,6 +80,12 @@ def wilson_score_interval(
         raise ValueError(f"successes must be in [0, trials], got {successes}/{trials}")
     if not math.isfinite(z) or z <= 0:
         raise ValueError(f"z must be finite and positive, got {z}")
+    # The binomial boundary roots are exact; subtracting centre and half
+    # can leave a platform-dependent rounding residual at zero or one.
+    if k == 0:
+        return (0.0, z * z / (n + z * z))
+    if k == n:
+        return (n / (n + z * z), 1.0)
     p_hat = k / n
     denom = 1.0 + z * z / n
     centre = (p_hat + z * z / (2.0 * n)) / denom

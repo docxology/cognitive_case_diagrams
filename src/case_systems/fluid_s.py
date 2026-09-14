@@ -2,8 +2,11 @@
 
 Implements the Fluid-S alignment system discussed in §4–5 of the manuscript,
 where the intransitive subject S receives different case marking depending
-on the speaker's construal of agentive volition. In Bats (Nakh-Daghestanian),
-'fall' takes ABS when accidental but ERG when volitional.
+on the speaker's construal of agentive volition. The module name references
+the manuscript's motivating example: the Bats (Nakh-Daghestanian) fluid-S
+pattern, in which 'fall' is glossed ABS when accidental and ERG when
+volitional. These mappings carry no language-specific forms, corpus
+observations, or validated grammar.
 
 Categorically, Fluid-S defines a context-dependent functor on the
 intransitive-subject role:
@@ -104,7 +107,6 @@ class FluidSFunctor:
                 logger.debug("S/NOM mapped to ACC (non-volitional/patient-like)")
             return mapped
 
-        # A (transitive agent) always maps to agent marking
         if role in (CaseRole.GEN, CaseRole.DAT, CaseRole.INS,
                     CaseRole.LOC, CaseRole.ABL, CaseRole.VOC):
             return role  # Oblique cases pass through unchanged

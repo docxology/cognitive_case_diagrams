@@ -33,7 +33,7 @@ The shared template validator has a documented integration limitation with this 
 
 ## Agent access
 
-The optional [MCP integration](docs/agent_integrations.md) exposes bounded numerical operations and read-only project resources through `ccd-mcp`. The [installable skill](skills/cognitive-case-diagrams/SKILL.md) documents evidence boundaries and reproducible workflows. Install the MCP dependency with `uv sync --extra mcp`; downstream wheel users select the `mcp` extra.
+The optional [MCP integration](docs/agent_integrations.md) exposes bounded numerical operations and read-only project resources through `ccd-mcp`. The [installable skill](skills/cognitive-case-diagrams/SKILL.md) documents evidence boundaries and reproducible workflows. Install the MCP dependency with `uv sync --extra mcp`; downstream wheel users select the `mcp` extra. From a repository checkout, `uv sync` alone suffices because the dev group already includes `mcp` — the [install section](docs/agent_integrations.md#install) documents that path.
 
 ## Example
 

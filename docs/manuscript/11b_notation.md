@@ -13,15 +13,25 @@ S, A, and P denote the argument primitives defined in [@sec:case-systems]. NOM, 
 | $g\circ f$ | First $f$, then $g$ |
 | $\otimes$ | Monoidal product in a specified category |
 | $n,s,n^l,n^r$ | Noun, sentence, and adjoint types |
-|$Z$|Candidate or verified hom-value matrix (entries $Z_{ij}$) or similarity matrix, distinguished in context; in [@sec:daif-policy] the scalar score random variable in $\operatorname{Var}(Z)$|
-| $|Z|$ | Weighting/coweighting sum when defined |
+| $Z$ |Candidate or verified hom-value matrix (entries $Z_{ij}$) or similarity matrix, distinguished in context; in [@sec:daif-policy] the scalar score random variable in $\operatorname{Var}(Z)$|
+| $\lvert Z\rvert$ | Weighting/coweighting sum when defined |
 | $q,p,L,T$ | Posterior, prior, likelihood, row-stochastic transition matrix |
-|$F$|Variational free energy for a specified fixed model; in quantile-coverage contexts ([@sec:exp-calibration]) the distribution function of the return law, as in $F(Q(\tau))$|
+| $F$ |Variational free energy for a specified fixed model; in quantile-coverage contexts ([@sec:exp-calibration]) the distribution function of the return law, as in $F(Q(\tau))$|
 | $G$ | Caller-defined policy score in the compatibility API |
+| $\gamma$ | Discount factor in $[0,1]$ for the return distribution and policy score |
+| $\beta$ | Risk coefficient on $\operatorname{Var}(Z)$ in the caller-defined policy score |
 | $\tau,Q(\tau)$ | Quantile probability level and value |
+| $\kappa$ | Huber clip threshold in the quantile update; distinct from the complexity score $\kappa(D)$ of [@sec:compact-closure-complexity] |
+| $\eta$ | Distortion parameter; the stated distortion mode is optimistic iff $\eta<1$ |
+| $\lambda$ | Precision vectors (likelihood, prior, post) in the filtering and proxy formulas |
+| $m,m_0$ | Return-distribution mean and baseline return in the N400-inspired proxy |
+| $N_{\mathrm{lex}},N_{\mathrm{cup}},N_{\mathrm{cap}},d(D)$ | Lexical item, cup, and cap counts and the complexity score $\kappa(D)$ |
 | $E_c,\rho$ | POVM effect and density matrix |
 | $W_p$ | Wasserstein distance of order $p$ under a stated reconstruction |
+| DPE | Distributional prediction error (surprisal or Wasserstein form, as stated) |
 
 Table: Symbols used in the mathematical and computational examples. {#tbl:notation}
 
 Natural logarithms give entropy and KL in nats. Similarity weights and synthetic scores are dimensionless unless a scale is explicitly supplied. Variances have squared score units. ERP-inspired amplitudes are uncalibrated model units; waveform time coordinates are milliseconds. `return`, `Bellman`, `Bethe`, `MonoidalFunctor`, and `ClassifyingTopos` in legacy APIs do not override the narrower operational definitions in the text.
+
+Replication intervals in the synthetic-statistics chapter ([@sec:synthetic-statistics]) are simulation-replication summaries of seeded runs, not sampling distributions over any population.

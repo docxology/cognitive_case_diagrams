@@ -97,7 +97,7 @@ def main() -> int:
     # Step 1: Collect metrics
     logger.info("Collecting metrics from project structure...")
     metrics = collect_metrics(_PROJECT_ROOT)
-    findings = scan_hard_coded_claims({p.name: p.read_text() for p in chapters})
+    findings = scan_hard_coded_claims({p.name: p.read_text(encoding="utf-8") for p in chapters})
     if findings:
         raise ValueError("Hard-coded manuscript claims: " + "; ".join(findings))
     logger.info(f"Collected {len(metrics)} variables:")

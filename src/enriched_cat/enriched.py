@@ -46,7 +46,7 @@ STANDARD_PROXIMITY_MATRIX = np.array([
 ])
 
 
-@dataclass
+@dataclass(eq=False)
 class EnrichedCategory:
     """A [0,1]-enriched category of case roles.
 
@@ -71,6 +71,22 @@ class EnrichedCategory:
         self.proximity_matrix = np.asarray(self.proximity_matrix, dtype=np.float64).copy()
         if self.proximity_matrix.size > 0 or self.roles:
             self._validate()
+
+    def __eq__(self, other: object) -> bool:
+        """Structural equality: name, ordered roles, and proximity matrix.
+
+        The generated dataclass ``__eq__`` compares numpy arrays with ``==``
+        elementwise, which raises on ndarray operands, so equality is
+        implemented explicitly.
+        """
+        if not isinstance(other, EnrichedCategory):
+            return NotImplemented
+        return (
+            self.name == other.name
+            and tuple(self.roles) == tuple(other.roles)
+            and self.proximity_matrix.shape == other.proximity_matrix.shape
+            and bool(np.array_equal(self.proximity_matrix, other.proximity_matrix))
+        )
 
     def _validate(self) -> None:
         """Validate enriched category axioms.
@@ -117,6 +133,8 @@ class EnrichedCategory:
         Falls back to pseudo-inverse for singular or near-singular matrices,
         logging a warning. The result is cached for the lifetime of the instance.
         """
+        if len(self.roles) == 0:
+            raise ValueError("magnitude is undefined for an empty category")
         self._validate()
         if (not hasattr(self, "_z_inv_cache") or self._z_matrix_cache is None
                 or not np.array_equal(self.proximity_matrix, self._z_matrix_cache)):

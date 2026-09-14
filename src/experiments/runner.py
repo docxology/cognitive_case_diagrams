@@ -128,7 +128,6 @@ __all__ = [
     "validate_experiment_results",
 ]
 
-_UNITS = ("probability", "dimensionless", "nats", "count", "version")
 
 # (block, metric, uncertainty_key, unit, interpretation). The uncertainty key
 # is the block's structured interval entry feeding the _ci95 sidecars.
@@ -199,19 +198,22 @@ _VARIABLE_TABLE: tuple[tuple[str, str, str | None, str, str], ...] = (
     ("quantum_projection", "completeness_residual_max", None, "dimensionless",
      "Largest completeness residual across replicates."),
     ("sensitivity", "gamma_max_abs_effect", None, "dimensionless",
-     "Descriptive largest paired mean-score effect of the prespecified gamma "
-     "sweep against gamma[0] at common random numbers; carries NO interval "
+     "Signed paired mean-score effect of the largest-magnitude arm of the "
+     "prespecified gamma sweep against gamma[0] at common random numbers "
+     "(negative: the dominant arm is below baseline); carries NO interval "
      "because the arm is selected by the data (prespecified per-arm pointwise "
      "intervals are in experiments.sensitivity.arms)."),
     ("sensitivity", "entropy_bins_max_abs_effect", None, "nats",
-     "Descriptive largest paired effect of the prespecified return-entropy "
-     "bin-count sweep against bins[0]; discretization sensitivity of the "
-     "diagnostic; carries NO interval (all arms reported with pointwise "
+     "Signed paired effect of the largest-magnitude arm of the prespecified "
+     "return-entropy bin-count sweep against bins[0] (negative: the dominant "
+     "arm is below baseline); discretization sensitivity of the diagnostic; "
+     "carries NO interval (all arms reported with pointwise "
      "intervals in experiments.sensitivity.arms)."),
     ("sensitivity", "temperature_max_abs_effect", None, "nats",
-     "Descriptive largest paired effect of the prespecified "
+     "Signed paired effect of the largest-magnitude arm of the prespecified "
      "policy-temperature sweep against temperatures[0] on the policy "
-     "entropy; carries NO interval (all arms reported with pointwise "
+     "entropy (negative: the dominant arm is below baseline); carries NO "
+     "interval (all arms reported with pointwise "
      "intervals in experiments.sensitivity.arms)."),
 )
 

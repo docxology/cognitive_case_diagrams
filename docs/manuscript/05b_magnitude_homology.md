@@ -4,7 +4,7 @@ For a finite similarity matrix $Z$, a weighting $w$ and coweighting $v$ satisfy 
 
 $$
 \lvert Z\rvert=\mathbf1^T Z^{-1}\mathbf1.
-$$ {#eq:eq-5-3}
+$$ {#eq:eq-5b-1}
 
 For a two-role example $Z=\left(\begin{smallmatrix}1&a\\a&1\end{smallmatrix}\right)$ with $0\leq a<1$, the weighting is $(1/(1+a),1/(1+a))$ and the magnitude is $2/(1+a)$. At $a=1$, the inverse does not exist, yet weightings and coweightings do exist and have sum one. Singularity therefore does not by itself make magnitude undefined.
 

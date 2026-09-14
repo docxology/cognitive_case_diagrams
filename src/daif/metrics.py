@@ -119,8 +119,6 @@ def distributional_kl(
     positive_integer(n_bins, "n_bins", 2)
     if not np.isfinite(epsilon) or epsilon <= 0:
         raise ValueError("epsilon must be finite and positive")
-    if n_bins < 2:
-        raise ValueError(f"n_bins must be >= 2, got {n_bins}")
 
     quantile_grid(dist_p.quantiles, dist_p.quantile_levels)
     quantile_grid(dist_q.quantiles, dist_q.quantile_levels)
@@ -240,7 +238,7 @@ def quantile_atom_gap(
 
     Raises:
         ValueError: On shape mismatch, non-finite values, nondecreasing
-            violations, or invalid levels.
+            violations, or levels that are not strictly increasing in (0,1).
     """
     qvals = finite_vector(predicted_quantiles, "predicted_quantiles")
     taus = finite_vector(predicted_levels, "predicted_levels")
@@ -248,6 +246,8 @@ def quantile_atom_gap(
         raise ValueError(f"predicted_quantiles/levels length mismatch: {len(qvals)} != {len(taus)}")
     if np.any((taus <= 0) | (taus >= 1)):
         raise ValueError("predicted_levels must be in (0, 1)")
+    if np.any(np.diff(taus) <= 0):
+        raise ValueError("predicted_levels must be strictly increasing in (0, 1)")
     if np.any(np.diff(qvals) < 0):
         raise ValueError("predicted_quantiles must be nondecreasing")
     f_of_q = np.array([taus[qvals <= q].max() for q in qvals])
@@ -281,15 +281,12 @@ def return_distribution_entropy(
     positive_integer(n_bins, "n_bins", 2)
     if not np.isfinite(epsilon) or epsilon <= 0:
         raise ValueError("epsilon must be finite and positive")
-    if n_bins < 2:
-        raise ValueError(f"n_bins must be >= 2, got {n_bins}")
-
     q, _ = quantile_grid(return_dist.quantiles, return_dist.quantile_levels)
+    # Inflate both ends so a point-mass grid still spans a >0 range; the
+    # histogram path then returns a near-zero (not exactly 0) entropy, as
+    # documented in tests/test_daif_metrics.py.
     v_min = float(q.min()) - 1e-8
     v_max = float(q.max()) + 1e-8
-    if v_min >= v_max:
-        # All quantiles identical: entropy = 0 (point mass)
-        return 0.0
 
     bins = np.linspace(v_min, v_max, n_bins + 1)
     counts, _ = np.histogram(q, bins=bins)

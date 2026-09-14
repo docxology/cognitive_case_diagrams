@@ -59,6 +59,33 @@ class TestUpdateBelief:
         with pytest.raises(ValueError, match="zero"):
             update_belief(prior, np.array([0.0, 0.0]))
 
+    def test_nonfinite_likelihood_raises(self) -> None:
+        """Non-finite likelihoods (np.inf) raise ValueError."""
+        prior = CaseDiagramBelief(
+            roles=[CaseRole.NOM, CaseRole.ACC],
+            probabilities=np.array([0.5, 0.5]),
+        )
+        with pytest.raises(ValueError, match="finite"):
+            update_belief(prior, np.array([np.inf, 0.5]))
+
+    def test_negative_likelihood_raises(self) -> None:
+        """Negative likelihoods raise ValueError."""
+        prior = CaseDiagramBelief(
+            roles=[CaseRole.NOM, CaseRole.ACC],
+            probabilities=np.array([0.5, 0.5]),
+        )
+        with pytest.raises(ValueError, match="non-negative"):
+            update_belief(prior, np.array([0.5, -0.1]))
+
+    def test_impossible_evidence_raises(self) -> None:
+        """Evidence with likelihood only where prior mass is 0 raises."""
+        prior = CaseDiagramBelief(
+            roles=[CaseRole.NOM, CaseRole.ACC],
+            probabilities=np.array([1.0, 0.0]),
+        )
+        with pytest.raises(ValueError, match="incompatible"):
+            update_belief(prior, np.array([0.0, 1.0]))
+
     def test_name_propagation(self) -> None:
         """Updated belief has '_updated' name suffix."""
         prior = CaseDiagramBelief(

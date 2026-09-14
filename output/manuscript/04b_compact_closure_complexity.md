@@ -10,7 +10,7 @@ The complexity utilities report box count, cup count, cap count, depth, width, a
 
 $$
 \kappa(D)=1N_{\mathrm{lex}}+0.5N_{\mathrm{cup}}+0.25N_{\mathrm{cap}}+0.1\,d(D).
-$$ {#eq:eq-4-4}
+$$ {#eq:eq-4b-1}
 
 Here `count_words` counts every non-Cup/non-Cap box; in diagrams containing a Swap, this is broader than a linguistic word count. The four coefficients are the declared defaults of `syntactic_complexity_score()` in the source, injected at build time; they are chosen weights, not a fitted psycholinguistic model. DisCoPy depth and width describe a particular representation and do not directly determine qubit count, hardware depth, processing time, or cognitive difficulty without an explicit compilation or measurement model.
 

@@ -70,7 +70,18 @@ class CasePOVM:
             self._validate()
 
     def _validate(self) -> None:
-        """Validate POVM completeness: ∑ E_c = I."""
+        """Validate POVM completeness: ∑ E_c = I.
+
+        Also rejects elements keyed by roles outside ``self.roles``: such
+        extra elements are excluded from the completeness sum and would
+        silently leave a poisoned POVM ``is_complete()``.
+        """
+        extra = set(self.elements) - set(self.roles)
+        if extra:
+            raise ValueError(
+                "POVM has elements for roles not in roles: "
+                f"{sorted(r.name for r in extra)}"
+            )
         total = np.zeros((self.dimension, self.dimension), dtype=np.complex128)
         for role in self.roles:
             if role not in self.elements:
@@ -164,8 +175,7 @@ def crisp_case_povm(roles: list, dimension: int | None = None) -> CasePOVM:
     elements = {}
     for i, role in enumerate(roles):
         proj = np.zeros((n, n), dtype=np.complex128)
-        if i < n:
-            proj[i, i] = 1.0
+        proj[i, i] = 1.0
         elements[role] = proj
         logger.debug("Crisp projector for %s: basis vector |%d⟩", role.name, i)
 
@@ -266,11 +276,18 @@ def fluid_s_povm(
 
     Args:
         p_volitional: Probability of volitional construal in [0,1].
-        dimension: Hilbert space dimension (default 2).
+        dimension: Hilbert space dimension. Must be 2: the rotated-basis
+            construction below is two-dimensional.
 
     Returns:
         CasePOVM with context-dependent projectors.
     """
+    if dimension != 2:
+        raise ValueError(
+            "fluid_s_povm only supports dimension=2: the rotated-basis "
+            f"construction is two-dimensional, got dimension={dimension}"
+        )
+
     if not 0.0 <= p_volitional <= 1.0:
         raise ValueError(f"p_volitional must be in [0,1], got {p_volitional}")
 

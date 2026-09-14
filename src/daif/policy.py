@@ -35,12 +35,6 @@ identity follows. Risk coefficient units must compensate variance units.
     ev = finite_vector(epistemic_value, "epistemic_value", n)
     pv = finite_vector(pragmatic_value, "pragmatic_value", n)
 
-    if ll.shape != (n,):
-        raise ValueError(f"log_likelihood shape {ll.shape} != ({n},)")
-    if ev.shape != (n,):
-        raise ValueError(f"epistemic_value shape {ev.shape} != ({n},)")
-    if pv.shape != (n,):
-        raise ValueError(f"pragmatic_value shape {pv.shape} != ({n},)")
     if not np.isfinite(gamma) or gamma <= 0:
         raise ValueError(f"gamma must be positive, got {gamma}")
     if not np.isfinite(risk_sensitivity) or risk_sensitivity < 0:

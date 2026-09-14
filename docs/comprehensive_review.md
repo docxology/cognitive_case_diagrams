@@ -2,6 +2,8 @@
 
 **Historical initial-review record.** The statements below describe the first local revision and its then-current publication state. Subsequent experiment, MCP, variable-registry, and release work follows the [release workflow](release_workflow.md). Historical receipt paths under `output/review/` are local working evidence and are excluded from public release archives; current publication evidence is supplied with the release.
 
+Counts in this historical record are as of 2026-09-07; current counts are re-derived in `output/metrics.json` and `output/figures/figure_registry.json`.
+
 This working revision replaces overstated scientific claims with explicit method contracts, repairs numerical and validation defects, and rebuilds the manuscript and figures from their sources. It is a local development revision, not a publication or independent certification. Baseline review preceded implementation; checks of the changes are implementation verification.
 
 ## 1. Surface map and authority

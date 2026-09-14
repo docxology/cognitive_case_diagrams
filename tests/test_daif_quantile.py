@@ -194,6 +194,33 @@ class TestIQNOverrideKwargs:
                 cq, cl, tq, tl, risk_distortion="optimistic", eta_distortion=0.0,
             )
 
+    def test_eta_ge_one_rejected_for_directional_modes(self):
+        """eta >= 1 would invert the optimistic/pessimistic distortion."""
+        cq, cl, tq, tl = self._inputs()
+        for mode in ("optimistic", "pessimistic"):
+            with pytest.raises(ValueError, match="eta_distortion"):
+                implicit_quantile_network_update(
+                    cq, cl, tq, tl, risk_distortion=mode, eta_distortion=1.2,
+                )
+
+    def test_eta_just_below_one_works_for_directional_modes(self):
+        cq, cl, tq, tl = self._inputs()
+        opt = implicit_quantile_network_update(
+            cq, cl, tq, tl, risk_distortion="optimistic", eta_distortion=0.999,
+        )
+        pess = implicit_quantile_network_update(
+            cq, cl, tq, tl, risk_distortion="pessimistic", eta_distortion=0.999,
+        )
+        assert np.all(np.isfinite(opt)) and np.all(np.isfinite(pess))
+
+    def test_eta_ge_one_accepted_for_neutral_mode(self):
+        """The neutral mode only requires eta > 0."""
+        cq, cl, tq, tl = self._inputs()
+        result = implicit_quantile_network_update(
+            cq, cl, tq, tl, risk_distortion="neutral", eta_distortion=1.2,
+        )
+        assert np.all(np.isfinite(result))
+
     def test_invalid_cvar_alpha_raises(self):
         cq, cl, tq, tl = self._inputs()
         with pytest.raises(ValueError, match="cvar_alpha"):

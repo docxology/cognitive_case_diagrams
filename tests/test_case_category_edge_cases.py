@@ -151,3 +151,63 @@ class TestFloatToleranceConstant:
         assert m.weight == 0.0
         m2 = Morphism(CaseRole.NOM, CaseRole.ACC, "boundary2", weight=1.0)
         assert m2.weight == 1.0
+
+
+class TestAlignmentFunctorPreservesIdentity:
+    def test_mapped_role_preserved(self):
+        """Mapped role with matching identity endpoints → True."""
+        from src.case_systems.functor import AlignmentFunctor
+
+        src = CaseCategory("SrcId")
+        tgt = CaseCategory("TgtId")
+        for r in [CaseRole.NOM]:
+            src.add_role(r)
+        for r in [CaseRole.NOM]:
+            tgt.add_role(r)
+
+        f = AlignmentFunctor(
+            name="Id",
+            source=src,
+            target=tgt,
+            object_map={CaseRole.NOM: CaseRole.NOM},
+        )
+        assert f.preserves_identity(CaseRole.NOM) is True
+
+    def test_unmapped_role_returns_false(self):
+        """Role outside source objects → False (mirrors tensor semantics; was ValueError)."""
+        from src.case_systems.functor import AlignmentFunctor
+
+        src = CaseCategory("SrcPartial")
+        tgt = CaseCategory("TgtPartial")
+        for r in [CaseRole.NOM]:
+            src.add_role(r)
+        for r in [CaseRole.NOM]:
+            tgt.add_role(r)
+
+        f = AlignmentFunctor(
+            name="Partial",
+            source=src,
+            target=tgt,
+            object_map={CaseRole.NOM: CaseRole.NOM},
+        )
+        # VOC not in source objects and not in object_map
+        assert f.preserves_identity(CaseRole.VOC) is False
+
+    def test_role_in_source_but_unmapped_returns_false(self):
+        """Role in source objects but absent from object_map → False."""
+        from src.case_systems.functor import AlignmentFunctor
+
+        src = CaseCategory("SrcHalf")
+        tgt = CaseCategory("TgtHalf")
+        for r in [CaseRole.NOM, CaseRole.ACC]:
+            src.add_role(r)
+        for r in [CaseRole.NOM]:
+            tgt.add_role(r)
+
+        f = AlignmentFunctor(
+            name="Half",
+            source=src,
+            target=tgt,
+            object_map={CaseRole.NOM: CaseRole.NOM},
+        )
+        assert f.preserves_identity(CaseRole.ACC) is False

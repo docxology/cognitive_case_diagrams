@@ -82,6 +82,7 @@ MUTATIONS: dict[str, tuple[type[Exception], str]] = {
     "nonfinite_metric": (ValueError, "coverage_percent"),
     "hard_coded_prose": (ValueError, "Hard-coded manuscript claims"),
     "missing_manifest": (FileNotFoundError, "manuscript_variables.json"),
+    "markdown_table": (ValueError, "Malformed markdown table"),
     "missing_receipt": (FileNotFoundError, "quality_receipt.json"),
     "missing_experiments": (FileNotFoundError, "results.json"),
     "stale_manifest": (ValueError, "Manuscript variable manifest is stale"),
@@ -167,6 +168,10 @@ def _apply_mutation(gate_tree: Path, mutation: str) -> None:
         _write_metrics(gate_tree, metrics)
     elif mutation == "hard_coded_prose":
         _append_chapter(gate_tree, "\nA supplied weight is 0.8 here.\n")
+    elif mutation == "markdown_table":
+        _append_chapter(
+            gate_tree, "\n| A | B |\n| :--- | :--- |\n| $|Z|$ | c |\n"
+        )
     elif mutation == "missing_manifest":
         (gate_tree / "output" / "manuscript_variables.json").unlink()
     elif mutation == "missing_receipt":
@@ -209,6 +214,42 @@ def test_valid_artifact_passes_all_gates(gate_tree: Path) -> None:
     assert result["bibliography_entries"] == 1
     assert result["labels"] == 2
     assert "visual review" in result["status"]
+
+
+def test_markdown_table_lint_flags_unescaped_math_pipe(tmp_path: Path) -> None:
+    """The 11b-style defect — a row like ``| $|Z|$ | ... |`` — splits into more
+    cells than its header and carries an unescaped pipe inside inline math."""
+    from src.project_validation import lint_markdown_tables
+
+    doc = tmp_path / "11b_defect.md"
+    doc.write_text(
+        "| Symbol | Meaning |\n"
+        "| :--- | :--- |\n"
+        "| $|Z|$ | cardinality of Z |\n",
+        encoding="utf-8",
+    )
+    findings = lint_markdown_tables(doc.name, doc.read_text(encoding="utf-8"))
+    assert findings == [
+        f"{doc.name}:3: unescaped '|' inside inline math in a table row",
+        f"{doc.name}:3: table row has 4 cells but header row (line 1) has 2",
+    ]
+
+
+def test_markdown_table_lint_accepts_clean_table(tmp_path: Path) -> None:
+    """Clean tables, escaped math pipes, and fenced examples produce no findings."""
+    from src.project_validation import lint_markdown_tables
+
+    doc = tmp_path / "clean.md"
+    doc.write_text(
+        "| Symbol | Meaning |\n"
+        "| :--- | :--- |\n"
+        "| $\\|Z\\|$ | cardinality of Z |\n"
+        "| n | element count |\n"
+        "\n"
+        "```\n| ignored | fenced | example |\n```\n",
+        encoding="utf-8",
+    )
+    assert lint_markdown_tables(doc.name, doc.read_text(encoding="utf-8")) == []
 
 
 def test_alt_text_literal_is_caught_by_scanner_after_manifest_rebind(

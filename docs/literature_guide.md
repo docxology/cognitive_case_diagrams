@@ -15,4 +15,4 @@ Primary sources consulted for corrections:
 - [Akgul et al., distributional active inference](https://arxiv.org/abs/2601.20985): external RL/inference research; the local score utilities are not a reproduction or linguistic validation.
 - [DisCoPy pregroup API](https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html): actual typed constructors and reductions.
 
-The earlier Zenodo record was not successfully retrieved during this review (HTTP 429). The current working revision has no assigned DOI. Unused speculative bibliography entries are not treated as evidence; verify the exact primary work before reintroducing a claim based on them.
+The earlier Zenodo record was not successfully retrieved during this review (HTTP 429). DOI roles are fixed in [docs/manuscript/config.yaml](manuscript/config.yaml) (version DOI for this revision, concept DOI for the series); live deposit state is only established at the version_record URL. Unused speculative bibliography entries are not treated as evidence; verify the exact primary work before reintroducing a claim based on them.

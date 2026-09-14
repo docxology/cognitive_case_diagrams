@@ -2,41 +2,41 @@
   "inputs": {
     "docs/figure_alt_text.json": "d3805ae4e41e7cdd4c6965361d21a4ccfe1f46dd8a16cee0552a3e1012304a26",
     "docs/manuscript/00_abstract.md": "706642505236ea7be985ecaff0f72c8673543ebe42a75eed600c4bbb26e851ab",
-    "docs/manuscript/01_introduction.md": "b1415dbbc2835b33dad6abd2c208103655c58d9431e92e40a8b6cffe47b59ea2",
-    "docs/manuscript/01a_research_questions.md": "9bf10ed7a987aa8ac4de77868732e81e1da1b7d3abc1de5882af1f635b64527d",
+    "docs/manuscript/01_introduction.md": "88e57d45d193da8e098a6013787d24ce6991049338264b9ea468fc6a7d38bdaf",
+    "docs/manuscript/01a_research_questions.md": "6a32fe2fe467367ca22355593184fe6d2e2843b231c0732aca7fbf33525dbce9",
     "docs/manuscript/02_case_systems.md": "b3cc5b6eba5a3d750dbf69a0f51d2d80c9636f93cdca48ec7c674782542ad0fb",
     "docs/manuscript/02b_case_categories.md": "b1e3efc82fdf02d5a4734ba4594ac89faf17ea51b84d741f5311d4f05f48e6d9",
-    "docs/manuscript/03_categorial_grammar.md": "18b3e0bec61f2d186b22a8f54838d39c68eb0eb62ec2f3b0d456742e603640f9",
+    "docs/manuscript/03_categorial_grammar.md": "c7e24b65a853540ab97028b19cc233c8124c2dc6ad43644dfdeda29e8a60409e",
     "docs/manuscript/03b_case_type_logic.md": "c5e05693de3534adcf4120807accce8469ca675e7aa7240d93aad77fcaf13799",
-    "docs/manuscript/04_categorical_semantics.md": "2d874394866b2a8126c1cead98d8f598257ddd8843b8ecca80706a50f2e17269",
-    "docs/manuscript/04b_compact_closure_complexity.md": "6bd612072457b1d61685d6925a996f36d8f4623d7655b930524a6c12e0ab76f6",
+    "docs/manuscript/04_categorical_semantics.md": "2431abe25da5e2343c7f8a1d598f20aaf61b623d70f43ac4e19f8d2fc1d48813",
+    "docs/manuscript/04b_compact_closure_complexity.md": "fb3b19daf6a263ebd2ba6babac03c112724043ef400e1c3349398aed61b8fb16",
     "docs/manuscript/04c_discourse_complexity.md": "8802bc3909e0c5a849d18e2dc7b6d72f09e4655abbcd2e3834958fcabdacffd9",
-    "docs/manuscript/05_enriched_categories.md": "44452491a191c23d1f05f92f8634e34a29cfc7a8e2b030d7b5a23158c748e5c0",
-    "docs/manuscript/05b_magnitude_homology.md": "d23d54370f8168fd9f8dbeb946fabeb60ffdc75b9970ee3a8f5bfd7877952773",
+    "docs/manuscript/05_enriched_categories.md": "83670bb0d3c2e86c2ad5d3c9a7ef11ebd02211865e150c9bcb614fde61eba786",
+    "docs/manuscript/05b_magnitude_homology.md": "fba03e078104a32e8e72c315f8156a108cf2c9349b6b250e31a4d88890d7b2e6",
     "docs/manuscript/06_topos_theory.md": "5aef2888f9431ab8610404180f6fe3df8a696da307d58bad1194ad41d2d65e9b",
     "docs/manuscript/07_cognitive_integration.md": "3010d2afb67b4be5ee41885619587602d6be6eacbac8478c43fb9f39e3c12287",
     "docs/manuscript/07b_diagrammatic_cognition.md": "9a28ac20048437cb8a477b6e8db31e893ef43e7a1a88277c096fffec8e8138cb",
-    "docs/manuscript/07c_daif_results.md": "040dfcd7ad8320073d52be6737f47a5e32ceec165abf0af3f6b5038bd90eac6d",
-    "docs/manuscript/07d_synthetic_statistics.md": "42be8b1013247f91781f308af06b124cb2370487700c97275a21dae8cc7a7f03",
+    "docs/manuscript/07c_daif_results.md": "c53bd3904e3f89c00da310ee711d65b604ca67e55e13f6fd30cf0fa86d8fbdc6",
+    "docs/manuscript/07d_synthetic_statistics.md": "b64cb052b8a29cae7a926a6113eee94a0858cd9ea5688f5836add9b5b83a08b1",
     "docs/manuscript/08_quantum_active_inference.md": "32ea04f9b5595037266e9241b9fd911b02972f631163ab956490d8da93a43c74",
     "docs/manuscript/08b_quantum_semantics.md": "463c309af60971dc8dcc030e5fb847b1333668967cdf936d89d928d96e37e7d2",
     "docs/manuscript/09_ai_implications.md": "ad0dd70fbaa861bd41486af4ce08e3d8dd9139b605b0182756bf27f33bfbbc0c",
-    "docs/manuscript/09b_cognitive_security.md": "0357bb5142d254fc1a60750a0754839907214d7488c5a84489746d1defc4232a",
+    "docs/manuscript/09b_cognitive_security.md": "6fb7a86da82ee8e616c14de175267eb6cc2e5c9c0b5d104d75be8453b78564bc",
     "docs/manuscript/10_conclusion.md": "1d1e8df4e5031d9ba5a6a039bfdf5ef6ed91c69a5e7bab7c3da84a9f0f313634",
     "docs/manuscript/11_syntactic_sentence_diagrams.md": "896da38534b04f99258063c9e21be4a42f61fc35134fd8dcd00dacc32c868037",
-    "docs/manuscript/11b_notation.md": "27bc94ab4b1618a229d57b742b23d88262133d976f6882bdf11d3bf217b9d33b",
+    "docs/manuscript/11b_notation.md": "67e52652d6ce1e9e34b6e6fa570ab2817be69350075e4338315cd5b3bad1f569",
     "docs/manuscript/11c_automated_test_inventory.md": "e5380601e2d804580e6ee6a6d59fbf11f22d50499be491e0a3e1f46c61881cbc",
     "docs/manuscript/AGENTS.md": "4405e5e1b2aa0eaeeba282dd4cd09a0742b4697e240037560f6c64d401808cb1",
     "docs/manuscript/MANUSCRIPT_STATUS.md": "8d02dbc2e59c2d75903e45c7032b7be3a7f5394f63d164c4cea79262a22322a6",
-    "docs/manuscript/README.md": "8879d90deebc88da22fbf0778784d15d7d0902d8a1923fb9ed7074f34d8ccec1",
+    "docs/manuscript/README.md": "78bce25fbf98af2bc71e79e53ca1950f3ce5b85fca8d5ac9ebf334bc146a645b",
     "docs/manuscript/config.yaml": "2da8c1a589ed927780c04a03473f4c5a9f38313ea8eb5275894b1a522e7ae428",
     "docs/manuscript/preamble.md": "e61d8cbb0f1a77465adf113f2cb6633163235f723e20b81b6d515c7885623b43",
     "docs/manuscript/references.bib": "6b94894db015da32b02a7bf421352e7ee75cefba6448d73ac669524172dd2a44",
-    "output/experiments/results.json": "e20dba2531370bce737f16deebce07d49f0924c4b3df9ddbd72f42748cf23ba0",
-    "output/figures/figure_registry.json": "c07c53ede3cccaf8c96f7b9709901ec76440a2b13f8fdb0cf44f04ff2f3ad709",
-    "output/reports/quality_receipt.json": "f9067e41560f1cb3ffd7dcbf681f487f9492dc764e2b166013c6177ef390be35"
+    "output/experiments/results.json": "dd08bbe7cb13d9c6214ee832b15a4c4e816ad44fbe500311ae5b1ee724ec6575",
+    "output/figures/figure_registry.json": "8aaebdd06e29a20f603ef3e8790f464269b1cafb6dc3ed3f94d0bd3f8e9a81f7",
+    "output/reports/quality_receipt.json": "c16680527444b5ecaf9267986b8f4e25e808fe8448ba91c6f3101b489740bfe2"
   },
-  "quality_input_fingerprint": "9407faf88d16f0aad60e742fbfc8802f4747308fabf60bdb04a2b371eea9e5fe",
+  "quality_input_fingerprint": "4ebe6ac79f83726b983fdebf6cef18b855544099610bccfc12c2d617836485c8",
   "schema": "ccd-manuscript-variables-v1",
   "variables": {
     "alignment_extra_label_count": {
@@ -145,7 +145,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_covered",
         "unit": "count"
       },
-      "value": "6600"
+      "value": "6647"
     },
     "coverage_lines_total": {
       "spec": {
@@ -157,7 +157,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_total",
         "unit": "count"
       },
-      "value": "7083"
+      "value": "7114"
     },
     "coverage_percent": {
       "spec": {
@@ -169,7 +169,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_percent",
         "unit": "percent"
       },
-      "value": "91.50"
+      "value": "91.88"
     },
     "daif_assignment_iterations": {
       "spec": {
@@ -361,7 +361,7 @@
         "source": "src.generate_manuscript_metrics._count_daif_tests",
         "unit": "count"
       },
-      "value": "244"
+      "value": "254"
     },
     "daif_trajectory_evidence_count": {
       "spec": {
@@ -1025,7 +1025,7 @@
     },
     "exp_sensitivity_entropy_bins_max_abs_effect": {
       "spec": {
-        "description": "Descriptive largest paired effect of the prespecified return-entropy bin-count sweep against bins[0]; discretization sensitivity of the diagnostic; carries NO interval (all arms reported with pointwise intervals in experiments.sensitivity.arms).",
+        "description": "Signed paired effect of the largest-magnitude arm of the prespecified return-entropy bin-count sweep against bins[0] (negative: the dominant arm is below baseline); discretization sensitivity of the diagnostic; carries NO interval (all arms reported with pointwise intervals in experiments.sensitivity.arms).",
         "format": "sig6",
         "name": "exp_sensitivity_entropy_bins_max_abs_effect",
         "provenance": "experiments",
@@ -1037,7 +1037,7 @@
     },
     "exp_sensitivity_gamma_max_abs_effect": {
       "spec": {
-        "description": "Descriptive largest paired mean-score effect of the prespecified gamma sweep against gamma[0] at common random numbers; carries NO interval because the arm is selected by the data (prespecified per-arm pointwise intervals are in experiments.sensitivity.arms).",
+        "description": "Signed paired mean-score effect of the largest-magnitude arm of the prespecified gamma sweep against gamma[0] at common random numbers (negative: the dominant arm is below baseline); carries NO interval because the arm is selected by the data (prespecified per-arm pointwise intervals are in experiments.sensitivity.arms).",
         "format": "sig6",
         "name": "exp_sensitivity_gamma_max_abs_effect",
         "provenance": "experiments",
@@ -1049,7 +1049,7 @@
     },
     "exp_sensitivity_temperature_max_abs_effect": {
       "spec": {
-        "description": "Descriptive largest paired effect of the prespecified policy-temperature sweep against temperatures[0] on the policy entropy; carries NO interval (all arms reported with pointwise intervals in experiments.sensitivity.arms).",
+        "description": "Signed paired effect of the largest-magnitude arm of the prespecified policy-temperature sweep against temperatures[0] on the policy entropy (negative: the dominant arm is below baseline); carries NO interval (all arms reported with pointwise intervals in experiments.sensitivity.arms).",
         "format": "sig6",
         "name": "exp_sensitivity_temperature_max_abs_effect",
         "provenance": "experiments",
@@ -1273,7 +1273,7 @@
         "source": "src.release_validation.validate_quality_receipt -> quality_input_fingerprint[:12]",
         "unit": "text"
       },
-      "value": "9407faf88d16"
+      "value": "4ebe6ac79f83"
     },
     "quality_receipt_generated_at": {
       "spec": {
@@ -1285,7 +1285,7 @@
         "source": "src.release_validation.validate_quality_receipt -> generated_at",
         "unit": "timestamp"
       },
-      "value": "2026-09-08T20:58:58.869272+00:00"
+      "value": "2026-09-14T19:06:31.854086+00:00"
     },
     "quantum_acc_probability": {
       "spec": {
@@ -1453,7 +1453,7 @@
         "source": "src.generate_manuscript_metrics._count_collected_tests",
         "unit": "count"
       },
-      "value": "1783"
+      "value": "1813"
     },
     "total_test_files": {
       "spec": {
@@ -1501,7 +1501,7 @@
         "source": "src.release_validation.validate_quality_receipt -> pytest_passed",
         "unit": "count"
       },
-      "value": "1783"
+      "value": "1813"
     },
     "total_tests_skipped": {
       "spec": {

@@ -4,7 +4,7 @@ For enrichment over the ordered monoid $([0,1],\cdot,1)$, a finite hom-matrix $Z
 
 $$
 Z_{ii}=1,\qquad Z_{ik}\geq Z_{ij}Z_{jk}\quad\text{for every }i,j,k.
-$$ {#eq:eq-5-2}
+$$ {#eq:eq-5-1}
 
 The inequality follows the order convention used here. Symmetry is optional. Normalized conditional probabilities, cosine similarities, and attention weights do not generally satisfy these axioms. They are candidate inputs requiring separate justification.
 

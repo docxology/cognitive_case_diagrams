@@ -136,15 +136,26 @@ def _count_daif_symbols(daif_dir: Path) -> int:
     """Count public symbols exported via ``__all__`` in src/daif/__init__.py."""
     init = daif_dir / "__init__.py"
     if not init.exists():
-        return 0
+        raise ValueError(
+            "src/daif/__init__.py does not declare __all__ as a plain list literal"
+        )
     tree = ast.parse(init.read_text(encoding="utf-8"))
     for node in ast.walk(tree):
+        value = None
         if isinstance(node, ast.Assign):
-            for target in node.targets:
-                if isinstance(target, ast.Name) and target.id == "__all__":
-                    if isinstance(node.value, ast.List):
-                        return len(node.value.elts)
-    return 0
+            if any(
+                isinstance(target, ast.Name) and target.id == "__all__"
+                for target in node.targets
+            ):
+                value = node.value
+        elif isinstance(node, ast.AnnAssign):
+            if isinstance(node.target, ast.Name) and node.target.id == "__all__":
+                value = node.value
+        if isinstance(value, ast.List):
+            return len(value.elts)
+    raise ValueError(
+        "src/daif/__init__.py does not declare __all__ as a plain list literal"
+    )
 
 
 def _count_daif_tests(tests_dir: Path) -> int:
@@ -534,23 +545,24 @@ def _read_publication_metadata(root: Path) -> dict[str, str]:
     the declared publication status. DOI strings are canonicalised to the
     short ``10.x/yyyy`` form. Falls back to empty strings when a key is
     genuinely optional; ``required`` registry entries fail validation when
-    a mandatory key is missing. Repo URL comes from pyproject
-    ``[project.urls]``.
+    a mandatory key is missing. A missing config file yields the empty
+    defaults; a malformed one is a defect and raises.
     """
     cfg_path = root / "docs" / "manuscript" / "config.yaml"
     out = {
         "version": "", "date": "", "doi": "", "version_doi": "",
         "version_record": "", "prior_version_doi": "", "status": "",
-        "repo_url": "",
     }
     if not cfg_path.is_file():
         return out
-    try:
-        import yaml
+    import yaml
 
+    try:
         cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
-    except (OSError, yaml.YAMLError):
-        return out
+    except yaml.YAMLError as exc:
+        raise ValueError(
+            f"docs/manuscript/config.yaml is not valid YAML: {exc}"
+        ) from exc
     paper = cfg.get("paper") or {}
     publication = cfg.get("publication") or {}
 
@@ -568,18 +580,6 @@ def _read_publication_metadata(root: Path) -> dict[str, str]:
 
     out["status"] = str(publication.get("status") or "").strip()
 
-    try:
-        try:
-            import tomllib
-        except ImportError:  # Python 3.10
-            import tomli as tomllib  # type: ignore[no-redef]
-
-        pyproject = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
-        out["repo_url"] = str(
-            (pyproject.get("project", {}).get("urls", {}) or {}).get("Repository", "")
-        ).strip()
-    except (OSError, ValueError, TypeError):
-        pass
     # Validation seam: malformed DOI/record values must fail collection so
     # they can never reach hydrated manuscript prose (CH18/AC1). Empty
     # optional values pass; role collisions (concept/version/prior) also

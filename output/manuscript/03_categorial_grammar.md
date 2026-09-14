@@ -6,7 +6,7 @@ For the hand-assigned types of “Alice chases Bob,” the reduction is
 
 $$
 n\,(n^r s n^l)\,n\longrightarrow s.
-$$ {#eq:eq-3-2}
+$$ {#eq:eq-3-1}
 
 The implementation builds words and cups with DisCoPy. The assertion below verifies the codomain of this specified derivation. It does not discover lexical types or establish grammaticality independently of them.
 

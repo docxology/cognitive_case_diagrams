@@ -108,6 +108,11 @@ class TestFluidSPOVM:
         with pytest.raises(ValueError):
             fluid_s_povm(p_volitional=2.0)
 
+    def test_non_2d_dimension_raises(self) -> None:
+        """fluid_s_povm rejects dimension != 2: rotated basis is 2-dimensional."""
+        with pytest.raises(ValueError, match="two-dimensional"):
+            fluid_s_povm(p_volitional=0.5, dimension=3)
+
 
 class TestSemanticState:
     """Tests for density matrix creation."""
@@ -261,3 +266,12 @@ class TestCasePOVMValidation:
         # Still completes since NOM + ACC = I in 2D
         assert povm.is_complete()
 
+    def test_extra_role_element_raises(self) -> None:
+        """Element keyed by a role outside roles raises ValueError."""
+        roles = [CaseRole.NOM, CaseRole.ACC]
+        elements = {r: 0.5 * np.eye(2, dtype=np.complex128) for r in roles}
+        # Poisoned extra element: excluded from the completeness sum, so
+        # construction must reject it instead of silently validating.
+        elements[CaseRole.DAT] = 0.5 * np.eye(2, dtype=np.complex128)
+        with pytest.raises(ValueError, match="not in roles"):
+            CasePOVM(roles=roles, elements=elements, dimension=2)

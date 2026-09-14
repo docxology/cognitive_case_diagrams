@@ -35,8 +35,12 @@ class DistributionalReturn(NamedTuple):
     quantile_levels: np.ndarray
 
     def std(self) -> float:
-        """Standard deviation of the return distribution."""
-        return float(np.sqrt(self.variance))
+        """Standard deviation of the return distribution.
+
+        Producers guarantee variance >= 0; a hand-constructed instance with
+        negative variance is clamped to 0 rather than returning nan.
+        """
+        return float(np.sqrt(max(0.0, self.variance)))
 
     def ci(self, alpha: float = 0.05) -> tuple[float, float]:
         """Approximate (1-alpha) credible interval using stored quantiles.

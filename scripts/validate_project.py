@@ -9,4 +9,9 @@ sys.path.insert(0, str(ROOT))
 from src.project_validation import validate_project  # noqa: E402
 
 if __name__ == '__main__':
-    print(json.dumps(validate_project(ROOT), indent=2))
+    try:
+        report = validate_project(ROOT)
+    except (OSError, ValueError) as exc:
+        print(f"project validation failed: {exc}", file=sys.stderr)
+        sys.exit(1)
+    print(json.dumps(report, indent=2))

@@ -10,7 +10,7 @@ Categorical compositional distributional semantics provides a mathematical accou
 
 ## Contributions and evidence {#sec:whats-new}
 
-This work contributes a connected exposition and reproducible examples, together with checks that expose where the examples stop. The categorical core distinguishes formal DisCoPy reductions from lightweight role bookkeeping. The numerical core tests normalization, support, composition inequalities, matrix sensitivity, quantile conventions, and measurement validity. The manuscript then uses those contracts to delimit proposed cognitive and security interpretations.
+This work contributes a connected exposition and reproducible examples, together with checks that expose where the examples stop. The categorical core distinguishes formal DisCoPy reductions from lightweight role bookkeeping. The numerical core tests normalization, support, composition inequalities, matrix sensitivity, quantile conventions, and measurement-model matrix validity. The manuscript then uses those contracts to delimit proposed cognitive and security interpretations.
 
 The repository contains no trained linguistic model or empirical dataset. Terms such as *prediction*, *precision*, and *return* in compatibility APIs therefore need the operational definitions given below. A synthetic calculation can verify arithmetic under stated assumptions; it cannot establish those assumptions as facts about language or the brain.
 

@@ -95,16 +95,8 @@ not a distributional Bellman backup or a value function.
     R = finite_vector(reward_vector, "Reward vector", n)
     positive_integer(n_quantiles, "n_quantiles", 2)
 
-    if T.shape != (n, n):
-        raise ValueError(f"Transition matrix shape {T.shape} != ({n}, {n})")
-    if len(R) != n:
-        raise ValueError(f"Reward vector length {len(R)} != {n}")
-    if not np.allclose(T.sum(axis=1), 1.0, atol=1e-8):
-        raise ValueError("Transition matrix rows must sum to 1.0")
     if not 0.0 <= gamma <= 1.0:
         raise ValueError(f"gamma must be in [0,1], got {gamma}")
-    if n_quantiles < 2:
-        raise ValueError(f"n_quantiles must be >= 2, got {n_quantiles}")
 
     result = _single_bellman_step(q, T, R, gamma, n_quantiles)
 
@@ -165,16 +157,8 @@ def distributional_bellman_operator(
     R = finite_vector(reward_vector, "Reward vector", n)
     positive_integer(n_quantiles, "n_quantiles", 2)
 
-    if T.shape != (n, n):
-        raise ValueError(f"Transition matrix shape {T.shape} != ({n}, {n})")
-    if len(R) != n:
-        raise ValueError(f"Reward vector length {len(R)} != {n}")
-    if not np.allclose(T.sum(axis=1), 1.0, atol=1e-8):
-        raise ValueError("Transition matrix rows must sum to 1.0")
     if not 0.0 <= gamma <= 1.0:
         raise ValueError(f"gamma must be in [0,1], got {gamma}")
-    if n_steps < 1:
-        raise ValueError(f"n_steps must be >= 1, got {n_steps}")
 
     positive_integer(n_steps, "n_steps")
     if convergence_tol is not None and (not np.isfinite(convergence_tol) or convergence_tol <= 0):
@@ -204,11 +188,11 @@ def distributional_bellman_operator(
                 break
         prev_mean = result.mean
 
-        # Propagate belief through transition for next step
+        # Propagate belief through the transition for the next step.
+        # Row-stochastic T and a normalized q keep T.T @ q normalized
+        # (column-sum invariance holds for validated inputs), so no
+        # renormalization is needed.
         current_q = T.T @ current_q
-        total = current_q.sum()
-        if total > 0:
-            current_q = current_q / total
 
     return results
 

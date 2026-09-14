@@ -2,7 +2,7 @@
 
 The working revision and date are canonical in [config.yaml](config.yaml); prose does not restate them, so a metadata edit cannot drift from the sources. DOI roles are fixed and neutral: the version DOI in `config.yaml` identifies this revision, the concept DOI identifies the series, and the live deposit state is whatever the configured `version_record` link reports at read time. The prior-version DOI is historical metadata only.
 
-These numbered Markdown files are the authored manuscript. `preamble.md`, `references.bib`, and `config.yaml` are auxiliary sources. Figure paths are project-relative `output/figures/...`, as expected by the local template renderer. `${variable}` placeholders are hydrated into `output/manuscript/` from the typed registry in `src/manuscript_variables.py`; never edit the hydrated copies directly.
+These numbered Markdown files are the authored manuscript. `preamble.md`, `references.bib`, and `config.yaml` are auxiliary sources. Figure paths are project-relative `output/figures/...`, as expected by the local template renderer; by gate contract the chapter sources write project-root-relative image paths (`output/figures/...` rather than `../output/figures/...`), and the PDF build rewrites them for the render location. `${variable}` placeholders are hydrated into `output/manuscript/` from the typed registry in `src/manuscript_variables.py`; never edit the hydrated copies directly.
 
 | Chapter | File |
 | :--- | :--- |

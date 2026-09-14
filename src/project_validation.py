@@ -19,6 +19,70 @@ REFERENCE = re.compile(r'(?<![\w@])@([\w][\w:.-]*)')
 TOKEN = re.compile(r'\$\{[A-Za-z_]\w*\}')
 BIB_KEY = re.compile(r'^@(?!comment\b|preamble\b|string\b)\w+\s*\{\s*([^,\s]+)\s*,', re.M | re.I)
 
+MATH_SPAN = re.compile(r'(?<!\\)\$([^$]+)(?<!\\)\$')
+UNESCAPED_PIPE = re.compile(r'(?<!\\)\|')
+
+
+def _table_cells(row: str) -> list[str]:
+    """Split a stripped pipe-table row on unescaped '|' boundary pipes."""
+    inner = row[1:]
+    if inner.endswith('|'):
+        inner = inner[:-1]
+    return re.split(r'(?<!\\)\|', inner)
+
+
+def lint_markdown_tables(name: str, text: str) -> list[str]:
+    """Return ``name:line`` findings for malformed pipe tables in *text*.
+
+    Pure string scanning: every pipe-table row must carry the same cell
+    count as its header row, and inline math (``$...$``) inside a row must
+    escape any literal ``|`` — an unescaped one silently splits the cell
+    (e.g. ``| $|Z|$ | x |`` parses four cells against a three-cell header).
+    Fenced code blocks are skipped.
+    """
+    findings: list[str] = []
+    in_fence = False
+    header_cells: int | None = None
+    header_line = 0
+    for lineno, line in enumerate(text.splitlines(), start=1):
+        if line.lstrip().startswith('```'):
+            in_fence = not in_fence
+            header_cells = None
+            continue
+        if in_fence:
+            continue
+        stripped = line.strip()
+        if not stripped.startswith('|'):
+            header_cells = None
+            continue
+        for span in MATH_SPAN.findall(stripped):
+            if UNESCAPED_PIPE.search(span):
+                findings.append(
+                    f'{name}:{lineno}: unescaped \'|\' inside inline math in a table row'
+                )
+        cell_count = len(_table_cells(stripped))
+        if header_cells is None:
+            header_cells = cell_count
+            header_line = lineno
+        elif cell_count != header_cells:
+            findings.append(
+                f'{name}:{lineno}: table row has {cell_count} cells but header row '
+                f'(line {header_line}) has {header_cells}'
+            )
+    return findings
+
+
+def _lint_manuscript_tables(root: Path, sources: dict[str, str]) -> None:
+    """Raise when authored chapters or the README carry malformed pipe tables."""
+    findings: list[str] = []
+    for name, text in sources.items():
+        findings.extend(lint_markdown_tables(f'docs/manuscript/{name}', text))
+    readme = root / 'README.md'
+    if readme.is_file():
+        findings.extend(lint_markdown_tables('README.md', readme.read_text(encoding='utf-8')))
+    if findings:
+        raise ValueError('Malformed markdown table: ' + '; '.join(findings))
+
 
 def validate_project(root: Path) -> dict:
     """Raise ValueError on missing, stale, malformed, or unresolved artifacts."""
@@ -27,6 +91,7 @@ def validate_project(root: Path) -> dict:
     if not chapters:
         raise ValueError('No numbered manuscript chapters')
     sources = {p.name: p.read_text(encoding='utf-8') for p in chapters}
+    _lint_manuscript_tables(root, sources)
     metrics = json.loads((root / 'output/metrics.json').read_text())
     validate_metrics(metrics)
     findings = scan_hard_coded_claims(sources)

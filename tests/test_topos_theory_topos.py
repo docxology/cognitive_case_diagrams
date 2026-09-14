@@ -149,10 +149,10 @@ class TestClassifyingTopos:
 
 
 class TestMoritaEquivalence:
-    """Tests for Morita equivalence checking."""
+    """Tests for presentation-profile matching between theory presentations."""
 
     def test_identical_theories_equivalent(self) -> None:
-        """A theory is Morita-equivalent to itself."""
+        """A theory's presentation profile matches itself."""
         t = GeometricTheory(name="T1", theory_type=TheoryType.TYPOLOGICAL)
         t.add_sort("NOM")
         t.add_sort("ACC")
@@ -212,7 +212,7 @@ class TestBuildTheories:
         assert len(theory.axioms) >= 2
 
     def test_standard_and_minimal_morita_check(self) -> None:
-        """Check Morita equivalence between standard and minimal theories."""
+        """Compare presentation profiles of the standard and minimal theories."""
         std_cat = standard_case_category()
         min_cat = minimal_case_category()
         t1 = build_typological_theory(std_cat, "std")
@@ -220,7 +220,6 @@ class TestBuildTheories:
         topos1 = ClassifyingTopos(theory=t1)
         topos2 = ClassifyingTopos(theory=t2)
         equiv, _ = compare_theory_presentations(topos1, topos2)
-        # Different sort counts, so not equivalent
         assert equiv is False
 
 
@@ -239,7 +238,7 @@ class TestClassifyingToposMinimalTheory:
         assert topos.invariants["arity_spectrum"] == [2]
 
     def test_two_identical_two_object_theories_morita_equivalent(self):
-        """Two structurally identical minimal theories are Morita-equivalent."""
+        """Two structurally identical minimal theories have matching presentation profiles."""
         def _make_nom_acc():
             t = GeometricTheory(name="T", theory_type=TheoryType.TYPOLOGICAL)
             t.add_sort("NOM")

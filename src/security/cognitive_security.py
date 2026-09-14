@@ -63,22 +63,18 @@ class CaseFrameValidator:
 
     Args:
         category: The case category defining legal morphisms.
-        enriched: Optional enriched category for weight-based checks.
     """
 
     def __init__(
         self,
         category: Optional[CaseCategory] = None,
-        enriched: Optional[EnrichedCategory] = None,
     ) -> None:
         """Initialize validator with a case category.
 
         Args:
             category: Case category (defaults to standard 8-case).
-            enriched: Optional enriched category for weight checks.
         """
         self.category = category or standard_case_category()
-        self.enriched = enriched
         self._valid_morphism_pairs: set[tuple[CaseRole, CaseRole]] = set()
         self._build_valid_pairs()
         logger.info(
@@ -202,13 +198,14 @@ def injection_score(
         violations: List of TypeViolation objects.
 
     Returns:
-        Aggregate score in [0, 1] (0 = no injection, 1 = maximum severity).
+        The maximum severity across violations, in [0, 1]
+        (0 = no injection, 1 = maximum severity); 0.0 for an empty list.
     """
     if not violations:
         return 0.0
 
-    # Max severity drives the score; mean is accumulated for context.
-    # Using max prevents a single critical violation from being diluted.
+    # The score is the maximum severity across violations, so a single
+    # critical violation is not diluted by lower-severity ones.
     severities = [v.severity for v in violations]
     score = max(severities)
     logger.info("Injection score: %.3f from %d violations", score, len(violations))

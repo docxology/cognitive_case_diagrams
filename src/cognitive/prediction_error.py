@@ -1,7 +1,10 @@
-"""Precision-weighted prediction error and P600 ERP predictions — §7 of the manuscript.
+"""Precision-weighted prediction error and P600-inspired proxy predictions — §7.
 
-Generates the manuscript's electrophysiological predictions:
-P600 amplitude scales with enriched morphism weight (precision).
+Generates the manuscript's predicted pattern: P600 amplitude scales with
+enriched morphism weight (precision). The quantities computed here are
+uncalibrated model proxies in arbitrary units — not physiological
+predictions or EEG measurements; any mapping onto recorded N400/P600
+amplitudes would require empirical calibration.
 """
 
 import logging
@@ -21,8 +24,10 @@ def prediction_error(
     where w_f = C(A,B) is the enriched weight (precision) of the
     morphism f: A → B.
 
-    This generates the manuscript's electrophysiological predictions:
-    P600 amplitude scales with morphism weight (§7).
+    In the manuscript's framing these are electrophysiological predictions:
+    P600 amplitude scales with morphism weight (§7). The value returned is a
+    model quantity in arbitrary units, not a physiological prediction or an
+    EEG measurement.
 
     Args:
         enriched_weight: Morphism weight w_f from enriched category (in [0,1]).

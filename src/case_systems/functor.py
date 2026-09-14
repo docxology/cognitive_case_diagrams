@@ -79,12 +79,31 @@ a finite presentation utility, not a general functor verification engine.
     def preserves_identity(self, role: CaseRole) -> bool:
         """Check that F(id_A) = id_{F(A)}.
 
+        Returns False (with a warning) for a role outside the source
+        category's objects or with no object mapping, matching the
+        semantics of ``preserves_tensor`` for unmapped roles.
+
         Returns:
             True if the functor preserves the identity morphism for role.
         """
+        if role not in self.source.objects:
+            logger.warning(
+                "Identity preservation: role %s not in source category %s "
+                "of functor %s — returning False",
+                role.name, self.source.name, self.name,
+            )
+            return False
         source_id = self.source.identity(role)
-        mapped_id = self.map_morphism(source_id)
-        target_id = self.target.identity(self.map_object(role))
+        try:
+            mapped_id = self.map_morphism(source_id)
+            target_id = self.target.identity(self.map_object(role))
+        except KeyError:
+            logger.warning(
+                "Identity preservation: unmapped role %s in functor %s — "
+                "returning False",
+                role.name, self.name,
+            )
+            return False
         preserves = (
             mapped_id.source == target_id.source
             and mapped_id.target == target_id.target

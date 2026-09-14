@@ -185,6 +185,8 @@ class NaturalTransformation:
             True if all relevant squares commute. Returns False (not raises) when
             the transformation is incomplete — naturality is only meaningful on a
             complete component assignment, so incomplete ⟹ False by convention.
+            Also returns False when an endpoint mapped by the source functor is
+            missing from the target functor's object_map.
         """
         if not self.is_complete():
             logger.warning(
@@ -205,8 +207,19 @@ class NaturalTransformation:
                 )
                 continue
 
-            ff = self.source_functor.map_morphism(f)
-            gf = self.target_functor.map_morphism(f)
+            try:
+                ff = self.source_functor.map_morphism(f)
+                gf = self.target_functor.map_morphism(f)
+            except KeyError:
+                # An endpoint is mapped by the source functor but missing from
+                # the target functor's object_map; mirroring the incomplete-
+                # component convention, this fails closed with False.
+                logger.warning(
+                    "Naturality fails for %s: target functor %s has no mapping "
+                    "for a mapped endpoint — returning False",
+                    f, self.target_functor.name,
+                )
+                return False
             alpha_a = self.components[f.source].as_morphism()
             alpha_b = self.components[f.target].as_morphism()
 

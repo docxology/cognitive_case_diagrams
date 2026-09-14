@@ -173,6 +173,15 @@ def test_archived_test_evidence_cannot_be_changed(release_tree: Path, tmp_path: 
         build(release_tree, tmp_path / "forged.zip")
 
 
+def test_archived_malformed_review_record_is_rejected(release_tree: Path, tmp_path: Path) -> None:
+    """A review record missing its binding maps is malformed, not a bare KeyError."""
+    _add_quality_evidence(release_tree)
+    (release_tree / "output/reports/publication_review.json").write_text('{"inputs": {}}')
+    with pytest.raises(ValueError, match="is malformed"):
+        build(release_tree, tmp_path / "malformed-review.zip")
+    assert not (tmp_path / "malformed-review.zip").exists()
+
+
 def test_advertised_oversize_is_rejected_before_decompression(release_tree: Path, tmp_path: Path) -> None:
     import struct
     from src.release_bundle import MAX_ARCHIVE_MEMBER_BYTES

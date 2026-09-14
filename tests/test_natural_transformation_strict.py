@@ -1,7 +1,7 @@
 """P1-10 acceptance controls: transformation identity + strict composition."""
 import pytest
 
-from src.case_systems.case_category import CaseCategory, CaseRole
+from src.case_systems.case_category import CaseCategory, CaseRole, Morphism
 from src.case_systems.functor import AlignmentFunctor
 from src.case_systems.natural_transformation import (
     ComponentMorphism,
@@ -123,3 +123,32 @@ class TestStrictComposition:
             object_name=CaseRole.NOM, source_image=CaseRole.GEN, target_image=CaseRole.NOM)
         with pytest.raises(ValueError, match="target image"):
             compose_transformations(alpha, beta)
+
+
+class TestUnmappedTargetEndpoint:
+    def test_target_functor_missing_endpoint_returns_false(self):
+        """A source-mapped endpoint missing from G's object_map → False (not KeyError).
+
+        Inject components directly (set_component would reject the ACC
+        component, since ACC is absent from G's object_map) — mirroring the
+        bypass-set_component pattern used above.
+        """
+        src_cat = CaseCategory(name="S")
+        for r in (CaseRole.NOM, CaseRole.ACC):
+            src_cat.add_role(r)
+        src_cat.add_morphism(Morphism(CaseRole.NOM, CaseRole.ACC, "rel", weight=0.5))
+        tgt_cat = CaseCategory(name="T")
+        for r in (CaseRole.NOM, CaseRole.ACC):
+            tgt_cat.add_role(r)
+        F = AlignmentFunctor(name="F", source=src_cat, target=tgt_cat,
+                             object_map={CaseRole.NOM: CaseRole.NOM,
+                                         CaseRole.ACC: CaseRole.ACC})
+        G = AlignmentFunctor(name="G", source=tgt_cat, target=tgt_cat,
+                             object_map={CaseRole.NOM: CaseRole.NOM})
+        nt = NaturalTransformation(name="nt", source_functor=F, target_functor=G)
+        for r in (CaseRole.NOM, CaseRole.ACC):
+            nt.components[r] = ComponentMorphism(
+                object_name=r, source_image=F.object_map[r],
+                target_image=G.object_map.get(r, r))
+        assert nt.is_complete()
+        assert nt.naturality_holds() is False

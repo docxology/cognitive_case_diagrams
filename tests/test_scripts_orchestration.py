@@ -304,3 +304,41 @@ class TestGenerateDiagramsModule:
             "enriched_magnitude.txt",
         } <= names
         assert failures == []
+
+    def test_main_exit_code_contract_on_domain_failure(self, tmp_path):
+        """A failing domain exits 1; --skip-failed still exits 0 after the registry write."""
+        import os
+        import shutil
+        import subprocess
+
+        shadow = tmp_path / "shadow"
+        shadow.mkdir()
+        # A real import failure: PYTHONPATH shadows the installed discopy with
+        # a module that raises on import, so the domain fails loudly.
+        (shadow / "discopy.py").write_text(
+            "raise ImportError('discopy unavailable for exit-code contract test')\n",
+            encoding="utf-8",
+        )
+        env = dict(os.environ)
+        env["PYTHONPATH"] = os.pathsep.join(
+            [str(shadow), env.get("PYTHONPATH", "")]
+        ).rstrip(os.pathsep)
+        # The registry writer only accepts destinations inside output/, so the
+        # temp output must live in the project tree; removed in the finally.
+        out = _PROJECT_ROOT / "output" / "figures" / "_exit_code_contract_tmp"
+        base = [
+            sys.executable,
+            str(_PROJECT_ROOT / "scripts" / "generate_diagrams.py"),
+            "--domain", "discopy", "--output", str(out),
+        ]
+        try:
+            strict = subprocess.run(
+                base, capture_output=True, text=True, env=env, timeout=900,
+            )
+            assert strict.returncode == 1, strict.stdout + strict.stderr
+            lenient = subprocess.run(
+                [*base, "--skip-failed"], capture_output=True, text=True, env=env, timeout=900,
+            )
+            assert lenient.returncode == 0, lenient.stdout + lenient.stderr
+        finally:
+            shutil.rmtree(out, ignore_errors=True)

@@ -267,3 +267,41 @@ class TestNearSingularMatrix:
         # Magnitude must be finite even for near-singular matrices
         mag = cat.magnitude()
         assert np.isfinite(mag)
+
+
+class TestEquality:
+    """Structural equality: ndarray-safe __eq__ (no exception on comparison)."""
+
+    @staticmethod
+    def _category(matrix=None):
+        if matrix is None:
+            matrix = np.eye(2)
+            matrix[0, 1] = 0.3
+            matrix[1, 0] = 0.3
+        return EnrichedCategory("x", [CaseRole.NOM, CaseRole.ACC], matrix)
+
+    def test_equal_value_instances_compare_equal(self):
+        """Two instances with identical name, roles, and matrix compare equal."""
+        a = self._category()
+        b = self._category()
+        assert a == b
+
+    def test_different_matrix_compares_unequal(self):
+        """Instances with different proximity matrices compare unequal."""
+        a = self._category()
+        b = self._category(matrix=np.eye(2))
+        assert a != b
+
+    def test_comparison_with_non_instance_returns_not_implemented(self):
+        """Non-EnrichedCategory operands return NotImplemented (no exception)."""
+        a = self._category()
+        assert a.__eq__("not a category") is NotImplemented
+        assert a.__eq__(np.eye(2)) is NotImplemented
+
+
+class TestEmptyCategoryMagnitude:
+    def test_magnitude_empty_category_raises(self):
+        """magnitude() on roles=[] raises a clean ValueError, not LinAlgError."""
+        cat = EnrichedCategory("Empty", [], np.zeros((0, 0)))
+        with pytest.raises(ValueError, match="empty category"):
+            cat.magnitude()

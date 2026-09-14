@@ -129,13 +129,16 @@ def run_filtering(
     """Seeded filtering validation against the exact repeated-Bayes closed form.
 
     Per replicate the observed likelihood is a known mixture concentrated on
-    role 0. The filter runs once with the identity transition (one
-    assimilation), and separately over several iterations with a tiny
-    convergence threshold to compare the stored trajectory against the closed
-    form at every executed step (the filter may terminate early once exactly
-    stationary; only the executed prefix is compared). A paired arm repeats
-    the one-step run with the banded informative transition
-    :func:`_informative_transition` on identical draws.
+    role 0. With the identity transition the filter performs the configured
+    ``section.n_iterations`` assimilations of the same evidence (iterations
+    reuse evidence per the method contract for
+    ``distributional_case_assignment``; one iteration would model one
+    observation), and separately over ``section.closed_form_iterations``
+    iterations with a tiny convergence threshold to compare the stored
+    trajectory against the closed form at every executed step (the filter
+    may terminate early once exactly stationary; only the executed prefix
+    is compared). A paired arm repeats the run with the banded informative
+    transition :func:`_informative_transition` on identical draws.
     """
     n_roles = section.n_roles
     identity = np.eye(n_roles)

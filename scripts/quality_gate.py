@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Runnable quality gate: ruff + mypy (+ optional coverage) over src/ and tests/.
+"""Runnable quality gate: ruff over src/, tests/, and scripts/; mypy over src/ only; optional coverage.
 
 The remediation review found mypy *configured* in ``pyproject.toml`` but never
 run by anything (real errors sat unreported), and no linter wired up at all.

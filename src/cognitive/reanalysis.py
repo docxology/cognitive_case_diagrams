@@ -57,10 +57,14 @@ def n400_amplitude_proxy(
     violations correlates with the change in categorical magnitude,
     complementing the P600 prediction for *syntactic* violations.
 
-    The N400 reflects early semantic retrieval difficulty (200–500 ms),
-    while the P600 reflects late structural reanalysis (500–900 ms).
-    Both map onto magnitude change but are triggered by different
-    violation types — semantic vs syntactic respectively.
+    The N400/P600 time-window dissociation — early semantic retrieval
+    (200–500 ms) versus late structural reanalysis (500–900 ms) — is
+    motivating literature framing for the manuscript's mapping, not an
+    established property of this model. The returned value is a model
+    quantity in arbitrary units, not a physiological prediction or an EEG
+    measurement. Both components map onto magnitude change but are
+    triggered by different violation types — semantic vs syntactic
+    respectively.
 
     Δ|C|_semantic = ||C_after| − |C_before||
 

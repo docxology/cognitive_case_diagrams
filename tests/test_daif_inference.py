@@ -134,6 +134,25 @@ class TestVariationalMessagePassing:
         with pytest.raises(ValueError, match="likelihood_precision"):
             variational_message_passing(np.array([0.5, 0.5]), prior_precision=1.0, likelihood_precision=0.0)
 
+    def test_prior_precision_invariant_posterior_and_exact_lambda(self):
+        """The implicit uniform prior does not parameterize the categorical:
+        the returned posterior is identical for any positive prior_precision,
+        while lambda_post is exactly prior + likelihood (contract row 25)."""
+        obs = np.array([0.6, 0.3, 0.1])
+        likelihood_precision = np.array([2.0, 4.0, 8.0])
+        posterior, _ = variational_message_passing(
+            obs, prior_precision=1.0, likelihood_precision=likelihood_precision,
+        )
+        for prior_precision in (0.1, 1.0, 25.0, 1e6):
+            q, lam = variational_message_passing(
+                obs, prior_precision=prior_precision,
+                likelihood_precision=likelihood_precision,
+            )
+            np.testing.assert_allclose(q, posterior, atol=0.0)
+            np.testing.assert_allclose(
+                lam, prior_precision + likelihood_precision, atol=0.0
+            )
+
 
 # --- bethe_free_energy ---
 

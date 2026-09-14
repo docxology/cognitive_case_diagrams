@@ -102,11 +102,10 @@ def combined_quality_digest(hashes: Mapping[str, str]) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def write_json_atomic(path: Path, payload: Mapping[str, Any]) -> None:
-    """Write complete finite JSON, replacing the destination only after success."""
-    text = json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n"
+def write_text_atomic(path: Path, text: str) -> None:
+    """Write complete text, replacing the destination only after success."""
     if path.is_symlink() or any(parent.is_symlink() for parent in path.parents):
-        raise ValueError("Refusing to replace a linked JSON destination")
+        raise ValueError("Refusing to replace a linked destination")
     path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(
         mode="w", encoding="utf-8", dir=path.parent, delete=False
@@ -124,6 +123,13 @@ def write_json_atomic(path: Path, payload: Mapping[str, Any]) -> None:
         temporary.replace(path)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def write_json_atomic(path: Path, payload: Mapping[str, Any]) -> None:
+    """Write complete finite JSON, replacing the destination only after success."""
+    write_text_atomic(
+        path, json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n"
+    )
 
 
 def _nonnegative_int(value: object, field: str) -> int:

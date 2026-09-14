@@ -18,7 +18,11 @@ from typing import Any
 
 import yaml
 
-from src.release_validation import StaleEvidenceError, write_json_atomic
+from src.release_validation import (
+    StaleEvidenceError,
+    write_json_atomic,
+    write_text_atomic,
+)
 
 try:
     import tomllib
@@ -245,8 +249,9 @@ def write_release_metadata(project_root: Path) -> dict[str, Any]:
     """Regenerate metadata sidecars; never submit a deposit or claim its completion."""
     root = project_root.resolve(strict=True)
     metadata = build_release_metadata(root)
-    (root / "CITATION.cff").write_text(
-        yaml.safe_dump(metadata["citation"], sort_keys=False, allow_unicode=True)
+    write_text_atomic(
+        root / "CITATION.cff",
+        yaml.safe_dump(metadata["citation"], sort_keys=False, allow_unicode=True),
     )
     write_json_atomic(root / ".zenodo.json", metadata["software"])
     return metadata

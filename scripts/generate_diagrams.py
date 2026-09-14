@@ -253,6 +253,15 @@ def main() -> int:
 
     logger.info("=" * 60)
 
+    if errors and not args.skip_failed:
+        logger.error(
+            "%d domain(s) failed; rerun without --skip-failed after fixing or "
+            "with --skip-failed for a diagnostic run",
+            len(errors),
+        )
+        return 1
+    return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

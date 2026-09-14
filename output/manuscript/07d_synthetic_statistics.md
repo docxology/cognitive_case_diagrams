@@ -22,13 +22,13 @@ The C51-style projection must conserve total mass and preserve the mean of clipp
 
 ## Sensitivity sweeps {#sec:exp-sensitivity}
 
-Configured sweeps vary one configuration parameter at a time and report every arm against its reference. Summarizing those arms, the largest absolute paired mean effect is 0.252565 for the discount sweep, 0.120347 nats for the return-entropy bin-count sweep, and 0.757051 nats for the policy-temperature sweep. These are descriptive effect sizes of a synthetic computation under parameter changes; they measure the arithmetic sensitivity of the utilities, not any cognitive or empirical quantity.
+Configured sweeps vary one configuration parameter at a time and report every arm against its reference. Summarizing those arms, the largest-magnitude paired mean effect is 0.252565 in dimensionless score units for the discount sweep, 0.120347 nats for the return-entropy bin-count sweep, and 0.757051 nats for the policy-temperature sweep. These are descriptive effect sizes of a synthetic computation under parameter changes; they measure the arithmetic sensitivity of the utilities, not any cognitive or empirical quantity.
 
 ![All configured sensitivity arms (discount, return-entropy bin count, policy temperature) plotted against their reference arms with pointwise paired intervals over seeded replicates. All effects are synthetic-computation sensitivities in dimensionless score units or nats; they carry no empirical interpretation.](output/figures/experiment_sensitivity.png){#fig:experiment-sensitivity}
 
 ## Validity controls {#sec:exp-controls}
 
-The runner also executes analytic negative controls. The analytic-identity control suite reports 1, and the invalid-input control suite reports 1, where 1 means all analytic identity checks passed and 1 means all malformed-input rejections behaved as declared. Separately, the crisp two-role POVM example satisfies completeness to a mean residual of 2.1684e-17 with interval [1.56478e-17, 2.77203e-17] and a maximum residual of 2.22045e-16 across replicates, consistent with the matrix contracts in [@sec:quantum-semantics].
+The runner also executes analytic negative controls. The analytic-identity control suite passes (reported value 1), and the invalid-input control suite passes (reported value 1), where 1 means all analytic identity checks passed and 1 means all malformed-input rejections behaved as declared. Separately, the crisp two-role POVM example satisfies completeness to a mean residual of 2.1684e-17 with interval [1.56478e-17, 2.77203e-17] and a maximum residual of 2.22045e-16 across replicates, consistent with the matrix contracts in [@sec:quantum-semantics].
 
 ## Interpretation boundaries {#sec:exp-limits}
 

@@ -9,6 +9,7 @@ import pytest
 from src.daif.metrics import (
     convergence_diagnostics,
     distributional_kl,
+    quantile_atom_gap,
     quantile_coverage,
     return_distribution_entropy,
 )
@@ -249,3 +250,25 @@ class TestConvergenceDiagnosticsReference:
         # |Δ| = [1, 0.8, 0.1, 0.05]; mean = 0.4875
         assert diag["mean_step_size"] == pytest.approx(0.4875, abs=1e-10)
         assert diag["final_delta"] == pytest.approx(0.05, abs=1e-10)
+
+
+# --- quantile_atom_gap ---
+
+class TestQuantileAtomGap:
+
+    def test_sorted_two_atom_grid_has_all_zero_gaps(self):
+        qvals = np.array([0.0, 1.0])
+        taus = np.array([0.25, 0.75])
+        result = quantile_atom_gap(qvals, taus)
+        np.testing.assert_allclose(result["atom_gap"], [0.0, 0.0])
+        assert result["max_atom_gap"] == pytest.approx(0.0)
+
+    def test_shuffled_levels_raise(self):
+        qvals = np.array([0.0, 0.5, 1.0])
+        taus = np.array([0.75, 0.25, 0.5])
+        with pytest.raises(ValueError, match="strictly increasing"):
+            quantile_atom_gap(qvals, taus)
+
+    def test_duplicated_levels_raise(self):
+        with pytest.raises(ValueError, match="strictly increasing"):
+            quantile_atom_gap(np.array([0.0, 1.0]), np.array([0.25, 0.25]))

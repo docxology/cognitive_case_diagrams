@@ -2,8 +2,9 @@
 
 Two well-defined interval families are provided:
 
-- Wilson score intervals for binomial proportions (coverage rates, mode-match
-  frequencies). The sample unit is one Bernoulli trial.
+- Wilson score intervals for binomial proportions, available for genuinely
+  i.i.d. Bernoulli counts. The current studies attach no binomial intervals
+  by design (their replicate-level indicators are not i.i.d. draws).
 - Normal-approximation intervals for replicate-level means,
   ``mean +/- z * sd / sqrt(n)``. The sample unit is one replicate; the
   interval is exact only under the stated normal approximation and every
@@ -128,7 +129,6 @@ def paired_mean_ci(
     """Return ``(mean_diff, lo, hi)`` for paired per-replicate differences.
 
     The design is paired because both arms consume the same per-replicate
-    draws (common random numbers); the interval describes the mean of
     within-replicate differences, not the difference of marginal means.
     """
     return mean_ci(differences, z)

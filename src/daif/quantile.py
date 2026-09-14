@@ -51,7 +51,9 @@ def quantile_td_update(
         Updated quantile estimates (same shape as current_quantiles).
 
     Raises:
-        ValueError: On shape mismatch or invalid parameters.
+        ValueError: On non-finite inputs or invalid parameters. Inputs must
+            be finite 1-D vectors; current and target sizes may differ by
+            design (each coordinate uses all target samples).
     """
     # Unnormalised Huber convention: rho = |tau - I(delta < 0)| L_kappa.
     # Each coordinate uses all target samples; current/target sizes may differ.
@@ -99,7 +101,9 @@ Target values are treated as equally weighted samples. Their supplied levels
 are checked for shape and range, not used as quadrature weights. No neural
 network is learned and no quantile function is interpolated by this helper.
 For 0 < eta < 1, optimistic distortion raises current tau and pessimistic
-distortion lowers it. CVaR multiplies tau by alpha to emphasize the lower tail.
+distortion lowers it; eta >= 1 is rejected for those two modes because it
+would invert the distortion direction (the neutral mode accepts any eta > 0).
+CVaR multiplies tau by alpha to emphasize the lower tail.
 Uses unnormalized Huber loss and a target-averaged coordinate gradient.
 """
     cq = finite_vector(current_quantiles, "current_quantiles")
@@ -129,6 +133,12 @@ Uses unnormalized Huber loss and a target-averaged coordinate gradient.
     alpha = _CVAR_ALPHA if cvar_alpha is None else float(cvar_alpha)
     if not np.isfinite(eta) or eta <= 0:
         raise ValueError(f"eta_distortion must be > 0, got {eta}")
+    if risk_distortion in ("optimistic", "pessimistic") and eta >= 1.0:
+        raise ValueError(
+            f"eta_distortion must satisfy 0 < eta < 1 for the "
+            f"{risk_distortion!r} mode (eta >= 1 inverts the distortion "
+            f"direction), got {eta}"
+        )
     if not 0.0 < alpha <= 1.0:
         raise ValueError(f"cvar_alpha must be in (0,1], got {alpha}")
 

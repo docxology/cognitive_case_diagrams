@@ -76,9 +76,10 @@ likelihood; that default is logged at debug level only.
         q = current.probabilities
 
         # Step 1: Push-forward
+        # Row-stochastic T and a normalized q keep T.T @ q normalized
+        # (column-sum invariance holds for validated inputs), so no
+        # renormalization is needed.
         q_pushed = T.T @ q
-        total_pushed = q_pushed.sum()
-        q_pushed = q_pushed / total_pushed
 
         # Step 2: Bayesian update q(s) ∝ p(o|s) · q_pushed(s)
         scale = likelihoods.max()

@@ -223,6 +223,35 @@ class TestCategoricalReturnDistribution:
         probs = ret.to_categorical(v_min=0.0, v_max=2.0, n_atoms=21)
         assert np.isclose(probs.sum(), 1.0, atol=1e-6)
 
+    def test_out_of_range_mass_lands_on_boundary_atoms(self):
+        """Clipped quantiles contribute to the boundary atoms (C51 projection)."""
+        d = DistributionalReturn(
+            mean=0.0, variance=1.0,
+            quantiles=np.array([-20.0, 0.5, 20.0]),
+            quantile_levels=np.array([1 / 6, 0.5, 5 / 6]),
+        )
+        atoms, probs = categorical_return_distribution(d, v_min=0.0, v_max=1.0, n_atoms=3)
+        # Three equally weighted quantiles: the out-of-range values clip onto
+        # the first/last atoms, 0.5 sits on the central atom.
+        assert probs[0] == pytest.approx(1 / 3)
+        assert probs[1] == pytest.approx(1 / 3)
+        assert probs[-1] == pytest.approx(1 / 3)
+        assert np.isclose(probs.sum(), 1.0, atol=1e-12)
+
+    @pytest.mark.parametrize("boundary", [0.0, 1.0])
+    def test_all_quantiles_at_boundary_hit_single_atom(self, boundary):
+        """All quantiles at a support endpoint project onto one atom; at
+        v_max this exercises the lo_idx == hi_idx interpolation branch."""
+        d = DistributionalReturn(
+            mean=boundary, variance=0.0,
+            quantiles=np.full(5, boundary),
+            quantile_levels=np.linspace(0.1, 0.9, 5),
+        )
+        _, probs = categorical_return_distribution(d, v_min=0.0, v_max=1.0, n_atoms=5)
+        expected_idx = 0 if boundary == 0.0 else -1
+        assert probs[expected_idx] == pytest.approx(1.0)
+        assert np.isclose(probs.sum(), 1.0, atol=1e-12)
+
 
 class TestSingleBellmanStep:
     """Direct tests for the private _single_bellman_step helper."""

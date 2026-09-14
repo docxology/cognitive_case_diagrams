@@ -10,7 +10,7 @@ $$
 z=R+\gamma T^Tq,\qquad \mu=\sum_i q_i\delta_{z_i}.
 $$ {#eq:eq-7-1}
 
-The mass at $z_i$ is $q_i$. Mean and variance use exact finite weighted sums. The stored quantile values use the generalized inverse of this discrete CDF, removing zero-mass support. They do not interpolate new values between distinct atoms. For equal mass at the support endpoints ${daif_projection_support_min} and ${daif_projection_support_max}, the midpoint levels ${daif_projection_levels} yield ${daif_projection_values}.
+The mass at $z_i$ is $q_i$. Mean and variance use exact finite weighted sums. The stored quantile values use the generalized inverse of this discrete CDF, removing zero-mass support. They do not interpolate new values between distinct atoms. As a verified numeric instance of this generalized inverse, for equal mass at the support endpoints ${daif_projection_support_min} and ${daif_projection_support_max}, the midpoint levels ${daif_projection_levels} yield ${daif_projection_values}.
 
 Despite its legacy name, `distributional_bellman_operator()` propagates beliefs and repeats this score calculation. It does not back up state-conditioned future-return distributions or sum discounted rewards. In the canonical counterexample configuration — uniform transition entry ${daif_bellman_example_transition}, uniform two-state belief, reward entries ${daif_bellman_example_reward_first} and ${daif_bellman_example_reward_second}, and discount ${daif_bellman_example_gamma} — its score mean is ${daif_bellman_example_score_mean}. The true infinite-horizon expected return for that Markov reward process, computed from $(I-\gamma T)^{-1}R$, is ${daif_bellman_example_true_return}. This counterexample rules out treating the utility as a Bellman solver; both quoted numbers are recomputed from the same declared configuration at build time.
 
@@ -65,7 +65,7 @@ Policy probabilities are computed by a stable softmax of negative scores. Subtra
 
 ## Prediction-error and ERP-inspired proxies {#sec:daif-erp}
 
-The scalar error is weighted surprisal $-w\log q_i$, with a small positive probability floor in the compatibility API. A separate function uses $wW_1$ between two reconstructed quantile distributions. These are distinct mismatches, not interchangeable derivations of one physiological observable.
+The scalar error is the distributional prediction error (DPE), weighted surprisal $-w\log q_i$, with a small positive probability floor in the compatibility API. A separate function uses $wW_1$ between two reconstructed quantile distributions. These are distinct mismatches, not interchangeable derivations of one physiological observable.
 
 The N400-inspired proxy is $-s\lambda|m-m_0|$. The P600-inspired proxy is $s k\max(0,\lambda_{\mathrm{post}}-\lambda_{\mathrm{prior}})\mathrm{DPE}$. Severity $s$, scaling $k$, and precision values are caller inputs. The waveform utility places these amplitudes in Gaussian templates with specified millisecond centers and widths. Millisecond timing labels do not calibrate amplitude to microvolts; compatibility fields ending in `_uV` still contain uncalibrated values.
 

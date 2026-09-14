@@ -54,7 +54,9 @@ def distributional_prediction_error(
         enriched_weight: Morphism weight w_f from the enriched category (∈ [0,1]).
 
     Returns:
-        DPE ≥ 0 (higher = greater mismatch, larger ERP response).
+        DPE ≥ 0 (higher = greater mismatch, larger ERP response). Zero
+        belief mass on the expected role reports the capped value
+        −log(1e-300) ≈ 690.77, not infinity.
 
     Raises:
         ValueError: If index out of range or weight outside [0,1].
@@ -261,7 +263,9 @@ def erp_amplitude_profile(
     whose amplitudes are determined by the distributional prediction error.
 
     The synthetic waveform models:
-      - Baseline correction: mean 0 in [-200, 0] ms window
+      - Baseline correction: mean 0 over the pre-stimulus window, applied
+        only when the epoch includes negative times (t_start_ms < 0); an
+        epoch starting at t >= 0 is returned uncorrected
       - N400 (200–500 ms): Gaussian centred at 380 ms, amplitude = DPE-scaled
       - P600 (500–900 ms): Gaussian centred at 600 ms, amplitude = precision-scaled
       - Background: low-amplitude Gaussian noise (σ=0.2 model units)
@@ -295,8 +299,6 @@ def erp_amplitude_profile(
         raise ValueError("ERP Gaussian widths must be positive")
     if t_start_ms >= t_end_ms:
         raise ValueError(f"t_start_ms ({t_start_ms}) must be < t_end_ms ({t_end_ms})")
-    if n_timepoints < 2:
-        raise ValueError(f"n_timepoints must be >= 2, got {n_timepoints}")
 
     dpe = distributional_prediction_error(belief, expected_role_index, enriched_weight)
     n400_amp = -dpe  # Convention: N400 is negative

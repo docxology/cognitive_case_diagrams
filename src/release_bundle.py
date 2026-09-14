@@ -259,9 +259,12 @@ def _validate_archived_evidence(archive: zipfile.ZipFile, hashes: dict[str, str]
             raise StaleEvidenceError(f"Archived quality evidence is stale or invalid: {exc}") from exc
     review_name = "output/reports/publication_review.json"
     if review_name in hashes:
-        review = json.loads(archive.read(review_name))
-        inputs = review["inputs"]
-        digest = hashlib.sha256(json.dumps({key: inputs[key] for key in ("quality_source", "files")}, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        try:
+            review = json.loads(archive.read(review_name))
+            inputs = review["inputs"]
+            digest = hashlib.sha256(json.dumps({key: inputs[key] for key in ("quality_source", "files")}, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        except (KeyError, TypeError, json.JSONDecodeError) as exc:
+            raise ValueError(f"Archived {review_name} is malformed: {exc}") from exc
         if (inputs.get("sha256") != digest or inputs.get("quality_source") != receipt["quality_input_fingerprint"]
                 or any(hashes.get(name) != value for name, value in inputs["files"].items())):
             raise ValueError("Archived publication review differs from its bound source or artifact bytes")

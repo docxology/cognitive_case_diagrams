@@ -123,7 +123,8 @@ def _stage_experiments(root: Path) -> dict[str, Any]:
         results = json.loads(path.read_text(encoding="utf-8"))
         verdict = validate_experiment_results(results, root)
     except FileNotFoundError as exc:
-        return {"state": "missing", "artifact": artifact, "detail": _clean(str(exc), root), "errors": []}
+        detail = _clean(str(exc), root)
+        return {"state": "missing", "artifact": artifact, "detail": detail, "errors": [detail]}
     except StaleEvidenceError as exc:
         detail = _clean(str(exc), root)
         return {"state": "stale", "artifact": artifact, "detail": detail, "errors": [detail]}

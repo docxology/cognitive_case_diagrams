@@ -13,7 +13,9 @@ of every advertised capability.
 ## Install
 
 The server ships as a console script and a module entry point. The MCP SDK is
-an optional dependency; the development toolchain includes it by default.
+an optional dependency; the development toolchain includes it by default. Without the dev
+group, `uv sync --extra mcp` selects the MCP extra alone — the same extra documented in the
+repository README's Agent access section.
 
 ```bash
 # From a repository checkout (installs the dev group, which includes mcp):

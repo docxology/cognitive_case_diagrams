@@ -15,7 +15,7 @@ it by default.
 | `methods.py` | One thin handler per advertised tool: converts validated JSON to project inputs, calls exactly one existing public method, packs finite results into pydantic models. Semantic validation stays in the wrapped methods. |
 | `server.py` | Official SDK wiring: 17 read-only tools, capability/claim/experiments resources, enumerated artifact resources; `main()` CLI (`--list-tools`, `--version`, stdio serve). |
 
-Read [docs/agent_integrations.md](../docs/agent_integrations.md) for
+Read [docs/agent_integrations.md](../../docs/agent_integrations.md) for
 install, host configuration, tool contracts, and the security model. The
 claim ledger governs interpretation; these adapters add bounds and honesty,
 not capability.

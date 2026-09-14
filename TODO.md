@@ -39,7 +39,7 @@ below (24 numbered sections in `docs/manuscript/`) are verified on 2026-09-04.
 ## Open
 
 - [x] Git tag `v2.3.0` now anchors the DOI'd release (created and pushed 2026-09-04, annotated, pointing at the remediated tree). `git describe --tags` resolves; Zenodo record `10.5281/zenodo.19695260` traces to `ae5a86f`. — repository metadata
-- [x] Tracking policy for the untracked `output/**/AGENTS.md` and `output/**/README.md` pairs: committed all of them on 2026-09-04 (19 files incl. `output/manuscript/MANUSCRIPT_STATUS.md` and the `.checkpoints/` pair), matching the existing `output/manuscript/` convention. — output/
+- [x] Tracking policy for the untracked `output/**/AGENTS.md` and `output/**/README.md` pairs: committed on 2026-09-04; the tree tracks 17 files — 16 `README.md`/`AGENTS.md` files across 8 pairs (the `output/` root plus `.checkpoints/`, `figures/`, `logs/`, `manuscript/`, `pdf/`, `reports/`, `slides/`) + `output/manuscript/MANUSCRIPT_STATUS.md` — not 19; `output/experiments/`, `output/releases/`, and `output/review/` deliberately carry no pairs under the generated-output exclusion policy. — output/
 - [x] `LICENSE` and `CITATION.cff` committed 2026-09-04. — LICENSE, CITATION.cff
 - [x] Repo-wide sweeps re-run 2026-09-04 for all three classes (test-count literals, legacy mirrored-output figure paths, monorepo-context Quick Start commands). Verification: the DoD grep over all `*.md` returns no matches. — repo-wide
 
@@ -50,3 +50,13 @@ Mark `[x]` only after the fix is verified on disk (link checker / command run). 
 Fixing a defect in one file does **not** close the defect class. Before checking a box, re-run the
 grep that found it across the whole repository — `grep -rn '<pattern>' --include='*.md' .` — and name
 every file the fix touched, not just the one the entry was written against.
+Docstring copies of the same defect text are members of the same class: the re-grep must also cover Python sources, e.g. `grep -rn '<pattern>' --include='*.py' .` (conftest.py was a live member of a closed defect class at the 2026-09-14 review).
+
+## Deferred (2026-09-14 review)
+
+- Five-way duplication of package-boundary text; consolidate to a single sourced source — docs/modules/, docs/api_reference.md, docs/theory_implementation_map.md, src/README.md
+- Bind figure evidence to rendering environment versions in `generator_input_fingerprint` — scripts/generate_discopy_figures.py, src/visualization/figure_registry.py
+- Equation-label gap-free lint for the manuscript sources — docs/manuscript/
+- Enforce the web-correction marker mechanically in validation (`scripts/correct_web.py` marker vs `validate_project`) — scripts/correct_web.py, template validator call site
+- Boolean `exp_sanity_*` registry word-forms — src/experiments/runner.py, output/manuscript_variables.json
+- Quote or explicitly mark registry-only experiment ids in 07d — docs/manuscript/07d_synthetic_statistics.md

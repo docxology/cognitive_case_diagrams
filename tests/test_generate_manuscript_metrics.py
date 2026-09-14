@@ -107,12 +107,32 @@ def test_main_dry_run_exit_zero(gate_tree: Path) -> None:
     assert json.loads(result.stdout)["total_test_count"] == "2"
 
 
-def test_count_daif_symbols_zero_without_all_list(tmp_path: Path) -> None:
-    """Return 0 when ``__init__.py`` exists but defines no ``__all__`` list."""
+def test_count_daif_symbols_without_all_list_raises(tmp_path: Path) -> None:
+    """Fail loudly when ``__init__.py`` defines no ``__all__`` list."""
     daif = tmp_path / "daif"
     daif.mkdir()
     (daif / "__init__.py").write_text("# no __all__\nx = 1\n", encoding="utf-8")
-    assert _count_daif_symbols(daif) == 0
+    with pytest.raises(ValueError, match="does not declare __all__"):
+        _count_daif_symbols(daif)
+
+
+def test_count_daif_symbols_non_list_all_raises(tmp_path: Path) -> None:
+    """A tuple (or any non-list) ``__all__`` binding is rejected, not counted."""
+    daif = tmp_path / "daif"
+    daif.mkdir()
+    (daif / "__init__.py").write_text('__all__ = ("a", "b")\n', encoding="utf-8")
+    with pytest.raises(ValueError, match="does not declare __all__"):
+        _count_daif_symbols(daif)
+
+
+def test_count_daif_symbols_annassign_form(tmp_path: Path) -> None:
+    """An annotated ``__all__: list[str]`` literal counts its elements."""
+    daif = tmp_path / "daif"
+    daif.mkdir()
+    (daif / "__init__.py").write_text(
+        '__all__: list[str] = ["alpha", "beta", "gamma"]\n', encoding="utf-8"
+    )
+    assert _count_daif_symbols(daif) == 3
 
 def test_count_daif_symbols_empty_all(tmp_path: Path) -> None:
     daif = tmp_path / "daif"
@@ -163,13 +183,14 @@ def test_count_collected_tests_uses_actual_collection(tmp_path: Path) -> None:
     assert count == 2
 
 
-def test_count_daif_symbols_missing_init(tmp_path: Path) -> None:
-    """Return 0 when __init__.py does not exist."""
+def test_count_daif_symbols_missing_init_raises(tmp_path: Path) -> None:
+    """A missing ``__init__.py`` is a defect, not a zero count."""
     from src.generate_manuscript_metrics import _count_daif_symbols
 
     empty = tmp_path / "empty_daif"
     empty.mkdir()
-    assert _count_daif_symbols(empty) == 0
+    with pytest.raises(ValueError, match="does not declare __all__"):
+        _count_daif_symbols(empty)
 
 
 def test_number_to_word_boundary_values() -> None:

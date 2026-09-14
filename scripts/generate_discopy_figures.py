@@ -13,7 +13,8 @@ Thin orchestrator for DisCoPy-domain figures:
     9.  discopy_three_sentence_discourse.png — Three-sentence role reversal (chases / fears / smiles)
     10. complexity_comparison.png           — κ(D) across 10 sentence types
 
-Requires ``discopy`` to be installed.  Exits cleanly with a warning if not.
+    All figures require ``discopy``; a missing install fails loudly instead of
+    silently leaving stale committed PNGs in place.
 
 Usage::
 
@@ -32,6 +33,8 @@ from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
+
+import discopy  # noqa: F401  # Declared dependency; fail loudly when missing.
 
 logging.basicConfig(
     level=logging.INFO,
@@ -58,15 +61,9 @@ def run(out: Path) -> list[Path]:
         out: Directory to write PNG files into.
 
     Returns:
-        List of paths to generated files (empty if discopy not installed).
+        List of paths to generated files.
     """
     LAST_FAILURES.clear()
-    try:
-        import discopy  # noqa: F401
-    except ImportError:
-        logger.warning("discopy not installed — skipping DisCoPy and complexity figures")
-        return []
-
     from src.visualization.discopy_diagrams import (
         render_discopy_transitive,
         render_discopy_composition,

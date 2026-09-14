@@ -84,7 +84,6 @@ class CaseCategory:
     Implements the categorical axioms:
     - Identity morphisms for each object
     - Associative composition of morphisms
-    - Commutativity constraint for consistent relational assignments
 
     Attributes:
         name: Name of the case system.
@@ -216,7 +215,8 @@ class CaseCategory:
         """Full categorical axiom check.
 
         Verifies:
-            1. Identity morphisms exist for all objects
+            1. Identity is constructible for every object (identity(role)
+               succeeds and is an endomorphism on that object)
             2. Composition is associative
             3. Identity is unit for composition
 

@@ -8,7 +8,7 @@ Let $a_i$ and $b_k$ represent the two noun vectors and $V_{ijk}$ a transitive ve
 
 $$
 m_j=\sum_{i,k}a_i V_{ijk} b_k.
-$$ {#eq:eq-4-2}
+$$ {#eq:eq-4-1}
 
 The source helper `create_tensor_semantics()` constructs deterministic example tensors and evaluates their contraction. These are generated representations, not pretrained embeddings or estimates from a corpus. Exchanging the arguments changes the result when the selected tensor is sensitive to that exchange; the formalism does not guarantee every tensor will distinguish them.
 

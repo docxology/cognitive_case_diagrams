@@ -93,8 +93,8 @@ jobs:
           PY
       - name: Regenerate intended generated metadata (intended lifecycle, not drift hiding)
         run: |
-          uv run --frozen python scripts/build_release.py --metadata-only
           uv run --frozen python scripts/validate_project.py
+          uv run --frozen python scripts/build_release.py --metadata-only
       - name: Automated candidate assembly (no visual-review receipt is created or demanded)
         # The tracked publication-review record binds committed-era bytes that
         # CI has just regenerated, so the candidate archive intentionally
@@ -136,6 +136,11 @@ jobs:
           test "$(printf '%s\n' "$wheel_path" | wc -l)" -eq 1
           uv venv /tmp/ccd-release-smoke --python 3.12
           uv pip install --python /tmp/ccd-release-smoke/bin/python "${wheel_path}[mcp]"
+      # cwd=/tmp keeps `import src` on the installed wheel: from the checkout,
+      # sys.path[0] would resolve the workspace's src/ tree instead.
+      - name: Wheel-only import and CLI smoke
+        working-directory: /tmp
+        run: |
           /tmp/ccd-release-smoke/bin/python -c "import mcp, src; print('wheel imports: sdk + package ok')"
           /tmp/ccd-release-smoke/bin/ccd-mcp --version
           /tmp/ccd-release-smoke/bin/ccd-mcp --list-tools

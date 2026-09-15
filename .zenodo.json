@@ -7,7 +7,7 @@
       "orcid": "0000-0001-6232-9096"
     }
   ],
-  "description": "Software accompanying the article 'Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case' (working revision 2.5.0): executable case-role graphs, pregroup reductions, tensor contractions, synthetic similarity matrices, Bayesian belief filtering, quantile utilities, POVM measurement models, seeded synthetic studies, and a reproducibility archive. Code is distributed under Apache-2.0; the article text carries the separate manuscript deposit's cc-by-4.0 license.",
+  "description": "Software accompanying the article 'Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case' (working revision 2.6.0): executable case-role graphs, pregroup reductions, tensor contractions, synthetic similarity matrices, Bayesian belief filtering, quantile utilities, POVM measurement models, seeded synthetic studies, and a reproducibility archive. Code is distributed under Apache-2.0; the article text carries the separate manuscript deposit's cc-by-4.0 license.",
   "keywords": [
     "linguistic case",
     "category theory",
@@ -20,15 +20,15 @@
     "reproducible research"
   ],
   "license": "Apache-2.0",
-  "publication_date": "2026-09-08",
+  "publication_date": "2026-09-14",
   "related_identifiers": [
     {
-      "identifier": "10.5281/zenodo.22653315",
+      "identifier": "10.5281/zenodo.22758214",
       "relation": "isSupplementTo",
       "scheme": "doi"
     }
   ],
   "title": "Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case",
   "upload_type": "software",
-  "version": "2.5.0"
+  "version": "2.6.0"
 }

@@ -54,9 +54,13 @@ Docstring copies of the same defect text are members of the same class: the re-g
 
 ## Deferred (2026-09-14 review)
 
-- Five-way duplication of package-boundary text; consolidate to a single sourced source — docs/modules/, docs/api_reference.md, docs/theory_implementation_map.md, src/README.md
-- Bind figure evidence to rendering environment versions in `generator_input_fingerprint` — scripts/generate_discopy_figures.py, src/visualization/figure_registry.py
-- Equation-label gap-free lint for the manuscript sources — docs/manuscript/
-- Enforce the web-correction marker mechanically in validation (`scripts/correct_web.py` marker vs `validate_project`) — scripts/correct_web.py, template validator call site
-- Boolean `exp_sanity_*` registry word-forms — src/experiments/runner.py, output/manuscript_variables.json
-- Quote or explicitly mark registry-only experiment ids in 07d — docs/manuscript/07d_synthetic_statistics.md
+All six entries implemented in the 2026-09-15 pass (commit that introduced
+version 2.6.0); verification: quality gate 1837 passed / 91.94% combined
+coverage, artifact gate, and full evidence-status `validated` at exit 0.
+
+- [x] Five-way duplication of package-boundary text; canonical paragraphs live in docs/modules/<pkg>.md, other surfaces link — docs/modules/README.md, docs/api_reference.md, docs/theory_implementation_map.md, src/README.md
+- [x] Figure evidence bound to rendering environment: environment_fingerprint per registry entry, fail-closed stale/missing checks — src/visualization/figure_registry.py, src/project_validation.py
+- [x] Equation-label gap-free + globally-unique lint — src/project_validation.py
+- [x] Web-correction marker enforced in publication-review validation; correct_web.py OSError handling — src/publication_review.py, scripts/correct_web.py
+- [x] Boolean exp_sanity_* word-form sidecars + integer format — src/experiments/runner.py, src/manuscript_variables.py
+- [x] Registry-only experiment ids quoted (atom-gap values) or explicitly marked in 07d — docs/manuscript/07d_synthetic_statistics.md

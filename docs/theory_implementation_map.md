@@ -2,14 +2,17 @@
 
 | Package | Evidence boundary |
 | :--- | :--- |
-| [case_systems](../src/case_systems/README.md) | Finite role graphs, labelled path composition, alignment maps, and natural-transformation helpers. Endpoint and weight predicates do not certify arbitrary categories or functors. `MonoidalFunctor.preserves_tensor()` is a role-separation policy, not a monoidal-law test. Fluid-S probabilities are supplied modeling inputs. |
-| [diagrams](../src/diagrams/README.md) | Explicit DisCoPy pregroup constructions, tensor examples, diagram counts, and entity-name bookkeeping. `Discourse` does not infer coreference or implement a complete DisCoCirc semantic state update. `MagnitudeHomologyMetrics` contains a synthetic cup/cap score, not homology or measured decoherence. |
-| [enriched_cat](../src/enriched_cat/README.md) | Candidate hom-matrices, explicit multiplicative composition checks, max-product closure, and matrix magnitude. The standard matrix is synthetic and violates composition before closure. Pseudoinverse magnitudes require valid left/right weighting residuals. Threshold clusters are weak connected components, not pairwise-close cliques. |
-| [topos_theory](../src/topos_theory/README.md) | Textual theory presentations and profile comparisons. `ClassifyingTopos` stores presentation statistics only. `compare_theory_presentations()` is the canonical comparison; matching counts are neither necessary nor sufficient for Morita equivalence. `bridge_transfer()` never authorizes theorem transfer without a witness (none is implemented). |
-| [cognitive](../src/cognitive/README.md) | Categorical probabilities, fixed-model KL/free energy, Bayesian updates, and uncalibrated mismatch scores. Likelihoods must be finite and nonnegative and have positive evidence. Sequential updates consume each supplied likelihood once. Policy-score inputs are caller-defined; neural interpretations require additional evidence. |
-| [daif](../src/daif/README.md) | Experimental role-score distributions, pairwise quantile updates, updates under risk distortion, Bayesian filtering, and diagnostics. Legacy Bellman names do not implement a Bellman return backup. VMP is a fixed single-factor softmax; `factor_consistency_score` is the accurate alias for the legacy Bethe function. ERP amplitudes are model units, not microvolts. |
-| [quantum](../src/quantum/README.md) | Finite POVMs and density matrices with explicit Hermitian/PSD/normalization checks. The canonical figure uses orthogonal projectors and a diagonal mixture, so it shows classical outcome probabilities, not interference. No quantum hardware, sheaf model, or TQNN is implemented. |
-| [security](../src/security/README.md) | A finite, supplied-label role-policy checker. Unknown roles are rejected before identity checks; mutable category adjacency is refreshed. Assignment checks use pairwise connectivity in either direction, not a directed authorization trace. No text classifier, authentication service, runtime reference monitor, or measured attack detector is provided. |
-| [visualization](../src/visualization/README.md) | Source-generated diagrams and synthetic numerical plots. Captions, labels, units, and provenance must agree with the data. Never create arbitrary confidence bands, empirical comparisons, or physical interpretations from synthetic scores. DisCoPy is a required project dependency; schematic native drawings are not independent proofs. |
+| [case_systems](../src/case_systems/README.md) | [Boundary statement](modules/case_systems.md) (canonical). |
+| [diagrams](../src/diagrams/README.md) | [Boundary statement](modules/diagrams.md) (canonical). |
+| [enriched_cat](../src/enriched_cat/README.md) | [Boundary statement](modules/enriched_cat.md) (canonical). |
+| [topos_theory](../src/topos_theory/README.md) | [Boundary statement](modules/topos_theory.md) (canonical). |
+| [cognitive](../src/cognitive/README.md) | [Boundary statement](modules/cognitive.md) (canonical). |
+| [daif](../src/daif/README.md) | [Boundary statement](modules/daif.md) (canonical). |
+| [quantum](../src/quantum/README.md) | [Boundary statement](modules/quantum.md) (canonical). |
+| [security](../src/security/README.md) | [Boundary statement](modules/security.md) (canonical). |
+| [visualization](../src/visualization/README.md) | [Boundary statement](modules/visualization.md) (canonical). |
+
+The canonical evidence-boundary paragraph for each package lives in its [module guide](modules/README.md); this map links rather than duplicates.
 
 The manuscript equations distinguish definitions and proposals from executed methods. Software tests validate particular contracts; they do not certify all prose claims. See [claim ledger](claim_ledger.md) and [method contracts](method_contracts.md).
+

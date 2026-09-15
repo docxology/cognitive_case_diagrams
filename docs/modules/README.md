@@ -1,15 +1,17 @@
 # Module guides
 
-- [case_systems ](case_systems.md): Finite role graphs, labelled path composition, alignment maps, and natural-transformation helpers. Endpoint and weight predicates do not certify arbitrary categories or functors. `MonoidalFunctor.preserves_tensor()` is a role-separation policy, not a monoidal-law test. Fluid-S probabilities are supplied modeling inputs.
-- [diagrams ](diagrams.md): Explicit DisCoPy pregroup constructions, tensor examples, diagram counts, and entity-name bookkeeping. `Discourse` does not infer coreference or implement a complete DisCoCirc semantic state update. `MagnitudeHomologyMetrics` contains a synthetic cup/cap score, not homology or measured decoherence.
-- [experiments ](../src/experiments/README.md): Covered by its own README/AGENTS in the package; no separate module guide here.
-- [enriched_cat ](enriched_cat.md): Candidate hom-matrices, explicit multiplicative composition checks, max-product closure, and matrix magnitude. The standard matrix is synthetic and violates composition before closure. Pseudoinverse magnitudes require valid left/right weighting residuals. Threshold clusters are weak connected components, not pairwise-close cliques.
-- [topos_theory ](topos_theory.md): Textual theory presentations and profile comparisons. `ClassifyingTopos` stores presentation statistics only. `compare_theory_presentations()` is the canonical comparison; matching counts are neither necessary nor sufficient for Morita equivalence. `bridge_transfer()` never authorizes theorem transfer without a witness (none is implemented).
-- [integrations ](../src/integrations/README.md): Covered by its own README/AGENTS in the package; no separate module guide here.
-- [cognitive ](cognitive.md): Categorical probabilities, fixed-model KL/free energy, Bayesian updates, and uncalibrated mismatch scores. Likelihoods must be finite and nonnegative and have positive evidence. Sequential updates consume each supplied likelihood once. Policy-score inputs are caller-defined; neural interpretations require additional evidence.
-- [daif ](daif.md): Experimental role-score distributions, pairwise quantile updates, finite quantile updates under risk distortion, Bayesian filtering, and diagnostics. Legacy Bellman names do not implement a Bellman return backup. VMP is a fixed single-factor softmax; `factor_consistency_score` is the accurate alias for the legacy Bethe function. ERP amplitudes are model units, not microvolts.
-- [quantum ](quantum.md): Finite POVMs and density matrices with explicit Hermitian/PSD/normalization checks. The canonical figure uses orthogonal projectors and a diagonal mixture, so it shows classical outcome probabilities, not interference. No quantum hardware, sheaf model, or TQNN is implemented.
-- [security ](security.md): A finite, supplied-label role-policy checker. Unknown roles are rejected before identity checks; mutable category adjacency is refreshed. Assignment checks use pairwise connectivity in either direction, not a directed authorization trace. No text classifier, authentication service, runtime reference monitor, or measured attack detector is provided.
-- [visualization ](visualization.md): Source-generated diagrams and synthetic numerical plots. Captions, labels, units, and provenance must agree with the data. Never create arbitrary confidence bands, empirical comparisons, or physical interpretations from synthetic scores. DisCoPy is a required project dependency; schematic native drawings are not independent proofs.
+The package boundary paragraph lives canonically in each package's module guide below. Other surfaces — the [API index](../api_reference.md), the [theory–implementation map](../theory_implementation_map.md), and the source package table in `src/README.md` — link to the guide rather than copying the text; edit the guide, never the copies.
+
+- [case_systems](case_systems.md): Package boundary statement and entry-point inventory (canonical).
+- [diagrams](diagrams.md): Package boundary statement and entry-point inventory (canonical).
+- [experiments ](../../src/experiments/README.md): Covered by its own README/AGENTS in the package; no separate module guide here.
+- [enriched_cat](enriched_cat.md): Package boundary statement and entry-point inventory (canonical).
+- [topos_theory](topos_theory.md): Package boundary statement and entry-point inventory (canonical).
+- [integrations ](../../src/integrations/README.md): Covered by its own README/AGENTS in the package; no separate module guide here.
+- [cognitive](cognitive.md): Package boundary statement and entry-point inventory (canonical).
+- [daif](daif.md): Package boundary statement and entry-point inventory (canonical).
+- [quantum](quantum.md): Package boundary statement and entry-point inventory (canonical).
+- [security](security.md): Package boundary statement and entry-point inventory (canonical).
+- [visualization](visualization.md): Package boundary statement and entry-point inventory (canonical).
 
 [API index](../api_reference.md) · [Method contracts](../method_contracts.md)

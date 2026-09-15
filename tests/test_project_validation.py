@@ -22,7 +22,7 @@ pytest_plugins = ("fixtures_manuscript",)
 
 from src.manuscript_injection import render_all_chapters  # noqa: E402
 from src.manuscript_variables import write_variables_manifest  # noqa: E402
-from src.project_validation import validate_project  # noqa: E402
+from src.project_validation import lint_manuscript_equation_labels, validate_project  # noqa: E402
 
 
 def _metrics(gate_tree: Path) -> dict:
@@ -69,6 +69,9 @@ MUTATIONS: dict[str, tuple[type[Exception], str]] = {
     "missing_image": (ValueError, "Missing figure"),
     "checksum": (ValueError, "checksum mismatch"),
     "figure_fingerprint": (ValueError, "Stale figure generation inputs"),
+    "stale_environment": (ValueError, "Stale figure generation environment"),
+    "missing_environment_fingerprint": (
+        ValueError, "Missing figure generation environment fingerprint"),
     "missing_alt": (ValueError, "Missing accessibility text"),
     "stale_alt": (ValueError, "Stale accessibility text"),
     "registry_label": (ValueError, "registry label mismatch"),
@@ -86,6 +89,7 @@ MUTATIONS: dict[str, tuple[type[Exception], str]] = {
     "missing_receipt": (FileNotFoundError, "quality_receipt.json"),
     "missing_experiments": (FileNotFoundError, "results.json"),
     "stale_manifest": (ValueError, "Manuscript variable manifest is stale"),
+    "equation_sequence_gap": (ValueError, "Non-consecutive manuscript equation labels"),
 }
 
 
@@ -98,7 +102,7 @@ def _refresh_receipt(gate_tree: Path) -> None:
 
 _SOURCE_EDIT_MUTATIONS = frozenset(
     {"unknown_token", "duplicate_label", "duplicate_bib",
-     "unresolved_citation", "hard_coded_prose"}
+     "unresolved_citation", "hard_coded_prose", "equation_sequence_gap"}
 )
 
 
@@ -124,6 +128,8 @@ def _apply_mutation(gate_tree: Path, mutation: str) -> None:
     elif mutation in (
         "checksum",
         "figure_fingerprint",
+        "stale_environment",
+        "missing_environment_fingerprint",
         "missing_alt",
         "stale_alt",
         "registry_label",
@@ -135,6 +141,12 @@ def _apply_mutation(gate_tree: Path, mutation: str) -> None:
             "checksum": lambda r: r[0].update(sha256="0" * 64),
             "figure_fingerprint": lambda r: r[0].update(
                 generator_input_fingerprint="stale"
+            ),
+            "stale_environment": lambda r: r[0].update(
+                environment_fingerprint="0" * 64
+            ),
+            "missing_environment_fingerprint": lambda r: r[0].pop(
+                "environment_fingerprint"
             ),
             "missing_alt": lambda r: r[0].update(alt_text=""),
             "stale_alt": lambda r: r[0].update(alt_text="Wrong description"),
@@ -172,6 +184,8 @@ def _apply_mutation(gate_tree: Path, mutation: str) -> None:
         _append_chapter(
             gate_tree, "\n| A | B |\n| :--- | :--- |\n| $|Z|$ | c |\n"
         )
+    elif mutation == "equation_sequence_gap":
+        _append_chapter(gate_tree, "\n$$ {#eq:eq-1-2}\n")
     elif mutation == "missing_manifest":
         (gate_tree / "output" / "manuscript_variables.json").unlink()
     elif mutation == "missing_receipt":
@@ -250,6 +264,48 @@ def test_markdown_table_lint_accepts_clean_table(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     assert lint_markdown_tables(doc.name, doc.read_text(encoding="utf-8")) == []
+
+
+def test_equation_label_lint_flags_sequence_gap_with_file_and_line() -> None:
+    """A skipped number inside one chapter is reported at the offending line."""
+    sources = {
+        "02_case_systems.md": "$$ {#eq:eq-2-1}\n\ntext\n\n$$ {#eq:eq-2-3}\n",
+    }
+    findings = lint_manuscript_equation_labels(sources)
+    assert findings == [
+        "02_case_systems.md:5: chapter 2 equation numbers are not a "
+        "gap-free sequence starting at 1: found [1, 3]",
+    ]
+
+
+def test_equation_label_lint_requires_sequence_starting_at_one() -> None:
+    sources = {"04_categorical_semantics.md": "$$ {#eq:eq-4-2}\n"}
+    findings = lint_manuscript_equation_labels(sources)
+    assert findings and "found [2]" in findings[0] and findings[0].startswith(
+        "04_categorical_semantics.md:1: chapter 4"
+    )
+
+
+def test_equation_label_lint_accepts_gap_free_and_named_labels() -> None:
+    """Gap-free per chapter prefix; named labels (and non-numeric suffixes) are exempt."""
+    sources = {
+        "04_categorical_semantics.md": "$$ {#eq:eq-4-1}\n\n$$ {#eq:eq-4-2}\n",
+        "04b_compact_closure_complexity.md": "$$ {#eq:eq-4b-1}\n",
+        "07_cognitive_integration.md": "$$ {#eq:variational-bound}\n",
+        "07c_daif_results.md": (
+            "$$ {#eq:eq-7-1}\n\n$$ {#eq:eq-7c-qr}\n\n$$ {#eq:eq-7c-vmp}\n"
+        ),
+    }
+    assert lint_manuscript_equation_labels(sources) == []
+
+
+def test_equation_label_lint_judges_chapter_prefixes_independently() -> None:
+    """04 and 04b prefixes never compare against each other (the eq-4-1 defect class)."""
+    sources = {
+        "04_categorical_semantics.md": "$$ {#eq:eq-4-1}\n",
+        "04b_compact_closure_complexity.md": "$$ {#eq:eq-4b-1}\n",
+    }
+    assert lint_manuscript_equation_labels(sources) == []
 
 
 def test_alt_text_literal_is_caught_by_scanner_after_manifest_rebind(

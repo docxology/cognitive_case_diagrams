@@ -21,7 +21,13 @@ from dataclasses import dataclass
 from typing import Annotated, Any, Literal
 
 import numpy as np
-from pydantic import BaseModel, Field, FiniteFloat
+from pydantic import (
+    BaseModel,
+    Field,
+    FiniteFloat,
+    StringConstraints,
+    model_validator,
+)
 
 from ..case_systems.case_category import CaseRole
 from ..cognitive.action_selection import expected_free_energy
@@ -202,7 +208,7 @@ class ConvergenceResult(BaseModel):
 
 class VariableEntry(BaseModel):
     identifier: str
-    value: FiniteFloat
+    value: FiniteFloat | _WORD_FORM
     unit: str
     ci_low: FiniteFloat | None = None
     ci_high: FiniteFloat | None = None
@@ -210,6 +216,17 @@ class VariableEntry(BaseModel):
     sample_unit: str
     interpretation: str
 
+    @model_validator(mode="after")
+    def _word_value_needs_word_sidecar(self) -> "VariableEntry":
+        if isinstance(self.value, str) and not self.identifier.endswith("_word"):
+            raise ValueError(
+                f"experiment variable {self.identifier!r}: value must be a "
+                "finite number, or a lowercase word form on a *_word sidecar"
+            )
+        return self
+
+
+_WORD_FORM = Annotated[str, StringConstraints(pattern=r"[a-z]+(-[a-z]+)*( [a-z]+)*")]
 
 class ExperimentVariablesResult(BaseModel):
     schema_version: str

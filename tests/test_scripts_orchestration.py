@@ -342,3 +342,31 @@ class TestGenerateDiagramsModule:
             assert lenient.returncode == 0, lenient.stdout + lenient.stderr
         finally:
             shutil.rmtree(out, ignore_errors=True)
+
+
+# ---------------------------------------------------------------------------
+# quality_gate.py — argument contract
+# ---------------------------------------------------------------------------
+
+
+class TestQualityGate:
+    def test_unknown_argument_exits_two_with_usage(self):
+        import subprocess
+
+        result = subprocess.run(
+            [sys.executable, str(_PROJECT_ROOT / "scripts" / "quality_gate.py"), "--bogus"],
+            capture_output=True, text=True, timeout=120,
+        )
+        assert result.returncode == 2
+        assert "usage" in result.stderr
+
+    def test_parse_args_accepts_the_two_call_contract(self):
+        import importlib.util
+
+        spec = importlib.util.spec_from_file_location(
+            "quality_gate_under_test", _PROJECT_ROOT / "scripts" / "quality_gate.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        assert module._parse_args([]).coverage is False
+        assert module._parse_args(["--coverage"]).coverage is True

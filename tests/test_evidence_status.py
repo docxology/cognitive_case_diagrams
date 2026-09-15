@@ -58,6 +58,17 @@ def _gate_checks() -> list[dict]:
     ]
 
 
+def _write_web_page(web: Path) -> None:
+    """Write the fixture web page; the production corrector injects its marker."""
+    from src.web_correction import correct_text
+
+    corrected, _ = correct_text(
+        "<html><head></head><body><p>Fixture</p></body></html>\n"
+    )
+    web.parent.mkdir(parents=True, exist_ok=True)
+    web.write_text(corrected, encoding="utf-8")
+
+
 def _integrated_tree(gate_tree: Path) -> Path:
     """Extend the canonical gate tree to a fully released end state."""
     from src.manuscript_injection import render_all_chapters
@@ -112,8 +123,7 @@ def _integrated_tree(gate_tree: Path) -> Path:
     pdf.parent.mkdir(parents=True, exist_ok=True)
     _write_real_pdf(pdf)
     web = gate_tree / "output" / "web" / "index.html"
-    web.parent.mkdir(parents=True, exist_ok=True)
-    web.write_text("<p>Fixture</p>\n")
+    _write_web_page(web)
     record_publication_review(
         gate_tree,
         pdf_page_count=2,
@@ -277,8 +287,7 @@ def test_visual_review_stage_states(gate_tree: Path) -> None:
     pdf.parent.mkdir(parents=True, exist_ok=True)
     _write_real_pdf(pdf)
     web = gate_tree / "output" / "web" / "index.html"
-    web.parent.mkdir(parents=True, exist_ok=True)
-    web.write_text("<p>Fixture</p>\n")
+    _write_web_page(web)
     _, report = status_of(gate_tree)
     assert report["evidence"]["visual_review"]["state"] == "missing"
     record = gate_tree / "output" / "reports" / "publication_review.json"

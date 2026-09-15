@@ -14,6 +14,7 @@ from src.publication_review import (
     record_publication_review,
     validate_publication_review,
 )
+from src.web_correction import MARKER_ID, STYLE_OPEN
 
 
 @pytest.fixture
@@ -27,7 +28,10 @@ def review_tree(tmp_path: Path) -> Path:
         "docs/manuscript/01_a.md": "# Fixture",
         "docs/figure_alt_text.json": '{}',
         "output/manuscript/01_a.md": "# Fixture",
-        "output/web/index.html": "<p>Fixture</p>",
+        "output/web/index.html": (
+            f"<html><head>{STYLE_OPEN}/* overrides */</style></head>"
+            "<body><p>Fixture</p></body></html>"
+        ),
         "output/pdf/cognitive_case_diagrams_combined.pdf": None,
         "output/figures/figure_registry.json": '[{"filename":"a.png"}]',
         "output/figures/a.png": "Image bytes are opaque to the receipt",
@@ -150,3 +154,24 @@ def test_truncated_pdf_is_rejected(review_tree: Path) -> None:
     pdf.write_bytes(pdf.read_bytes()[: len(pdf.read_bytes()) // 2])
     with pytest.raises(ValueError, match="page tree|trailer|catalog"):
         record_publication_review(review_tree, **observations())
+
+
+def test_uncorrected_web_render_rejected(review_tree: Path) -> None:
+    """A re-render followed by a skipped correction cannot be recorded."""
+    page = review_tree / "output/web/index.html"
+    page.write_text("<html><head></head><body><p>Fixture</p></body></html>")
+    with pytest.raises(ValueError, match=MARKER_ID):
+        record_publication_review(review_tree, **observations())
+
+
+def test_marker_removal_after_record_fails_validation(review_tree: Path) -> None:
+    """Removing the override marker invalidates an existing receipt by name."""
+    record_publication_review(review_tree, **observations())
+    page = review_tree / "output/web/index.html"
+    page.write_text(
+        page.read_text(encoding="utf-8").replace(
+            f"{STYLE_OPEN}/* overrides */</style>", ""
+        )
+    )
+    with pytest.raises(ValueError, match=MARKER_ID):
+        validate_publication_review(review_tree)

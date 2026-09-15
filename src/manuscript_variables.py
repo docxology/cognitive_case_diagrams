@@ -583,7 +583,7 @@ EXPERIMENT_VARIABLE_NAMES = tuple(_EXPERIMENT_DEFINITIONS)
 _EXPERIMENT_UNIT_HINTS = {name: definition["unit"] for name, definition in _EXPERIMENT_DEFINITIONS.items()}
 _SPECS = _SPECS + tuple(
     VariableSpec(
-        name=name, unit=definition["unit"], format="sig6", provenance="experiments",
+        name=name, unit=definition["unit"], format=definition.get("format", "sig6"), provenance="experiments",
         description=definition["description"],
         source="src.experiments.runner via output/experiments/results.json",
         required=False,
@@ -674,8 +674,10 @@ def read_experiment_variables(root: Path) -> dict[str, str]:
     The payload contract (ccd-methods lane, schema 1.0) is strict:
     ``schema_version == "1.0"``, provenance with hex ``config_sha256``, int
     ``seed``, string ``numpy_version``, and a flat ``variables`` mapping of
-    identifier -> {value: finite number, unit, ci_low, ci_high, confidence_level,
-    sample_unit, interpretation}. Boolean-valued or nonfinite entries are
+    identifier -> {value, unit, ci_low, ci_high, confidence_level,
+    sample_unit, interpretation}. Entries are numeric except the
+    ``*_word`` sidecars, whose value is the lowercase word form (e.g.
+    ``pass``/``fail``). Boolean-valued or nonfinite numeric entries are
     rejected; identifiers outside the registry are rejected.
     """
     path = root / EXPERIMENT_RESULTS_RELATIVE
@@ -728,10 +730,16 @@ def read_experiment_variables(root: Path) -> dict[str, str]:
         if not isinstance(entry, dict):
             raise ValueError(f"Experiment variable {name} must be an object")
         value = entry.get("value")
-        if isinstance(value, bool) or not isinstance(value, (int, float)):
-            raise ValueError(f"Experiment variable {name} must carry a numeric value")
-        if not math.isfinite(float(value)):
-            raise ValueError(f"Experiment variable {name} is nonfinite")
+        if specs[name].format == "word":
+            if not isinstance(value, str):
+                raise ValueError(
+                    f"Experiment variable {name} must carry a word-form string")
+            validate_value_for_spec(specs[name], value)
+        else:
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                raise ValueError(f"Experiment variable {name} must carry a numeric value")
+            if not math.isfinite(float(value)):
+                raise ValueError(f"Experiment variable {name} is nonfinite")
         unit = entry.get("unit")
         if unit != specs[name].unit:
             raise ValueError(
@@ -749,7 +757,7 @@ def read_experiment_variables(root: Path) -> dict[str, str]:
         for field in ("sample_unit", "interpretation"):
             if not isinstance(entry.get(field), str) or not entry[field].strip():
                 raise ValueError(f"Experiment variable {name} lacks a {field} string")
-        collected[name] = format_float(float(value))
+        collected[name] = value if isinstance(value, str) else format_float(float(value))
     return collected
 
 

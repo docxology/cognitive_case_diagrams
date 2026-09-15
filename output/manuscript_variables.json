@@ -17,7 +17,7 @@
     "docs/manuscript/07_cognitive_integration.md": "3010d2afb67b4be5ee41885619587602d6be6eacbac8478c43fb9f39e3c12287",
     "docs/manuscript/07b_diagrammatic_cognition.md": "9a28ac20048437cb8a477b6e8db31e893ef43e7a1a88277c096fffec8e8138cb",
     "docs/manuscript/07c_daif_results.md": "c53bd3904e3f89c00da310ee711d65b604ca67e55e13f6fd30cf0fa86d8fbdc6",
-    "docs/manuscript/07d_synthetic_statistics.md": "b64cb052b8a29cae7a926a6113eee94a0858cd9ea5688f5836add9b5b83a08b1",
+    "docs/manuscript/07d_synthetic_statistics.md": "57d3feaee09f77758a1e473cd2e94af42429cb16130fe2b296ddb3b16819bdfa",
     "docs/manuscript/08_quantum_active_inference.md": "32ea04f9b5595037266e9241b9fd911b02972f631163ab956490d8da93a43c74",
     "docs/manuscript/08b_quantum_semantics.md": "463c309af60971dc8dcc030e5fb847b1333668967cdf936d89d928d96e37e7d2",
     "docs/manuscript/09_ai_implications.md": "ad0dd70fbaa861bd41486af4ce08e3d8dd9139b605b0182756bf27f33bfbbc0c",
@@ -29,14 +29,14 @@
     "docs/manuscript/AGENTS.md": "4405e5e1b2aa0eaeeba282dd4cd09a0742b4697e240037560f6c64d401808cb1",
     "docs/manuscript/MANUSCRIPT_STATUS.md": "8d02dbc2e59c2d75903e45c7032b7be3a7f5394f63d164c4cea79262a22322a6",
     "docs/manuscript/README.md": "78bce25fbf98af2bc71e79e53ca1950f3ce5b85fca8d5ac9ebf334bc146a645b",
-    "docs/manuscript/config.yaml": "2da8c1a589ed927780c04a03473f4c5a9f38313ea8eb5275894b1a522e7ae428",
+    "docs/manuscript/config.yaml": "4ac7176766be26e3db85438d78613b49ac3f17cb9fe3c97ede000d1c5f8c5e10",
     "docs/manuscript/preamble.md": "e61d8cbb0f1a77465adf113f2cb6633163235f723e20b81b6d515c7885623b43",
     "docs/manuscript/references.bib": "6b94894db015da32b02a7bf421352e7ee75cefba6448d73ac669524172dd2a44",
-    "output/experiments/results.json": "dd08bbe7cb13d9c6214ee832b15a4c4e816ad44fbe500311ae5b1ee724ec6575",
-    "output/figures/figure_registry.json": "8aaebdd06e29a20f603ef3e8790f464269b1cafb6dc3ed3f94d0bd3f8e9a81f7",
-    "output/reports/quality_receipt.json": "c16680527444b5ecaf9267986b8f4e25e808fe8448ba91c6f3101b489740bfe2"
+    "output/experiments/results.json": "fb27906035a17273032e39d9c76ad39bfcc2244c00c3ca60618dfcaa3f0835ba",
+    "output/figures/figure_registry.json": "8ef76e48696715a57c24ea30cbec17f4b981060416174037d9ff9ab76774735b",
+    "output/reports/quality_receipt.json": "3fd19b6bc35192fe01dd905b02b76e6f34659f77e0393071bc85caf7823f55ff"
   },
-  "quality_input_fingerprint": "4ebe6ac79f83726b983fdebf6cef18b855544099610bccfc12c2d617836485c8",
+  "quality_input_fingerprint": "e97d407412707f5504bdf334fe483438115727b2aa0e843a04e760a5174234e0",
   "schema": "ccd-manuscript-variables-v1",
   "variables": {
     "alignment_extra_label_count": {
@@ -145,7 +145,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_covered",
         "unit": "count"
       },
-      "value": "6647"
+      "value": "6722"
     },
     "coverage_lines_total": {
       "spec": {
@@ -157,7 +157,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_total",
         "unit": "count"
       },
-      "value": "7114"
+      "value": "7191"
     },
     "coverage_percent": {
       "spec": {
@@ -169,7 +169,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_percent",
         "unit": "percent"
       },
-      "value": "91.88"
+      "value": "91.94"
     },
     "daif_assignment_iterations": {
       "spec": {
@@ -1002,7 +1002,7 @@
     "exp_sanity_analytic_identities_pass": {
       "spec": {
         "description": "Synthetic validation control status: analytic_identities_pass",
-        "format": "sig6",
+        "format": "integer",
         "name": "exp_sanity_analytic_identities_pass",
         "provenance": "experiments",
         "required": false,
@@ -1011,10 +1011,22 @@
       },
       "value": "1"
     },
+    "exp_sanity_analytic_identities_pass_word": {
+      "spec": {
+        "description": "English word form of exp_sanity_analytic_identities_pass ('pass' or 'fail')",
+        "format": "word",
+        "name": "exp_sanity_analytic_identities_pass_word",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "count"
+      },
+      "value": "pass"
+    },
     "exp_sanity_invalid_input_controls_pass": {
       "spec": {
         "description": "Synthetic validation control status: invalid_input_controls_pass",
-        "format": "sig6",
+        "format": "integer",
         "name": "exp_sanity_invalid_input_controls_pass",
         "provenance": "experiments",
         "required": false,
@@ -1022,6 +1034,18 @@
         "unit": "count"
       },
       "value": "1"
+    },
+    "exp_sanity_invalid_input_controls_pass_word": {
+      "spec": {
+        "description": "English word form of exp_sanity_invalid_input_controls_pass ('pass' or 'fail')",
+        "format": "word",
+        "name": "exp_sanity_invalid_input_controls_pass_word",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "count"
+      },
+      "value": "pass"
     },
     "exp_sensitivity_entropy_bins_max_abs_effect": {
       "spec": {
@@ -1189,7 +1213,7 @@
         "source": "config.yaml paper.date",
         "unit": "date"
       },
-      "value": "2026-09-08"
+      "value": "2026-09-14"
     },
     "paper_doi": {
       "spec": {
@@ -1213,7 +1237,7 @@
         "source": "config.yaml publication.prior_version_doi",
         "unit": "identifier"
       },
-      "value": "10.5281/zenodo.19695260"
+      "value": "10.5281/zenodo.22653315"
     },
     "paper_version": {
       "spec": {
@@ -1225,7 +1249,7 @@
         "source": "config.yaml paper.version",
         "unit": "version"
       },
-      "value": "2.5.0"
+      "value": "2.6.0"
     },
     "paper_version_doi": {
       "spec": {
@@ -1237,7 +1261,7 @@
         "source": "config.yaml publication.version_doi",
         "unit": "identifier"
       },
-      "value": "10.5281/zenodo.22653315"
+      "value": "10.5281/zenodo.22758214"
     },
     "paper_version_record_url": {
       "spec": {
@@ -1249,7 +1273,7 @@
         "source": "config.yaml publication.version_record",
         "unit": "identifier"
       },
-      "value": "https://zenodo.org/records/22653315"
+      "value": "https://zenodo.org/records/22758214"
     },
     "publication_status": {
       "spec": {
@@ -1273,7 +1297,7 @@
         "source": "src.release_validation.validate_quality_receipt -> quality_input_fingerprint[:12]",
         "unit": "text"
       },
-      "value": "4ebe6ac79f83"
+      "value": "e97d40741270"
     },
     "quality_receipt_generated_at": {
       "spec": {
@@ -1285,7 +1309,7 @@
         "source": "src.release_validation.validate_quality_receipt -> generated_at",
         "unit": "timestamp"
       },
-      "value": "2026-09-14T19:06:31.854086+00:00"
+      "value": "2026-09-15T02:20:12.609861+00:00"
     },
     "quantum_acc_probability": {
       "spec": {
@@ -1453,7 +1477,7 @@
         "source": "src.generate_manuscript_metrics._count_collected_tests",
         "unit": "count"
       },
-      "value": "1813"
+      "value": "1837"
     },
     "total_test_files": {
       "spec": {
@@ -1501,7 +1525,7 @@
         "source": "src.release_validation.validate_quality_receipt -> pytest_passed",
         "unit": "count"
       },
-      "value": "1813"
+      "value": "1837"
     },
     "total_tests_skipped": {
       "spec": {

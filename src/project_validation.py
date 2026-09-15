@@ -12,6 +12,7 @@ from pathlib import Path
 from PIL import Image
 from src.manuscript_variables import scan_hard_coded_claims, validate_metrics, validate_variables_manifest
 from src.release_validation import StaleEvidenceError, quality_input_fingerprint
+from src.visualization.figure_registry import environment_fingerprint
 
 FIGURE = re.compile(r'!\[([^\n]*)\]\(([^)]+)\)\{#(fig:[\w:.-]+)\}')
 LABEL = re.compile(r'\{#([\w:.-]+)\}')
@@ -21,6 +22,7 @@ BIB_KEY = re.compile(r'^@(?!comment\b|preamble\b|string\b)\w+\s*\{\s*([^,\s]+)\s
 
 MATH_SPAN = re.compile(r'(?<!\\)\$([^$]+)(?<!\\)\$')
 UNESCAPED_PIPE = re.compile(r'(?<!\\)\|')
+EQ_NUMBERED = re.compile(r'eq:eq-(\w+)-(\d+)')
 
 
 def _table_cells(row: str) -> list[str]:
@@ -84,6 +86,36 @@ def _lint_manuscript_tables(root: Path, sources: dict[str, str]) -> None:
         raise ValueError('Malformed markdown table: ' + '; '.join(findings))
 
 
+def lint_manuscript_equation_labels(sources: dict[str, str]) -> list[str]:
+    """Return ``name:line`` findings for non-consecutive numbered eq labels.
+
+    Numbered labels (``eq:eq-<chapter>-<k>``) must form a gap-free sequence
+    starting at 1 within each file for their chapter prefix; named labels
+    are exempt here (they are still covered by the duplicate-label check).
+    """
+    numbered: dict[tuple[str, str], list[tuple[int, int]]] = {}
+    for name, text in sources.items():
+        for lineno, line in enumerate(text.splitlines(), start=1):
+            for label in LABEL.findall(line):
+                match = EQ_NUMBERED.fullmatch(label)
+                if match:
+                    numbered.setdefault((name, match[1]), []).append((int(match[2]), lineno))
+    findings: list[str] = []
+    for (name, prefix), entries in sorted(numbered.items()):
+        ordered = sorted(entries)
+        expected = list(range(1, len(ordered) + 1))
+        if [number for number, _ in ordered] == expected:
+            continue
+        bad_line = next(
+            lineno for (number, lineno), want in zip(ordered, expected) if number != want
+        )
+        findings.append(
+            f'{name}:{bad_line}: chapter {prefix} equation numbers are not a '
+            f'gap-free sequence starting at 1: found {[n for n, _ in ordered]}'
+        )
+    return findings
+
+
 def validate_project(root: Path) -> dict:
     """Raise ValueError on missing, stale, malformed, or unresolved artifacts."""
     source = root / 'docs/manuscript'
@@ -110,8 +142,21 @@ def validate_project(root: Path) -> dict:
             raise StaleEvidenceError(f'Stale hydrated chapter: {name}')
     text = '\n'.join(sources.values())
     labels = LABEL.findall(text)
-    if len(labels) != len(set(labels)):
-        raise ValueError('Duplicate manuscript labels')
+    seen: dict[str, tuple[str, int]] = {}
+    duplicates: list[str] = []
+    for name, chapter in sources.items():
+        for lineno, line in enumerate(chapter.splitlines(), start=1):
+            for label in LABEL.findall(line):
+                first = seen.setdefault(label, (name, lineno))
+                if first != (name, lineno):
+                    duplicates.append(
+                        f'{name}:{lineno} repeats {label} (first defined at {first[0]}:{first[1]})'
+                    )
+    if duplicates:
+        raise ValueError('Duplicate manuscript labels: ' + '; '.join(duplicates))
+    eq_findings = lint_manuscript_equation_labels(sources)
+    if eq_findings:
+        raise ValueError('Non-consecutive manuscript equation labels: ' + '; '.join(eq_findings))
     bib = BIB_KEY.findall((source / 'references.bib').read_text(encoding='utf-8'))
     if len(bib) != len(set(bib)):
         raise ValueError('Duplicate bibliography keys')
@@ -145,6 +190,10 @@ def validate_project(root: Path) -> dict:
             raise ValueError(f'Figure registry label mismatch: {label}')
         if entry.get('generator_input_fingerprint') != figure_inputs:
             raise StaleEvidenceError(f'Stale figure generation inputs: {relative}')
+        if 'environment_fingerprint' not in entry:
+            raise StaleEvidenceError(f'Missing figure generation environment fingerprint: {relative}')
+        if entry['environment_fingerprint'] != environment_fingerprint():
+            raise StaleEvidenceError(f'Stale figure generation environment: {relative}')
         if Path(entry.get('path', '')).is_absolute() or (root / entry.get('path', '')).resolve() != image.resolve():
             raise ValueError(f'Figure registry path mismatch: {relative}')
         alt = entry.get('alt_text')

@@ -106,11 +106,15 @@ def summarize_variables(
         spec = variables[identifier]
         if not isinstance(spec, dict):
             raise ValueError(f"experiment variable {identifier!r} must be an object")
-        if spec.get("value") is None or isinstance(spec.get("value"), bool):
-            raise ValueError(f"experiment variable {identifier!r}: value must be a finite number")
-        value = _finite_number(spec.get("value"), identifier, "value")
-        if value is None:
-            raise ValueError(f"experiment variable {identifier!r}: value must be a finite number")
+        raw_value = spec.get("value")
+        if isinstance(raw_value, str):
+            if not identifier.endswith("_word") or not re.fullmatch(
+                    r"[a-z]+(-[a-z]+)*( [a-z]+)*", raw_value):
+                raise ValueError(
+                    f"experiment variable {identifier!r}: value must be a "
+                    "finite number, or a lowercase word form on a *_word sidecar")
+        else:
+            _finite_number(raw_value, identifier, "value")
         unit = spec.get("unit")
         if unit not in _ALLOWED_UNITS:
             raise ValueError(
@@ -126,7 +130,7 @@ def summarize_variables(
         projected.append(
             {
                 "identifier": identifier,
-                "value": value,
+                "value": raw_value,
                 "unit": unit,
                 "ci_low": _finite_number(spec.get("ci_low"), identifier, "ci_low"),
                 "ci_high": _finite_number(spec.get("ci_high"), identifier, "ci_high"),

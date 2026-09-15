@@ -907,6 +907,8 @@ probabilities</a></li>
 id="toc-sec:test-suite-inventory"><span
 class="toc-section-number">25</span> Appendix C: Reproduction and
 Verification Scope</a></li>
+<li><a href="#manuscript-status" id="toc-manuscript-status"><span
+class="toc-section-number">26</span> Manuscript status</a></li>
 </ul>
 </nav>
 <main id="main-content" tabindex="-1">
@@ -926,15 +928,15 @@ constructions and their limits. We distinguish generated derivations
 from illustrative drawings, finite score distributions from Bellman
 return distributions, presentation statistics from topos invariants, and
 model-unit prediction errors from physiological measurements. The
-accompanying suite collects 1813 tests across 91 files; that is a
+accompanying suite collects 1837 tests across 91 files; that is a
 collection count, and a separate source-bound quality receipt records
-1813 passing tests with 91.88% line-and-branch coverage (Appendix C).
+1837 passing tests with 91.94% line-and-branch coverage (Appendix C).
 The figure pipeline produces 33 figures from source. All numerical
 illustrations use synthetic inputs; no corpus study, participant
 experiment, EEG fit, quantum-hardware run, or deployed-agent security
 evaluation is reported. Topos-theoretic transfer, cognitive advantages
 of case diagrams, and case-based authorization remain research proposals
-with explicit validation requirements. This is working revision 2.5.0;
+with explicit validation requirements. This is working revision 2.6.0;
 its local validation does not constitute publication or independent
 mathematical certification.</p>
 <hr />
@@ -2065,8 +2067,12 @@ error of the empirical coverage estimate around the exact discrete
 target, not distance from a continuous coverage convention. The largest
 per-replicate deviation is 0.0698747, and the largest per-level gap
 between mean observed coverage and the mean exact target is 0.00392405.
-These diagnostics are properties of the stored representation and the
-seeded sampling scheme, not estimates from data.</p>
+The mean exact atom gap <span class="math inline">\(F(Q(\tau)) -
+\tau\)</span> itself is 0.139219, and its largest value is 0.624411;
+both are deterministic discretization properties of the stored atoms and
+carry no sampling error. These diagnostics are properties of the stored
+representation and the seeded sampling scheme, not estimates from
+data.</p>
 <figure id="fig:experiment-calibration">
 <a class="figure-full-size-link" href="../figures/experiment_calibration.png" target="_blank" rel="noopener" aria-label="Open full-size Figure 28, Empirical discrete coverage of stored quantile levels against the exact F(Q(\tau)) target of…"><img src="../figures/experiment_calibration.png"
 alt="Empirical coverage of synthetic discrete outcomes is compared with the exact cumulative probability at each model quantile. A separate error panel shows replicate uncertainty relative to this discrete target; nominal quantile levels are not treated as exact attainable coverage." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
@@ -2089,7 +2095,13 @@ Wasserstein reconstruction satisfies its self-distance identity to at
 most 0. The pairwise Huber update agrees with its finite-difference
 numerical gradient characterization to at most 8.15287e-11; this is a
 numerical agreement check of the implemented gradient, not a
-machine-precision identity proof.</p>
+machine-precision identity proof. The remaining registered identifiers
+of this and the preceding subsections — the brute-force Wasserstein
+residuals, the projection clipping and refinement summaries, the
+quantile shift and triangle-inequality checks, and the per-replicate
+filtering summaries — are recorded in the machine-readable variable
+registry (output/experiments/results.json) without being quoted in
+prose.</p>
 <h2 data-number="17.4" id="sec:exp-sensitivity"><span
 class="header-section-number">17.4</span> Sensitivity sweeps</h2>
 <p>Configured sweeps vary one configuration parameter at a time and
@@ -2113,14 +2125,15 @@ interpretation.</figcaption>
 <h2 data-number="17.5" id="sec:exp-controls"><span
 class="header-section-number">17.5</span> Validity controls</h2>
 <p>The runner also executes analytic negative controls. The
-analytic-identity control suite passes (reported value 1), and the
-invalid-input control suite passes (reported value 1), where 1 means all
-analytic identity checks passed and 1 means all malformed-input
-rejections behaved as declared. Separately, the crisp two-role POVM
-example satisfies completeness to a mean residual of 2.1684e-17 with
-interval [1.56478e-17, 2.77203e-17] and a maximum residual of
-2.22045e-16 across replicates, consistent with the matrix contracts in
-sec. <a href="#sec:quantum-semantics">19</a>.</p>
+analytic-identity control suite passs (reported value 1), and the
+invalid-input control suite passs (reported value 1); each reported
+numeric value is the registry encoding of the corresponding control
+outcome, in which every analytic identity check and every
+malformed-input rejection behaved as declared. Separately, the crisp
+two-role POVM example satisfies completeness to a mean residual of
+2.1684e-17 with interval [1.56478e-17, 2.77203e-17] and a maximum
+residual of 2.22045e-16 across replicates, consistent with the matrix
+contracts in sec. <a href="#sec:quantum-semantics">19</a>.</p>
 <h2 data-number="17.6" id="sec:exp-limits"><span
 class="header-section-number">17.6</span> Interpretation boundaries</h2>
 <p>Three boundaries delimit this section. First, replication intervals
@@ -2643,12 +2656,12 @@ population.</p>
 class="header-section-number">25</span> Appendix C: Reproduction and
 Verification Scope</h1>
 <p>Two different counts matter and must not be conflated. The suite
-<em>collects</em> 1813 tests in 91 files across 11 source subpackages; a
+<em>collects</em> 1837 tests in 91 files across 11 source subpackages; a
 collection count alone certifies nothing. A passing run is certified
-only by the source-bound quality receipt, which records 1813 passed, 0
-failed, and 0 skipped tests with 6647 of 7114 statements covered (91.88%
+only by the source-bound quality receipt, which records 1837 passed, 0
+failed, and 0 skipped tests with 6722 of 7191 statements covered (91.94%
 combined). The receipt binds that evidence to source fingerprint
-4ebe6ac79f83 and was recorded at 2026-09-14T19:06:31.854086+00:00; a
+e97d40741270 and was recorded at 2026-09-15T02:20:12.609861+00:00; a
 receipt whose fingerprint no longer matches the tree is rejected. The
 metrics writer records installed NumPy 2.4.4 and DisCoPy 1.2.2.</p>
 <p>The suite covers role-graph construction; sampled endpoint and weight
@@ -2680,7 +2693,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="
 are declared in source. The project has no corpus split, participant
 sample, EEG dataset, quantum-hardware receipt, or operational-agent
 security evaluation. This revision is identified by <a
-href="https://zenodo.org/records/22653315">10.5281/zenodo.22653315</a>;
+href="https://zenodo.org/records/22758214">10.5281/zenodo.22758214</a>;
 the series uses DOI 10.5281/zenodo.19695259. The live deposit state is
 reported at the version-record link.</p>
 <p>The first command uses the lockfile; the quality gate runs lint,
@@ -2695,6 +2708,27 @@ binding. Render through the sibling template engine using the
 lifecycle-qualified project selector documented in the repository
 README. Rendered PDFs require visual inspection in addition to text,
 link, and citation checks.</p>
+<hr />
+<h1 data-number="26" id="manuscript-status"><span
+class="header-section-number">26</span> Manuscript status</h1>
+<p>The working version and date are declared in <code>config.yaml</code>
+and injected into prose; this file does not restate them. The
+substantive manuscript and its caption set were rewritten to match the
+implemented contracts. The project reports synthetic examples and
+explicitly scoped mathematical constructions, with no new corpus, EEG,
+hardware, or deployed-security result. Publication roles are neutral:
+the version DOI identifies this revision, the concept DOI identifies the
+series, and the live deposit state is whatever the configured
+<code>version_record</code> link reports at read time; release notes
+report the verified remote status.</p>
+<p>See <a href="../comprehensive_review.md">review report</a> for
+current test, artifact, rendering, and visual-inspection receipts. Those
+receipts describe the render they were recorded against; a later render
+requires a repeat, and this file does not assert render-dependent
+counts. The source-bound quality receipt (Appendix C) is the only
+authority for passing-test and coverage claims. Automated LLM reviews
+and translations remain disabled by the author’s existing
+configuration.</p>
 <div id="refs" class="references csl-bib-body hanging-indent"
 role="list">
 <div id="ref-akgul2026distributional" class="csl-entry" role="listitem">

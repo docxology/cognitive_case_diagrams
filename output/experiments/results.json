@@ -3777,7 +3777,7 @@
       "src/experiments/__init__.py": "1470135ca46b83f1da88b85705eeb1c451f43e158aa8f30a7d5c08c36fa2edbe",
       "src/experiments/config.py": "d7131000172df83e729f54761d9c4c1413beb8e41f1e4a214e42bfda5cef1b24",
       "src/experiments/rng.py": "cc2e4ab6115b8f06af0c87135b08f22e9ee808ce14e0bafb1a012815a2eb65da",
-      "src/experiments/runner.py": "cb16346d9d95e4257b81850e6952cb2f51c581da4dde6ff05c6722d1aec346f9",
+      "src/experiments/runner.py": "f2cda4d2ece9569c7064d7aa3f0757324a664389a7b9b8cb49d56685c023f00d",
       "src/experiments/serialization.py": "cf33114676d927deec8a043a2f27cdf719fc5dd0ea2249d6720fda76caabf069",
       "src/experiments/stats.py": "c86d11bd7a4da5696f228515e4226434480c3df1497b53a9dedcfcc84fab39ec",
       "src/experiments/studies.py": "65bce44a72ba88c0296b8375b71306eb480a380073fb4422f0f4cce017850074",
@@ -3791,7 +3791,7 @@
       "src/topos_theory/__init__.py": "b18f95ba4da17edfc13142479e2496421ee2aaa806297025602387a33f932abb",
       "src/topos_theory/topos.py": "3c6715948201bf5984dc3e21b66475a6b5f0d1bfff62d0f59ed9cb96efbc5fda"
     },
-    "source_sha256": "dda897faba3067c5faed36edae92c4c8487c893b4c701d05810e56b8ea66d773"
+    "source_sha256": "9b55d3e0104adff00c19ea4e5376cb6de21d0f8543c6b9c4cde8890b323628d3"
   },
   "schema_version": "1.0",
   "variables": {
@@ -4173,6 +4173,15 @@
       "unit": "count",
       "value": 1.0
     },
+    "exp_sanity_analytic_identities_pass_word": {
+      "ci_high": null,
+      "ci_low": null,
+      "confidence_level": 0.95,
+      "interpretation": "English word form of exp_sanity_analytic_identities_pass: pass.",
+      "sample_unit": "control",
+      "unit": "count",
+      "value": "pass"
+    },
     "exp_sanity_invalid_input_controls_pass": {
       "ci_high": null,
       "ci_low": null,
@@ -4181,6 +4190,15 @@
       "sample_unit": "control",
       "unit": "count",
       "value": 1.0
+    },
+    "exp_sanity_invalid_input_controls_pass_word": {
+      "ci_high": null,
+      "ci_low": null,
+      "confidence_level": 0.95,
+      "interpretation": "English word form of exp_sanity_invalid_input_controls_pass: pass.",
+      "sample_unit": "control",
+      "unit": "count",
+      "value": "pass"
     },
     "exp_sensitivity_entropy_bins_max_abs_effect": {
       "ci_high": null,

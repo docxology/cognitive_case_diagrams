@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cognitive_case_diagrams"
-version = "2.5.0"
+version = "2.6.0"
 description = "Category-theoretic formalization of linguistic case systems with DisCoPy visualizations"
 authors = [
     {name = "Daniel Ari Friedman", email = "danielarifriedman@gmail.com"}
@@ -98,7 +98,7 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short --strict-markers"
-timeout = 300
+timeout = 900  # slow external-drive volumes push subprocess-spawning tests past 300s; 900 keeps the hang guard while tolerating them (CI runners finish in minutes)
 filterwarnings = [
     # DiscoPy calls plt.show() on Agg; harmless in headless runs.
     "ignore:FigureCanvasAgg is non-interactive, and thus cannot be shown:UserWarning",

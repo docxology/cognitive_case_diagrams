@@ -16,6 +16,7 @@ from collections.abc import Mapping, Sequence
 from typing import Any
 
 from src.release_validation import StaleEvidenceError, file_sha256, quality_input_fingerprint, write_json_atomic
+from src.web_correction import MARKER_ID, STYLE_OPEN
 
 REVIEW_PATH = Path("output/reports/publication_review.json")
 BROWSER_CHECKS = frozenset(
@@ -77,7 +78,27 @@ def _pdf_page_count(data: bytes) -> int:
     return count
 
 
+def _validate_web_marker(root: Path) -> None:
+    """Require the correct_web.py override marker in every bound web page.
+
+    A re-render followed by a skipped correction silently drops the
+    accessibility overrides; the receipt must refuse to bind those bytes.
+    """
+    pages = sorted(
+        path for path in (root / "output/web").rglob("*.html") if path.is_file()
+    )
+    if not pages:
+        raise ValueError("Web artifact contains no HTML pages to bind")
+    for page in pages:
+        if STYLE_OPEN not in page.read_text(encoding="utf-8"):
+            raise ValueError(
+                f"Web page {page.relative_to(root)} is missing the "
+                f"{MARKER_ID} override marker; re-run scripts/correct_web.py"
+            )
+
+
 def _validate_observations(root: Path, observations: Mapping[str, Any]) -> None:
+    _validate_web_marker(root)
     count = observations.get("pdf_page_count")
     pages = observations.get("inspected_pdf_pages", [])
     pdf_path = root / "output/pdf/cognitive_case_diagrams_combined.pdf"

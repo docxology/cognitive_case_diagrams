@@ -19,7 +19,9 @@ top-level shape is frozen as schema version ``"1.0"``:
 ``variables`` is the stable consumption surface for manuscript injection and
 the MCP lane: flat identifiers matching ``[A-Za-z_][A-Za-z0-9_]*`` with the
 ``exp_`` prefix, finite numeric values, and units restricted to
-``{probability, dimensionless, nats, count, version}``. Interval bounds live
+``{probability, dimensionless, nats, count, version}`` — with one exception:
+the ``exp_sanity_*_word`` sidecars carry the lowercase word ``pass``/``fail``
+instead of a number. Interval bounds live
 in the ``ci_low``/``ci_high`` fields with the governing ``confidence_level``;
 flat ``*_ci95_*`` sidecar identifiers are additionally emitted ONLY when the
 configured confidence level is exactly 0.95. ``provenance.source_files`` maps
@@ -540,14 +542,31 @@ def _assemble_variables(experiments: dict[str, dict], confidence_level: float) -
 
     if "sanity" in experiments:
         metrics = experiments["sanity"]["metrics"]
-        add("exp_sanity_analytic_identities_pass",
-            metrics["analytic_identities_pass"], "count", None, "control",
-            "1 = all analytic identity controls passed; 0 = at least one failed "
-            "(see experiments.sanity.controls for the named failures).")
-        add("exp_sanity_invalid_input_controls_pass",
-            metrics["invalid_input_controls_pass"], "count", None, "control",
-            "1 = every invalid-input control was rejected by the source "
-            "modules; 0 = at least one invalid input was accepted.")
+        for metric, interpretation in (
+            ("analytic_identities_pass",
+             "1 = all analytic identity controls passed; 0 = at least one failed "
+             "(see experiments.sanity.controls for the named failures)."),
+            ("invalid_input_controls_pass",
+             "1 = every invalid-input control was rejected by the source "
+             "modules; 0 = at least one invalid input was accepted."),
+        ):
+            add(f"exp_sanity_{metric}", metrics[metric], "count", None,
+                "control", interpretation)
+            status = float(metrics[metric])
+            if status not in (0.0, 1.0):
+                raise ValueError(
+                    f"exp_sanity_{metric}: control status {status!r} is "
+                    "neither 0 nor 1; cannot derive a word form")
+            word = "pass" if status == 1.0 else "fail"
+            variables[f"exp_sanity_{metric}_word"] = {
+                "value": word,
+                "unit": "count",
+                "ci_low": None,
+                "ci_high": None,
+                "confidence_level": float(confidence_level),
+                "sample_unit": "control",
+                "interpretation": f"English word form of exp_sanity_{metric}: {word}.",
+            }
     return variables
 
 
@@ -812,9 +831,16 @@ def _validate_experiment_results(
                       f"{label} must contain {sorted(_VARIABLE_FIELDS)}"):
                 continue
             value = entry["value"]
-            ok(f"{label}.finite", isinstance(value, (int, float))
-               and not isinstance(value, bool) and math.isfinite(float(value)),
-               f"{label}.value must be a finite number, got {value!r}")
+            if isinstance(value, str):
+                ok(f"{label}.word_value",
+                   bool(str(name).endswith("_word")
+                        and re.fullmatch(r"[a-z]+(-[a-z]+)*( [a-z]+)*", value)),
+                   f"{label}.value must be a lowercase word form on a "
+                   f"*_word sidecar, got {value!r}")
+            else:
+                ok(f"{label}.finite", isinstance(value, (int, float))
+                   and not isinstance(value, bool) and math.isfinite(float(value)),
+                   f"{label}.value must be a finite number, got {value!r}")
             ok(f"{label}.unit", entry["unit"] in _UNITS,
                f"{label}.unit {entry['unit']!r} not in {_UNITS}")
             ok(f"{label}.interpretation",
@@ -870,5 +896,11 @@ def experiment_variable_definitions() -> dict[str, dict[str, str]]:
                     "description": f"{side.title()} bound of the confidence interval for {name}",
                 }
     for name in ("analytic_identities_pass", "invalid_input_controls_pass"):
-        definitions[f"exp_sanity_{name}"] = {"unit": "count", "description": f"Synthetic validation control status: {name}"}
+        definitions[f"exp_sanity_{name}"] = {
+            "unit": "count", "format": "integer",
+            "description": f"Synthetic validation control status: {name}"}
+        definitions[f"exp_sanity_{name}_word"] = {
+            "unit": "count", "format": "word",
+            "description": f"English word form of exp_sanity_{name} "
+                           "('pass' or 'fail')"}
     return definitions

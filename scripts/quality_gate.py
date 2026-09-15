@@ -18,6 +18,7 @@ reported findings. Every finding is printed; nothing is suppressed.
 
 from __future__ import annotations
 
+import argparse
 import subprocess
 import sys
 from pathlib import Path
@@ -34,12 +35,23 @@ def _uv_run(*tool_args: str) -> list[str]:
     return ["uv", "run", "--frozen", *tool_args]
 
 
-def main() -> int:
+def _parse_args(argv: list[str]) -> argparse.Namespace:
+    """Parse the gate invocation; argparse exits 2 on unknown arguments."""
+    parser = argparse.ArgumentParser(
+        prog="quality_gate.py",
+        description="Run ruff and mypy (and optionally coverage) as one fail-closed gate.",
+    )
+    parser.add_argument(
+        "--coverage",
+        action="store_true",
+        help="also run the test suite under --cov=src and write the quality receipt",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
     """Run ruff and mypy (and optionally coverage); return 1 on findings."""
-    with_coverage = "--coverage" in sys.argv[1:]
-    if set(sys.argv[1:]) - {"--coverage"}:
-        print(f"usage: quality_gate.py [--coverage]; got {sys.argv[1:]!r}", file=sys.stderr)
-        return 2
+    with_coverage = _parse_args(sys.argv[1:] if argv is None else argv).coverage
 
     before = quality_input_fingerprint(_PROJECT_ROOT)
 

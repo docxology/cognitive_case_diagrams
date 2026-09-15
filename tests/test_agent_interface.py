@@ -381,7 +381,10 @@ def test_cli_version_prints_version() -> None:
         cwd=PROJECT_ROOT,
         capture_output=True,
         text=True,
-        timeout=60,
+        # The package __init__ eagerly imports every subpackage (discopy,
+        # matplotlib, networkx), so a cold-cache subprocess legitimately
+        # exceeds 60s on slow volumes; align with the suite-wide 300s budget.
+        timeout=300,
     )
     assert completed.returncode == 0
     assert completed.stdout.strip() == project_version(PROJECT_ROOT)

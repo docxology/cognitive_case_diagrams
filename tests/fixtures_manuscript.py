@@ -25,6 +25,7 @@ from src.release_validation import (  # noqa: E402
     quality_input_fingerprint,
     write_quality_receipt,
 )
+from src.visualization.figure_registry import environment_fingerprint  # noqa: E402
 
 _CHAPTER = (
     "# Test {#sec:test}\n"
@@ -140,6 +141,7 @@ def build_canonical_gate_tree(target: Path) -> Path:
             "alt_text": "White square fixture.",
             "sha256": hashlib.sha256(image.read_bytes()).hexdigest(),
             "generator_input_fingerprint": quality_input_fingerprint(target)["sha256"],
+            "environment_fingerprint": environment_fingerprint(),
         }
     ]
     (figures / "figure_registry.json").write_text(json.dumps(registry, indent=2))

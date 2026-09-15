@@ -1,10 +1,10 @@
 # API index
 
-Source signatures and local package guides are authoritative. This inventory lists public definitions, not a promise that every legacy name implements its namesake theory. See [method contracts](method_contracts.md).
+Source signatures and local package guides are authoritative. This inventory lists public definitions, not a promise that every legacy name implements its namesake theory. See [method contracts](method_contracts.md). Each package's boundary paragraph lives canonically in its [module guide](modules/README.md); the sections below link to it instead of copying it.
 
 ## case_systems
 
-Finite role graphs, labelled path composition, alignment maps, and natural-transformation helpers. Endpoint and weight predicates do not certify arbitrary categories or functors. `MonoidalFunctor.preserves_tensor()` is a role-separation policy, not a monoidal-law test. Fluid-S probabilities are supplied modeling inputs.
+Boundary statement: see the [module guide](modules/case_systems.md) (canonical).
 
 | Module | Definitions |
 | :--- | :--- |
@@ -15,7 +15,7 @@ Finite role graphs, labelled path composition, alignment maps, and natural-trans
 
 ## diagrams
 
-Explicit DisCoPy pregroup constructions, tensor examples, diagram counts, and entity-name bookkeeping. `Discourse` does not infer coreference or implement a complete DisCoCirc semantic state update. `MagnitudeHomologyMetrics` contains a synthetic cup/cap score, not homology or measured decoherence.
+Boundary statement: see the [module guide](modules/diagrams.md) (canonical).
 
 | Module | Definitions |
 | :--- | :--- |
@@ -26,7 +26,7 @@ Explicit DisCoPy pregroup constructions, tensor examples, diagram counts, and en
 
 ## enriched_cat
 
-Candidate hom-matrices, explicit multiplicative composition checks, max-product closure, and matrix magnitude. The standard matrix is synthetic and violates composition before closure. Pseudoinverse magnitudes require valid left/right weighting residuals. Threshold clusters are weak connected components, not pairwise-close cliques.
+Boundary statement: see the [module guide](modules/enriched_cat.md) (canonical).
 
 | Module | Definitions |
 | :--- | :--- |
@@ -34,7 +34,7 @@ Candidate hom-matrices, explicit multiplicative composition checks, max-product 
 
 ## topos_theory
 
-Textual theory presentations and profile comparisons. `ClassifyingTopos` stores presentation statistics only. `compare_theory_presentations()` is the canonical comparison; matching counts are neither necessary nor sufficient for Morita equivalence. `bridge_transfer()` never authorizes theorem transfer without a witness (none is implemented).
+Boundary statement: see the [module guide](modules/topos_theory.md) (canonical).
 
 | Module | Definitions |
 | :--- | :--- |
@@ -42,7 +42,7 @@ Textual theory presentations and profile comparisons. `ClassifyingTopos` stores 
 
 ## cognitive
 
-Categorical probabilities, fixed-model KL/free energy, Bayesian updates, and uncalibrated mismatch scores. Likelihoods must be finite and nonnegative and have positive evidence. Sequential updates consume each supplied likelihood once. Policy-score inputs are caller-defined; neural interpretations require additional evidence.
+Boundary statement: see the [module guide](modules/cognitive.md) (canonical).
 
 | Module | Definitions |
 | :--- | :--- |
@@ -56,7 +56,7 @@ Categorical probabilities, fixed-model KL/free energy, Bayesian updates, and unc
 
 ## daif
 
-Experimental role-score distributions, pairwise quantile updates, updates under risk distortion, Bayesian filtering, and diagnostics. Legacy Bellman names do not implement a Bellman return backup. VMP is a fixed single-factor softmax; `factor_consistency_score` is the accurate alias for the legacy Bethe function. ERP amplitudes are model units, not microvolts.
+Boundary statement: see the [module guide](modules/daif.md) (canonical).
 
 | Module | Definitions |
 | :--- | :--- |
@@ -70,7 +70,7 @@ Experimental role-score distributions, pairwise quantile updates, updates under 
 
 ## quantum
 
-Finite POVMs and density matrices with explicit Hermitian/PSD/normalization checks. The canonical figure uses orthogonal projectors and a diagonal mixture, so it shows classical outcome probabilities, not interference. No quantum hardware, sheaf model, or TQNN is implemented.
+Boundary statement: see the [module guide](modules/quantum.md) (canonical).
 
 | Module | Definitions |
 | :--- | :--- |
@@ -79,7 +79,7 @@ Finite POVMs and density matrices with explicit Hermitian/PSD/normalization chec
 
 ## security
 
-A finite, supplied-label role-policy checker. Unknown roles are rejected before identity checks; mutable category adjacency is refreshed. Assignment checks use pairwise connectivity in either direction, not a directed authorization trace. No text classifier, authentication service, runtime reference monitor, or measured attack detector is provided.
+Boundary statement: see the [module guide](modules/security.md) (canonical).
 
 | Module | Definitions |
 | :--- | :--- |
@@ -87,7 +87,7 @@ A finite, supplied-label role-policy checker. Unknown roles are rejected before 
 
 ## visualization
 
-Source-generated diagrams and synthetic numerical plots. Captions, labels, units, and provenance must agree with the data. Never create arbitrary confidence bands, empirical comparisons, or physical interpretations from synthetic scores. DisCoPy is a required project dependency; schematic native drawings are not independent proofs.
+Boundary statement: see the [module guide](modules/visualization.md) (canonical).
 
 | Module | Definitions |
 | :--- | :--- |

@@ -71,14 +71,23 @@ def test_experiment_specs_agree_with_runner_definitions() -> None:
         spec = specs[name]
         assert spec.provenance == "experiments"
         assert spec.unit == definition["unit"]
+        assert spec.format == definition.get("format", "sig6")
 
 
 def test_receipt_and_experiment_specs_are_declared() -> None:
     specs = variable_specs()
     for name in ("total_tests_passed", "coverage_percent", "quality_fingerprint_short"):
         assert specs[name].provenance == "quality_receipt"
-    assert specs["exp_sanity_analytic_identities_pass"].unit == "count"
     assert specs["exp_sensitivity_entropy_bins_max_abs_effect"].unit == "nats"
+    # Boolean-valued sanity controls carry integer formats plus word sidecars.
+    for name in ("exp_sanity_analytic_identities_pass",
+                 "exp_sanity_invalid_input_controls_pass"):
+        assert specs[name].format == "integer"
+        word = specs[f"{name}_word"]
+        assert word.unit == "count"
+        assert word.format == "word"
+        assert word.provenance == "experiments"
+        assert word.source == specs[name].source
 
 
 def test_invalid_spec_constructions_rejected() -> None:
@@ -166,10 +175,6 @@ def test_format_float_rejects_nonfinite() -> None:
         format_float(float("nan"))
 
 
-# ---------------------------------------------------------------------------
-# Experiments reader (schema 1.0)
-# ---------------------------------------------------------------------------
-
 
 def test_read_experiment_variables_from_real_runner(gate_tree: Path) -> None:
     collected = read_experiment_variables(gate_tree)
@@ -177,6 +182,9 @@ def test_read_experiment_variables_from_real_runner(gate_tree: Path) -> None:
     # The sanity control is a numeric 0/1 flag, never a JSON boolean.
     flag = collected["exp_sanity_analytic_identities_pass"]
     assert flag in ("1", "0")
+    # Word-form sidecars are collected verbatim alongside the numeric flags.
+    assert collected["exp_sanity_analytic_identities_pass_word"] == "pass"
+    assert collected["exp_sanity_invalid_input_controls_pass_word"] == "pass"
 
 
 def test_missing_results_file_named_in_error(tmp_path: Path) -> None:

@@ -125,6 +125,41 @@ def test_archive_corruption_cannot_pass(release_tree: Path, tmp_path: Path, muta
         verify_release_archive(bad)
 
 
+def test_foreign_archive_without_manifest_is_rejected(release_tree: Path, tmp_path: Path) -> None:
+    """A zip without RELEASE_MANIFEST.json is a ValueError, not a bare KeyError."""
+    foreign = tmp_path / "foreign.zip"
+    with zipfile.ZipFile(foreign, "w") as z:
+        z.writestr("payload.txt", b"not a release archive")
+    with pytest.raises(ValueError, match="Missing or unsupported release manifest"):
+        verify_release_archive(foreign)
+
+
+@pytest.mark.parametrize(
+    "manifest",
+    [
+        b'["not", "a", "mapping"]',
+        b'{"schema": "ccd-release-archive-v1"}',
+        b'{"schema": "ccd-release-archive-v1", "files": ["README.md"]}',
+        b'{"schema": "ccd-release-archive-v1", "files": {"README.md": "not-a-mapping"}}',
+    ],
+)
+def test_malformed_manifest_is_rejected_without_bare_keyerror(
+    release_tree: Path, tmp_path: Path, manifest: bytes
+) -> None:
+    """Manifests of the wrong shape fail closed instead of raising KeyError/AttributeError."""
+    good = tmp_path / "good.zip"
+    build(release_tree, good)
+    with zipfile.ZipFile(good) as z:
+        members = {n: z.read(n) for n in z.namelist()}
+    members["RELEASE_MANIFEST.json"] = manifest
+    bad = tmp_path / "bad.zip"
+    with zipfile.ZipFile(bad, "w") as z:
+        for name, content in members.items():
+            z.writestr(name, content)
+    with pytest.raises(ValueError, match="Missing or unsupported release manifest"):
+        verify_release_archive(bad)
+
+
 def test_additional_files_cannot_escape_source_root(release_tree: Path, tmp_path: Path) -> None:
     outside = tmp_path / "outside.txt"
     outside.write_text("private")

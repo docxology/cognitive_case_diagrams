@@ -12,7 +12,7 @@ from src.web_correction import WebCorrectionError, correct_web_directory  # noqa
 def main() -> int:
     try:
         actions = correct_web_directory(ROOT / "output" / "web")
-    except WebCorrectionError as exc:
+    except (WebCorrectionError, OSError) as exc:
         print(f"web correction failed: {exc}", file=sys.stderr)
         return 1
     print(json.dumps(actions, indent=2, sort_keys=True))

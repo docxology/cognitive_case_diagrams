@@ -156,3 +156,22 @@ def test_real_rendered_bytes_are_corrected_in_scratch(tmp_path: Path) -> None:
     corrected = scratch.read_text(encoding="utf-8")
     assert corrected.count(f'<style id="{MARKER_ID}">') == 1
     assert correct_text(corrected) == (corrected, "conforming (no change)")
+
+
+def test_cli_reports_unexpected_oserror_as_concise_failure() -> None:
+    """An OSError from the batch (unreadable entry) exits 1 with the sibling-script message."""
+    import subprocess
+    import sys
+
+    bogus = PROJECT_ROOT / "output" / "web" / "_unreadable_contract_test.html"
+    bogus.mkdir()
+    try:
+        result = subprocess.run(
+            [sys.executable, str(PROJECT_ROOT / "scripts" / "correct_web.py")],
+            capture_output=True, text=True, timeout=120,
+        )
+    finally:
+        bogus.rmdir()
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert "web correction failed" in result.stderr
+    assert result.stdout == ""

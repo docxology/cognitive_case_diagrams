@@ -292,10 +292,21 @@ def verify_release_archive(archive_path: Path) -> dict[str, Any]:
             total += info.file_size
         if total > MAX_ARCHIVE_TOTAL_BYTES:
             raise ValueError("Release archive exceeds the total size bound")
-        if archive.getinfo("RELEASE_MANIFEST.json").file_size > MAX_MANIFEST_BYTES:
+        try:
+            manifest_info = archive.getinfo("RELEASE_MANIFEST.json")
+        except KeyError as exc:
+            raise ValueError("Missing or unsupported release manifest") from exc
+        if manifest_info.file_size > MAX_MANIFEST_BYTES:
             raise ValueError("Release manifest exceeds the size bound")
         manifest = json.loads(archive.read("RELEASE_MANIFEST.json"))
-        if manifest.get("schema") != "ccd-release-archive-v1" or not manifest.get("files"):
+        files = manifest.get("files") if isinstance(manifest, dict) else None
+        if (
+            not isinstance(manifest, dict)
+            or manifest.get("schema") != "ccd-release-archive-v1"
+            or not isinstance(files, dict)
+            or not files
+            or not all(isinstance(entry, dict) for entry in files.values())
+        ):
             raise ValueError("Missing or unsupported release manifest")
         if set(names) != set(manifest["files"]) | {"RELEASE_MANIFEST.json"}:
             raise ValueError("Archive membership disagrees with release manifest")

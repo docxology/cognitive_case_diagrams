@@ -232,6 +232,11 @@ def test_sanity_controls_all_pass(small_results):
     controls = small_results["experiments"]["sanity"]["controls"]
     assert controls["analytic_identities_failed"] == []
     assert controls["invalid_input_failed"] == []
+    variables = small_results["variables"]
+    assert variables["exp_sanity_analytic_identities_pass"]["value"] == 1.0
+    assert variables["exp_sanity_analytic_identities_pass_word"]["value"] == "pass"
+    assert variables["exp_sanity_invalid_input_controls_pass"]["value"] == 1.0
+    assert variables["exp_sanity_invalid_input_controls_pass_word"]["value"] == "pass"
 
 
 # --------------------------------------------------------------------------
@@ -246,7 +251,11 @@ def test_variables_registry_contract(small_results):
         assert set(entry) == {"value", "unit", "ci_low", "ci_high",
                               "confidence_level", "sample_unit",
                               "interpretation"}
-        assert isinstance(entry["value"], float)
+        value = entry["value"]
+        if name.endswith("_word"):
+            assert isinstance(value, str) and re.fullmatch(r"[a-z]+", value), value
+        else:
+            assert isinstance(value, float)
         assert entry["unit"] in {"probability", "dimensionless", "nats",
                                  "count", "version"}
         assert entry["interpretation"]

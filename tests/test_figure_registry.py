@@ -16,6 +16,7 @@ import pytest
 from PIL import Image
 
 from src.visualization.figure_registry import (
+    environment_fingerprint,
     manuscript_figure_labels,
     write_figure_registry,
 )
@@ -87,6 +88,61 @@ def test_sha256_binds_rendered_bytes(project: Path) -> None:
     write_figure_registry(paths, project / "output" / "figures", project)
     entry = json.loads((project / "output" / "figures" / "figure_registry.json").read_text())[0]
     assert entry["sha256"] == hashlib.sha256(paths[0].read_bytes()).hexdigest()
+
+
+def test_environment_fingerprint_is_deterministic_and_explicit() -> None:
+    """Digest is stable across calls and covers exactly the pinned env lines."""
+    import sys
+    from importlib import metadata
+
+    first = environment_fingerprint()
+    assert first == environment_fingerprint()
+    lines = [f"python=={sys.version.split()[0]}"]
+    for name in ("discopy", "matplotlib", "numpy"):
+        try:
+            lines.append(f"{name}=={metadata.version(name)}")
+        except metadata.PackageNotFoundError:
+            lines.append(f"{name}==absent")
+    assert first == hashlib.sha256(
+        "\n".join(sorted(lines)).encode("utf-8")
+    ).hexdigest()
+
+
+def test_environment_fingerprint_changes_when_a_package_is_absent(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """An uninstalled optional package flips to the ``absent`` sentinel."""
+    from importlib import metadata
+
+    baseline = environment_fingerprint()
+    original = metadata.version
+
+    def missing(name: str) -> str:
+        if name == "matplotlib":
+            raise metadata.PackageNotFoundError(name)
+        return original(name)
+
+    monkeypatch.setattr(metadata, "version", missing)
+    altered = environment_fingerprint()
+    assert altered != baseline
+    import sys
+
+    lines = [f"python=={sys.version.split()[0]}"]
+    for name in ("discopy", "matplotlib", "numpy"):
+        version = "absent" if name == "matplotlib" else original(name)
+        lines.append(f"{name}=={version}")
+    assert altered == hashlib.sha256(
+        "\n".join(sorted(lines)).encode("utf-8")
+    ).hexdigest()
+
+
+def test_registry_entries_bind_the_rendering_environment(project: Path) -> None:
+    paths = make_figures(project, "case_standard.png")
+    write_figure_registry(paths, project / "output" / "figures", project)
+    entry = json.loads(
+        (project / "output" / "figures" / "figure_registry.json").read_text()
+    )[0]
+    assert entry["environment_fingerprint"] == environment_fingerprint()
 
 
 def test_non_image_suffix_is_skipped(project: Path) -> None:
@@ -178,6 +234,8 @@ def test_byte_compatibility_with_base_writer(project: Path) -> None:
     produced = (out / "figure_registry.json").read_text(encoding="utf-8")
 
     # --- reference implementation: base 9382dde scripts/generate_diagrams.py:251-336, verbatim ---
+    # Intentional deviation: entries now also carry ``environment_fingerprint``
+    # (schema evolution; see write_figure_registry), reflected in the reference.
     _FIGURE_LABEL_RE = re.compile(
         r"\]\((?:[^)]*/)?(?P<filename>[\w.-]+\.(?:png|pdf|svg))\)\{#(?P<label>fig:[\w:.-]+)\}"
     )
@@ -223,6 +281,7 @@ def test_byte_compatibility_with_base_writer(project: Path) -> None:
                 "alt_text": alt_texts.get(p.name, ""),
                 "generated_by": "scripts/generate_diagrams.py",
                 "generator_input_fingerprint": generation_inputs,
+                "environment_fingerprint": environment_fingerprint(),
                 "sha256": hl.sha256(p.read_bytes()).hexdigest(),
                 "provenance": "synthetic input or explicitly constructed diagram; see source and manuscript caption",
             })

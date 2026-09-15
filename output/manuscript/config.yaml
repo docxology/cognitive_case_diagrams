@@ -4,8 +4,8 @@
 paper:
   title: "Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case"
   subtitle: ""
-  version: "2.6.0"
-  date: "2026-09-14"
+  version: "2.7.0"
+  date: "2026-09-15"
 
 authors:
   - name: "Daniel Ari Friedman"
@@ -21,10 +21,10 @@ publication:
   doi: "10.5281/zenodo.19695259"
   # Exact revision DOI; reserved before final rendering. A reserved DOI is
   # not a published record; check version_record for the live deposit state.
-  version_doi: "10.5281/zenodo.22758214"
-  version_record: "https://zenodo.org/records/22758214"
+  version_doi: "10.5281/zenodo.22774403"
+  version_record: "https://zenodo.org/records/22774403"
   # Historical record of the previously published version; kept for
-  prior_version_doi: "10.5281/zenodo.22653315"
+  prior_version_doi: "10.5281/zenodo.22758214"
   status: "release manuscript"
   journal: ""
   volume: ""

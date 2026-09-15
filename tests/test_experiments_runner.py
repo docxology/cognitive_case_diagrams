@@ -41,9 +41,9 @@ SMALL_CONFIG = {
 
 # Source trees bound into the provenance digest (relative to the repo root).
 _SOURCE_DIRS = (
-    "src/experiments", "src/case_systems", "src/cognitive", "src/daif",
-    "src/enriched_cat", "src/quantum", "src/security", "src/topos_theory",
-    "src/diagrams",
+    "src/experiments", "src/aggregation", "src/case_systems", "src/cognitive",
+    "src/daif", "src/enriched_cat", "src/quantum", "src/security",
+    "src/topos_theory", "src/diagrams",
 )
 _SOURCE_FILES = ("src/numerics.py",)
 
@@ -110,7 +110,8 @@ def test_invalid_config_via_run_experiments_raises():
 def test_disabled_sections_produce_no_blocks():
     config = {key: {"enabled": False}
               for key in ("filtering", "calibration", "quantile",
-                          "projection", "sensitivity", "sanity")}
+                          "projection", "sensitivity", "aggregation",
+                          "sanity")}
     results = run_experiments({**config, "n_replicates": 4})
     assert results["experiments"] == {}
     assert results["variables"] == {}
@@ -119,7 +120,7 @@ def test_disabled_sections_produce_no_blocks():
 def test_all_expected_blocks_present(small_results):
     assert set(small_results["experiments"]) == {
         "filtering", "calibration", "quantile", "projection",
-        "quantum_projection", "sensitivity", "sanity"}
+        "quantum_projection", "sensitivity", "aggregation", "sanity"}
 
 
 # --------------------------------------------------------------------------
@@ -239,6 +240,75 @@ def test_sanity_controls_all_pass(small_results):
     assert variables["exp_sanity_invalid_input_controls_pass_word"]["value"] == "pass"
 
 
+def test_aggregation_block_contract(small_results):
+    block = small_results["experiments"]["aggregation"]
+    assert set(block) == {"metrics", "uncertainty", "sample_unit", "samples"}
+    assert block["sample_unit"] == "replicate"
+    assert set(block["metrics"]) == {
+        "inflation_reduction_mean", "regime_projection_lost_mean",
+        "triangle_closure_ratio_mean", "regime_conflicts_detected_mean",
+        "localized_class_count_mean"}
+    assert set(block["uncertainty"]) == {
+        "inflation_reduction", "regime_projection_lost",
+        "triangle_closure_ratio"}
+    n = len(block["samples"]["inflation_reduction"])
+    assert n >= 2
+    for key, values in block["samples"].items():
+        assert len(values) == n, key
+    for name, interval in block["uncertainty"].items():
+        assert interval["mean"] == block["metrics"][f"{name}_mean"]
+        assert interval["low"] <= interval["mean"] <= interval["high"]
+
+
+def test_aggregation_contrast_bounds(small_results):
+    metrics = small_results["experiments"]["aggregation"]["metrics"]
+    assert 0.0 <= metrics["inflation_reduction_mean"] < 1.0
+    assert 0.0 <= metrics["triangle_closure_ratio_mean"] <= 1.0
+    # Each synthetic conflict family collapses two regime-resolved
+    # conflicts into one merged conflict, so the projection effect is
+    # a nonnegative count by construction.
+    assert metrics["regime_projection_lost_mean"] >= 0.0
+    assert metrics["regime_conflicts_detected_mean"] >= 0.0
+    assert metrics["localized_class_count_mean"] >= 2.0
+
+
+def test_aggregation_variables_intervals(small_results):
+    variables = small_results["variables"]
+    interval_names = ("exp_agg_inflation_reduction_mean",
+                      "exp_agg_regime_projection_lost_mean",
+                      "exp_agg_triangle_closure_ratio_mean")
+    count_names = ("exp_agg_regime_conflicts_detected_mean",
+                   "exp_agg_localized_class_count_mean")
+    for name in interval_names:
+        assert variables[name]["ci_low"] is not None
+        assert variables[name]["ci_high"] is not None
+        assert variables[f"{name}_ci95_low"]["value"] \
+            == variables[name]["ci_low"]
+        assert variables[f"{name}_ci95_high"]["value"] \
+            == variables[name]["ci_high"]
+    for name in count_names:
+        assert variables[name]["ci_low"] is None
+        assert variables[name]["ci_high"] is None
+        assert f"{name}_ci95_low" not in variables
+        assert f"{name}_ci95_high" not in variables
+    assert variables["exp_agg_inflation_reduction_mean"]["unit"] \
+        == "dimensionless"
+    assert variables["exp_agg_regime_projection_lost_mean"]["unit"] == "count"
+
+
+def test_aggregation_section_replicates_drive_sample_size():
+    config = {"seed": 5, "n_replicates": 4, "filtering": {"enabled": False},
+              "calibration": {"enabled": False}, "quantile": {"enabled": False},
+              "projection": {"enabled": False},
+              "sensitivity": {"enabled": False},
+              "sanity": {"enabled": False},
+              "aggregation": {"n_replicates": 5}}
+    results = run_experiments(config)
+    block = results["experiments"]["aggregation"]
+    assert len(block["samples"]["inflation_reduction"]) == 5
+
+
+
 # --------------------------------------------------------------------------
 # Variables registry
 # --------------------------------------------------------------------------
@@ -266,7 +336,7 @@ def test_variables_registry_contract(small_results):
             assert entry["ci_low"] <= entry["ci_high"]
     expected_roots = ("exp_filter_", "exp_calibration_", "exp_quantile_",
                       "exp_projection_", "exp_quantum_", "exp_sensitivity_",
-                      "exp_sanity_")
+                      "exp_agg_", "exp_sanity_")
     for name in variables:
         assert name.startswith(expected_roots), name
 

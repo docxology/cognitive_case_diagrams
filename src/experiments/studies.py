@@ -47,6 +47,7 @@ from src.daif import (
 from src.daif.types import DistributionalReturn
 
 from .config import (
+    AggregationConfig,
     CalibrationConfig,
     FilteringConfig,
     ProjectionConfig,
@@ -61,6 +62,14 @@ from .synthetic import (
     draw_row_stochastic_matrix,
     true_quantiles,
 )
+from src.aggregation.diagnostics import (
+    regime_conflicts,
+    regime_conflicts_projected,
+    triangle_closure,
+)
+from src.aggregation.localize import localize
+from src.aggregation.synthetic import generate_claim_corpus
+
 
 __all__ = [
     "run_filtering",
@@ -69,6 +78,7 @@ __all__ = [
     "run_projection",
     "run_quantum_projection",
     "run_sensitivity",
+    "run_aggregation",
 ]
 
 _MEAN_ESTIMATOR = "mean +/- two-sided normal SE across replicates"
@@ -739,5 +749,109 @@ def run_sensitivity(
             "gamma_mean_by_arm": [float(v) for v in gamma_means.mean(axis=1)],
             "entropy_by_arm": [float(v) for v in entropy_vals.mean(axis=1)],
             "policy_entropy_by_arm": [float(v) for v in temp_entropies.mean(axis=1)],
+        },
+    }
+
+
+# --------------------------------------------------------------------------
+# Aggregation and localization diagnostics (synthetic paraphrase families)
+# --------------------------------------------------------------------------
+def run_aggregation(
+    section: AggregationConfig, seed: int, confidence_level: float
+) -> dict:
+    """Synthetic claim-class localization and its prespecified contrasts.
+
+    Mirroring the post-extraction aggregation ablations of the Democritus
+    publication (S. Mahadevan, "Democritus: Homotopy-Localized Causal
+    Discourse Extraction from Language," Entropy 2026,
+    doi:10.3390/e28090986), each replicate generates one seeded synthetic
+    paraphrase-family corpus (``src.aggregation.synthetic``), localizes it
+    into canonical claim classes (``src.aggregation.localize``), and
+    computes three prespecified contrasts on identical draws (common
+    random numbers):
+
+    - no-localization contrast: ``1 - classes / records``, the inflation
+      reduction of full localization against the raw record count.
+    - regime-projection contrast: the paired difference between the
+      regime-resolved polarity-conflict count and the count after
+      projecting the regime away. On these corpora each conflict family
+      straddles two regimes with a polarity-flipped duplicate on each
+      side, so the difference is negative exactly when projection
+      collapses regime-resolved conflicts into merged ones; it is the
+      regime-projection effect of the ablation, not a detection recall.
+    - closure diagnostic: the mean finite pairwise-closure ratio of the
+      within-class compatibility graphs (triangles over triangles plus
+      open triples). Like the observed compatibility complex of the cited
+      publication, this is a bookkeeping statistic on observed pairs, NOT
+      a horn-filling test in the nerve of a groupoid.
+
+    Per-replicate quantities are aggregated within the replicate before
+    any cross-replicate interval, so the sample unit is one replicate.
+    The two descriptive counts (regime-resolved conflicts detected and
+    localized classes) carry NO interval by design.
+    """
+    z = normal_z(confidence_level)
+    inflation_reduction: list[float] = []
+    projection_lost: list[float] = []
+    closure_ratio: list[float] = []
+    conflicts_detected: list[float] = []
+    class_counts: list[float] = []
+
+    for r in range(section.n_replicates):
+        rng = replicate_rng(seed, "aggregation", r)
+        records = generate_claim_corpus(
+            rng,
+            n_mechanisms=section.n_mechanisms,
+            paraphrases_per_mechanism=section.paraphrases_per_mechanism,
+            regime_conflict_rate=section.regime_conflict_rate,
+        )
+        classes = localize(records)
+        n_records, n_classes = len(records), len(classes)
+        inflation_reduction.append(1.0 - n_classes / n_records)
+        detected = float(regime_conflicts(records))
+        projected = float(regime_conflicts_projected(records))
+        projection_lost.append(detected - projected)
+        closure_vals = [
+            triangle_closure(members, threshold=section.jaccard_threshold)
+            for members in classes.values()
+        ]
+        closure_ratio.append(float(np.mean(closure_vals)))
+        conflicts_detected.append(detected)
+        class_counts.append(float(n_classes))
+
+    red_mean, red_lo, red_hi = mean_ci(inflation_reduction, z=z)
+    lost_mean, lost_lo, lost_hi = paired_mean_ci(projection_lost, z=z)
+    closure_mean, closure_lo, closure_hi = mean_ci(closure_ratio, z=z)
+    detected_mean = float(np.mean(conflicts_detected))
+    classes_mean = float(np.mean(class_counts))
+
+    return {
+        "metrics": {
+            "inflation_reduction_mean": red_mean,
+            "regime_projection_lost_mean": lost_mean,
+            "triangle_closure_ratio_mean": closure_mean,
+            "regime_conflicts_detected_mean": detected_mean,
+            "localized_class_count_mean": classes_mean,
+        },
+        "uncertainty": {
+            "inflation_reduction": ci_block(
+                red_mean, red_lo, red_hi, confidence_level, _MEAN_ESTIMATOR,
+                "replicate"),
+            "regime_projection_lost": ci_block(
+                lost_mean, lost_lo, lost_hi, confidence_level,
+                "paired mean difference (regime-resolved minus "
+                "regime-projected polarity conflicts) at common random "
+                "numbers", "replicate"),
+            "triangle_closure_ratio": ci_block(
+                closure_mean, closure_lo, closure_hi, confidence_level,
+                _MEAN_ESTIMATOR, "replicate"),
+        },
+        "sample_unit": "replicate",
+        "samples": {
+            "inflation_reduction": [float(v) for v in inflation_reduction],
+            "regime_projection_lost": [float(v) for v in projection_lost],
+            "triangle_closure_ratio": [float(v) for v in closure_ratio],
+            "regime_conflicts_detected": [float(v) for v in conflicts_detected],
+            "localized_class_count": [float(v) for v in class_counts],
         },
     }

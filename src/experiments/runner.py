@@ -66,6 +66,7 @@ from src.quantum.quantum_case import case_probability, crisp_case_povm
 from .config import DEFAULT_CONFIG, ExperimentConfig, config_sha256
 from .rng import replicate_rng
 from .studies import (
+    run_aggregation,
     run_calibration,
     run_filtering,
     run_projection,
@@ -86,6 +87,7 @@ _STALE_CHECKS = ("source_hashes", "source_combined", "source_membership", "numpy
 # only when these bytes match; manuscript validation must reject stale ones.
 _SOURCE_GLOBS: tuple[str, ...] = (
     "src/experiments/*.py",
+    "src/aggregation/*.py",
     "src/numerics.py",
     "src/case_systems/*.py",
     "src/cognitive/*.py",
@@ -217,6 +219,30 @@ _VARIABLE_TABLE: tuple[tuple[str, str, str | None, str, str], ...] = (
      "entropy (negative: the dominant arm is below baseline); carries NO "
      "interval (all arms reported with pointwise "
      "intervals in experiments.sensitivity.arms)."),
+    ("aggregation", "inflation_reduction_mean", "inflation_reduction",
+     "dimensionless",
+     "Mean fraction of synthetic paraphrase records removed by full "
+     "canonical-key localization against the no-localization contrast "
+     "(raw record count); synthetic-only, no real-corpus claim."),
+    ("aggregation", "regime_projection_lost_mean", "regime_projection_lost",
+     "count",
+     "Paired mean difference between the regime-resolved polarity-conflict "
+     "count and the count after projecting the regime away, on identical "
+     "synthetic corpora at common random numbers; negative values indicate "
+     "conflicts collapsed by the regime projection."),
+    ("aggregation", "triangle_closure_ratio_mean", "triangle_closure_ratio",
+     "dimensionless",
+     "Mean finite pairwise-closure ratio of the within-class compatibility "
+     "graphs (triangles over triangles plus open triples); a bookkeeping "
+     "statistic on observed pairs, not a horn-filling test on a nerve; "
+     "synthetic-only."),
+    ("aggregation", "regime_conflicts_detected_mean", None, "count",
+     "Descriptive mean regime-resolved polarity-conflict count per "
+     "synthetic corpus; no interval is attached to this descriptive count."),
+    ("aggregation", "localized_class_count_mean", None, "count",
+     "Descriptive mean number of canonical claim classes per synthetic "
+     "corpus under exact regime-aware localization keys; no interval is "
+     "attached to this descriptive count."),
 )
 
 
@@ -228,6 +254,7 @@ def _block_metric_prefix(block: str) -> str:
         "projection": "projection",
         "quantum_projection": "quantum",
         "sensitivity": "sensitivity",
+        "aggregation": "agg",
     }[block]
 
 
@@ -616,6 +643,9 @@ def run_experiments(config: ExperimentConfig | dict | None = None) -> dict:
     if cfg.sensitivity.enabled:
         experiments["sensitivity"] = run_sensitivity(
             cfg.sensitivity, cfg.seed, n, conf)
+    if cfg.aggregation.enabled:
+        experiments["aggregation"] = run_aggregation(
+            cfg.aggregation, cfg.seed, conf)
     if cfg.sanity.enabled:
         experiments["sanity"] = run_sanity(cfg.seed)
     source_files, source_sha256 = _source_digest()

@@ -22,5 +22,8 @@ Statuses distinguish implementation evidence from theory and empirical interpret
 | Passing-test and coverage claims bind to source | verified via receipt | Source-bound quality receipt in `output/reports/`; stale fingerprints rejected |
 | Every statement is certified by automated tests | unsupported | Removed; appendix states test limits |
 | Publication status of remote deposit | not_asserted_here | DOI roles are fixed (version DOI for this revision, concept DOI for the series); live deposit state is reported in release notes after verification at the record URL |
+| Aggregation lane (canonical-key localization, paraphrase-inflation and regime-conflict diagnostics) on declared synthetic corpora | verified (synthetic only) | Prespecified arms in the `src/experiments/` aggregation study; identity and invalid-input controls; no empirical claim |
+| Claim-corpus adapter ingests externally supplied causal-claim records | verified via receipt | Typed fail-closed adapter with schema validation and provenance fields; no real-corpus study performed; adapter availability is not an accuracy claim |
+| Post-extraction merge/gluing correctness on real corpora | unsupported | Requires an independently annotated merge/non-merge/gluing benchmark as specified in the cited Democritus publication's own future-work statement (`mahadevan2026democritus`) |
 
 Primary literature locators and verification boundaries are in [literature guide](literature_guide.md). Exact compatibility behavior is in [method contracts](method_contracts.md). The [comprehensive review](comprehensive_review.md) distinguishes historical observations from current release evidence.

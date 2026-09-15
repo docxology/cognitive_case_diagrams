@@ -64,3 +64,10 @@ coverage, artifact gate, and full evidence-status `validated` at exit 0.
 - [x] Web-correction marker enforced in publication-review validation; correct_web.py OSError handling — src/publication_review.py, scripts/correct_web.py
 - [x] Boolean exp_sanity_* word-form sidecars + integer format — src/experiments/runner.py, src/manuscript_variables.py
 - [x] Registry-only experiment ids quoted (atom-gap values) or explicitly marked in 07d — docs/manuscript/07d_synthetic_statistics.md
+
+## Deferred (2026-09-15 aggregation extension)
+
+- [ ] Real-corpus demonstration run through the claim-corpus adapter with provenance-disciplined sourcing and a documented corpus choice; deferred: no externally supplied corpus is yet selected, licensed, or frozen for this lane — src/aggregation/adapter.py, docs/claim_ledger.md, docs/method_contracts.md
+- [ ] Cross-project matched-baseline/annotation benchmark collaboration per the future-work statement in `mahadevan2026democritus` (Entropy 2026, 28(9):986): expert-annotated merge/non-merge/gluing decisions on paraphrastic, partially overlapping, regime-sensitive claim clusters; deferred: requires independent annotation effort outside this repository — src/experiments/, docs/manuscript/07d_synthetic_statistics.md
+- [ ] Temporal/regime-indexed corpus trajectories over localized claim classes; deferred: adapter schema carries `temporal_scope`/`regime` fields but no corpus data exists yet — src/aggregation/localize.py, src/aggregation/diagnostics.py
+- [ ] Extend the adapter with qualifier-aware blocking once tau/q fields become first-class in the claim-record schema; deferred: awaits upstream schema change — src/aggregation/adapter.py, src/aggregation/localize.py

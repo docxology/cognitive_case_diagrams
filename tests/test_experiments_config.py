@@ -135,13 +135,14 @@ def test_enabled_sections_follow_flags_and_order():
         "quantile": {"enabled": False},
         "projection": {"enabled": False},
         "sensitivity": {"enabled": False},
+        "aggregation": {"enabled": False},
         "sanity": {"enabled": False},
     })
     assert config.enabled_sections() == []
     default = ExperimentConfig()
     assert default.enabled_sections() == [
         "filtering", "calibration", "quantile", "projection",
-        "sensitivity", "sanity",
+        "sensitivity", "aggregation", "sanity",
     ]
 
 

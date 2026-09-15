@@ -851,8 +851,11 @@ identities</a></li>
 class="toc-section-number">17.4</span> Sensitivity sweeps</a></li>
 <li><a href="#sec:exp-controls" id="toc-sec:exp-controls"><span
 class="toc-section-number">17.5</span> Validity controls</a></li>
+<li><a href="#sec:exp-aggregation" id="toc-sec:exp-aggregation"><span
+class="toc-section-number">17.6</span> Aggregation and localization
+diagnostics</a></li>
 <li><a href="#sec:exp-limits" id="toc-sec:exp-limits"><span
-class="toc-section-number">17.6</span> Interpretation
+class="toc-section-number">17.7</span> Interpretation
 boundaries</a></li>
 </ul></li>
 <li><a href="#sec:quantum-active-inference"
@@ -907,8 +910,6 @@ probabilities</a></li>
 id="toc-sec:test-suite-inventory"><span
 class="toc-section-number">25</span> Appendix C: Reproduction and
 Verification Scope</a></li>
-<li><a href="#manuscript-status" id="toc-manuscript-status"><span
-class="toc-section-number">26</span> Manuscript status</a></li>
 </ul>
 </nav>
 <main id="main-content" tabindex="-1">
@@ -928,15 +929,15 @@ constructions and their limits. We distinguish generated derivations
 from illustrative drawings, finite score distributions from Bellman
 return distributions, presentation statistics from topos invariants, and
 model-unit prediction errors from physiological measurements. The
-accompanying suite collects 1837 tests across 91 files; that is a
+accompanying suite collects 1883 tests across 94 files; that is a
 collection count, and a separate source-bound quality receipt records
-1837 passing tests with 91.94% line-and-branch coverage (Appendix C).
+1883 passing tests with 92.13% line-and-branch coverage (Appendix C).
 The figure pipeline produces 33 figures from source. All numerical
 illustrations use synthetic inputs; no corpus study, participant
 experiment, EEG fit, quantum-hardware run, or deployed-agent security
 evaluation is reported. Topos-theoretic transfer, cognitive advantages
 of case diagrams, and case-based authorization remain research proposals
-with explicit validation requirements. This is working revision 2.6.0;
+with explicit validation requirements. This is working revision 2.7.0;
 its local validation does not constitute publication or independent
 mathematical certification.</p>
 <hr />
@@ -976,6 +977,27 @@ href="#ref-bradley2021enriched" role="doc-biblioref">Bradley et al.
 2021</a>)</span>. Neither result implies that an arbitrary role graph,
 attention matrix, or probability table automatically satisfies the
 relevant categorical axioms.</p>
+<p>Closely related recent work approaches the same post-extraction
+problem from the opposite direction: how to consolidate unstable
+extracted claims without overcounting paraphrase or erasing regime and
+polarity distinctions. Democritus extracts causal discourse from real
+text corpora, normalizes it into a categorical presentation, and
+specifies homotopy-localization over that presentation to consolidate
+paraphrase families into localized claim classes <span class="citation"
+data-cites="mahadevan2026democritus">(<a
+href="#ref-mahadevan2026democritus" role="doc-biblioref">Mahadevan
+2026b</a>)</span>. Its quantitative validation concentrates on the
+upstream extractor, which is benchmarked externally on a frozen
+causal-extraction split; the downstream localization layer is assessed
+by artifact audit and internal contrasts, and the paper itself
+identifies an independent annotation benchmark for its merge, non-merge,
+and gluing decisions as the most important next step. Our repository
+supplies the synthetic, claim-ledger-disciplined counterpart to that
+specification: every normalization analogue, localization analogue, and
+diagnostic is executable and source-bound, and no numerical example
+claims corpus evidence. Neither program claims that category theory
+improves extraction accuracy; both use the categorical language for
+specification and audit discipline.</p>
 <h2 data-number="2.1" id="sec:whats-new"><span
 class="header-section-number">2.1</span> Contributions and evidence</h2>
 <p>This work contributes a connected exposition and reproducible
@@ -1071,6 +1093,16 @@ authority?</td>
 <td style="text-align: left;">Authenticated provenance, runtime
 enforcement, adversarial evaluation</td>
 </tr>
+<tr>
+<td style="text-align: left;">Can post-extraction claim aggregation
+avoid overcounting paraphrase and erasing regime or polarity
+distinctions?</td>
+<td style="text-align: left;">Synthetic merge, gluing, and repair
+diagnostics on constructed claim clusters</td>
+<td style="text-align: left;">Expert-annotated merge, non-merge, and
+gluing decisions on paraphrastic, partially overlapping,
+regime-sensitive clusters</td>
+</tr>
 </tbody>
 </table></div>
 <p>The phrase <em>implemented</em> below means an operation is available
@@ -1084,6 +1116,14 @@ verified, partially_supported, unsupported, and ambiguous / proposed,
 with the qualified variants verified (synthetic only), verified via
 receipt, unsupported for raw input, and not_asserted_here used where the
 cited row warrants them.</p>
+<p>The aggregation row follows the benchmark structure that recent
+causal-discourse extraction work states as its own open step: an
+independent post-extraction benchmark with expert-annotated merge,
+non-merge, and gluing decisions <span class="citation"
+data-cites="mahadevan2026democritus">(<a
+href="#ref-mahadevan2026democritus" role="doc-biblioref">Mahadevan
+2026b</a>)</span>. The synthetic lane rehearses the decision structure;
+only annotation on real clusters would test it.</p>
 <hr />
 <h1 data-number="4" id="sec:case-systems"><span
 class="header-section-number">4</span> Case Systems and Alignment</h1>
@@ -1507,6 +1547,22 @@ compilation and trainability would introduce further choices of
 encoding, ansatz, observable, optimization, and hardware. Local
 observables alone do not justify an unconditional claim that barren
 plateaus are absent. No quantum circuit is trained in this project.</p>
+<p>A related commitment appears at corpus scale in recent work on causal
+discourse extraction. Democritus groups paraphrase families of extracted
+causal claims into homotopy-localized classes, so that restated variants
+of one claim do not multiply the evidence count <span class="citation"
+data-cites="mahadevan2026democritus">(<a
+href="#ref-mahadevan2026democritus" role="doc-biblioref">Mahadevan
+2026b</a>)</span>. The present chapter’s entity bookkeeping makes an
+analogous commitment at the opposite scale: role histories are recorded
+only for explicitly supplied names, sentence by sentence, and repeated
+spellings do not by themselves assert coreference. In both cases surface
+variation is treated as a modeling input rather than as new evidence —
+here by keeping each entity’s history explicit, there by aggregating
+paraphrase families into localized claim classes. The shared boundary is
+also the same: neither layer claims semantic correctness of its
+identifications without an independent annotation layer, and neither
+supplies one.</p>
 <hr />
 <h1 data-number="11" id="sec:enriched-categories"><span
 class="header-section-number">11</span> Candidate Similarities and <span
@@ -1672,6 +1728,24 @@ comparison functors, and prove the required equivalence and coherence. A
 transferred claim must then be identified as invariant under that
 equivalence. No such witness is constructed here. A two-object picture
 or a matching profile cannot replace these steps.</p>
+<p>A complementary conditional-grounding pattern appears in the
+causal-discourse setting. Democritus states a relative grounding functor
+from localized discourse to observational-equivalence classes of causal
+models as a conditional proposition, with its hypotheses —
+cocompleteness and density conditions among them — left explicitly to
+check rather than asserted <span class="citation"
+data-cites="mahadevan2026democritus">(<a
+href="#ref-mahadevan2026democritus" role="doc-biblioref">Mahadevan
+2026b</a>)</span>; the work forms part of a broader categorical-AI
+research program developed in dated draft editions <span
+class="citation" data-cites="mahadevan2026categories">(<a
+href="#ref-mahadevan2026categories" role="doc-biblioref">Mahadevan
+2026a</a>)</span>. This matches the present chapter’s posture.
+<code>bridge_transfer()</code> likewise reports an unknown equivalence
+and performs no transfer: in both cases the topos and bridge language
+functions as a specification of what evidence a real grounding or
+transfer would require, with the missing evidence named rather than
+assumed.</p>
 <p>Topos logic also needs careful separation from probability and
 quantum mechanics. Heyting algebras are distributive, although excluded
 middle need not hold. Intuitionistic logic is not made classical by
@@ -2016,7 +2090,7 @@ estimates a property of any language or brain.</p>
 <p>The runner executes configured arms with a seeded PCG64 generator
 (seed 20260907, 256 replicates per study) and emits a schema-annotated
 result file whose configuration hash is
-<code>0ead4d99c7d6617c1d07342dd37636db5b07e14afe95214308f6b9a92fb7a5d1</code>;
+<code>18c7278ee89606d88f5c0a147f63deeba17c692168006facf88cea182554c2f9</code>;
 the manuscript quotes only registry-declared identifiers from that file
 through injection. Replicate-level means carry two-sided 95%
 normal-approximation intervals (normal quantile 1.95996); point maxima
@@ -2134,8 +2208,52 @@ two-role POVM example satisfies completeness to a mean residual of
 2.1684e-17 with interval [1.56478e-17, 2.77203e-17] and a maximum
 residual of 2.22045e-16 across replicates, consistent with the matrix
 contracts in sec. <a href="#sec:quantum-semantics">19</a>.</p>
-<h2 data-number="17.6" id="sec:exp-limits"><span
-class="header-section-number">17.6</span> Interpretation boundaries</h2>
+<h2 data-number="17.6" id="sec:exp-aggregation"><span
+class="header-section-number">17.6</span> Aggregation and localization
+diagnostics</h2>
+<p>A final study mirrors the post-extraction aggregation and
+localization ablations of the Democritus publication <span
+class="citation" data-cites="mahadevan2026democritus">(<a
+href="#ref-mahadevan2026democritus" role="doc-biblioref">Mahadevan
+2026b</a>)</span> on a seeded synthetic paraphrase-family corpus. Claim
+records are generated in families whose members share the exact
+canonical cause, effect, relation, polarity, and regime while varying
+only qualifier phrasing, and selected families additionally straddle two
+regime labels with a polarity-flipped duplicate on each side.
+Localization then groups records under exact canonical keys, so a record
+with an unspecified regime forms its own class and never merges with a
+regime-labeled one.</p>
+<p>Three contrasts are reported against this corpus, all at the
+replicate sample unit with the same normal-approximation intervals as
+the studies above. The no-localization contrast compares the number of
+localized classes with the raw record count: the mean inflation
+reduction is 0.498461 (dimensionless) with interval [0.477635,
+0.519287]. The regime-projection ablation recounts polarity conflicts
+after projecting the regime away; the paired mean difference between the
+regime-resolved count and the projected count is 2.125 conflicts with
+interval [1.821, 2.429], where a positive value counts regime-resolved
+conflicts that collapse into merged ones under the projection. The
+closure diagnostic reports the mean triangle-closure ratio of the
+within-class compatibility graphs, 0.458591 (dimensionless) with
+interval [0.408272, 0.508909]; following the cited publication’s own
+account of its compatibility complex, this ratio is a finite
+pairwise-closure statistic on observed pairs, not a horn-filling test in
+the nerve of a groupoid. Two descriptive counts complete the block
+without intervals: the regime-resolved polarity-conflict count 4.25 and
+the mean localized class count 14.375.</p>
+<p>The boundary of this subsection is narrower than the rest of the
+section. Every corpus is synthetic, so no property of any real claim
+population is measured, and no real-corpus claim is made. The merge
+correctness of localization is unvalidated against any annotated
+standard; the cited publication itself reports such an independent
+post-extraction benchmark as its most important next step <span
+class="citation" data-cites="mahadevan2026democritus">(<a
+href="#ref-mahadevan2026democritus" role="doc-biblioref">Mahadevan
+2026b</a>)</span>. The numbers above validate the bookkeeping behavior
+of the aggregation and localization utilities on known synthetic
+constructions, nothing more.</p>
+<h2 data-number="17.7" id="sec:exp-limits"><span
+class="header-section-number">17.7</span> Interpretation boundaries</h2>
 <p>Three boundaries delimit this section. First, replication intervals
 summarize variation across seeded runs of deterministic code; they are
 not sampling distributions over any population. Second, every configured
@@ -2394,7 +2512,17 @@ failures, closure changes, and sensitivity of magnitude. A topos bridge
 should supply actual theories and an equivalence witness. A cognitive or
 EEG study should prespecify outcomes and compare the model with simpler
 explanations. A protocol prototype should enforce authenticated
-capabilities and test the full execution boundary.</p>
+capabilities and test the full execution boundary. Post-extraction
+aggregation adds one more: recent causal-discourse work states as its
+own most important next step an independent benchmark with expert
+annotations of merge, non-merge, and gluing decisions over paraphrastic,
+partially overlapping, regime-sensitive claim clusters <span
+class="citation" data-cites="mahadevan2026democritus">(<a
+href="#ref-mahadevan2026democritus" role="doc-biblioref">Mahadevan
+2026b</a>)</span>. The synthetic aggregation experiments in sec. <a
+href="#sec:synthetic-statistics">17</a> rehearse the decision structure
+on constructed inputs; the extension below asks whether those decisions
+survive expert annotation.</p>
 <div class="table-scroll" role="region" tabindex="0" aria-label="Scrollable data table"><table data-responsive-table="true">
 <colgroup>
 <col style="width: 33%" />
@@ -2444,6 +2572,15 @@ explanation or the outcomes were not prespecified</td>
 the full execution boundary</td>
 <td style="text-align: left;">Execution proceeds without authenticated
 capabilities</td>
+</tr>
+<tr>
+<td style="text-align: left;">Post-extraction aggregation</td>
+<td style="text-align: left;">Expert-annotated merge, non-merge, and
+gluing decisions on paraphrastic, partially overlapping,
+regime-sensitive claim clusters</td>
+<td style="text-align: left;">Annotated decisions disagree with the
+synthetic aggregation lane’s decisions, or the agreement does not
+survive regime or polarity variation</td>
 </tr>
 </tbody>
 </table></div>
@@ -2656,12 +2793,12 @@ population.</p>
 class="header-section-number">25</span> Appendix C: Reproduction and
 Verification Scope</h1>
 <p>Two different counts matter and must not be conflated. The suite
-<em>collects</em> 1837 tests in 91 files across 11 source subpackages; a
+<em>collects</em> 1883 tests in 94 files across 12 source subpackages; a
 collection count alone certifies nothing. A passing run is certified
-only by the source-bound quality receipt, which records 1837 passed, 0
-failed, and 0 skipped tests with 6722 of 7191 statements covered (91.94%
+only by the source-bound quality receipt, which records 1883 passed, 0
+failed, and 0 skipped tests with 6976 of 7450 statements covered (92.13%
 combined). The receipt binds that evidence to source fingerprint
-e97d40741270 and was recorded at 2026-09-15T02:20:12.609861+00:00; a
+ddb0e63ceb18 and was recorded at 2026-09-15T17:41:34.730254+00:00; a
 receipt whose fingerprint no longer matches the tree is rejected. The
 metrics writer records installed NumPy 2.4.4 and DisCoPy 1.2.2.</p>
 <p>The suite covers role-graph construction; sampled endpoint and weight
@@ -2693,7 +2830,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="
 are declared in source. The project has no corpus split, participant
 sample, EEG dataset, quantum-hardware receipt, or operational-agent
 security evaluation. This revision is identified by <a
-href="https://zenodo.org/records/22758214">10.5281/zenodo.22758214</a>;
+href="https://zenodo.org/records/22774403">10.5281/zenodo.22774403</a>;
 the series uses DOI 10.5281/zenodo.19695259. The live deposit state is
 reported at the version-record link.</p>
 <p>The first command uses the lockfile; the quality gate runs lint,
@@ -2708,27 +2845,6 @@ binding. Render through the sibling template engine using the
 lifecycle-qualified project selector documented in the repository
 README. Rendered PDFs require visual inspection in addition to text,
 link, and citation checks.</p>
-<hr />
-<h1 data-number="26" id="manuscript-status"><span
-class="header-section-number">26</span> Manuscript status</h1>
-<p>The working version and date are declared in <code>config.yaml</code>
-and injected into prose; this file does not restate them. The
-substantive manuscript and its caption set were rewritten to match the
-implemented contracts. The project reports synthetic examples and
-explicitly scoped mathematical constructions, with no new corpus, EEG,
-hardware, or deployed-security result. Publication roles are neutral:
-the version DOI identifies this revision, the concept DOI identifies the
-series, and the live deposit state is whatever the configured
-<code>version_record</code> link reports at read time; release notes
-report the verified remote status.</p>
-<p>See <a href="../comprehensive_review.md">review report</a> for
-current test, artifact, rendering, and visual-inspection receipts. Those
-receipts describe the render they were recorded against; a later render
-requires a repeat, and this file does not assert render-dependent
-counts. The source-bound quality receipt (Appendix C) is the only
-authority for passing-test and coverage claims. Automated LLM reviews
-and translations remain disabled by the author’s existing
-configuration.</p>
 <div id="refs" class="references csl-bib-body hanging-indent"
 role="list">
 <div id="ref-akgul2026distributional" class="csl-entry" role="listitem">
@@ -2799,6 +2915,17 @@ Leinster, Tom, and Michael Shulman. 2021. <span>“Magnitude Homology of
 Enriched Categories and Metric Spaces.”</span> <em>Algebraic &amp;
 Geometric Topology</em> 21 (5): 2175–221. <a
 href="https://doi.org/10.2140/agt.2021.21.2175">https://doi.org/10.2140/agt.2021.21.2175</a>.
+</div>
+<div id="ref-mahadevan2026categories" class="csl-entry" role="listitem">
+Mahadevan, Sridhar. 2026a. <em>Categories for <span>AGI</span></em>.
+Draft digital edition. <a
+href="https://categorical-ai.sridharmahadevan.com/books/categories-for-agi">https://categorical-ai.sridharmahadevan.com/books/categories-for-agi</a>.
+</div>
+<div id="ref-mahadevan2026democritus" class="csl-entry" role="listitem">
+Mahadevan, Sridhar. 2026b. <span>“Democritus: Homotopy-Localized Causal
+Discourse Extraction from Language.”</span> <em>Entropy</em> 28 (9):
+986. <a
+href="https://doi.org/10.3390/e28090986">https://doi.org/10.3390/e28090986</a>.
 </div>
 <div id="ref-siewierska2013person" class="csl-entry" role="listitem">
 Siewierska, Anna. 2013. <span>“Alignment of Verbal Person

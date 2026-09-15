@@ -10,7 +10,10 @@ The project asks what can be represented and checked with small case diagrams. I
 | Can uncertainty be updated consistently? | Finite Bayesian filtering and distributional utility tests | Learned generative models and held-out prediction |
 | Do diagrams improve human reasoning? | Proposed experimental comparisons | Participants, controlled stimuli, preregistered outcomes |
 | Can case labels help enforce agent authority? | A finite role-policy checker | Authenticated provenance, runtime enforcement, adversarial evaluation |
+| Can post-extraction claim aggregation avoid overcounting paraphrase and erasing regime or polarity distinctions? | Synthetic merge, gluing, and repair diagnostics on constructed claim clusters | Expert-annotated merge, non-merge, and gluing decisions on paraphrastic, partially overlapping, regime-sensitive clusters |
 
 Table: Research questions, evidence, and missing steps. {#tbl:research-questions}
 
 The phrase *implemented* below means an operation is available and exercised locally. *Illustrative* denotes a constructed example. *Proposed* denotes an unimplemented or unevaluated connection. Passing software tests does not promote a proposal to a theorem or an empirical finding. Repo-level claim statements in [@sec:test-suite-inventory] and in the canonical ledger `docs/claim_ledger.md` carry their own status vocabulary: verified, partially_supported, unsupported, and ambiguous / proposed, with the qualified variants verified (synthetic only), verified via receipt, unsupported for raw input, and not_asserted_here used where the cited row warrants them.
+
+The aggregation row follows the benchmark structure that recent causal-discourse extraction work states as its own open step: an independent post-extraction benchmark with expert-annotated merge, non-merge, and gluing decisions [@mahadevan2026democritus]. The synthetic lane rehearses the decision structure; only annotation on real clusters would test it.

@@ -2,41 +2,41 @@
   "inputs": {
     "docs/figure_alt_text.json": "d3805ae4e41e7cdd4c6965361d21a4ccfe1f46dd8a16cee0552a3e1012304a26",
     "docs/manuscript/00_abstract.md": "706642505236ea7be985ecaff0f72c8673543ebe42a75eed600c4bbb26e851ab",
-    "docs/manuscript/01_introduction.md": "88e57d45d193da8e098a6013787d24ce6991049338264b9ea468fc6a7d38bdaf",
-    "docs/manuscript/01a_research_questions.md": "6a32fe2fe467367ca22355593184fe6d2e2843b231c0732aca7fbf33525dbce9",
+    "docs/manuscript/01_introduction.md": "cf6d9011b0b19692027239aba8615c3d9509cd8fc819516fa3dfc56c95b8adee",
+    "docs/manuscript/01a_research_questions.md": "01e684eee30f60bba133a7c3ef44fe2bc4eac738e367bd3e6730ead12a490e2c",
     "docs/manuscript/02_case_systems.md": "b3cc5b6eba5a3d750dbf69a0f51d2d80c9636f93cdca48ec7c674782542ad0fb",
     "docs/manuscript/02b_case_categories.md": "b1e3efc82fdf02d5a4734ba4594ac89faf17ea51b84d741f5311d4f05f48e6d9",
     "docs/manuscript/03_categorial_grammar.md": "c7e24b65a853540ab97028b19cc233c8124c2dc6ad43644dfdeda29e8a60409e",
     "docs/manuscript/03b_case_type_logic.md": "c5e05693de3534adcf4120807accce8469ca675e7aa7240d93aad77fcaf13799",
     "docs/manuscript/04_categorical_semantics.md": "2431abe25da5e2343c7f8a1d598f20aaf61b623d70f43ac4e19f8d2fc1d48813",
     "docs/manuscript/04b_compact_closure_complexity.md": "fb3b19daf6a263ebd2ba6babac03c112724043ef400e1c3349398aed61b8fb16",
-    "docs/manuscript/04c_discourse_complexity.md": "8802bc3909e0c5a849d18e2dc7b6d72f09e4655abbcd2e3834958fcabdacffd9",
+    "docs/manuscript/04c_discourse_complexity.md": "e24ea3f95a320bb34d2acb1eb5863b1a360d685e5066c3b84156e125ccd07c50",
     "docs/manuscript/05_enriched_categories.md": "83670bb0d3c2e86c2ad5d3c9a7ef11ebd02211865e150c9bcb614fde61eba786",
     "docs/manuscript/05b_magnitude_homology.md": "fba03e078104a32e8e72c315f8156a108cf2c9349b6b250e31a4d88890d7b2e6",
-    "docs/manuscript/06_topos_theory.md": "5aef2888f9431ab8610404180f6fe3df8a696da307d58bad1194ad41d2d65e9b",
+    "docs/manuscript/06_topos_theory.md": "c327fa18f42f3c48cd17f2a1ff9d6d5cba0a78403fc0975654c333651388df2c",
     "docs/manuscript/07_cognitive_integration.md": "3010d2afb67b4be5ee41885619587602d6be6eacbac8478c43fb9f39e3c12287",
     "docs/manuscript/07b_diagrammatic_cognition.md": "9a28ac20048437cb8a477b6e8db31e893ef43e7a1a88277c096fffec8e8138cb",
     "docs/manuscript/07c_daif_results.md": "c53bd3904e3f89c00da310ee711d65b604ca67e55e13f6fd30cf0fa86d8fbdc6",
-    "docs/manuscript/07d_synthetic_statistics.md": "57d3feaee09f77758a1e473cd2e94af42429cb16130fe2b296ddb3b16819bdfa",
+    "docs/manuscript/07d_synthetic_statistics.md": "aa9d5c2fde386be75e6cfe7357469420e99d2076f529f90fa52c6b490db4083e",
     "docs/manuscript/08_quantum_active_inference.md": "32ea04f9b5595037266e9241b9fd911b02972f631163ab956490d8da93a43c74",
     "docs/manuscript/08b_quantum_semantics.md": "463c309af60971dc8dcc030e5fb847b1333668967cdf936d89d928d96e37e7d2",
     "docs/manuscript/09_ai_implications.md": "ad0dd70fbaa861bd41486af4ce08e3d8dd9139b605b0182756bf27f33bfbbc0c",
     "docs/manuscript/09b_cognitive_security.md": "6fb7a86da82ee8e616c14de175267eb6cc2e5c9c0b5d104d75be8453b78564bc",
-    "docs/manuscript/10_conclusion.md": "1d1e8df4e5031d9ba5a6a039bfdf5ef6ed91c69a5e7bab7c3da84a9f0f313634",
+    "docs/manuscript/10_conclusion.md": "90354837978f7f740bc26f62bc1aeb52aa4aa29f02fac2332746e38ba3b33145",
     "docs/manuscript/11_syntactic_sentence_diagrams.md": "896da38534b04f99258063c9e21be4a42f61fc35134fd8dcd00dacc32c868037",
     "docs/manuscript/11b_notation.md": "67e52652d6ce1e9e34b6e6fa570ab2817be69350075e4338315cd5b3bad1f569",
     "docs/manuscript/11c_automated_test_inventory.md": "e5380601e2d804580e6ee6a6d59fbf11f22d50499be491e0a3e1f46c61881cbc",
     "docs/manuscript/AGENTS.md": "4405e5e1b2aa0eaeeba282dd4cd09a0742b4697e240037560f6c64d401808cb1",
     "docs/manuscript/MANUSCRIPT_STATUS.md": "8d02dbc2e59c2d75903e45c7032b7be3a7f5394f63d164c4cea79262a22322a6",
     "docs/manuscript/README.md": "78bce25fbf98af2bc71e79e53ca1950f3ce5b85fca8d5ac9ebf334bc146a645b",
-    "docs/manuscript/config.yaml": "4ac7176766be26e3db85438d78613b49ac3f17cb9fe3c97ede000d1c5f8c5e10",
+    "docs/manuscript/config.yaml": "960a4b4af974a07f93369649da98e9e18fc77de5e7a33ed5815ff0453c99a876",
     "docs/manuscript/preamble.md": "e61d8cbb0f1a77465adf113f2cb6633163235f723e20b81b6d515c7885623b43",
-    "docs/manuscript/references.bib": "6b94894db015da32b02a7bf421352e7ee75cefba6448d73ac669524172dd2a44",
-    "output/experiments/results.json": "fb27906035a17273032e39d9c76ad39bfcc2244c00c3ca60618dfcaa3f0835ba",
-    "output/figures/figure_registry.json": "8ef76e48696715a57c24ea30cbec17f4b981060416174037d9ff9ab76774735b",
-    "output/reports/quality_receipt.json": "3fd19b6bc35192fe01dd905b02b76e6f34659f77e0393071bc85caf7823f55ff"
+    "docs/manuscript/references.bib": "f3e25f4b2d88085976eaee35c8fb8b98a60b499b03a8aeb02ebc5b7bc40d0b3a",
+    "output/experiments/results.json": "b0a73bfc5e544108118ac990e8e4d7d24d1e7f58b68f36586797a54c81ca8c9d",
+    "output/figures/figure_registry.json": "c3cdd7109c837f58f490ade0198405d096729401ee9c0eceac410f6ea6c917a4",
+    "output/reports/quality_receipt.json": "a5f9320397b03caedd78ac1335de9616c60d93a288ef55070efb7aff6ffbca53"
   },
-  "quality_input_fingerprint": "e97d407412707f5504bdf334fe483438115727b2aa0e843a04e760a5174234e0",
+  "quality_input_fingerprint": "ddb0e63ceb185c8f490d819934238ec7545d46cc1a2fd8873ee64544c372d71f",
   "schema": "ccd-manuscript-variables-v1",
   "variables": {
     "alignment_extra_label_count": {
@@ -145,7 +145,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_covered",
         "unit": "count"
       },
-      "value": "6722"
+      "value": "6976"
     },
     "coverage_lines_total": {
       "spec": {
@@ -157,7 +157,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_total",
         "unit": "count"
       },
-      "value": "7191"
+      "value": "7450"
     },
     "coverage_percent": {
       "spec": {
@@ -169,7 +169,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_percent",
         "unit": "percent"
       },
-      "value": "91.94"
+      "value": "92.13"
     },
     "daif_assignment_iterations": {
       "spec": {
@@ -409,7 +409,7 @@
         "source": "src.generate_manuscript_metrics._count_domain_subpackages",
         "unit": "count"
       },
-      "value": "11"
+      "value": "12"
     },
     "enriched_acc_dat_raw": {
       "spec": {
@@ -506,6 +506,138 @@
         "unit": "dimensionless"
       },
       "value": "91.8505"
+    },
+    "exp_agg_inflation_reduction_mean": {
+      "spec": {
+        "description": "Mean fraction of synthetic paraphrase records removed by full canonical-key localization against the no-localization contrast (raw record count); synthetic-only, no real-corpus claim.",
+        "format": "sig6",
+        "name": "exp_agg_inflation_reduction_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0.498461"
+    },
+    "exp_agg_inflation_reduction_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the confidence interval for exp_agg_inflation_reduction_mean",
+        "format": "sig6",
+        "name": "exp_agg_inflation_reduction_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0.519287"
+    },
+    "exp_agg_inflation_reduction_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the confidence interval for exp_agg_inflation_reduction_mean",
+        "format": "sig6",
+        "name": "exp_agg_inflation_reduction_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0.477635"
+    },
+    "exp_agg_localized_class_count_mean": {
+      "spec": {
+        "description": "Descriptive mean number of canonical claim classes per synthetic corpus under exact regime-aware localization keys; no interval is attached to this descriptive count.",
+        "format": "sig6",
+        "name": "exp_agg_localized_class_count_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "count"
+      },
+      "value": "14.375"
+    },
+    "exp_agg_regime_conflicts_detected_mean": {
+      "spec": {
+        "description": "Descriptive mean regime-resolved polarity-conflict count per synthetic corpus; no interval is attached to this descriptive count.",
+        "format": "sig6",
+        "name": "exp_agg_regime_conflicts_detected_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "count"
+      },
+      "value": "4.25"
+    },
+    "exp_agg_regime_projection_lost_mean": {
+      "spec": {
+        "description": "Paired mean difference between the regime-resolved polarity-conflict count and the count after projecting the regime away, on identical synthetic corpora at common random numbers; negative values indicate conflicts collapsed by the regime projection.",
+        "format": "sig6",
+        "name": "exp_agg_regime_projection_lost_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "count"
+      },
+      "value": "2.125"
+    },
+    "exp_agg_regime_projection_lost_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the confidence interval for exp_agg_regime_projection_lost_mean",
+        "format": "sig6",
+        "name": "exp_agg_regime_projection_lost_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "count"
+      },
+      "value": "2.429"
+    },
+    "exp_agg_regime_projection_lost_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the confidence interval for exp_agg_regime_projection_lost_mean",
+        "format": "sig6",
+        "name": "exp_agg_regime_projection_lost_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "count"
+      },
+      "value": "1.821"
+    },
+    "exp_agg_triangle_closure_ratio_mean": {
+      "spec": {
+        "description": "Mean finite pairwise-closure ratio of the within-class compatibility graphs (triangles over triangles plus open triples); a bookkeeping statistic on observed pairs, not a horn-filling test on a nerve; synthetic-only.",
+        "format": "sig6",
+        "name": "exp_agg_triangle_closure_ratio_mean",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0.458591"
+    },
+    "exp_agg_triangle_closure_ratio_mean_ci95_high": {
+      "spec": {
+        "description": "High bound of the confidence interval for exp_agg_triangle_closure_ratio_mean",
+        "format": "sig6",
+        "name": "exp_agg_triangle_closure_ratio_mean_ci95_high",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0.508909"
+    },
+    "exp_agg_triangle_closure_ratio_mean_ci95_low": {
+      "spec": {
+        "description": "Low bound of the confidence interval for exp_agg_triangle_closure_ratio_mean",
+        "format": "sig6",
+        "name": "exp_agg_triangle_closure_ratio_mean_ci95_low",
+        "provenance": "experiments",
+        "required": false,
+        "source": "src.experiments.runner via output/experiments/results.json",
+        "unit": "dimensionless"
+      },
+      "value": "0.408272"
     },
     "exp_calibration_atom_gap_max": {
       "spec": {
@@ -1117,7 +1249,7 @@
         "source": "experiments.provenance.config_sha256",
         "unit": "text"
       },
-      "value": "0ead4d99c7d6617c1d07342dd37636db5b07e14afe95214308f6b9a92fb7a5d1"
+      "value": "18c7278ee89606d88f5c0a147f63deeba17c692168006facf88cea182554c2f9"
     },
     "experiment_filter_iterations": {
       "spec": {
@@ -1213,7 +1345,7 @@
         "source": "config.yaml paper.date",
         "unit": "date"
       },
-      "value": "2026-09-14"
+      "value": "2026-09-15"
     },
     "paper_doi": {
       "spec": {
@@ -1237,7 +1369,7 @@
         "source": "config.yaml publication.prior_version_doi",
         "unit": "identifier"
       },
-      "value": "10.5281/zenodo.22653315"
+      "value": "10.5281/zenodo.22758214"
     },
     "paper_version": {
       "spec": {
@@ -1249,7 +1381,7 @@
         "source": "config.yaml paper.version",
         "unit": "version"
       },
-      "value": "2.6.0"
+      "value": "2.7.0"
     },
     "paper_version_doi": {
       "spec": {
@@ -1261,7 +1393,7 @@
         "source": "config.yaml publication.version_doi",
         "unit": "identifier"
       },
-      "value": "10.5281/zenodo.22758214"
+      "value": "10.5281/zenodo.22774403"
     },
     "paper_version_record_url": {
       "spec": {
@@ -1273,7 +1405,7 @@
         "source": "config.yaml publication.version_record",
         "unit": "identifier"
       },
-      "value": "https://zenodo.org/records/22758214"
+      "value": "https://zenodo.org/records/22774403"
     },
     "publication_status": {
       "spec": {
@@ -1297,7 +1429,7 @@
         "source": "src.release_validation.validate_quality_receipt -> quality_input_fingerprint[:12]",
         "unit": "text"
       },
-      "value": "e97d40741270"
+      "value": "ddb0e63ceb18"
     },
     "quality_receipt_generated_at": {
       "spec": {
@@ -1309,7 +1441,7 @@
         "source": "src.release_validation.validate_quality_receipt -> generated_at",
         "unit": "timestamp"
       },
-      "value": "2026-09-15T02:20:12.609861+00:00"
+      "value": "2026-09-15T17:41:34.730254+00:00"
     },
     "quantum_acc_probability": {
       "spec": {
@@ -1477,7 +1609,7 @@
         "source": "src.generate_manuscript_metrics._count_collected_tests",
         "unit": "count"
       },
-      "value": "1837"
+      "value": "1883"
     },
     "total_test_files": {
       "spec": {
@@ -1489,7 +1621,7 @@
         "source": "src.generate_manuscript_metrics._count_test_files",
         "unit": "count"
       },
-      "value": "91"
+      "value": "94"
     },
     "total_test_files_word": {
       "spec": {
@@ -1501,7 +1633,7 @@
         "source": "src.generate_manuscript_metrics._number_to_word",
         "unit": "count"
       },
-      "value": "ninety-one"
+      "value": "ninety-four"
     },
     "total_tests_failed": {
       "spec": {
@@ -1525,7 +1657,7 @@
         "source": "src.release_validation.validate_quality_receipt -> pytest_passed",
         "unit": "count"
       },
-      "value": "1837"
+      "value": "1883"
     },
     "total_tests_skipped": {
       "spec": {

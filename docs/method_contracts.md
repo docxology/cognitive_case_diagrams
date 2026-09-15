@@ -36,6 +36,20 @@ All canonical numerical inputs are synthetic. An API name is not evidence that i
 | `quantile_coverage` targets in experiments | Discrete-law coverage null is `F(Q(tau))`, not `tau` | `F(Q(tau)) >= tau` with equality only at atom boundaries; `atom_gap` is the deterministic discretization gap `F(Q(tau)) - tau` |
 | Experiments interval rule | Normal-approximation means (replicate unit, approximate at finite n), Wilson intervals only for genuinely i.i.d. Bernoulli trials, paired intervals at common random numbers | No interval is attached to any data-selected maximum; prespecified sweep arms carry pointwise (unadjusted) intervals only |
 | `ccd-evidence-status` / `src.evidence_status.collect_evidence_status` | Read-only per-stage evidence report (quality, experiments, manuscript, metadata, visual review, release) reusing the canonical fail-closed validators; states are `missing`/`stale`/`invalid`/`validated`; release requires archive verification plus a three-way source binding | Not itself a validator and never generates evidence; expected to exit 1 mid-pipeline; the MCP capability summary shares the mapping with its coarser `stale_or_invalid` vocabulary |
+| `src/aggregation/adapter.load_claim_records(path)` | Reads JSONL claim records with required fields (cause, effect, relation, polarity; optional regime, temporal_scope, qualifiers, provenance); raises ValueError on missing or invalid fields | Preserves all supplied provenance verbatim; adapter availability is not an accuracy claim and no real-corpus study has been run |
+| `src/aggregation/localize.canonical_key(record)` | Returns the (cause, effect, relation, polarity, regime) canonical tuple with None-unsafe exact matching | Exact tuple matching only; no similarity, transitive, or fuzzy grouping |
+| `src/aggregation/diagnostics.*` | paraphrase_inflation ratio (raw mentions / localized classes), regime_conflict count, and triangle_closure ratio (triangles / (triangles + open triples) over the pairwise compatibility graph inside each canonical class; 0.0 for an empty class) | Declared-synthetic diagnostics; ratios describe the supplied inputs, not any corpus |
+
+The aggregation/localization lane (`src/aggregation/`) mirrors the
+post-extraction aggregation problem formulated in Sridhar Mahadevan's
+Democritus publication ("Democritus: Homotopy-Localized Causal Discourse
+Extraction from Language," Entropy 2026, 28(9):986): localizing a shared
+causal claim from a cluster of paraphrastic, partially overlapping,
+regime-sensitive mentions before any merge or gluing decision. The contracts
+above are our own implementations; the citation is a specification framing,
+not an accuracy claim, and the tiered validation discipline (implementation
+evidence separated from empirical interpretation) follows the same published
+source's Table-14-style separation.
 
 The experiments package adds the 2026-09 synthetic-study lane: seeded
 multi-replicate filtering, exact discrete-law calibration targets,

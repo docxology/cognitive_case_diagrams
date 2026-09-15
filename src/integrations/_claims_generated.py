@@ -96,5 +96,20 @@ CLAIMS = [
     "claim": "Publication status of remote deposit",
     "status": "not_asserted_here",
     "evidence": "DOI roles are fixed (version DOI for this revision, concept DOI for the series); live deposit state is reported in release notes after verification at the record URL"
+  },
+  {
+    "claim": "Aggregation lane (canonical-key localization, paraphrase-inflation and regime-conflict diagnostics) on declared synthetic corpora",
+    "status": "verified (synthetic only)",
+    "evidence": "Prespecified arms in the `src/experiments/` aggregation study; identity and invalid-input controls; no empirical claim"
+  },
+  {
+    "claim": "Claim-corpus adapter ingests externally supplied causal-claim records",
+    "status": "verified via receipt",
+    "evidence": "Typed fail-closed adapter with schema validation and provenance fields; no real-corpus study performed; adapter availability is not an accuracy claim"
+  },
+  {
+    "claim": "Post-extraction merge/gluing correctness on real corpora",
+    "status": "unsupported",
+    "evidence": "Requires an independently annotated merge/non-merge/gluing benchmark as specified in the cited Democritus publication's own future-work statement (`mahadevan2026democritus`)"
   }
 ]

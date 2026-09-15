@@ -15,14 +15,14 @@ abstract: 'Linguistic case offers a setting in which to examine how diagrams con
   their limits. We distinguish generated derivations from illustrative drawings, finite
   score distributions from Bellman return distributions, presentation statistics from
   topos invariants, and model-unit prediction errors from physiological measurements.
-  The accompanying suite collects 1837 tests across 91 files; that is a collection
-  count, and a separate source-bound quality receipt records 1837 passing tests with
-  91.94% line-and-branch coverage (Appendix C). The figure pipeline produces 33 figures
+  The accompanying suite collects 1883 tests across 94 files; that is a collection
+  count, and a separate source-bound quality receipt records 1883 passing tests with
+  92.13% line-and-branch coverage (Appendix C). The figure pipeline produces 33 figures
   from source. All numerical illustrations use synthetic inputs; no corpus study,
   participant experiment, EEG fit, quantum-hardware run, or deployed-agent security
   evaluation is reported. Topos-theoretic transfer, cognitive advantages of case diagrams,
   and case-based authorization remain research proposals with explicit validation
-  requirements. This is working revision 2.6.0; its local validation does not constitute
+  requirements. This is working revision 2.7.0; its local validation does not constitute
   publication or independent mathematical certification.'
 type: software
 authors:
@@ -31,11 +31,11 @@ authors:
   orcid: https://orcid.org/0000-0001-6232-9096
   affiliation: Active Inference Institute
   email: daniel@activeinference.institute
-version: 2.6.0
-date-released: '2026-09-14'
+version: 2.7.0
+date-released: '2026-09-15'
 license: Apache-2.0
 repository-code: https://github.com/docxology/cognitive_case_diagrams
-url: https://github.com/docxology/cognitive_case_diagrams/releases/tag/v2.6.0
+url: https://github.com/docxology/cognitive_case_diagrams/releases/tag/v2.7.0
 keywords:
 - linguistic case
 - category theory
@@ -48,7 +48,7 @@ keywords:
 - reproducible research
 identifiers:
 - type: doi
-  value: 10.5281/zenodo.22758214
+  value: 10.5281/zenodo.22774403
   description: Associated manuscript version
 - type: doi
   value: 10.5281/zenodo.19695259

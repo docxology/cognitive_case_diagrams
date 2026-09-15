@@ -20,6 +20,7 @@ and uncertainty conventions.
 """
 from .config import (
     DEFAULT_CONFIG,
+    AggregationConfig,
     CalibrationConfig,
     ConfigError,
     ExperimentConfig,
@@ -52,6 +53,7 @@ __all__ = [
     "DEFAULT_RESULTS_PATH",
     "assert_finite_json",
     # config
+    "AggregationConfig",
     "ExperimentConfig",
     "FilteringConfig",
     "CalibrationConfig",

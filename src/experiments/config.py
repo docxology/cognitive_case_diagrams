@@ -41,6 +41,8 @@ _MAX_TAU_POINTS = 2_000_001
 _MAX_ATOMS = 100_001
 _MAX_LIST_ENTRIES = 64
 _MAX_BIN_ENTRIES = 64
+_MAX_MECHANISMS = 256
+_MAX_PARAPHRASES = 64
 
 
 class ConfigError(ValueError):
@@ -232,6 +234,39 @@ class SensitivityConfig:
 
 
 @dataclass
+class AggregationConfig:
+    """Synthetic aggregation/localization study settings.
+
+    ``n_replicates`` is section-level: the aggregation lane aggregates
+    within one synthetic corpus per replicate, so its sample size is
+    configured here rather than through the global replicate count.
+    """
+
+    enabled: bool = True
+    n_mechanisms: int = 8
+    paraphrases_per_mechanism: int = 3
+    regime_conflict_rate: float = 0.25
+    n_replicates: int = 64
+    jaccard_threshold: float = 0.5
+
+    def validate(self) -> None:
+        _require_bool("aggregation", "enabled", self.enabled)
+        _require_int("aggregation", "n_mechanisms", self.n_mechanisms,
+                     2, _MAX_MECHANISMS)
+        _require_int("aggregation", "paraphrases_per_mechanism",
+                     self.paraphrases_per_mechanism, 2, _MAX_PARAPHRASES)
+        _require_float("aggregation", "regime_conflict_rate",
+                       self.regime_conflict_rate, 0.0, 1.0)
+        _require_int("aggregation", "n_replicates", self.n_replicates,
+                     2, _MAX_REPLICATES)
+        threshold = _require_float("aggregation", "jaccard_threshold",
+                                   self.jaccard_threshold, 0.0, 1.0)
+        if threshold <= 0.0:
+            raise ConfigError(
+                f"aggregation.jaccard_threshold must be > 0, got {threshold}")
+
+
+@dataclass
 class SanityConfig:
     """Analytic identity controls and invalid-input rejection controls."""
 
@@ -261,6 +296,7 @@ class ExperimentConfig:
     quantile: QuantileConfig = field(default_factory=QuantileConfig)
     projection: ProjectionConfig = field(default_factory=ProjectionConfig)
     sensitivity: SensitivityConfig = field(default_factory=SensitivityConfig)
+    aggregation: AggregationConfig = field(default_factory=AggregationConfig)
     sanity: SanityConfig = field(default_factory=SanityConfig)
 
     def validate(self) -> None:
@@ -279,7 +315,9 @@ class ExperimentConfig:
                 f"confidence_level must be strictly inside (0, 1), got {level}")
         for name, cls in (("filtering", FilteringConfig), ("calibration", CalibrationConfig),
                           ("quantile", QuantileConfig), ("projection", ProjectionConfig),
-                          ("sensitivity", SensitivityConfig), ("sanity", SanityConfig)):
+                          ("sensitivity", SensitivityConfig),
+                          ("aggregation", AggregationConfig),
+                          ("sanity", SanityConfig)):
             section = getattr(self, name)
             if not isinstance(section, cls):
                 raise ConfigError(f"{name} must be a {cls.__name__}")
@@ -303,11 +341,13 @@ class ExperimentConfig:
         _reject_unknown("config", data, tuple(known))
         payload = dict(data)
         for section_name in ("filtering", "calibration", "quantile",
-                             "projection", "sensitivity", "sanity"):
+                             "projection", "sensitivity", "aggregation",
+                             "sanity"):
             section_cls = {
                 "filtering": FilteringConfig, "calibration": CalibrationConfig,
                 "quantile": QuantileConfig, "projection": ProjectionConfig,
                 "sensitivity": SensitivityConfig, "sanity": SanityConfig,
+                "aggregation": AggregationConfig,
             }[section_name]
             raw = payload.get(section_name, {})
             if not isinstance(raw, dict):
@@ -321,10 +361,11 @@ class ExperimentConfig:
     def enabled_sections(self) -> list[str]:
         """Names of the study blocks that will run, in execution order."""
         order = ("filtering", "calibration", "quantile", "projection",
-                 "sensitivity", "sanity")
+                 "sensitivity", "aggregation", "sanity")
         sections = {"filtering": self.filtering, "calibration": self.calibration,
                     "quantile": self.quantile, "projection": self.projection,
-                    "sensitivity": self.sensitivity, "sanity": self.sanity}
+                    "sensitivity": self.sensitivity,
+                    "aggregation": self.aggregation, "sanity": self.sanity}
         return [name for name in order if getattr(sections[name], "enabled")]
 
 

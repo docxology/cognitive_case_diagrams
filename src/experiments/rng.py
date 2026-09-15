@@ -21,6 +21,7 @@ STREAM_IDS: dict[str, int] = {
     "sensitivity": 5,
     "sanity": 6,
     "quantum": 7,
+    "aggregation": 8,
 }
 
 

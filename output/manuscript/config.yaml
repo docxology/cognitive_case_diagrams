@@ -111,4 +111,4 @@ render:
     html: true
     slides: false
     docx: false
-    epub: false
+    epub: true

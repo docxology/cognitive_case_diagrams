@@ -27,9 +27,13 @@ alt-text, and per-figure hash checks) and by the PDF rendering pipeline.
 
 Atomicity note: ``src.release_validation.write_json_atomic`` serializes with
 ``sort_keys=True``, which would reorder entry keys and break the byte-format
-contract above. This module therefore performs the same crash-safe
-temporary-file + fsync + replace sequence while emitting the exact legacy
-bytes.
+contract above. This module therefore writes the exact legacy bytes through
+``src.release_validation.write_text_atomic`` (which writes text verbatim,
+without reordering keys) rather than reimplementing the crash-safe
+temporary-file + fsync + replace sequence. The registry opts into
+``allow_symlink_ancestor`` because a symlinked output-directory alias that
+resolves inside ``output/`` is a supported layout (the destination itself is
+still never a symlink).
 """
 
 from __future__ import annotations
@@ -37,11 +41,11 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
-import os
 import re
-import tempfile
 from pathlib import Path
 from typing import Any
+
+from src.release_validation import write_text_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -257,23 +261,7 @@ def write_figure_registry(
         )
 
     payload = _registry_bytes(merged_list)
-    out_dir.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(
-        mode="wb", dir=out_dir, delete=False
-    ) as stream:
-        temporary = Path(stream.name)
-        try:
-            stream.write(payload)
-            stream.flush()
-            os.fsync(stream.fileno())
-        except BaseException:
-            temporary.unlink()
-            raise
-    try:
-        temporary.chmod(0o644)  # These are public project evidence artifacts.
-        temporary.replace(dest)
-    finally:
-        temporary.unlink(missing_ok=True)
+    write_text_atomic(dest, payload.decode("utf-8"), allow_symlink_ancestor=True)
 
     logger.info("Wrote figure registry: %s (%d entries)", dest, len(merged_list))
     if unlabelled:

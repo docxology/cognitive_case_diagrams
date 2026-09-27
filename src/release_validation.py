@@ -20,10 +20,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-try:
-    import tomllib
-except ImportError:  # Python 3.10
-    import tomli as tomllib  # type: ignore[no-redef]
+from src._compat import tomllib
 
 
 class StaleEvidenceError(ValueError):
@@ -102,10 +99,25 @@ def combined_quality_digest(hashes: Mapping[str, str]) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def write_text_atomic(path: Path, text: str) -> None:
-    """Write complete text, replacing the destination only after success."""
-    if path.is_symlink() or any(parent.is_symlink() for parent in path.parents):
+def write_text_atomic(
+    path: Path, text: str, *, allow_symlink_ancestor: bool = False,
+) -> None:
+    """Write complete text, replacing the destination only after success.
+
+    Args:
+        path: Destination path.
+        text: Text to write.
+        allow_symlink_ancestor: If True, allow symlinked ancestors above the
+            destination (the destination itself must never be a symlink).
+            Callers that write through a known-safe output-directory alias
+            opt in; the default stays fail-closed for all other uses.
+    """
+    if path.is_symlink():
         raise ValueError("Refusing to replace a linked destination")
+    if not allow_symlink_ancestor and any(
+        parent.is_symlink() for parent in path.parents
+    ):
+        raise ValueError("Refusing to replace a path with a symlinked ancestor")
     path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(
         mode="w", encoding="utf-8", dir=path.parent, delete=False
@@ -139,11 +151,11 @@ def _nonnegative_int(value: object, field: str) -> int:
 
 
 def _coverage_summary(root: Path) -> dict[str, Any]:
-    config = tomllib.loads((root / "pyproject.toml").read_text())
+    config = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
     floor = float(config["tool"]["coverage"]["report"]["fail_under"])
     if not math.isfinite(floor) or not 90 <= floor <= 100:
         raise ValueError("Project combined coverage floor must remain between 90 and 100 percent")
-    coverage = json.loads((root / "coverage.json").read_text())
+    coverage = json.loads((root / "coverage.json").read_text(encoding="utf-8"))
     if coverage.get("meta", {}).get("branch_coverage") is not True:
         raise ValueError("Release coverage must include branches")
     totals = coverage["totals"]
@@ -175,7 +187,7 @@ def _test_summary(root: Path) -> dict[str, int | str]:
     path = root / QUALITY_JUNIT
     if path.stat().st_size > 16 * 1024 * 1024:
         raise ValueError("Unexpectedly large test receipt")
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     if "<!DOCTYPE" in text or "<!ENTITY" in text:
         raise ValueError("DTD declarations are forbidden in test receipts")
     document = ET.fromstring(text)
@@ -252,7 +264,7 @@ def write_quality_receipt(
 def validate_quality_receipt(project_root: Path) -> dict[str, Any]:
     """Reject absent, failed, internally inconsistent, or stale local evidence."""
     root = project_root.resolve(strict=True)
-    receipt = json.loads((root / QUALITY_RECEIPT).read_text())
+    receipt = json.loads((root / QUALITY_RECEIPT).read_text(encoding="utf-8"))
     if not isinstance(receipt, dict):
         raise ValueError("Quality receipt must be a JSON object")
     if receipt.get("schema") != "ccd-quality-v1" or receipt.get("status") != "passed":

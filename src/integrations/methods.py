@@ -669,9 +669,11 @@ def compare_theory_presentations_tool(
         )
         return ClassifyingTopos(theory=theory)
 
-    not_ruled_out, differences = compare_theory_presentations(build(theory_a), build(theory_b))
-    signature_a = list(build(theory_a).theory.signature_invariant())
-    signature_b = list(build(theory_b).theory.signature_invariant())
+    built_a = build(theory_a)
+    built_b = build(theory_b)
+    not_ruled_out, differences = compare_theory_presentations(built_a, built_b)
+    signature_a = list(built_a.theory.signature_invariant())
+    signature_b = list(built_b.theory.signature_invariant())
     return PresentationComparisonResult(
         not_ruled_out=not_ruled_out,
         differences=differences,

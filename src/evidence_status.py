@@ -51,11 +51,7 @@ import zipfile
 from pathlib import Path
 from typing import Any
 
-try:
-    import tomllib
-except ImportError:  # Python 3.10
-    import tomli as tomllib  # type: ignore[no-redef]
-
+from src._compat import tomllib
 from src.release_validation import StaleEvidenceError
 
 SCHEMA = "ccd-evidence-status-v1"

@@ -37,12 +37,6 @@ def kl_divergence(
 
     if len(q) != len(p):
         raise ValueError(f"q ({len(q)}) and p ({len(p)}) must have same length")
-    if not np.isclose(q.sum(), 1.0):
-        raise ValueError(f"q must sum to 1.0, got {q.sum():.6f}")
-    if not np.isclose(p.sum(), 1.0):
-        raise ValueError(f"p must sum to 1.0, got {p.sum():.6f}")
-    if np.any(q < 0) or np.any(p < 0):
-        raise ValueError("distributions must be non-negative")
 
     # Only compute where q > 0; if q_i = 0, the term is 0 by convention
     nonzero_q = q > 0
@@ -84,9 +78,6 @@ def variational_free_energy(
     q = probability_vector(q, "q")
     log_likelihood = np.asarray(log_likelihood, dtype=np.float64)
     log_prior = np.asarray(log_prior, dtype=np.float64)
-
-    if not np.isclose(q.sum(), 1.0):
-        raise ValueError(f"q must sum to 1.0, got {q.sum():.6f}")
 
     for name, values in (("log_likelihood", log_likelihood), ("log_prior", log_prior)):
         if values.shape != q.shape or np.any(np.isnan(values)) or np.any(np.isposinf(values)):

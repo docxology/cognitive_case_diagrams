@@ -113,7 +113,7 @@ def _validate_observations(root: Path, observations: Mapping[str, Any]) -> None:
             f"Declared pdf_page_count {count} does not match the {derived} pages "
             "derived from the PDF bytes"
         )
-    registry = json.loads((root / "output/figures/figure_registry.json").read_text())
+    registry = json.loads((root / "output/figures/figure_registry.json").read_text(encoding="utf-8"))
     expected = sorted(entry["filename"] for entry in registry)
     if not expected or observations.get("inspected_figures") != expected:
         raise ValueError("Every registered figure must have a recorded visual inspection")
@@ -165,7 +165,7 @@ def record_publication_review(
 def validate_publication_review(project_root: Path) -> dict[str, Any]:
     """Reject absent, incomplete or stale inspection records before release."""
     root = project_root.resolve(strict=True)
-    receipt = json.loads((root / REVIEW_PATH).read_text())
+    receipt = json.loads((root / REVIEW_PATH).read_text(encoding="utf-8"))
     if not isinstance(receipt, dict) or receipt.get("schema") != "ccd-publication-review-v1":
         raise ValueError("Unsupported publication review record")
     _validate_observations(root, receipt["observations"])

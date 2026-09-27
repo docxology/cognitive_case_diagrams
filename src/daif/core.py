@@ -226,8 +226,6 @@ def categorical_return_distribution(
     positive_integer(n_atoms, "n_atoms", 2)
     if not np.isfinite(v_min) or not np.isfinite(v_max) or v_min >= v_max:
         raise ValueError(f"v_min ({v_min}) must be < v_max ({v_max})")
-    if n_atoms < 2:
-        raise ValueError(f"n_atoms must be >= 2, got {n_atoms}")
 
     atoms = np.linspace(v_min, v_max, n_atoms)
     delta_z = (v_max - v_min) / (n_atoms - 1)

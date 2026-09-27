@@ -65,6 +65,7 @@ class EnrichedCategory:
     proximity_matrix: np.ndarray = field(default_factory=lambda: np.array([]))
 
     _z_matrix_cache: np.ndarray | None = field(default=None, init=False, repr=False)
+    _z_inv_cache: np.ndarray | None = field(default=None, init=False, repr=False)
 
     def __post_init__(self) -> None:
         """Validate the enriched category axioms after initialization."""
@@ -136,7 +137,7 @@ class EnrichedCategory:
         if len(self.roles) == 0:
             raise ValueError("magnitude is undefined for an empty category")
         self._validate()
-        if (not hasattr(self, "_z_inv_cache") or self._z_matrix_cache is None
+        if (self._z_inv_cache is None or self._z_matrix_cache is None
                 or not np.array_equal(self.proximity_matrix, self._z_matrix_cache)):
             self._z_matrix_cache = self.proximity_matrix.copy()
             cond = np.linalg.cond(self.proximity_matrix)
@@ -146,7 +147,7 @@ class EnrichedCategory:
                     "using pseudo-inverse — magnitude is approximate",
                     self.name, cond,
                 )
-                self._z_inv_cache: np.ndarray = np.linalg.pinv(self.proximity_matrix, rcond=1e-12)
+                self._z_inv_cache = np.linalg.pinv(self.proximity_matrix, rcond=1e-12)
             else:
                 try:
                     self._z_inv_cache = np.linalg.inv(self.proximity_matrix)

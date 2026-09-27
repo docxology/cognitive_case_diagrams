@@ -16,6 +16,12 @@ from .adapter import to_canonical_dict
 __all__ = ["canonical_key", "localize", "without_regime"]
 
 
+def _key_from_typed(typed: Mapping[str, Any]) -> tuple[Any, ...]:
+    """Build the localization key from an already-validated typed dict."""
+    return (typed["cause"], typed["effect"], typed["relation"],
+            typed["polarity"], typed["regime"])
+
+
 def canonical_key(record: Mapping[str, Any]) -> tuple[Any, ...]:
     """Return the exact localization key of one claim record.
 
@@ -26,9 +32,7 @@ def canonical_key(record: Mapping[str, Any]) -> tuple[Any, ...]:
     Raises:
         ValueError: When the record is not a valid typed claim record.
     """
-    typed = to_canonical_dict(record)
-    return (typed["cause"], typed["effect"], typed["relation"],
-            typed["polarity"], typed["regime"])
+    return _key_from_typed(to_canonical_dict(record))
 
 
 def localize(records: Iterable[Mapping[str, Any]]) -> dict[tuple[Any, ...],
@@ -46,8 +50,7 @@ def localize(records: Iterable[Mapping[str, Any]]) -> dict[tuple[Any, ...],
     classes: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
     for record in records:
         typed = to_canonical_dict(record)
-        key = (typed["cause"], typed["effect"], typed["relation"],
-               typed["polarity"], typed["regime"])
+        key = _key_from_typed(typed)
         classes.setdefault(key, []).append(typed)
     return classes
 

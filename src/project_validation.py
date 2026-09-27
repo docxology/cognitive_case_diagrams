@@ -124,7 +124,7 @@ def validate_project(root: Path) -> dict:
         raise ValueError('No numbered manuscript chapters')
     sources = {p.name: p.read_text(encoding='utf-8') for p in chapters}
     _lint_manuscript_tables(root, sources)
-    metrics = json.loads((root / 'output/metrics.json').read_text())
+    metrics = json.loads((root / 'output/metrics.json').read_text(encoding="utf-8"))
     validate_metrics(metrics)
     findings = scan_hard_coded_claims(sources)
     if findings:
@@ -165,11 +165,11 @@ def validate_project(root: Path) -> dict:
     unknown = set(REFERENCE.findall(prose)) - set(labels) - set(bib)
     if unknown:
         raise ValueError(f'Unresolved citations or cross-references: {sorted(unknown)}')
-    alt_texts = json.loads((root / 'docs/figure_alt_text.json').read_text())
+    alt_texts = json.loads((root / 'docs/figure_alt_text.json').read_text(encoding="utf-8"))
     alt_findings = scan_hard_coded_claims(alt_texts)
     if alt_findings:
         raise ValueError('Hard-coded figure accessibility claims: ' + '; '.join(alt_findings))
-    entries = json.loads((root / 'output/figures/figure_registry.json').read_text())
+    entries = json.loads((root / 'output/figures/figure_registry.json').read_text(encoding="utf-8"))
     registry = {entry['filename']: entry for entry in entries}
     if len(registry) != len(entries):
         raise ValueError('Duplicate figure registry filenames')

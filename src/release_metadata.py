@@ -24,10 +24,7 @@ from src.release_validation import (
     write_text_atomic,
 )
 
-try:
-    import tomllib
-except ImportError:  # Python 3.10
-    import tomli as tomllib  # type: ignore[no-redef]
+from src._compat import tomllib
 
 ZENODO_DOI_PATTERN = r"10\.5281/zenodo\.\d+"
 ZENODO_RECORD_PATTERN = r"https://zenodo\.org/records/\d+"
@@ -115,8 +112,8 @@ def _software_deposit_facts(version: str) -> dict[str, Any]:
 def build_release_metadata(project_root: Path) -> dict[str, Any]:
     """Build consistent CFF/software/publication metadata or reject ambiguous inputs."""
     root = project_root.resolve(strict=True)
-    project = tomllib.loads((root / "pyproject.toml").read_text())["project"]
-    config = yaml.safe_load((root / "docs/manuscript/config.yaml").read_text())
+    project = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))["project"]
+    config = yaml.safe_load((root / "docs/manuscript/config.yaml").read_text(encoding="utf-8"))
     paper, publication = config["paper"], config["publication"]
     version = str(project["version"])
     if not re.fullmatch(r"\d+\.\d+\.\d+", version) or str(paper["version"]) != version:
@@ -145,7 +142,7 @@ def build_release_metadata(project_root: Path) -> dict[str, Any]:
     if not title or "${" in title:
         raise ValueError("Release title is empty or unresolved")
     abstract_path = root / "output/manuscript/00_abstract.md"
-    abstract = abstract_path.read_text()
+    abstract = abstract_path.read_text(encoding="utf-8")
     abstract = re.sub(r"^#+[^\n]*\n", "", abstract, flags=re.M).strip()
     abstract = re.sub(r"\{#[\w:.-]+\}", "", abstract)
     if not abstract or "${" in abstract or "{{" in abstract:
@@ -261,8 +258,8 @@ def validate_release_metadata(project_root: Path) -> dict[str, Any]:
     """Ensure checked-in citation/Zenodo sidecars match their canonical writers."""
     root = project_root.resolve(strict=True)
     expected = build_release_metadata(root)
-    if yaml.safe_load((root / "CITATION.cff").read_text()) != expected["citation"]:
+    if yaml.safe_load((root / "CITATION.cff").read_text(encoding="utf-8")) != expected["citation"]:
         raise StaleEvidenceError("CITATION.cff is stale; regenerate release metadata")
-    if json.loads((root / ".zenodo.json").read_text()) != expected["software"]:
+    if json.loads((root / ".zenodo.json").read_text(encoding="utf-8")) != expected["software"]:
         raise StaleEvidenceError(".zenodo.json is stale; regenerate release metadata")
     return expected

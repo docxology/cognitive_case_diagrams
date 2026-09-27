@@ -78,14 +78,30 @@ def _count_collected_tests(project_root: Path) -> int:
     return _count_collected_tests_cached(str(project_root))
 
 
-def _count_collected_tests_uncached(project_root: Path) -> int:
-    """Run ``pytest --collect-only -q`` and count collected test items.
+def _run_pytest_collect_count(args: list[str], cwd: str, description: str) -> int:
+    """Run ``pytest --collect-only -q`` and return the collected-item count.
+
+    Shared by :func:`_count_collected_tests_uncached` and
+    :func:`_count_collected_tests_in_paths_uncached` so the fail-closed policy
+    lives in exactly one place.
 
     Raises rather than guessing. A regex scan of ``def test_`` cannot see
     parametrization and undercounts this suite by 8, so a silent fallback would
     publish a wrong number into the manuscript abstract with no error. If pytest
     is not importable in this interpreter, that is a broken environment and the
     metrics run must fail loudly.
+
+    Args:
+        args: Path arguments to pass to pytest (test files or directories).
+        cwd: Working directory for the subprocess.
+        description: Human-readable label for error messages.
+
+    Returns:
+        The number of collected test items.
+
+    Raises:
+        RuntimeError: If pytest cannot be executed, exits with an unexpected
+            return code, or produces no parseable "collected" line.
     """
     # Collection imports matplotlib and discopy across 64 modules; on slower or
     # network/external storage this takes minutes, so the ceiling is generous and
@@ -93,10 +109,10 @@ def _count_collected_tests_uncached(project_root: Path) -> int:
     timeout_s = float(os.environ.get("CCD_COLLECT_TIMEOUT", "900"))
     try:
         result = subprocess.run(
-            [sys.executable, "-m", "pytest", str(project_root / "tests"), "--collect-only", "-q"],
+            [sys.executable, "-m", "pytest", *args, "--collect-only", "-q"],
             capture_output=True,
             text=True,
-            cwd=str(project_root),
+            cwd=cwd,
             timeout=timeout_s,
         )
     except (subprocess.SubprocessError, OSError) as exc:
@@ -119,8 +135,24 @@ def _count_collected_tests_uncached(project_root: Path) -> int:
                     return int(part)
 
     raise RuntimeError(
-        "pytest --collect-only produced no 'collected' line; cannot determine the "
-        f"test count. stdout: {result.stdout.strip()[:400]!r}"
+        "pytest --collect-only produced no 'collected' line; cannot determine "
+        f"the test count for {description}. stdout: {result.stdout.strip()[:400]!r}"
+    )
+
+
+def _count_collected_tests_uncached(project_root: Path) -> int:
+    """Run ``pytest --collect-only -q`` and count collected test items.
+
+    Raises rather than guessing. A regex scan of ``def test_`` cannot see
+    parametrization and undercounts this suite by 8, so a silent fallback would
+    publish a wrong number into the manuscript abstract with no error. If pytest
+    is not importable in this interpreter, that is a broken environment and the
+    metrics run must fail loudly.
+    """
+    return _run_pytest_collect_count(
+        [str(project_root / "tests")],
+        cwd=str(project_root),
+        description="the full suite",
     )
 
 
@@ -191,33 +223,10 @@ def _count_collected_tests_in_paths_uncached(paths: tuple[str, ...], cwd: str) -
     Raises rather than guessing — same policy as
     :func:`_count_collected_tests_uncached`.
     """
-    timeout_s = float(os.environ.get("CCD_COLLECT_TIMEOUT", "900"))
-    try:
-        result = subprocess.run(
-            [sys.executable, "-m", "pytest", *paths, "--collect-only", "-q"],
-            capture_output=True,
-            text=True,
-            cwd=cwd,
-            timeout=timeout_s,
-        )
-    except (subprocess.SubprocessError, OSError) as exc:
-        raise RuntimeError(
-            f"pytest --collect-only could not be executed with {sys.executable}: {exc}"
-        ) from exc
-    if result.returncode not in (0, 5):
-        raise RuntimeError(
-            f"pytest --collect-only failed (rc={result.returncode}) with "
-            f"{sys.executable}: {result.stderr.strip() or result.stdout.strip()}"
-        )
-    # Summary line: "54 tests collected in 15.51s"
-    for line in reversed(result.stdout.strip().splitlines()):
-        if "collected" in line:
-            for part in line.split():
-                if part.isdigit():
-                    return int(part)
-    raise RuntimeError(
-        "pytest --collect-only produced no 'collected' line; cannot determine "
-        f"the test count for {len(paths)} file(s). stdout: {result.stdout.strip()[:400]!r}"
+    return _run_pytest_collect_count(
+        list(paths),
+        cwd=cwd,
+        description=f"{len(paths)} file(s)",
     )
 
 
@@ -661,7 +670,8 @@ def collect_metrics(
     # Synthetic experiments (schema 1.0, seeded, ccd-methods lane).
     metrics.update(read_experiment_variables(root))
     from src.experiments.stats import normal_z
-    experiment_config = json.loads((root / "output/experiments/results.json").read_text())["provenance"]["experiments_config"]
+    experiment_provenance = json.loads((root / "output/experiments/results.json").read_text(encoding="utf-8"))["provenance"]
+    experiment_config = experiment_provenance["experiments_config"]
     confidence = float(experiment_config["confidence_level"])
     metrics["ci_level_percent"] = format_float(100 * confidence)
     metrics["ci_z_score"] = format_float(normal_z(confidence))
@@ -672,7 +682,7 @@ def collect_metrics(
         "experiment_filter_iterations": str(experiment_config["filtering"]["n_iterations"]),
         "experiment_calibration_levels": str(experiment_config["calibration"]["n_levels"]),
         "experiment_calibration_observations": str(experiment_config["calibration"]["n_observations"]),
-        "experiment_config_sha256": json.loads((root / "output/experiments/results.json").read_text())["provenance"]["config_sha256"],
+        "experiment_config_sha256": experiment_provenance["config_sha256"],
     })
 
     # Domain-computed quantities quoted in §5, §5b, §6, §7c, §8b, and

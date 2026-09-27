@@ -13,10 +13,7 @@ from __future__ import annotations
 
 from importlib.metadata import version, PackageNotFoundError
 
-try:
-    import tomllib
-except ImportError:
-    import tomli as tomllib  # type: ignore[no-redef]
+from src._compat import tomllib
 from pathlib import Path
 from typing import Any
 
@@ -198,10 +195,11 @@ def quality_receipt_summary(project_root: Path | None = None) -> dict[str, Any]:
 def capability_metadata(project_root: Path | None = None) -> dict[str, Any]:
     """Assemble the ccd://capabilities payload."""
     root = project_root if project_root is not None else _default_project_root()
+    version = project_version(root)
     return {
         "server": SERVER_NAME,
-        "project_revision": project_version(root),
-        "project_version": project_version(root),
+        "project_revision": version,
+        "project_version": version,
         "scope": (
             "Synthetic numerical examples and derived artifacts only; not a "
             "linguistic parser, topos bridge, distributional learner, EEG "

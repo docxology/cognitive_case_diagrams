@@ -28,7 +28,7 @@ Injection is **downstream** of metrics collection:
 
 1. **`uv run pytest tests/ --cov=src --cov-report=json:coverage.json`** (from `projects/cognitive_case_diagrams/`) — writes root `coverage.json` for `${coverage_*}` / `${coverage_summary}`.
 2. **`uv run python -m src.generate_manuscript_metrics`** — writes `output/metrics.json` (also records test counts, DAIF counts, NumPy/DisCoPy versions).
-3. **`uv run python scripts/inject_variables.py`** — substitutes `${…}` into numbered `manuscript/*.md` and copies ancillaries to `output/manuscript/`.
+3. **`uv run python scripts/inject_variables.py`** — substitutes `${…}` into numbered `docs/manuscript/*.md` and copies ancillaries to `output/manuscript/`.
 
 PDF rendering then prefers `output/manuscript/` when it contains `.md` files. Optional VCS policy for `coverage.json`: [`tests/AGENTS.md`](../tests/AGENTS.md).
 

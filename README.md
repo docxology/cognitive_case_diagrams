@@ -15,7 +15,7 @@ This project lives at **`projects/cognitive_case_diagrams/`** and is pipeline-di
 | What | Where | Meaning |
 |------|--------|--------|
 | **Python package** | [`pyproject.toml`](pyproject.toml) `project.version` | Semver for the installable `cognitive_case_diagrams` package (currently **2.3.0**). |
-| **Manuscript / paper** | [`manuscript/AGENTS.md`](manuscript/AGENTS.md) authorship block, [`manuscript/config.yaml`](manuscript/config.yaml) | Research edition (currently **v2.3**, dated **2026-04-22**, DOI `10.5281/zenodo.19695260`). Bump this when the PDF content or metadata release changes independently of API semver. |
+| **Manuscript / paper** | [`docs/manuscript/AGENTS.md`](docs/manuscript/AGENTS.md) authorship block, [`docs/manuscript/config.yaml`](docs/manuscript/config.yaml) | Research edition (currently **v2.3**, dated **2026-04-22**, DOI `10.5281/zenodo.19695260`). Bump this when the PDF content or metadata release changes independently of API semver. |
 
 They are intentionally separate: code releases can patch without a full manuscript revision, and manuscript edits do not always require a package version bump.
 
@@ -84,7 +84,7 @@ cd ../..   # template root
 uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams
 ```
 
-Use `scripts/inject_variables.py --dry-run` to print metrics without writing `output/manuscript/`. See [`manuscript/README.md`](manuscript/README.md) and [`docs/api_reference.md`](docs/api_reference.md).
+Use `scripts/inject_variables.py --dry-run` to print metrics without writing `output/manuscript/`. See [`docs/manuscript/README.md`](docs/manuscript/README.md) and [`docs/api_reference.md`](docs/api_reference.md).
 
 ## Project Structure
 
@@ -94,7 +94,7 @@ cognitive_case_diagrams/
 ├── README.md                    # This file
 ├── pyproject.toml               # Package config + test/coverage settings
 ├── docs/                        # Technical reference documentation
-├── manuscript/                  # Research manuscript (24 section .md + config.yaml + preamble.md + references.bib)
+├── docs/manuscript/                  # Research manuscript (24 section .md + config.yaml + preamble.md + references.bib)
 │   ├── 00_abstract.md           # Abstract
 │   ├── 01_introduction.md       # §1 Introduction
 │   ├── 01a_research_questions.md       # §1a Research Questions

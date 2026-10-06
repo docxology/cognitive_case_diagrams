@@ -2,7 +2,7 @@
 
 Annotated bibliography for *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case*, organized by **five bibliographic pillars** (linguistic case through topos theory), **advanced extensions** (active inference, quantum semantics, AI implications and cognitive security), and a **2024–2026 research frontier**. The manuscript’s **reading synthesis** also threads a **sixth strand**—ROSE / biolinguistic–neuro interface (§7–§7b)—alongside those pillars; that strand is indexed here via cognitive and DAIF literature rather than as a separate bibliography section. Each entry notes its role in the framework.
 
-> **Full BibTeX**: See [`references.bib`](../manuscript/references.bib) (106 entries).  
+> **Full BibTeX**: See [`references.bib`](../docs/manuscript/references.bib) (106 entries).  
 > **Theory → Code**: See [`theory_implementation_map.md`](theory_implementation_map.md).
 
 ---
@@ -226,5 +226,5 @@ Different readers will benefit from different entry points into the bibliography
 
 ---
 
-*Last updated: 2026-04-23. All 106 BibTeX entries are in [`references.bib`](../manuscript/references.bib) (live count: `grep -c '^@' manuscript/references.bib`). See [`glossary.md`](glossary.md) for term definitions.*
+*Last updated: 2026-04-23. All 106 BibTeX entries are in [`references.bib`](../docs/manuscript/references.bib) (live count: `grep -c '^@' docs/manuscript/references.bib`). See [`glossary.md`](glossary.md) for term definitions.*
 

@@ -1,6 +1,6 @@
 # Extension Guide
 
-How to add new modules, figures, manuscript sections, and tests to *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* ([`../manuscript/config.yaml`](../manuscript/config.yaml) `paper.title`).
+How to add new modules, figures, manuscript sections, and tests to *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* ([`../docs/manuscript/config.yaml`](../docs/manuscript/config.yaml) `paper.title`).
 
 > **Prerequisites**: Read [`architecture_overview.md`](architecture_overview.md) for the package dependency graph.  
 > **Glossary**: See [`glossary.md`](glossary.md) for term definitions.
@@ -390,7 +390,7 @@ render_my_figure(data, output_path=figures_dir / "my_figure.png")
 
 ### 4. Reference in Manuscript
 
-Add a standard Markdown image in the target manuscript section: alt text in square brackets, a parenthesized path to the PNG (relative to the manuscript file, often under `output/figures/`), and a Pandoc id suffix `{#fig:stable-id}`. The combined PDF pipeline resolves figures from the project’s `output/figures/` tree; use the same path style as existing sections in `manuscript/*.md` (this guide omits a literal `![]()` line so the docs tree does not reference a non-existent example PNG).
+Add a standard Markdown image in the target manuscript section: alt text in square brackets, a parenthesized path to the PNG (relative to the manuscript file, often under `output/figures/`), and a Pandoc id suffix `{#fig:stable-id}`. The combined PDF pipeline resolves figures from the project’s `output/figures/` tree; use the same path style as existing sections in `docs/manuscript/*.md` (this guide omits a literal `![]()` line so the docs tree does not reference a non-existent example PNG).
 
 ### 5. Add to `docs/manuscript_figure_index.md`
 
@@ -438,7 +438,7 @@ Before introducing a new symbol, check [`11b_notation.md`](../manuscript/11b_not
 
 ### 5. Add Section to Manuscript `AGENTS.md`
 
-Add a row to the Chapter Map table in `manuscript/AGENTS.md`.
+Add a row to the Chapter Map table in `docs/manuscript/AGENTS.md`.
 
 ---
 
@@ -522,7 +522,7 @@ When adding any new module, figure, or section, ensure:
 3. **AGENTS.md updated**: Module table, API section, theory connection
 4. **README.md updated**: Quick reference table
 5. **Figures render**: `python scripts/generate_diagrams.py` completes without error
-6. **Markdown validates**: `python -m infrastructure.validation.cli markdown manuscript/`
+6. **Markdown validates**: `python -m infrastructure.validation.cli markdown docs/manuscript/`
 7. **PDF renders**: `python scripts/03_render_pdf.py --project cognitive_case_diagrams`
 
 ---

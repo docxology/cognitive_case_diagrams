@@ -3,11 +3,11 @@
 > **Agent operational guide** for the `cognitive_case_diagrams` project.  
 > Read this first before modifying any source, manuscript, or test file.
 
-**Publication title** (canonical): *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* — [`manuscript/config.yaml`](manuscript/config.yaml) `paper.title`. (Version 2.3, 2026-04-22, DOI [10.5281/zenodo.19695260](https://doi.org/10.5281/zenodo.19695260).)
+**Publication title** (canonical): *Cognitive Diagrams: Reviewing Categorical Accounts of Linguistic Case* — [`docs/manuscript/config.yaml`](docs/manuscript/config.yaml) `paper.title`. (Version 2.3, 2026-04-22, DOI [10.5281/zenodo.19695260](https://doi.org/10.5281/zenodo.19695260).)
 
 **Path:** `projects/cognitive_case_diagrams/` — pipeline-discoverable. Run `uv run pytest` and figure scripts from the project directory.
 
-**Versions:** The **Python package** semver is in [`pyproject.toml`](pyproject.toml) (`project.version`, e.g. **2.3.0**). The **manuscript edition** (e.g. **v2.3**, 2026-04-22) is recorded in [`manuscript/AGENTS.md`](manuscript/AGENTS.md) and [`manuscript/config.yaml`](manuscript/config.yaml). Patch bumps can track manuscript releases; they may still diverge when only one side changes.
+**Versions:** The **Python package** semver is in [`pyproject.toml`](pyproject.toml) (`project.version`, e.g. **2.3.0**). The **manuscript edition** (e.g. **v2.3**, 2026-04-22) is recorded in [`docs/manuscript/AGENTS.md`](docs/manuscript/AGENTS.md) and [`docs/manuscript/config.yaml`](docs/manuscript/config.yaml). Patch bumps can track manuscript releases; they may still diverge when only one side changes.
 
 ---
 
@@ -65,7 +65,7 @@ cognitive_case_diagrams/
 ├── README.md               ← Quick start
 ├── pyproject.toml          ← Package config + test/coverage settings
 ├── docs/                   ← Technical reference documentation
-├── manuscript/             ← Research manuscript (Pandoc Markdown)
+├── docs/manuscript/             ← Research manuscript (Pandoc Markdown)
 ├── output/                 ← Generated artifacts (figures, PDFs, reports)
 ├── scripts/                ← Thin orchestrators (NO scientific logic here)
 ├── src/                    ← All scientific business logic (Layer 2)
@@ -118,7 +118,7 @@ See each directory's own **AGENTS.md** and **README.md** for detailed documentat
 | Directory | AGENTS.md | README.md | Purpose |
 |-----------|-----------|-----------|---------|
 | [`docs/`](docs/) | [AGENTS.md](docs/AGENTS.md) | [README.md](docs/README.md) | Technical reference and API docs |
-| [`manuscript/`](manuscript/) | [AGENTS.md](manuscript/AGENTS.md) | [README.md](manuscript/README.md) | Research manuscript (inventory in manuscript/AGENTS.md) |
+| [`docs/manuscript/`](docs/manuscript/) | [AGENTS.md](docs/manuscript/AGENTS.md) | [README.md](docs/manuscript/README.md) | Research manuscript (inventory in docs/manuscript/AGENTS.md) |
 | [`output/`](output/) | [AGENTS.md](output/AGENTS.md) | [README.md](output/README.md) | Generated artifacts |
 | [`scripts/`](scripts/) | [AGENTS.md](scripts/AGENTS.md) | [README.md](scripts/README.md) | Thin orchestrators |
 | [`src/`](src/) | [AGENTS.md](src/AGENTS.md) | [README.md](src/README.md) | Scientific source code |
@@ -199,7 +199,7 @@ uv run python scripts/inject_variables.py
 uv run python scripts/03_render_pdf.py --project cognitive_case_diagrams
 ```
 
-`coverage.json` policy (commit or regenerate): [`tests/AGENTS.md`](tests/AGENTS.md). Placeholder catalog: [`manuscript/config.yaml`](manuscript/config.yaml).
+`coverage.json` policy (commit or regenerate): [`tests/AGENTS.md`](tests/AGENTS.md). Placeholder catalog: [`docs/manuscript/config.yaml`](docs/manuscript/config.yaml).
 
 ---
 
@@ -348,7 +348,7 @@ Documentation must be kept in sync with code. When adding a new class or functio
 
 ### Adding a Manuscript Section
 
-1. Create `manuscript/NN_section.md` following naming convention
+1. Create `docs/manuscript/NN_section.md` following naming convention
 2. Add to `preamble.md` include list
 3. Add appropriate equations with `{#eq:}` labels
 4. Add figure references that point to `output/figures/`
@@ -370,5 +370,5 @@ Documentation must be kept in sync with code. When adding a new class or functio
 | Coverage below 90% | Check `--cov-report=term-missing`; add tests for uncovered lines |
 | Hanging tests | Add `--timeout=30` flag; check for blocking matplotlib calls |
 | Import errors | Ensure `pythonpath = ["src"]` in `pyproject.toml`; run from project root |
-| PDF render fails | Check `preamble.md` include order; validate with `uv run python -m infrastructure.validation.cli markdown` on `manuscript/` (from repo root, use `projects/cognitive_case_diagrams/manuscript/`) |
+| PDF render fails | Check `preamble.md` include order; validate with `uv run python -m infrastructure.validation.cli markdown` on `docs/manuscript/` (from repo root, use `projects/cognitive_case_diagrams/manuscript/`) |
 | `CasePOVM.name` error | All `CasePOVM` instances have `name: str = "povm"` default field |

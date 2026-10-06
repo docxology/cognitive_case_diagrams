@@ -181,7 +181,7 @@ The distributional extension: agents maintain the parameterised cumulative densi
 | DAIF belief trajectory (Fig. 17b) | `src.visualization.daif_plots` | `plot_belief_trajectory()` | ✅ | Renders temporal evolution; bottom-panel fan is a proxy, not a 51-quantile push-forward decomposition (explicit in caption) |
 | DAIF free energy convergence (Fig. 17c) | `src.visualization.daif_plots` | `plot_free_energy_convergence()` | ✅ | Real `fe_trajectory` + real KL/log-lik decomposition via optional `kl_trajectory` / `loglik_trajectory` kwargs |
 | DAIF ERP predictions (Fig. 17d) | `src.visualization.daif_plots` | `plot_erp_predictions()` | ✅ | Real DAIF-predicted N400/P600 via optional `n400_amplitudes` / `p600_amplitudes` kwargs; literature-typical ranges shown with error bars |
-| Limitations & neurobiological scope (§daif-limitations) | N/A | Documented in `manuscript/07c_daif_results.md` | 📋 | Mean-field approximation trade-off, enriched-category unification conjecture, single-sentence empirical scope, PAC-latency gap (ROSE) |
+| Limitations & neurobiological scope (§daif-limitations) | N/A | Documented in `docs/manuscript/07c_daif_results.md` | 📋 | Mean-field approximation trade-off, enriched-category unification conjecture, single-sentence empirical scope, PAC-latency gap (ROSE) |
 | Supporting utilities (§daif-support-utils) | `src.daif.policy`, `src.daif.core` | `distributional_epistemic_value()`, `categorical_return_distribution()` | ✅ | Documented as explicit support for Eq. 7c-g risk term and Eq. 7c-c51 projection |
 
 ---
@@ -262,7 +262,7 @@ uv run pytest tests/test_enriched_cat_enriched.py -k "composition_inequality" -v
 The Appendix notation table above maps every mathematical symbol used in the manuscript to its Python identifier. To verify completeness, check that every `\label{eq:...}` in the manuscript has a corresponding entry:
 
 ```bash
-grep -r '\\label{eq:' manuscript/ | wc -l
+grep -r '\\label{eq:' docs/manuscript/ | wc -l
 ```
 
 ### Step 4: Generate and Inspect Figures

@@ -63,7 +63,7 @@ testing:
 
 # Manuscript Variable Injection
 # Variables below are auto-computed by src/generate_manuscript_metrics.py
-# and injected into manuscript/*.md via scripts/inject_variables.py.
+# and injected into docs/manuscript/*.md via scripts/inject_variables.py.
 # In manuscript files, use ${variable_name} syntax.
 #
 # Available variables:

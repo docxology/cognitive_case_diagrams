@@ -6,7 +6,7 @@ Start with the [method contracts](docs/method_contracts.md), [claim ledger](docs
 
 ## Run locally
 
-Python 3.10 or newer and `uv` are required. DisCoPy, NumPy, Matplotlib, and the development tools are declared in `pyproject.toml`; `uv.lock` fixes the resolved environment.
+the bound in `pyproject.toml` or newer and `uv` are required. DisCoPy, NumPy, Matplotlib, and the development tools are declared in `pyproject.toml`; `uv.lock` fixes the resolved environment.
 
 ```bash
 uv sync --frozen

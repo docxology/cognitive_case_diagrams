@@ -132,15 +132,31 @@ def mean_ci(
         raise ValueError("values must be finite")
     if not math.isfinite(z) or z <= 0:
         raise ValueError(f"z must be finite and positive, got {z}")
-    # Scale before summing: numpy's mean over [1e308, 1e308] overflows even
-    # though the mean and a zero-width interval are representable.
-    scale = float(np.max(np.abs(arr)))
-    if scale == 0.0:
-        mean, sd = 0.0, 0.0
+    # Mean: Neumaier-compensated sum of x_i/n. Summing each term divided by n
+    # keeps every addend <= max|x|/n, so same-sign huge inputs (e.g. two 1e308)
+    # do not overflow the accumulator, and the compensation preserves small
+    # residuals that a scale-by-max approach would underflow to zero after
+    # cancellation (e.g. [1e150, -1e150, 1e-300, 1e-300] -> 5e-301, not 0).
+    n = arr.size
+    acc, comp = 0.0, 0.0
+    for x in arr:
+        term = x / n
+        new_acc = acc + term
+        if abs(acc) >= abs(term):
+            comp += (acc - new_acc) + term
+        else:
+            comp += (term - new_acc) + acc
+        acc = new_acc
+    mean = acc + comp
+    # Variance: scale deviations by max|x-mean| so d*d cannot overflow; the
+    # scale is reapplied after the root-sum-square, preserving exact zeros.
+    dev = arr - mean
+    dmax = float(np.max(np.abs(dev)))
+    if dmax == 0.0:
+        sd = 0.0
     else:
-        scaled = arr / scale
-        mean = scale * float(scaled.mean())
-        sd = scale * float(scaled.std(ddof=1))
+        u = dev / dmax
+        sd = dmax * math.sqrt(float(np.sum(u * u)) / (n - 1))
     half = z * sd / math.sqrt(arr.size)
     if not (math.isfinite(mean) and math.isfinite(half)):
         raise ValueError("interval bounds are not representable in floating point")

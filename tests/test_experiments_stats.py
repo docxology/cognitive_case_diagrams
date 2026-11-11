@@ -127,17 +127,29 @@ def test_mean_ci_rejects_unrepresentable_bounds():
         mean_ci([1e308, -1e308])
 
 
-def test_mean_ci_rejects_overflowing_endpoint():
-    """A mean at the float ceiling with a positive half-width must not return inf.
+def test_mean_ci_at_float_ceiling_returns_finite_bounds():
+    """Near the float ceiling the interval must stay finite, never inf.
 
-    mean and half are each finite, but mean + half overflows to inf; the
-    computed endpoints must be validated, not returned unchecked.
+    The robust mean lands exactly between the two inputs; the upper bound is
+    the representable maximum, not an overflow to inf.
     """
     import numpy as np
 
     ceiling = np.finfo(float).max
-    with pytest.raises(ValueError, match="not representable"):
-        mean_ci([ceiling, np.nextafter(ceiling, 0.0)])
+    mean, lo, hi = mean_ci([ceiling, np.nextafter(ceiling, 0.0)])
+    assert np.isfinite(mean) and np.isfinite(lo) and np.isfinite(hi)
+    assert lo <= mean <= hi <= ceiling
+
+
+def test_mean_ci_preserves_small_residual_after_cancellation():
+    """Cancelling huge terms must not underflow the small residual to zero.
+
+    A scale-by-max approach divides 1e-300 by 1e150 (underflowing to 0 before
+    summing); the compensated sum keeps the correct mean 5e-301.
+    """
+    mean, lo, hi = mean_ci([1e150, -1e150, 1e-300, 1e-300])
+    assert mean == 5e-301
+    assert np.isfinite(lo) and np.isfinite(hi)
 
 
 def test_wilson_huge_z_returns_unit_interval():

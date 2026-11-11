@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T08:44:57.010915+00:00",
+  "generated_at": "2026-11-11T12:35:04.865590+00:00",
   "inputs": {
     "files": {
       "docs/figure_alt_text.json": "d3805ae4e41e7cdd4c6965361d21a4ccfe1f46dd8a16cee0552a3e1012304a26",
@@ -34,7 +34,7 @@
       "docs/manuscript/config.yaml": "d7c82af537c6906b0cc1255397852aab32468c83ad18ddab3b4104a39bfeb15c",
       "docs/manuscript/preamble.md": "0eee2a7aa9e09fdf44e75ade237189b91fd926de237da7e74a8cfa7dc1239049",
       "docs/manuscript/references.bib": "f3e25f4b2d88085976eaee35c8fb8b98a60b499b03a8aeb02ebc5b7bc40d0b3a",
-      "output/experiments/results.json": "c7fffa421c487d90fa5f631df635def334a1e47c6bfc91e472cbebb2467ff8e5",
+      "output/experiments/results.json": "bf00a271f1bdee3a8ad66004d5776dfc8faf34ba068bd64abaeb18fb65650610",
       "output/figures/AGENTS.md": "403c0e18a21d41a502fadda55cd75aad90f316798a32f887adc875446a7b0c1f",
       "output/figures/README.md": "8ee01085476d926874aa282253f406e34ef1fec453b8d64cfae35bc2a76db127",
       "output/figures/active_inference_belief.png": "891f16f1f6491d0c18a16ed076acc8036e66fcb6c35092f13675db928311c3d0",
@@ -62,7 +62,7 @@
       "output/figures/experiment_calibration.png": "f4d2a333fa3d9343e77b2215e6dfb9386d5c4fc0023113beb02e590629242fc0",
       "output/figures/experiment_filtering.png": "0c369c2ebb69bce501c21eea1e516b590d7e787bfd6a8d57f25b954dab09fa45",
       "output/figures/experiment_sensitivity.png": "977a112c48cb1dda9d9f542584a3f7e8924f0b88b09f8ecfa62866ab78a05c7e",
-      "output/figures/figure_registry.json": "f42ed8d4d87a243d486641bbb9db6b2166e801920262af5382f22463bd9b422b",
+      "output/figures/figure_registry.json": "8f90341e3fa276efec7ade544bfec38e551d4a0444e1d1df4642a97a1f69a604",
       "output/figures/fluid_s_volition_landscape.png": "0ad5a39f23c213ea4592298c6c02fb4bb98d90809f603b75692d652e195e4b90",
       "output/figures/functor_alignment.png": "bdaf5538390b1fa6e335f16729d6d00830b55e36eb641b19fadb629b5a58a20a",
       "output/figures/monoidal_functor_security.png": "f88a9b1fe2928aec1f800b3cd156ea686adc8efaad49f774b6ad248f9e77d9a7",
@@ -72,7 +72,7 @@
       "output/figures/snake_equation_unpacking.png": "cde22bd65ed97dab61e6fe6264d5bfd991f896bb89dc1c49791213151221d426",
       "output/figures/string_diagram_discocat.png": "ddaf8e413825edcc8258c2d6082f72fcb6acc69ad9dd1f5008294f642775b8d7",
       "output/figures/syntactic_case_panel.png": "09ed9ca74e620b3ca5be31ef86e85a85f1652b17020adb501d925c46f5400b48",
-      "output/manuscript/00_abstract.md": "9d6597a84d358c378f9823194e7cdc17d455bf925c39f2637d76e7da03a99a44",
+      "output/manuscript/00_abstract.md": "6798a0d7663f9c29b971ad41bc3cdc0c2b6ed9d46a05dc59d5bc226d047cc4b1",
       "output/manuscript/01_introduction.md": "3081f79fef82f32af06a5b855ac8a5889d9fd5d3dc0959d58926117361844bf5",
       "output/manuscript/01a_research_questions.md": "01e684eee30f60bba133a7c3ef44fe2bc4eac738e367bd3e6730ead12a490e2c",
       "output/manuscript/02_case_systems.md": "e9136e219ce8e4873c69245caa4a629c891e283f7c71db59ef154470efed9ea4",
@@ -96,21 +96,21 @@
       "output/manuscript/10_conclusion.md": "90354837978f7f740bc26f62bc1aeb52aa4aa29f02fac2332746e38ba3b33145",
       "output/manuscript/11_syntactic_sentence_diagrams.md": "94627cce0451f875f3b4927a34914f04806f2bfa083c5722066656db267c6903",
       "output/manuscript/11b_notation.md": "67e52652d6ce1e9e34b6e6fa570ab2817be69350075e4338315cd5b3bad1f569",
-      "output/manuscript/11c_automated_test_inventory.md": "3632d188d213e038a1419cbad6718095583db933974b3a390ef14a83b56dace3",
+      "output/manuscript/11c_automated_test_inventory.md": "7349fdb1641731b685f8903abcc6fc8fbd62d77fb9cdcab25a48461e639468c1",
       "output/manuscript/AGENTS.md": "4405e5e1b2aa0eaeeba282dd4cd09a0742b4697e240037560f6c64d401808cb1",
       "output/manuscript/MANUSCRIPT_STATUS.md": "8d02dbc2e59c2d75903e45c7032b7be3a7f5394f63d164c4cea79262a22322a6",
       "output/manuscript/README.md": "78bce25fbf98af2bc71e79e53ca1950f3ce5b85fca8d5ac9ebf334bc146a645b",
       "output/manuscript/config.yaml": "d7c82af537c6906b0cc1255397852aab32468c83ad18ddab3b4104a39bfeb15c",
       "output/manuscript/preamble.md": "0eee2a7aa9e09fdf44e75ade237189b91fd926de237da7e74a8cfa7dc1239049",
       "output/manuscript/references.bib": "f3e25f4b2d88085976eaee35c8fb8b98a60b499b03a8aeb02ebc5b7bc40d0b3a",
-      "output/manuscript_variables.json": "926a514075b74d6daf52998f8c22441622a4e4d3b2f43c2123b327cf6c41d8d7",
-      "output/metrics.json": "7141ced5a3b829cc01baf74a55406fae91a48fb092bf2323817872e714391abb",
-      "output/pdf/cognitive_case_diagrams_combined.pdf": "168cf55497a5aa1604aaa6d76ca7d39904f7dc7276b6e9e95000e647958a2da2",
-      "output/web/_combined_manuscript.md": "cdda6019600d91039c360a87295dfdad08d7f7c13e88decc61c0ef56cc79ddca",
+      "output/manuscript_variables.json": "0f4b8f0620acded23291c16f3907ee8a7264a81594be05c22c0be80776e47e2d",
+      "output/metrics.json": "2d6aa88e4742715859ec54b95f1baddf083b94a41f333cb7811da2e93822d9b0",
+      "output/pdf/cognitive_case_diagrams_combined.pdf": "693e2cb2c9d99352ae81599392cc1030c4299ac491f584b980309d4eb2cabef1",
+      "output/web/_combined_manuscript.md": "d437a03a0bdbab2305dd5f48fadd49370a6197051f731fc0bf6c7af6d253aeac",
       "output/web/assets/source-web-fonts.js": "59f21b7d4b8ea9ffc51dd583ad6af59e86b4d0224c2c417a6882585f7addcad7",
       "output/web/favicon.ico": "6ca6e9ffbb22550f6d94bf216e743cc7469a7fc50d8dcf0737b11bf800de7dad",
-      "output/web/index.html": "6a4eea4b931d2decba8b3cf06712fa8966aee35a9a2f4b628661de2a9a58d3c3",
-      "output/web/manuscript__00_abstract.html": "dc8cc978c36845a6e062792e1c5308aca15c482e846a4b636b185f695ab3f9f2",
+      "output/web/index.html": "edcaa7411cbf0b608abadf733258cd1819f7a9c8bc005541c5af3f2e7db8623e",
+      "output/web/manuscript__00_abstract.html": "3a3c224d9fdea13b84d01e1c2a6cb21f1124af1cca31ef76d7d012c2b2ad50d9",
       "output/web/manuscript__01_introduction.html": "242598a4060c3810d7894fcddad1182a42ca009de26e8151fb2f114093d18616",
       "output/web/manuscript__01a_research_questions.html": "e7e64c4f2b7f661b70e486a635d4a77aa0ffb6f739c72c6a37a5c9e527a32b79",
       "output/web/manuscript__02_case_systems.html": "389b34fa5e8aba76496b622ff108b6ab7d9102b1d7d4ac06de56576518508e25",
@@ -134,10 +134,10 @@
       "output/web/manuscript__10_conclusion.html": "a707461221a11a1cf207918b27bc9c39c96c9ba9fe1ee935858adcc852e78367",
       "output/web/manuscript__11_syntactic_sentence_diagrams.html": "fab2eae03a29dd454f05d9b06c31efe22232605c1327e2ef3b9224fc5102de54",
       "output/web/manuscript__11b_notation.html": "b961bd07b6dcfaef9d16739470e2211061ca1b4ae958aa5c3d8b899622e222e7",
-      "output/web/manuscript__11c_automated_test_inventory.html": "b345c96dfe7336623a46ebe01705160f92d2412667c8e9aa2fc293bae3d87b3d"
+      "output/web/manuscript__11c_automated_test_inventory.html": "829f9a6d7f4ea8ac200257154482206a86f4bd174eb7b51a46b52c0f6ae5d916"
     },
-    "quality_source": "c9f11b70621798ca9a932d67a07a255c670861fda88e6ef63b9daffbe43c4002",
-    "sha256": "66cabd9c8a89883175060faf090eb99a2da56717e3d19098b40877433a052476"
+    "quality_source": "8de4888aeea5ab227c719adc12bf6d28c97463c91f6cb3b2e84fc18e4ed4962c",
+    "sha256": "55ad03901f67ef6d94365ef192dcca301fdb684a9bb2e600a72017a748809fc5"
   },
   "observations": {
     "browser_checks": {
@@ -231,8 +231,8 @@
       46,
       47
     ],
-    "limitations": "Raster inspection at 80/90 dpi is not a tagged-PDF or PDF/UA audit and no assistive-technology check was performed; browser QA used one headless Chromium instance from file://, not the full browser or device matrix; full-page screenshot capture timed out on the 33-figure page, so visual web confirmation rests on measured DOM/viewport values rather than a captured image; after the mean_ci fix only the two content-changed PDF pages (3 and 46) were re-inspected at higher dpi while the remaining 45 pages retain their acceptance-pass inspection; observations verify the rendered bytes, not the scientific claims.",
-    "method": "All 47 PDF pages rasterized at 80 dpi and individually inspected during the acceptance pass; after the mean_ci endpoint-overflow fix the PDF was re-rendered and the two content-changed pages were re-rasterized at 90 dpi and re-inspected: page 3 (abstract) now reads '1909 tests across 94 files' and '1909 passing tests with 92.44% line-and-branch coverage', and page 46 (Appendix C) now reads 'collects 1909 tests in 94 files', '1909 passed, 0 failed, 0 skipped', '7090 of 7549 statements covered (92.44%)', source fingerprint c9f1b706217. pdfinfo confirms title, author Daniel Ari Friedman, 47 pages, no encryption, no JavaScript. All 33 registered PNG figures independently opened at full resolution and verified for legible axes, labels, legends, and the signed '-0.40 nats' entropy annotation; regenerated figure content is deterministic. Rendered web article loaded from file:// in headless Chromium: 33 images with naturalWidth>0 (0 broken), 117 internal anchors all resolved, 0 console errors and 0 page errors over a full scroll, 35 successful Tab focus moves through the TOC, and zero horizontal overflow at both 390 px and 1440 px viewports.",
+    "limitations": "Raster inspection at 80/90 dpi is not a tagged-PDF or PDF/UA audit and no assistive-technology check was performed; browser QA used one headless Chromium instance from file://, not the full browser or device matrix; full-page screenshot capture timed out on the 33-figure page, so visual web confirmation rests on measured DOM/viewport values rather than a captured image; after the robust mean_ci fix only the two content-changed PDF pages (3 and 46) were re-inspected at higher dpi while the remaining 45 pages retain their acceptance-pass inspection; observations verify the rendered bytes, not the scientific claims.",
+    "method": "All 47 PDF pages rasterized at 80 dpi and individually inspected during the acceptance pass; after the robust mean_ci fix (compensated sum + scaled variance) the PDF was re-rendered and the two content-changed pages re-rasterized at 90 dpi and re-inspected: page 3 (abstract) now reads '1910 tests across 94 files' and '1910 passing tests with 92.43% line-and-branch coverage', and page 46 (Appendix C) now reads 'collects 1910 tests in 94 files', '1910 passed, 0 failed, 0 skipped', '7099 of 7559 statements covered (92.43%)', source fingerprint 8de4888aea5. pdfinfo confirms title, author Daniel Ari Friedman, 47 pages, no encryption, no JavaScript. All 33 registered PNG figures independently opened at full resolution and verified for legible axes, labels, legends, and the signed '-0.40 nats' entropy annotation; regenerated figure content is deterministic. Rendered web article loaded from file:// in headless Chromium: 33 images with naturalWidth>0 (0 broken), 117 internal anchors all resolved, 0 console errors and 0 page errors over a full scroll, 35 successful Tab focus moves through the TOC, and zero horizontal overflow at both 390 px and 1440 px viewports.",
     "pdf_metadata_checked": true,
     "pdf_page_count": 47,
     "reviewer": "omp orchestrator session (AI agent), executing the release evidence pass for the author"

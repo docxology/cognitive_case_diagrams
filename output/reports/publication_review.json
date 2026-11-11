@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T08:33:20.103855+00:00",
+  "generated_at": "2026-11-11T08:44:57.010915+00:00",
   "inputs": {
     "files": {
       "docs/figure_alt_text.json": "d3805ae4e41e7cdd4c6965361d21a4ccfe1f46dd8a16cee0552a3e1012304a26",
@@ -105,12 +105,12 @@
       "output/manuscript/references.bib": "f3e25f4b2d88085976eaee35c8fb8b98a60b499b03a8aeb02ebc5b7bc40d0b3a",
       "output/manuscript_variables.json": "926a514075b74d6daf52998f8c22441622a4e4d3b2f43c2123b327cf6c41d8d7",
       "output/metrics.json": "7141ced5a3b829cc01baf74a55406fae91a48fb092bf2323817872e714391abb",
-      "output/pdf/cognitive_case_diagrams_combined.pdf": "1be4e60351fb2119812b05365953112011248439fe13ce72dbf52645102a8ea0",
-      "output/web/_combined_manuscript.md": "e8ade9f35925b7c6b3324884da252ca2c2e5df79c5556cb17f9c6583636580ae",
+      "output/pdf/cognitive_case_diagrams_combined.pdf": "168cf55497a5aa1604aaa6d76ca7d39904f7dc7276b6e9e95000e647958a2da2",
+      "output/web/_combined_manuscript.md": "cdda6019600d91039c360a87295dfdad08d7f7c13e88decc61c0ef56cc79ddca",
       "output/web/assets/source-web-fonts.js": "59f21b7d4b8ea9ffc51dd583ad6af59e86b4d0224c2c417a6882585f7addcad7",
       "output/web/favicon.ico": "6ca6e9ffbb22550f6d94bf216e743cc7469a7fc50d8dcf0737b11bf800de7dad",
-      "output/web/index.html": "c2e2d5c5d11f35aefe045cab59a9a307296eba4173a62b62f00e2df1630b7c89",
-      "output/web/manuscript__00_abstract.html": "ea0e3b2911fe4cb914b0c88e0db62a51d4420d49d5c40a84d980974db3ab45ba",
+      "output/web/index.html": "6a4eea4b931d2decba8b3cf06712fa8966aee35a9a2f4b628661de2a9a58d3c3",
+      "output/web/manuscript__00_abstract.html": "dc8cc978c36845a6e062792e1c5308aca15c482e846a4b636b185f695ab3f9f2",
       "output/web/manuscript__01_introduction.html": "242598a4060c3810d7894fcddad1182a42ca009de26e8151fb2f114093d18616",
       "output/web/manuscript__01a_research_questions.html": "e7e64c4f2b7f661b70e486a635d4a77aa0ffb6f739c72c6a37a5c9e527a32b79",
       "output/web/manuscript__02_case_systems.html": "389b34fa5e8aba76496b622ff108b6ab7d9102b1d7d4ac06de56576518508e25",
@@ -134,10 +134,10 @@
       "output/web/manuscript__10_conclusion.html": "a707461221a11a1cf207918b27bc9c39c96c9ba9fe1ee935858adcc852e78367",
       "output/web/manuscript__11_syntactic_sentence_diagrams.html": "fab2eae03a29dd454f05d9b06c31efe22232605c1327e2ef3b9224fc5102de54",
       "output/web/manuscript__11b_notation.html": "b961bd07b6dcfaef9d16739470e2211061ca1b4ae958aa5c3d8b899622e222e7",
-      "output/web/manuscript__11c_automated_test_inventory.html": "f94318d69b507f7cc86fe493b227a939a3e0af1f9e5620f1bfa6dec816697183"
+      "output/web/manuscript__11c_automated_test_inventory.html": "b345c96dfe7336623a46ebe01705160f92d2412667c8e9aa2fc293bae3d87b3d"
     },
     "quality_source": "c9f11b70621798ca9a932d67a07a255c670861fda88e6ef63b9daffbe43c4002",
-    "sha256": "3014b6a4cc5670755904a3899a713581ae436ac26caf559cd7b3314ec40be357"
+    "sha256": "66cabd9c8a89883175060faf090eb99a2da56717e3d19098b40877433a052476"
   },
   "observations": {
     "browser_checks": {
@@ -231,8 +231,8 @@
       46,
       47
     ],
-    "limitations": "Raster inspection at 80 dpi is not a tagged-PDF or PDF/UA audit and no assistive-technology check was performed; browser QA used one headless Chromium instance from file://, not the full browser or device matrix; full-page screenshot capture timed out on the 33-figure page, so visual web confirmation rests on measured DOM/viewport values rather than a captured image; observations verify the rendered bytes, not the scientific claims.",
-    "method": "All 47 PDF pages rasterized at 80 dpi and individually inspected: title/DOI 10.5281/zenodo.19695259, abstract confirming 1909 tests/94 files/92.44% coverage/33 figures/version 2.7.0, all 33 in-text figures (Fig 1-33) rendering with legible labels, equations (1)-(14), Tables 1-4, Appendix C fingerprint, and 13-entry References; pdfinfo confirms title, author Daniel Ari Friedman, 47 pages, no encryption, no JavaScript. All 33 registered PNG figures independently opened at full resolution and verified for legible axes, labels, legends, and the signed '-0.40 nats' entropy annotation. Rendered web article loaded from file:// in headless Chromium: 33 images with naturalWidth>0 (0 broken), 117 internal anchors all resolved, 0 console errors and 0 page errors over a full scroll, 35 successful Tab focus moves through the TOC, and zero horizontal overflow at both 390 px and 1440 px viewports. Re-bound after the mean_ci endpoint-overflow fix and evidence regeneration; the regenerated figure content is deterministic and unchanged.",
+    "limitations": "Raster inspection at 80/90 dpi is not a tagged-PDF or PDF/UA audit and no assistive-technology check was performed; browser QA used one headless Chromium instance from file://, not the full browser or device matrix; full-page screenshot capture timed out on the 33-figure page, so visual web confirmation rests on measured DOM/viewport values rather than a captured image; after the mean_ci fix only the two content-changed PDF pages (3 and 46) were re-inspected at higher dpi while the remaining 45 pages retain their acceptance-pass inspection; observations verify the rendered bytes, not the scientific claims.",
+    "method": "All 47 PDF pages rasterized at 80 dpi and individually inspected during the acceptance pass; after the mean_ci endpoint-overflow fix the PDF was re-rendered and the two content-changed pages were re-rasterized at 90 dpi and re-inspected: page 3 (abstract) now reads '1909 tests across 94 files' and '1909 passing tests with 92.44% line-and-branch coverage', and page 46 (Appendix C) now reads 'collects 1909 tests in 94 files', '1909 passed, 0 failed, 0 skipped', '7090 of 7549 statements covered (92.44%)', source fingerprint c9f1b706217. pdfinfo confirms title, author Daniel Ari Friedman, 47 pages, no encryption, no JavaScript. All 33 registered PNG figures independently opened at full resolution and verified for legible axes, labels, legends, and the signed '-0.40 nats' entropy annotation; regenerated figure content is deterministic. Rendered web article loaded from file:// in headless Chromium: 33 images with naturalWidth>0 (0 broken), 117 internal anchors all resolved, 0 console errors and 0 page errors over a full scroll, 35 successful Tab focus moves through the TOC, and zero horizontal overflow at both 390 px and 1440 px viewports.",
     "pdf_metadata_checked": true,
     "pdf_page_count": 47,
     "reviewer": "omp orchestrator session (AI agent), executing the release evidence pass for the author"

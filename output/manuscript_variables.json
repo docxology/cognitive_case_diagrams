@@ -7,7 +7,7 @@
     "docs/manuscript/02_case_systems.md": "b3cc5b6eba5a3d750dbf69a0f51d2d80c9636f93cdca48ec7c674782542ad0fb",
     "docs/manuscript/02b_case_categories.md": "b1e3efc82fdf02d5a4734ba4594ac89faf17ea51b84d741f5311d4f05f48e6d9",
     "docs/manuscript/03_categorial_grammar.md": "c7e24b65a853540ab97028b19cc233c8124c2dc6ad43644dfdeda29e8a60409e",
-    "docs/manuscript/03b_case_type_logic.md": "c5e05693de3534adcf4120807accce8469ca675e7aa7240d93aad77fcaf13799",
+    "docs/manuscript/03b_case_type_logic.md": "ca999176c10a87809a652a362f1936ad9b3cfaa1c73af1681158ead57322d78d",
     "docs/manuscript/04_categorical_semantics.md": "2431abe25da5e2343c7f8a1d598f20aaf61b623d70f43ac4e19f8d2fc1d48813",
     "docs/manuscript/04b_compact_closure_complexity.md": "fb3b19daf6a263ebd2ba6babac03c112724043ef400e1c3349398aed61b8fb16",
     "docs/manuscript/04c_discourse_complexity.md": "e24ea3f95a320bb34d2acb1eb5863b1a360d685e5066c3b84156e125ccd07c50",
@@ -29,14 +29,14 @@
     "docs/manuscript/AGENTS.md": "4405e5e1b2aa0eaeeba282dd4cd09a0742b4697e240037560f6c64d401808cb1",
     "docs/manuscript/MANUSCRIPT_STATUS.md": "8d02dbc2e59c2d75903e45c7032b7be3a7f5394f63d164c4cea79262a22322a6",
     "docs/manuscript/README.md": "78bce25fbf98af2bc71e79e53ca1950f3ce5b85fca8d5ac9ebf334bc146a645b",
-    "docs/manuscript/config.yaml": "960a4b4af974a07f93369649da98e9e18fc77de5e7a33ed5815ff0453c99a876",
-    "docs/manuscript/preamble.md": "e61d8cbb0f1a77465adf113f2cb6633163235f723e20b81b6d515c7885623b43",
+    "docs/manuscript/config.yaml": "d7c82af537c6906b0cc1255397852aab32468c83ad18ddab3b4104a39bfeb15c",
+    "docs/manuscript/preamble.md": "0eee2a7aa9e09fdf44e75ade237189b91fd926de237da7e74a8cfa7dc1239049",
     "docs/manuscript/references.bib": "f3e25f4b2d88085976eaee35c8fb8b98a60b499b03a8aeb02ebc5b7bc40d0b3a",
-    "output/experiments/results.json": "b0a73bfc5e544108118ac990e8e4d7d24d1e7f58b68f36586797a54c81ca8c9d",
-    "output/figures/figure_registry.json": "c3cdd7109c837f58f490ade0198405d096729401ee9c0eceac410f6ea6c917a4",
-    "output/reports/quality_receipt.json": "a5f9320397b03caedd78ac1335de9616c60d93a288ef55070efb7aff6ffbca53"
+    "output/experiments/results.json": "d8a82a29b384daad6150c2de3077f8499d61516ea1ccc18da157103225c3074c",
+    "output/figures/figure_registry.json": "fa5a0999604fd660a45a39862c7fca7441688297b314ee3f906483a867f98ddf",
+    "output/reports/quality_receipt.json": "e1fe6e881be6e174148fdc99da5b7c7ea4a6f4f57e4ded524c5cdda99b0a57e0"
   },
-  "quality_input_fingerprint": "ddb0e63ceb185c8f490d819934238ec7545d46cc1a2fd8873ee64544c372d71f",
+  "quality_input_fingerprint": "b082c236e3d20002e20a22dbf58c9cea34eac101dc7b1517eac5224d067d2aae",
   "schema": "ccd-manuscript-variables-v1",
   "variables": {
     "alignment_extra_label_count": {
@@ -145,7 +145,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_covered",
         "unit": "count"
       },
-      "value": "6976"
+      "value": "7087"
     },
     "coverage_lines_total": {
       "spec": {
@@ -157,7 +157,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_lines_total",
         "unit": "count"
       },
-      "value": "7450"
+      "value": "7546"
     },
     "coverage_percent": {
       "spec": {
@@ -169,7 +169,7 @@
         "source": "src.release_validation.validate_quality_receipt -> coverage_percent",
         "unit": "percent"
       },
-      "value": "92.13"
+      "value": "92.44"
     },
     "daif_assignment_iterations": {
       "spec": {
@@ -361,7 +361,7 @@
         "source": "src.generate_manuscript_metrics._count_daif_tests",
         "unit": "count"
       },
-      "value": "254"
+      "value": "259"
     },
     "daif_trajectory_evidence_count": {
       "spec": {
@@ -569,7 +569,7 @@
     },
     "exp_agg_regime_projection_lost_mean": {
       "spec": {
-        "description": "Paired mean difference between the regime-resolved polarity-conflict count and the count after projecting the regime away, on identical synthetic corpora at common random numbers; negative values indicate conflicts collapsed by the regime projection.",
+        "description": "Paired mean difference between the regime-resolved polarity-conflict count and the count after projecting the regime away, on identical synthetic corpora at common random numbers; positive values indicate conflicts collapsed by the regime projection.",
         "format": "sig6",
         "name": "exp_agg_regime_projection_lost_mean",
         "provenance": "experiments",
@@ -1321,7 +1321,7 @@
         "source": "importlib.metadata.version('numpy')",
         "unit": "version"
       },
-      "value": "2.4.4"
+      "value": "2.5.4"
     },
     "numpy_version_pretty": {
       "spec": {
@@ -1333,7 +1333,7 @@
         "source": "src.generate_manuscript_metrics._optional_distribution_version",
         "unit": "version"
       },
-      "value": "2.4.4"
+      "value": "2.5.4"
     },
     "paper_date": {
       "spec": {
@@ -1429,7 +1429,7 @@
         "source": "src.release_validation.validate_quality_receipt -> quality_input_fingerprint[:12]",
         "unit": "text"
       },
-      "value": "ddb0e63ceb18"
+      "value": "b082c236e3d2"
     },
     "quality_receipt_generated_at": {
       "spec": {
@@ -1441,7 +1441,7 @@
         "source": "src.release_validation.validate_quality_receipt -> generated_at",
         "unit": "timestamp"
       },
-      "value": "2026-09-15T17:41:34.730254+00:00"
+      "value": "2026-11-11T03:51:52.028188+00:00"
     },
     "quantum_acc_probability": {
       "spec": {
@@ -1609,7 +1609,7 @@
         "source": "src.generate_manuscript_metrics._count_collected_tests",
         "unit": "count"
       },
-      "value": "1883"
+      "value": "1908"
     },
     "total_test_files": {
       "spec": {
@@ -1657,7 +1657,7 @@
         "source": "src.release_validation.validate_quality_receipt -> pytest_passed",
         "unit": "count"
       },
-      "value": "1883"
+      "value": "1908"
     },
     "total_tests_skipped": {
       "spec": {

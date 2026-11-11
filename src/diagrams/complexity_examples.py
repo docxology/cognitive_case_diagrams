@@ -28,11 +28,13 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-def build_complexity_examples() -> list[tuple[str, object]]:  # pragma: no cover
+def build_complexity_examples() -> list[tuple[str, object]]:
     """Build the 10 canonical complexity example sentences as DisCoPy diagrams.
 
-    Returns a list of ``(label, diagram)`` tuples ordered from least to most
-    complex.  Each diagram has codomain ``Ty('s')``.
+    Returns a list of ``(label, diagram)`` tuples ordered by non-decreasing
+    total box-plus-cup count. Each diagram has codomain ``Ty('s')``; the
+    weighted complexity score also counts depth, so it need not be strictly
+    monotone across this series.
 
     Returns:
         List of (label, discopy.rigid.Diagram) tuples, 10 items.
@@ -79,7 +81,7 @@ def build_complexity_examples() -> list[tuple[str, object]]:  # pragma: no cover
     examples.append(("Ditransitive", ditrans))
 
     # ── 4. Adj + Transitive: "fast Alice chases Bob" ─────────────────────
-    # 5 boxes, 3 Cups
+    # 4 word boxes, 3 Cups
     fast = Box("fast", Ty(), n @ n.l)
     alice = Box("Alice", Ty(), n)
     chases = Box("chases", Ty(), n.r @ s @ n.l)
@@ -90,7 +92,7 @@ def build_complexity_examples() -> list[tuple[str, object]]:  # pragma: no cover
     examples.append(("Adj+Trans (5w)", adj_trans))
 
     # ── 5. Adv + Transitive: "Alice chases Bob today" ────────────────────
-    # 5 boxes, 3 Cups
+    # 4 word boxes, 3 Cups
     today = Box("today", Ty(), s.r @ s)
     adv_trans = alice @ chases @ bob @ today
     adv_trans = adv_trans >> Cup(n, n.r) @ Id(s) @ Cup(n.l, n) @ Id(s.r @ s)
@@ -98,7 +100,7 @@ def build_complexity_examples() -> list[tuple[str, object]]:  # pragma: no cover
     examples.append(("Adv+Trans (5w)", adv_trans))
 
     # ── 6. Adj + Adv + Transitive: "fast Alice chases Bob today" ─────────
-    # 6 boxes, 4 Cups
+    # 5 word boxes, 4 Cups
     complex_s = fast @ alice @ chases @ bob @ today
     complex_s = complex_s >> Id(n) @ Cup(n.l, n) @ Id(n.r @ s @ n.l @ n @ s.r @ s)
     complex_s = complex_s >> Cup(n, n.r) @ Id(s) @ Cup(n.l, n) @ Id(s.r @ s)
@@ -106,7 +108,7 @@ def build_complexity_examples() -> list[tuple[str, object]]:  # pragma: no cover
     examples.append(("Adj+Adv+Trans (6w)", complex_s))
 
     # ── 7. Adv + Ditransitive: "Alice gave Bob book quickly" ─────────────
-    # 6 boxes, 4 Cups  (ditransitive core + adverb)
+    # 5 word boxes, 4 Cups  (ditransitive core + adverb)
     alice_7 = Box("Alice", Ty(), n)
     gave_7 = Box("gave", Ty(), n.r @ s @ n.l @ n.l)
     bob_7 = Box("Bob", Ty(), n)
@@ -120,7 +122,7 @@ def build_complexity_examples() -> list[tuple[str, object]]:  # pragma: no cover
     examples.append(("Adv+Ditrans (6w)", adv_ditrans_7))
 
     # ── 8. Double-Adj + Transitive: "fast cat chased big dog" ────────────
-    # 6 boxes, 3 Cups  (2 adj NPs + transitive verb)
+    # 5 word boxes, 4 Cups  (2 adj NPs + transitive verb)
     fast_8 = Box("fast", Ty(), n @ n.l)
     cat_8 = Box("cat", Ty(), n)
     chased_8 = Box("chased", Ty(), n.r @ s @ n.l)
@@ -133,8 +135,7 @@ def build_complexity_examples() -> list[tuple[str, object]]:  # pragma: no cover
     examples.append(("2Adj+Trans (6w)", di_adj_8))
 
     # ── 9. RelCl + Ditransitive + Adv: ≈9 surface words ─────────────────
-    # 7 boxes, 5 Cups  (RC head noun + gave + Bob + book + today)
-    # κ = 12: sits between 2Adj+Trans (κ=11) and Adj+Adv+Ditrans (κ=16).
+    # 5 word boxes, 4 Cups  (RC head noun + gave + Bob + book + today)
     # The RC-extracted head noun is modelled as a pre-contracted Box to avoid
     # needing a full braiding (acknowledged approximation); the cup count
     # faithfully reflects the ditransitive + adverb structure.
@@ -151,8 +152,8 @@ def build_complexity_examples() -> list[tuple[str, object]]:  # pragma: no cover
     examples.append(("RelCl+Ditrans+Adv (9w)", rel_ditrans_adv))
 
     # ── 10. Adj+Adv + Ditransitive: "fast Alice gave Bob book quickly" ─────
-    # 8 boxes, 8 cups (adj-subject + ditransitive + adverb = richest derivation)
-    # κ = 16: the highest-complexity canonical example.
+    # 6 word boxes, 5 Cups (adj-subject + ditransitive + adverb = richest
+    # derivation in this series).
     fast_9 = Box("fast", Ty(), n @ n.l)
     alice_9 = Box("Alice", Ty(), n)
     gave_9 = Box("gave", Ty(), n.r @ s @ n.l @ n.l)

@@ -8,6 +8,7 @@ import logging
 import os
 
 import numpy as np
+import pytest
 
 from src.case_systems.case_category import CaseRole
 from src.quantum.quantum_case import crisp_case_povm, case_probability
@@ -58,3 +59,13 @@ class TestPlotPOVMProbabilities:
         povm, state = self._make_povm_and_state()
         probs = [case_probability(povm.elements[r], state) for r in povm.roles]
         assert abs(sum(probs) - 1.0) < 1e-10
+
+    def test_invalid_density_does_not_leak_figure(self):
+        """Validation must run before plt.subplots; a rejected state leaves no figure."""
+        import matplotlib.pyplot as plt
+
+        povm, _ = self._make_povm_and_state()
+        before = set(plt.get_fignums())
+        with pytest.raises(ValueError):
+            plot_povm_probabilities(povm, np.zeros((3, 3)))
+        assert set(plt.get_fignums()) == before

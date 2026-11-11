@@ -9,10 +9,10 @@ Guards two regression classes with real computed numbers (no mocks):
 Threshold history: the original audit's ">= 12" planning bar was computed with
 a mis-normalized Lab white point. Recomputed with the correct sRGB-derived D65
 white point (0.9642, 1.0, 0.8252), the achievable minimum for DAT against its
-full co-plot set within this palette family is ~9.0 (dark bronzes), so the
-series/legend criterion is encoded as >= 8.0 for DAT and >= 12.0 for DAT/ERG
-(14.57 achieved), with all remaining <12 pairs documented as labeled-element
-co-plots and pinned at their corrected values.
+full co-plot set within this palette family is ~8.4 (dark bronzes), so the
+series/legend criterion is encoded as >= 8.0 for DAT and >= 12.0 for DAT/ERG,
+with all remaining <12 pairs documented as labeled-element co-plots and pinned
+at their corrected values.
 """
 from __future__ import annotations
 
@@ -51,11 +51,10 @@ _XN, _YN, _ZN = 0.9642, 1.0, 0.8252  # sRGB-derived D65 white point (matrix row 
 
 
 def _lab(rgb: tuple[int, int, int]) -> tuple[float, float, float]:
-    def f(t: float) -> float:
-        t /= 255.0
-        return t ** (1 / 2.4) * 1.055 - 0.055 if t > 0.04045 else t / 12.92
-
-    r, g, b = (f(x) for x in rgb)
+    # Decode encoded sRGB to linear light before the XYZ matrix; applying the
+    # inverse transfer function to encoded values (a historical bug here)
+    # makes every Lab distance measure a non-CIELAB quantity.
+    r, g, b = (_lin(x) for x in rgb)
     X = 0.4360747 * r + 0.3850649 * g + 0.1430804 * b
     Y = 0.2225045 * r + 0.7168786 * g + 0.0606169 * b
     Z = 0.0139322 * r + 0.0971045 * g + 0.7141733 * b
@@ -102,7 +101,7 @@ _DAT_OPPONENTS = ["NOM", "ACC", "GEN", "INS", "LOC", "ABL", "VOC", "ERG", "ABS"]
 # or inside the element, so color is a redundant channel there. Values are the
 # corrected-Lab minima; the assertions pin them so silent palette drift
 # re-surfaces.
-_LABELED_ELEMENT_PAIRS = {("S", "ERG"): 1.836, ("NOM", "S"): 1.426, ("NOM", "ERG"): 1.943}
+_LABELED_ELEMENT_PAIRS = {("S", "ERG"): 3.669, ("NOM", "S"): 2.888, ("NOM", "ERG"): 5.148}
 
 
 def test_dat_distinct_from_copotted_roles_under_cvd() -> None:
@@ -112,7 +111,7 @@ def test_dat_distinct_from_copotted_roles_under_cvd() -> None:
 
 
 def test_dat_differs_from_erg_under_every_cvd() -> None:
-    """The audit's blocking pair: DAT/ERG >= 12 under every simulation (14.57 achieved)."""
+    """The audit's blocking pair: DAT/ERG >= 12 under every simulation."""
     for M in _MATS.values():
         d = _dist(
             _simulate(_hex(CASE_COLORS["DAT"]), M),
@@ -157,7 +156,7 @@ def test_node_label_white_text_matches_existing_family_bar() -> None:
 
 
 def test_previously_colliding_pairs_resolved() -> None:
-    """The audit's blocking pairs improved: NOM/DAT (corrected baseline 0.8) and DAT/ERG (0.7)."""
+    """The audit's blocking pairs clear their thresholds under the corrected Lab model."""
     nom_dat = _min_cvd_distance(CASE_COLORS["NOM"], [CASE_COLORS["DAT"]])
     dat_erg = _min_cvd_distance(CASE_COLORS["DAT"], [CASE_COLORS["ERG"]])
     assert nom_dat >= 8.0, nom_dat

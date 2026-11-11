@@ -107,7 +107,11 @@ def __getattr__(name):
     module_name = _LAZY_EXPORTS.get(name)
     if module_name is None:
         raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-    value = getattr(import_module(f".{module_name}", __name__), name)
+    module = import_module(f".{module_name}", __name__)
+    # Subpackage names map to the module itself; export names to its attributes.
+    # getattr(module, subpackage_name) fails because the submodule defines no
+    # attribute named after itself.
+    value = module if name == module_name else getattr(module, name)
     globals()[name] = value  # cache: repeated access hits the module dict
     return value
 

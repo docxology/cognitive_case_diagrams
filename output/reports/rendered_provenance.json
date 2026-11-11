@@ -1,0 +1,197 @@
+{
+  "consumed_manuscript": [
+    {
+      "rendered_path": "output/manuscript/00_abstract.md",
+      "rendered_sha256": "5f52f1cb43d03fec12c954cd4684768139c01a7cc17031a447c43e0a21dfce32",
+      "source_path": "docs/manuscript/00_abstract.md",
+      "source_sha256": "706642505236ea7be985ecaff0f72c8673543ebe42a75eed600c4bbb26e851ab"
+    },
+    {
+      "rendered_path": "output/manuscript/01_introduction.md",
+      "rendered_sha256": "3081f79fef82f32af06a5b855ac8a5889d9fd5d3dc0959d58926117361844bf5",
+      "source_path": "docs/manuscript/01_introduction.md",
+      "source_sha256": "cf6d9011b0b19692027239aba8615c3d9509cd8fc819516fa3dfc56c95b8adee"
+    },
+    {
+      "rendered_path": "output/manuscript/01a_research_questions.md",
+      "rendered_sha256": "01e684eee30f60bba133a7c3ef44fe2bc4eac738e367bd3e6730ead12a490e2c",
+      "source_path": "docs/manuscript/01a_research_questions.md",
+      "source_sha256": "01e684eee30f60bba133a7c3ef44fe2bc4eac738e367bd3e6730ead12a490e2c"
+    },
+    {
+      "rendered_path": "output/manuscript/02_case_systems.md",
+      "rendered_sha256": "e9136e219ce8e4873c69245caa4a629c891e283f7c71db59ef154470efed9ea4",
+      "source_path": "docs/manuscript/02_case_systems.md",
+      "source_sha256": "b3cc5b6eba5a3d750dbf69a0f51d2d80c9636f93cdca48ec7c674782542ad0fb"
+    },
+    {
+      "rendered_path": "output/manuscript/02b_case_categories.md",
+      "rendered_sha256": "b1e3efc82fdf02d5a4734ba4594ac89faf17ea51b84d741f5311d4f05f48e6d9",
+      "source_path": "docs/manuscript/02b_case_categories.md",
+      "source_sha256": "b1e3efc82fdf02d5a4734ba4594ac89faf17ea51b84d741f5311d4f05f48e6d9"
+    },
+    {
+      "rendered_path": "output/manuscript/03_categorial_grammar.md",
+      "rendered_sha256": "c7e24b65a853540ab97028b19cc233c8124c2dc6ad43644dfdeda29e8a60409e",
+      "source_path": "docs/manuscript/03_categorial_grammar.md",
+      "source_sha256": "c7e24b65a853540ab97028b19cc233c8124c2dc6ad43644dfdeda29e8a60409e"
+    },
+    {
+      "rendered_path": "output/manuscript/03b_case_type_logic.md",
+      "rendered_sha256": "ca999176c10a87809a652a362f1936ad9b3cfaa1c73af1681158ead57322d78d",
+      "source_path": "docs/manuscript/03b_case_type_logic.md",
+      "source_sha256": "ca999176c10a87809a652a362f1936ad9b3cfaa1c73af1681158ead57322d78d"
+    },
+    {
+      "rendered_path": "output/manuscript/04_categorical_semantics.md",
+      "rendered_sha256": "2431abe25da5e2343c7f8a1d598f20aaf61b623d70f43ac4e19f8d2fc1d48813",
+      "source_path": "docs/manuscript/04_categorical_semantics.md",
+      "source_sha256": "2431abe25da5e2343c7f8a1d598f20aaf61b623d70f43ac4e19f8d2fc1d48813"
+    },
+    {
+      "rendered_path": "output/manuscript/04b_compact_closure_complexity.md",
+      "rendered_sha256": "dfe5b99f15806c141fc3c18db212f8f421a8b971e0344e295b67ce785236d90f",
+      "source_path": "docs/manuscript/04b_compact_closure_complexity.md",
+      "source_sha256": "fb3b19daf6a263ebd2ba6babac03c112724043ef400e1c3349398aed61b8fb16"
+    },
+    {
+      "rendered_path": "output/manuscript/04c_discourse_complexity.md",
+      "rendered_sha256": "e24ea3f95a320bb34d2acb1eb5863b1a360d685e5066c3b84156e125ccd07c50",
+      "source_path": "docs/manuscript/04c_discourse_complexity.md",
+      "source_sha256": "e24ea3f95a320bb34d2acb1eb5863b1a360d685e5066c3b84156e125ccd07c50"
+    },
+    {
+      "rendered_path": "output/manuscript/05_enriched_categories.md",
+      "rendered_sha256": "c8cb4283550b82831838294fef3de6b2028caea888319b6b1a482b70def1ef65",
+      "source_path": "docs/manuscript/05_enriched_categories.md",
+      "source_sha256": "83670bb0d3c2e86c2ad5d3c9a7ef11ebd02211865e150c9bcb614fde61eba786"
+    },
+    {
+      "rendered_path": "output/manuscript/05b_magnitude_homology.md",
+      "rendered_sha256": "8a37e1a6c3facc0e4759e03b2eb20ae3d96d74d7ce123b079ae18103ae49bea1",
+      "source_path": "docs/manuscript/05b_magnitude_homology.md",
+      "source_sha256": "fba03e078104a32e8e72c315f8156a108cf2c9349b6b250e31a4d88890d7b2e6"
+    },
+    {
+      "rendered_path": "output/manuscript/06_topos_theory.md",
+      "rendered_sha256": "d217dc37be78ed55e0cda3654ede818917c7899c20b5c0e111e8b3eaed5f7df6",
+      "source_path": "docs/manuscript/06_topos_theory.md",
+      "source_sha256": "c327fa18f42f3c48cd17f2a1ff9d6d5cba0a78403fc0975654c333651388df2c"
+    },
+    {
+      "rendered_path": "output/manuscript/07_cognitive_integration.md",
+      "rendered_sha256": "3010d2afb67b4be5ee41885619587602d6be6eacbac8478c43fb9f39e3c12287",
+      "source_path": "docs/manuscript/07_cognitive_integration.md",
+      "source_sha256": "3010d2afb67b4be5ee41885619587602d6be6eacbac8478c43fb9f39e3c12287"
+    },
+    {
+      "rendered_path": "output/manuscript/07b_diagrammatic_cognition.md",
+      "rendered_sha256": "9a28ac20048437cb8a477b6e8db31e893ef43e7a1a88277c096fffec8e8138cb",
+      "source_path": "docs/manuscript/07b_diagrammatic_cognition.md",
+      "source_sha256": "9a28ac20048437cb8a477b6e8db31e893ef43e7a1a88277c096fffec8e8138cb"
+    },
+    {
+      "rendered_path": "output/manuscript/07c_daif_results.md",
+      "rendered_sha256": "e1ab7bf79905c3e571b12dfc44c85efb1087ba8689b396c20b97c79f9b429f86",
+      "source_path": "docs/manuscript/07c_daif_results.md",
+      "source_sha256": "c53bd3904e3f89c00da310ee711d65b604ca67e55e13f6fd30cf0fa86d8fbdc6"
+    },
+    {
+      "rendered_path": "output/manuscript/07d_synthetic_statistics.md",
+      "rendered_sha256": "f41594bce8dcb2418d945d4d93243aac8182bd8460af8fb7aee0018c418e38c0",
+      "source_path": "docs/manuscript/07d_synthetic_statistics.md",
+      "source_sha256": "aa9d5c2fde386be75e6cfe7357469420e99d2076f529f90fa52c6b490db4083e"
+    },
+    {
+      "rendered_path": "output/manuscript/08_quantum_active_inference.md",
+      "rendered_sha256": "32ea04f9b5595037266e9241b9fd911b02972f631163ab956490d8da93a43c74",
+      "source_path": "docs/manuscript/08_quantum_active_inference.md",
+      "source_sha256": "32ea04f9b5595037266e9241b9fd911b02972f631163ab956490d8da93a43c74"
+    },
+    {
+      "rendered_path": "output/manuscript/08b_quantum_semantics.md",
+      "rendered_sha256": "4a96b30ad4be254eb110f0877b3193e6825735b4473199d42fbbc1d054826e0b",
+      "source_path": "docs/manuscript/08b_quantum_semantics.md",
+      "source_sha256": "463c309af60971dc8dcc030e5fb847b1333668967cdf936d89d928d96e37e7d2"
+    },
+    {
+      "rendered_path": "output/manuscript/09_ai_implications.md",
+      "rendered_sha256": "ad0dd70fbaa861bd41486af4ce08e3d8dd9139b605b0182756bf27f33bfbbc0c",
+      "source_path": "docs/manuscript/09_ai_implications.md",
+      "source_sha256": "ad0dd70fbaa861bd41486af4ce08e3d8dd9139b605b0182756bf27f33bfbbc0c"
+    },
+    {
+      "rendered_path": "output/manuscript/09b_cognitive_security.md",
+      "rendered_sha256": "6fb7a86da82ee8e616c14de175267eb6cc2e5c9c0b5d104d75be8453b78564bc",
+      "source_path": "docs/manuscript/09b_cognitive_security.md",
+      "source_sha256": "6fb7a86da82ee8e616c14de175267eb6cc2e5c9c0b5d104d75be8453b78564bc"
+    },
+    {
+      "rendered_path": "output/manuscript/10_conclusion.md",
+      "rendered_sha256": "90354837978f7f740bc26f62bc1aeb52aa4aa29f02fac2332746e38ba3b33145",
+      "source_path": "docs/manuscript/10_conclusion.md",
+      "source_sha256": "90354837978f7f740bc26f62bc1aeb52aa4aa29f02fac2332746e38ba3b33145"
+    },
+    {
+      "rendered_path": "output/manuscript/11_syntactic_sentence_diagrams.md",
+      "rendered_sha256": "94627cce0451f875f3b4927a34914f04806f2bfa083c5722066656db267c6903",
+      "source_path": "docs/manuscript/11_syntactic_sentence_diagrams.md",
+      "source_sha256": "896da38534b04f99258063c9e21be4a42f61fc35134fd8dcd00dacc32c868037"
+    },
+    {
+      "rendered_path": "output/manuscript/11b_notation.md",
+      "rendered_sha256": "67e52652d6ce1e9e34b6e6fa570ab2817be69350075e4338315cd5b3bad1f569",
+      "source_path": "docs/manuscript/11b_notation.md",
+      "source_sha256": "67e52652d6ce1e9e34b6e6fa570ab2817be69350075e4338315cd5b3bad1f569"
+    },
+    {
+      "rendered_path": "output/manuscript/11c_automated_test_inventory.md",
+      "rendered_sha256": "92e46fa5920fcba5088ac70afec7cb8e185a8786e3387dbad9f4e3dbe9c72085",
+      "source_path": "docs/manuscript/11c_automated_test_inventory.md",
+      "source_sha256": "e5380601e2d804580e6ee6a6d59fbf11f22d50499be491e0a3e1f46c61881cbc"
+    }
+  ],
+  "evidence_files": {
+    "artifact_manifest": {
+      "path": "output/reports/artifact_manifest.json",
+      "sha256": "c67fe6f35ab774ce7e087f22dbd17a1aedcc468cc994e532081107c57f688631",
+      "size_bytes": 24925
+    },
+    "combined_manuscript": {
+      "path": "output/web/_combined_manuscript.md",
+      "sha256": "7b6531d9c80e059c503516915e39c850231d2f6bb5ca910032cae48a4e139ffe",
+      "size_bytes": 81131
+    },
+    "composition_manifest": {
+      "path": "output/reports/manuscript_composition.json",
+      "sha256": "a38e075ad8ac66231560cc8485541083ee7a979d58e304394d6434428a22e70e",
+      "size_bytes": 5638
+    },
+    "validation_report": {
+      "path": "output/reports/validation_report.json",
+      "sha256": "c0bfa3640cc72dd271feec561cb691fd9c7a72e0f082a8b6663186cd232b31ab",
+      "size_bytes": 18044
+    }
+  },
+  "evidence_mode": "validated-co-snapshot-fingerprint-bridge",
+  "fingerprints": {
+    "config": {
+      "file_count": 14,
+      "sha256": "5d5d6737460febe5fcc5d680470a2cf9ca6c5d6d7450f817ed2444bddb245043"
+    },
+    "output": {
+      "file_count": 83,
+      "sha256": "39852be067cec606820cfa7901c42f449d51a7cef3b4881795fe937a435b3c1b"
+    },
+    "source": {
+      "file_count": 153,
+      "sha256": "296c4437098cab732e1f73ec299a28948a6147d85abb5615485d40e23b76bf11"
+    },
+    "stage": {
+      "file_count": 1742,
+      "sha256": "c71bb314a7bf70147cc426fd4e08b09168695e4b986281848c0d86c82987a7fc"
+    }
+  },
+  "project": "working/cognitive_case_diagrams",
+  "schema_version": "template-rendered-provenance-v2"
+}

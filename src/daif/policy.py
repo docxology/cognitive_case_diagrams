@@ -148,7 +148,9 @@ def distributional_epistemic_value(
         # Degenerate (point mass): maximally certain, epistemic value capped
         ev = _DEGENERATE_EV_CAP
     else:
-        ev = 0.5 * float(np.log(var_z / reference_variance))
+        # The ratio can underflow or overflow for finite extreme variances;
+        # the difference of logs stays finite and preserves the same value.
+        ev = 0.5 * float(np.log(var_z) - np.log(reference_variance))
 
     logger.debug(
         "Distributional EV: Var[Z]=%.4f, ref_var=%.4f → EV=%.4f",

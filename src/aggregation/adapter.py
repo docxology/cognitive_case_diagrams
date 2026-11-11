@@ -76,7 +76,10 @@ def _canonicalize(record: Any, origin: str) -> dict[str, Any]:
         for field in ("cause", "effect", "relation")
     }
     polarity = record["polarity"]
-    if polarity not in POLARITIES:
+    # Type-check before set membership: list/dict polarity from valid JSON is
+    # unhashable and would otherwise escape as TypeError instead of the
+    # documented field-naming ValueError.
+    if not isinstance(polarity, str) or polarity not in POLARITIES:
         _reject(origin, "polarity",
                 f"must be one of {sorted(POLARITIES)}, got {polarity!r}")
     canonical["polarity"] = polarity

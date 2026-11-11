@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="pandoc 3.11" />
+  <meta name="generator" content="pandoc 3.13" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Daniel Ari Friedman" />
   <title>Cognitive Diagrams: Reviewing Categorical Accounts of
@@ -13,7 +13,10 @@ Linguistic Case</title>
     */
     html {
       color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
       background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
     }
     body {
       margin: 0 auto;
@@ -38,11 +41,16 @@ Linguistic Case</title>
     }
     @media print {
       html {
-        background-color: white;
+        color-scheme: light only;
       }
-      body {
+      html, body, pre, code {
         background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
         color: black;
+      }
+      pre, code {
+        padding: 0;
       }
       p, h2, h3 {
         orphans: 3;
@@ -55,11 +63,8 @@ Linguistic Case</title>
     p {
       margin: 1em 0;
     }
-    a {
-      color: #1a1a1a;
-    }
-    a:visited {
-      color: #1a1a1a;
+    a, a:visited {
+      color: inherit;
     }
     img {
       max-width: 100%;
@@ -88,8 +93,11 @@ Linguistic Case</title>
     blockquote {
       margin: 1em 0 1em 1.7em;
       padding-left: 1em;
-      border-left: 2px solid #e6e6e6;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
       color: #606060;
+      color: light-dark(#606060, #b6b6b6);
     }
     code {
       white-space: pre-wrap;
@@ -113,7 +121,7 @@ Linguistic Case</title>
     }
     hr {
       border: none;
-      border-top: 1px solid #1a1a1a;
+      border-top: 1px solid currentColor;
       height: 1px;
       margin: 1em 0;
     }
@@ -130,11 +138,11 @@ Linguistic Case</title>
     }
     tbody {
       margin-top: 0.5em;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
     }
     th {
-      border-top: 1px solid #1a1a1a;
+      border-top: 1px solid currentColor;
       padding: 0.25em 0.5em 0.25em 0.5em;
     }
     td {
@@ -266,9 +274,9 @@ window.MathJax.chtml = Object.assign({}, window.MathJax.chtml, {
 });
 var templateMathOutput = window.MathJax.output || {};
 window.MathJax.output = Object.assign({}, templateMathOutput, {
-  displayOverflow: "linebreak",
+  displayOverflow: "scroll",
   linebreaks: Object.assign({}, templateMathOutput.linebreaks, {
-    inline: true,
+    inline: false,
     width: "100%",
     lineleading: 0.5
   })
@@ -297,8 +305,8 @@ window.MathJax.startup = Object.assign({}, window.MathJax.startup, {
         .then(async function () {
           var width = document.documentElement.clientWidth;
           try {
-            // MathJax 4 MathItem.STATE.METRICS = 110. The default RERENDER
-            // state retains old container metrics and cannot reflow on zoom.
+            // MathJax 4 MathItem.STATE.METRICS = 110. Restart from metrics
+            // after a viewport change rather than retaining old container widths.
             await window.MathJax.startup.document.rerenderPromise(110);
             window.normalizeTemplateMathJaxAria();
             window.templateMathJaxReflowError = null;
@@ -383,7 +391,14 @@ pre > code.sourceCode > span {
   white-space: pre-wrap;
   word-break: break-word;
 }
-mjx-container[display="true"] { max-width: 100%; overflow: visible; }
+.math.inline {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0;
+  overflow-x: auto;
+  vertical-align: middle;
+}
+mjx-container[display="true"] { max-width: 100%; overflow-x: auto; }
 .table-scroll {
   max-width: 100%;
   overflow-x: auto;
@@ -394,15 +409,13 @@ mjx-container[display="true"] { max-width: 100%; overflow: visible; }
   outline: 3px solid var(--brand-1);
   outline-offset: 3px;
 }
-.table-scroll > table { margin-block: 0; min-width: 100%; width: max-content; }
+.table-scroll > table { margin-block: 0; display: table; min-width: 100%; width: 100%; }
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 html {
   max-width: 100%;
-  overflow-x: hidden;
-  overflow-x: clip;
 }
 
 body {
@@ -415,8 +428,6 @@ body {
   background-color: #f8f8f8;
   color: #1a1a1a;
   overflow-wrap: break-word;
-  overflow-x: hidden;
-  overflow-x: clip;
 }
 
 main,
@@ -500,6 +511,9 @@ pre {
 }
 
 pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
   overflow-wrap: inherit;
   white-space: inherit;
   word-break: inherit;
@@ -552,8 +566,9 @@ table {
 
 .table-scroll > table {
   margin-block: 0;
+  display: table;
   min-width: 100%;
-  width: max-content;
+  width: 100%;
 }
 
 figure {
@@ -570,6 +585,15 @@ th, td {
 th {
   background-color: #1f6f8b;
   color: white;
+}
+
+/* Preserve a complete inline-code header within the table's scroll region. */
+th code {
+  color: inherit;
+  background-color: transparent;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 img {
@@ -631,10 +655,18 @@ a:focus-visible {
   font-size: 1.1em;
 }
 
+.math.inline {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0;
+  overflow-x: auto;
+  vertical-align: middle;
+}
+
 mjx-container[display="true"] {
   display: block;
   max-width: 100%;
-  overflow: visible;
+  overflow-x: auto;
   padding-bottom: 0.25rem;
 }
 
@@ -685,10 +717,6 @@ mjx-container[display="true"] {
 @media (min-width: 1000px) {
   /* Wide figure links stay within the viewport but extend beyond the prose
      column. Do not clip their labels at the narrower body boundary. */
-  body {
-    overflow-x: visible;
-  }
-
   .figure-full-size-link {
     left: 50%;
     max-width: none;
@@ -712,6 +740,7 @@ mjx-container[display="true"] {
 }
 
 </style>
+<script data-template-source-font-loader src="assets/source-web-fonts.js"></script>
 <style id="ccd-web-overrides">
 /* pandoc 3.11 `.sourceCode{background-color:transparent;overflow:visible}` (0,1,0)
    defeats the engine pre rule (0,0,1); restore the code-block surface + scroll. */
@@ -913,6 +942,7 @@ Verification Scope</a></li>
 </ul>
 </nav>
 <main id="main-content" tabindex="-1">
+
 <h1 data-number="1" id="abstract"><span
 class="header-section-number">1</span> Abstract</h1>
 <p>Linguistic case offers a setting in which to examine how diagrams
@@ -929,9 +959,9 @@ constructions and their limits. We distinguish generated derivations
 from illustrative drawings, finite score distributions from Bellman
 return distributions, presentation statistics from topos invariants, and
 model-unit prediction errors from physiological measurements. The
-accompanying suite collects 1883 tests across 94 files; that is a
+accompanying suite collects 1908 tests across 94 files; that is a
 collection count, and a separate source-bound quality receipt records
-1883 passing tests with 92.13% line-and-branch coverage (Appendix C).
+1908 passing tests with 92.44% line-and-branch coverage (Appendix C).
 The figure pipeline produces 33 figures from source. All numerical
 illustrations use synthetic inputs; no corpus study, participant
 experiment, EEG fit, quantum-hardware run, or deployed-agent security
@@ -940,7 +970,9 @@ of case diagrams, and case-based authorization remain research proposals
 with explicit validation requirements. This is working revision 2.7.0;
 its local validation does not constitute publication or independent
 mathematical certification.</p>
+
 <hr />
+
 <h1 data-number="2" id="sec:introduction"><span
 class="header-section-number">2</span> Introduction: Case, Composition,
 and the Limits of a Shared Diagram</h1>
@@ -1024,7 +1056,9 @@ identify which parts are implemented and which require new evidence. The
 synthetic-statistics section sec. <a
 href="#sec:synthetic-statistics">17</a> reports seeded computations of
 the utilities’ own behavior and adds no empirical claim.</p>
+
 <hr />
+
 <h1 data-number="3" id="sec:research-questions"><span
 class="header-section-number">3</span> Research Questions and Evidence
 Map</h1>
@@ -1124,7 +1158,9 @@ data-cites="mahadevan2026democritus">(<a
 href="#ref-mahadevan2026democritus" role="doc-biblioref">Mahadevan
 2026b</a>)</span>. The synthetic lane rehearses the decision structure;
 only annotation on real clusters would test it.</p>
+
 <hr />
+
 <h1 data-number="4" id="sec:case-systems"><span
 class="header-section-number">4</span> Case Systems and Alignment</h1>
 <p>Comparative case analysis separates argument roles from their
@@ -1205,7 +1241,9 @@ language would require documented constructions, annotator agreement,
 and predictive evaluation. Language names in legacy convenience
 functions identify the motivating analogy rather than a validated
 grammar.</p>
+
 <hr />
+
 <h1 data-number="5" id="sec:case-categories"><span
 class="header-section-number">5</span> Case-Role Graphs and Categorical
 Presentations</h1>
@@ -1216,9 +1254,8 @@ and composite arrows can be constructed. For composable <span
 class="math inline">\(f:A\to B\)</span> and <span
 class="math inline">\(g:B\to C\)</span>, the implementation multiplies
 weights:</p>
-<p><span id="eq:eq-2-1"><span class="math display">\[
-w(g\circ f)=w(g)w(f).
-\qquad{(1)}\]</span></span></p>
+<p><span id="eq:eq-2-1"><span class="math display">\[w(g\circ
+f)=w(g)w(f).\qquad{(1)}\]</span></span></p>
 <p>This gives a useful presentation of relational paths. The stored
 generator list need not contain every composite. Endpoint and weight
 checks therefore should not be described as a complete implementation of
@@ -1264,15 +1301,17 @@ drawing a triangle.</figcaption>
 <p>For actual functors <span class="math inline">\(F,G:C\to D\)</span>,
 a natural transformation requires components <span
 class="math inline">\(\eta_A:F(A)\to G(A)\)</span> with</p>
-<p><span id="eq:eq-2-2"><span class="math display">\[
-G(f)\circ\eta_A=\eta_B\circ F(f).
-\qquad{(2)}\]</span></span></p>
+<p><span id="eq:eq-2-2"><span
+class="math display">\[G(f)\circ\eta_A=\eta_B\circ
+F(f).\qquad{(2)}\]</span></span></p>
 <p>The natural-transformation helper checks its supplied components and
 finite source arrows using the project’s representation. This is useful
 for examples, but neither a dative alternation nor a cross-linguistic
 correspondence becomes a natural transformation without the required
 maps and equations.</p>
+
 <hr />
+
 <h1 data-number="6" id="sec:categorial-grammar"><span
 class="header-section-number">6</span> Categorial Grammar and Executable
 Reductions</h1>
@@ -1288,9 +1327,8 @@ href="#ref-coecke2010mathematical" role="doc-biblioref">Coecke et al.
 exchange is not an axiom of a nonsymmetric pregroup.</p>
 <p>For the hand-assigned types of “Alice chases Bob,” the reduction
 is</p>
-<p><span id="eq:eq-3-1"><span class="math display">\[
-n\,(n^r s n^l)\,n\longrightarrow s.
-\qquad{(3)}\]</span></span></p>
+<p><span id="eq:eq-3-1"><span class="math display">\[n\,(n^r s
+n^l)\,n\longrightarrow s.\qquad{(3)}\]</span></span></p>
 <p>The implementation builds words and cups with DisCoPy. The assertion
 below verifies the codomain of this specified derivation. It does not
 discover lexical types or establish grammaticality independently of
@@ -1347,7 +1385,9 @@ the remaining sentence output. The reduced output type is <span
 class="math inline">\(s\)</span>; the semantic sentence morphism is not
 thereby erased.</figcaption>
 </figure>
+
 <hr />
+
 <h1 data-number="7" id="sec:case-type-logic"><span
 class="header-section-number">7</span> Case Features and Voice
 Alternation</h1>
@@ -1365,12 +1405,13 @@ exact objects. This requires corresponding lexical assignments and
 explicit coercions where a grammar licenses them; it is not achieved by
 decorating an unrefined diagram after construction.</p>
 <p>Passivization changes grammatical realization while preserving
-selected semantic participation. The project offers both a schematic
-passive template and an example using a Swap primitive. These illustrate
-different representational choices. A Swap is available only in an
-appropriate symmetric extension and is not itself a general linguistic
-derivation of passive voice. Nor does changing a participant’s
-grammatical role necessarily change that participant’s identity.</p>
+selected semantic participation. The project offers two schematic
+passive templates: a compact-closure construction and a Word-based
+construction. Neither performs a type permutation; a Swap is available
+only in an appropriate symmetric extension and is not itself a general
+linguistic derivation of passive voice. Nor does changing a
+participant’s grammatical role necessarily change that participant’s
+identity.</p>
 <figure id="fig:discopy-passive">
 <a class="figure-full-size-link" href="../figures/discopy_passive.png" target="_blank" rel="noopener" aria-label="Open full-size Figure 11, Passive example with Bob in the subject slot and Alice in a supplied oblique slot."><img src="../figures/discopy_passive.png"
 alt="A native diagram for Bob is chased by Alice uses a separately assigned passive predicate type and two noun cups, leaving sentence output s." /><span class="figure-full-size-label" aria-hidden="true">Open full-size figure</span></a>
@@ -1387,7 +1428,9 @@ native-speaker judgments. This implementation performs selected typed
 compositions and role bookkeeping; it does not implement general
 case-feature inference, a full Lambek prover, or monadic root
 syntax.</p>
+
 <hr />
+
 <h1 data-number="8" id="sec:categorical-semantics"><span
 class="header-section-number">8</span> Compositional Distributional
 Semantics</h1>
@@ -1406,9 +1449,8 @@ class="math inline">\(b_k\)</span> represent the two noun vectors and
 <span class="math inline">\(V_{ijk}\)</span> a transitive verb tensor,
 with the middle index ranging over sentence features. The example
 calculation is</p>
-<p><span id="eq:eq-4-1"><span class="math display">\[
-m_j=\sum_{i,k}a_i V_{ijk} b_k.
-\qquad{(4)}\]</span></span></p>
+<p><span id="eq:eq-4-1"><span class="math display">\[m_j=\sum_{i,k}a_i
+V_{ijk} b_k.\qquad{(4)}\]</span></span></p>
 <p>The source helper <code>create_tensor_semantics()</code> constructs
 deterministic example tensors and evaluates their contraction. These are
 generated representations, not pretrained embeddings or estimates from a
@@ -1438,7 +1480,9 @@ functor or an enriched hom-matrix; such an identification needs domains,
 codomains, and law-preserving maps. A useful empirical comparison would
 train alternative composition models on the same data and test argument
 reversal and generalization on held-out constructions.</p>
+
 <hr />
+
 <h1 data-number="9" id="sec:compact-closure-complexity"><span
 class="header-section-number">9</span> Duality Identities and Diagram
 Complexity</h1>
@@ -1464,9 +1508,8 @@ the wire; geometric resemblance alone would not.</figcaption>
 <p>The complexity utilities report box count, cup count, cap count,
 depth, width, and normal-form size. The configurable score used by the
 examples is</p>
-<p><span id="eq:eq-4b-1"><span class="math display">\[
-\kappa(D)=1N_{\mathrm{lex}}+0.5N_{\mathrm{cup}}+0.25N_{\mathrm{cap}}+0.1\,d(D).
-\qquad{(5)}\]</span></span></p>
+<p><span id="eq:eq-4b-1"><span
+class="math display">\[\kappa(D)=1N_{\mathrm{lex}}+0.5N_{\mathrm{cup}}+0.25N_{\mathrm{cap}}+0.1\,d(D).\qquad{(5)}\]</span></span></p>
 <p>Here <code>count_words</code> counts every non-Cup/non-Cap box; in
 diagrams containing a Swap, this is broader than a linguistic word
 count. The four coefficients are the declared defaults of
@@ -1491,7 +1534,9 @@ factor; the container also carries this section’s base complexity score
 as its base field. Despite legacy field names, it computes neither
 topological homology nor a physical decoherence rate. No physical or
 security conclusion in this manuscript relies on that score.</p>
+
 <hr />
+
 <h1 data-number="10" id="sec:discocirc-discourse"><span
 class="header-section-number">10</span> Discourse: Entity Bookkeeping
 and State-Update Proposals</h1>
@@ -1563,16 +1608,18 @@ paraphrase families into localized claim classes. The shared boundary is
 also the same: neither layer claims semantic correctness of its
 identifications without an independent annotation layer, and neither
 supplies one.</p>
+
 <hr />
+
 <h1 data-number="11" id="sec:enriched-categories"><span
 class="header-section-number">11</span> Candidate Similarities and <span
 class="math inline">\([0,1]\)</span>-Enrichment</h1>
 <p>For enrichment over the ordered monoid <span
 class="math inline">\(([0,1],\cdot,1)\)</span>, a finite hom-matrix
 <span class="math inline">\(Z\)</span> must satisfy</p>
-<p><span id="eq:eq-5-1"><span class="math display">\[
-Z_{ii}=1,\qquad Z_{ik}\geq Z_{ij}Z_{jk}\quad\text{for every }i,j,k.
-\qquad{(6)}\]</span></span></p>
+<p><span id="eq:eq-5-1"><span class="math display">\[Z_{ii}=1,\qquad
+Z_{ik}\geq Z_{ij}Z_{jk}\quad\text{for every
+}i,j,k.\qquad{(6)}\]</span></span></p>
 <p>The inequality follows the order convention used here. Symmetry is
 optional. Normalized conditional probabilities, cosine similarities, and
 attention weights do not generally satisfy these axioms. They are
@@ -1615,7 +1662,9 @@ construct enriched structure from suitable text-extension probabilities
 href="#ref-bradley2021enriched" role="doc-biblioref">Bradley et al.
 2021</a>)</span>; this does not identify the present role matrix with
 their construction.</p>
+
 <hr />
+
 <h1 data-number="12" id="sec:magnitude-homology"><span
 class="header-section-number">12</span> Magnitude, Weightings, and
 Numerical Sensitivity</h1>
@@ -1628,9 +1677,8 @@ class="math inline">\(v^T Z=\mathbf1^T\)</span>. When both exist, their
 sums agree because <span class="math inline">\(v^T Zw\)</span> can be
 evaluated in either order. If <span class="math inline">\(Z\)</span> is
 invertible, the matrix magnitude is</p>
-<p><span id="eq:eq-5b-1"><span class="math display">\[
-\lvert Z\rvert=\mathbf1^T Z^{-1}\mathbf1.
-\qquad{(7)}\]</span></span></p>
+<p><span id="eq:eq-5b-1"><span class="math display">\[\lvert
+Z\rvert=\mathbf1^T Z^{-1}\mathbf1.\qquad{(7)}\]</span></span></p>
 <p>For a two-role example <span
 class="math inline">\(Z=\left(\begin{smallmatrix}1&amp;a\\a&amp;1\end{smallmatrix}\right)\)</span>
 with <span class="math inline">\(0\leq a&lt;1\)</span>, the weighting is
@@ -1667,7 +1715,9 @@ hom-values correspond to infinite distance, and symmetry is still an
 additional condition. This connection explains a mathematical
 relationship between similarity and distance; it does not identify
 arbitrary attention matrices with metric spaces.</p>
+
 <hr />
+
 <h1 data-number="13" id="sec:topos-theory"><span
 class="header-section-number">13</span> Topos-Theoretic Bridges:
 Requirements and Present Scope</h1>
@@ -1753,7 +1803,9 @@ middle need not hold. Intuitionistic logic is not made classical by
 limit follows from the present code. Formalizing linguistic theories and
 testing which invariants survive is a research direction, not an
 accomplished unification.</p>
+
 <hr />
+
 <h1 data-number="14" id="sec:cognitive-integration"><span
 class="header-section-number">14</span> Bayesian Case-Role Beliefs and
 Active-Inference Motivation</h1>
@@ -1774,10 +1826,10 @@ disjoint-support likelihood is an error rather than a reason to invent a
 uniform posterior.</p>
 <p>For a fixed generative pair <span
 class="math inline">\((p,L)\)</span>,</p>
-<p><span id="eq:variational-bound"><span class="math display">\[
-F(q)=D_{\mathrm{KL}}(q\Vert p)-\sum_i q_i\log L_i
-    =D_{\mathrm{KL}}(q\Vert p(\cdot\mid o))-\log e.
-\qquad{(8)}\]</span></span></p>
+<p><span id="eq:variational-bound"><span
+class="math display">\[F(q)=D_{\mathrm{KL}}(q\Vert p)-\sum_i q_i\log L_i
+    =D_{\mathrm{KL}}(q\Vert p(\cdot\mid o))-\log
+e.\qquad{(8)}\]</span></span></p>
 <p>The identity holds with consistent support conventions. It
 establishes the usual bound for this fixed model; it does not imply that
 free energies computed under different incoming priors and observations
@@ -1804,7 +1856,9 @@ information-value, and utility vectors. A full active-inference model
 would need a specified generative process, observation predictions under
 policies, and preferences. Those components are not inferred from the
 graph drawing.</p>
+
 <hr />
+
 <h1 data-number="15" id="sec:diagrammatic-cognition"><span
 class="header-section-number">15</span> Cognitive Hypotheses and
 Testable Comparisons</h1>
@@ -1824,9 +1878,8 @@ of hypotheses. Multiplying a mismatch by a selected weight demonstrates
 sensitivity to that weight by construction. It does not establish that
 the weight is neural precision or that the output is an N400 or P600
 amplitude. The scalar example is</p>
-<p><span id="eq:pe-precision-error"><span class="math display">\[
-\mathrm{PE}=w\,|\mu_{\mathrm{pred}}-\mu_{\mathrm{obs}}|.
-\qquad{(9)}\]</span></span></p>
+<p><span id="eq:pe-precision-error"><span
+class="math display">\[\mathrm{PE}=w\,|\mu_{\mathrm{pred}}-\mu_{\mathrm{obs}}|.\qquad{(9)}\]</span></span></p>
 <p>To evaluate a physiological interpretation, a study would need a
 dataset, preprocessing specification, electrode and time-window
 definitions, parameter estimation on training data, and held-out
@@ -1840,7 +1893,9 @@ independently verify the implementation, or establish cognitive
 privilege. The reproducibility appendix sec. <a
 href="#sec:test-suite-inventory">25</a> states what the tests cover and
 what empirical claims remain outside their scope.</p>
+
 <hr />
+
 <h1 data-number="16" id="sec:daif-results"><span
 class="header-section-number">16</span> Distributional Utilities and
 Synthetic Filtering</h1>
@@ -1861,9 +1916,8 @@ row-stochastic transition matrix <span class="math inline">\(T\)</span>,
 dimensionless score vector <span class="math inline">\(R\)</span>, and
 <span class="math inline">\(\gamma\in[0,1]\)</span>,
 <code>push_forward_return()</code> forms</p>
-<p><span id="eq:eq-7-1"><span class="math display">\[
-z=R+\gamma T^Tq,\qquad \mu=\sum_i q_i\delta_{z_i}.
-\qquad{(10)}\]</span></span></p>
+<p><span id="eq:eq-7-1"><span class="math display">\[z=R+\gamma
+T^Tq,\qquad \mu=\sum_i q_i\delta_{z_i}.\qquad{(10)}\]</span></span></p>
 <p>The mass at <span class="math inline">\(z_i\)</span> is <span
 class="math inline">\(q_i\)</span>. Mean and variance use exact finite
 weighted sums. The stored quantile values use the generalized inverse of
@@ -1904,11 +1958,10 @@ href="#ref-dabney2018distributional" role="doc-biblioref">Dabney,
 Rowland, et al. 2018</a>)</span>. Define <span
 class="math inline">\(H_\kappa\)</span> as the ordinary Huber loss. The
 implemented coordinate update is</p>
-<p><span id="eq:eq-7c-qr"><span class="math display">\[
-\theta_i&#39; = \theta_i + \alpha\frac1M\sum_j
+<p><span id="eq:eq-7c-qr"><span class="math display">\[\theta_i&#39; =
+\theta_i + \alpha\frac1M\sum_j
 |\tau_i-\mathbf1_{\delta_{ij}&lt;0}|\,
-\operatorname{clip}(\delta_{ij},-\kappa,\kappa).
-\qquad{(11)}\]</span></span></p>
+\operatorname{clip}(\delta_{ij},-\kappa,\kappa).\qquad{(11)}\]</span></span></p>
 <p>Here the Huber loss is unnormalized: its derivative is clipped at
 <span class="math inline">\(\kappa\)</span>. The learning-rate
 convention absorbs averaging over current coordinates. Comparing with a
@@ -1946,9 +1999,8 @@ and free energy; an increase in free energy alone is not an error
 because successive priors change.</p>
 <p><code>variational_message_passing()</code> is a single-factor
 calculation with an implicit uniform prior:</p>
-<p><span id="eq:eq-7c-vmp"><span class="math display">\[
-q_i=\operatorname{softmax}_i(\lambda_{\mathrm{lik},i}o_i).
-\qquad{(12)}\]</span></span></p>
+<p><span id="eq:eq-7c-vmp"><span
+class="math display">\[q_i=\operatorname{softmax}_i(\lambda_{\mathrm{lik},i}o_i).\qquad{(12)}\]</span></span></p>
 <p>It also returns <span
 class="math inline">\(\lambda_{\mathrm{prior}}+\lambda_{\mathrm{lik}}\)</span>
 as bookkeeping. Prior precision does not determine a nonuniform
@@ -1956,10 +2008,9 @@ categorical prior. Because the incoming message is constant, extra
 sweeps do not perform general loopy inference.</p>
 <p>The legacy <code>bethe_free_energy()</code> is now also exposed as
 <code>factor_consistency_score()</code>. Its actual formula is</p>
-<p><span id="eq:eq-7c-bethe"><span class="math display">\[
-C(q)=\sum_a D_{\mathrm{KL}}(q\Vert\widehat f_a)
-      -\left(\sum_i(d_i-1)\right)H(q).
-\qquad{(13)}\]</span></span></p>
+<p><span id="eq:eq-7c-bethe"><span class="math display">\[C(q)=\sum_a
+D_{\mathrm{KL}}(q\Vert\widehat f_a)
+      -\left(\sum_i(d_i-1)\right)H(q).\qquad{(13)}\]</span></span></p>
 <p>There is only one categorical distribution <span
 class="math inline">\(q\)</span>, and <span
 class="math inline">\(\widehat f_a\)</span> is a normalized supplied
@@ -2074,7 +2125,9 @@ neural modules or a universal factorization of cognition. The software
 does not implement a complete CEREBRUM agent. Proposed architectural
 mappings should be evaluated as engineering choices with explicit
 interfaces and tasks.</p>
+
 <hr />
+
 <h1 data-number="17" id="sec:synthetic-statistics"><span
 class="header-section-number">17</span> Synthetic Statistical Behavior
 of the Utilities</h1>
@@ -2265,7 +2318,9 @@ assumptions nor converts any utility into a Bellman solver, a general
 inference engine, or a measurement model. The reproduction path for
 every number in this section is documented in sec. <a
 href="#sec:test-suite-inventory">25</a>.</p>
+
 <hr />
+
 <h1 data-number="18" id="sec:quantum-active-inference"><span
 class="header-section-number">18</span> Quantum Diagram Connections and
 Their Assumptions</h1>
@@ -2296,7 +2351,9 @@ probabilistic analogy does not imply that linguistic cognition uses
 physical quantum coherence. A useful next experiment would compare a
 specified measurement-based classifier against a matched classical model
 and report exactly which resources and assumptions differ.</p>
+
 <hr />
+
 <h1 data-number="19" id="sec:quantum-semantics"><span
 class="header-section-number">19</span> Case Labels as Measurement
 Outcomes</h1>
@@ -2305,9 +2362,8 @@ semidefinite Hermitian effects <span class="math inline">\(E_c\)</span>
 that sum to the identity. A density matrix <span
 class="math inline">\(\rho\)</span> is positive semidefinite and
 Hermitian with trace one. Under these assumptions,</p>
-<p><span id="eq:eq-8-1"><span class="math display">\[
-P(c\mid\rho)=\operatorname{Tr}(E_c\rho),\qquad\sum_cP(c\mid\rho)=1.
-\qquad{(14)}\]</span></span></p>
+<p><span id="eq:eq-8-1"><span
+class="math display">\[P(c\mid\rho)=\operatorname{Tr}(E_c\rho),\qquad\sum_cP(c\mid\rho)=1.\qquad{(14)}\]</span></span></p>
 <p>The sum identity follows by linearity of trace. The implementation
 checks finite entries, dimensions, Hermiticity, positivity,
 completeness, and density normalization within explicit floating-point
@@ -2346,7 +2402,9 @@ interpretation. No physical quantum advantage or semantic
 channel-capacity result is established. The seeded completeness check of
 the canonical example is reported in sec. <a
 href="#sec:exp-controls">17.5</a>.</p>
+
 <hr />
+
 <h1 data-number="20" id="sec:ai-implications"><span
 class="header-section-number">20</span> Proposed Case-Labeled Agent
 Interfaces</h1>
@@ -2420,7 +2478,9 @@ could support an interaction trace if identities were supplied reliably.
 They would still need explicit semantics for state updates, delegation,
 revocation, and failures. No fixed-point theorem for multi-agent
 behavior follows from representing a dialogue as a graph.</p>
+
 <hr />
+
 <h1 data-number="21" id="sec:cognitive-security"><span
 class="header-section-number">21</span> Role Policies and the Limits of
 Type-Based Security</h1>
@@ -2483,7 +2543,9 @@ harmful or false content. Magnitude, graph topology, and quantum
 terminology provide no automatic security guarantee. The finite checker
 remains useful as a transparent specification example when its inputs,
 rule set, and missing enforcement layer are stated.</p>
+
 <hr />
+
 <h1 data-number="22" id="sec:conclusion"><span
 class="header-section-number">22</span> Conclusion</h1>
 <p>Case diagrams provide a compact setting for comparing relational
@@ -2589,7 +2651,9 @@ checks. Passing tests supports the stated software contracts; it neither
 supplies absent experiments nor proves all mathematical interpretations.
 Keeping these distinctions explicit makes further work reproducible and
 its results easier to assess.</p>
+
 <hr />
+
 <h1 data-number="23" id="sec:syntactic-diagrams"><span
 class="header-section-number">23</span> Appendix A: Schematic
 Construction Panel</h1>
@@ -2615,7 +2679,9 @@ not be equated with a particular morphological case across languages.
 Readers seeking executable reductions should use the DisCoPy
 constructors in sec. <a href="#sec:categorial-grammar">6</a>, whose
 types and codomains can be checked directly.</p>
+
 <hr />
+
 <h1 data-number="24" id="sec:notation"><span
 class="header-section-number">24</span> Appendix B: Notation and
 Conventions</h1>
@@ -2788,19 +2854,21 @@ narrower operational definitions in the text.</p>
 href="#sec:synthetic-statistics">17</a>) are simulation-replication
 summaries of seeded runs, not sampling distributions over any
 population.</p>
+
 <hr />
+
 <h1 data-number="25" id="sec:test-suite-inventory"><span
 class="header-section-number">25</span> Appendix C: Reproduction and
 Verification Scope</h1>
 <p>Two different counts matter and must not be conflated. The suite
-<em>collects</em> 1883 tests in 94 files across 12 source subpackages; a
+<em>collects</em> 1908 tests in 94 files across 12 source subpackages; a
 collection count alone certifies nothing. A passing run is certified
-only by the source-bound quality receipt, which records 1883 passed, 0
-failed, and 0 skipped tests with 6976 of 7450 statements covered (92.13%
+only by the source-bound quality receipt, which records 1908 passed, 0
+failed, and 0 skipped tests with 7087 of 7546 statements covered (92.44%
 combined). The receipt binds that evidence to source fingerprint
-ddb0e63ceb18 and was recorded at 2026-09-15T17:41:34.730254+00:00; a
+b082c236e3d2 and was recorded at 2026-11-11T03:51:52.028188+00:00; a
 receipt whose fingerprint no longer matches the tree is rejected. The
-metrics writer records installed NumPy 2.4.4 and DisCoPy 1.2.2.</p>
+metrics writer records installed NumPy 2.5.4 and DisCoPy 1.2.2.</p>
 <p>The suite covers role-graph construction; sampled endpoint and weight
 laws; explicit pregroup reductions; tensor evaluation; finite
 probability calculations; quantile update conventions; matrix magnitude
@@ -2837,7 +2905,7 @@ reported at the version-record link.</p>
 types, and the full coverage-enforced suite and writes the receipt under
 <code>output/reports/</code>. The experiments runner writes the
 schema-annotated synthetic results consumed by injection. Figure
-generation writes <code>../figures/</code> and the figure registry,
+generation writes <code>output/figures/</code> and the figure registry,
 binding each entry to the source fingerprint it was rendered from.
 Injection writes <code>output/manuscript/</code> and the variable
 manifest from the canonical numbered sources; validation re-checks every
@@ -2845,6 +2913,7 @@ binding. Render through the sibling template engine using the
 lifecycle-qualified project selector documented in the repository
 README. Rendered PDFs require visual inspection in addition to text,
 link, and citation checks.</p>
+
 <div id="refs" class="references csl-bib-body hanging-indent"
 role="list">
 <div id="ref-akgul2026distributional" class="csl-entry" role="listitem">
@@ -2866,7 +2935,7 @@ href="https://www.glass-bead.org/article/the-theory-of-topos-theoretic-bridges-a
 </div>
 <div id="ref-caramello2018theories" class="csl-entry" role="listitem">
 Caramello, Olivia. 2018. <em>Theories, Sites, Toposes: Relating and
-Studying Mathematical Theories Through Topos-Theoretic
+Studying Mathematical Theories through Topos-Theoretic
 <span>“Bridges”</span></em>. Oxford University Press. <a
 href="https://doi.org/10.1093/oso/9780198758914.001.0001">https://doi.org/10.1093/oso/9780198758914.001.0001</a>.
 </div>

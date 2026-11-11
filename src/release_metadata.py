@@ -88,9 +88,17 @@ def validate_publication_identifiers(publication: Any) -> None:
         raise ValueError(f"Publication DOI roles must be distinct: {colliding}")
 
 
-def _software_deposit_facts(version: str) -> dict[str, Any]:
-    """Validate deposit records and split current from historical facts."""
-    for record_version, record in SOFTWARE_DEPOSIT_RECORDS.items():
+def _software_deposit_facts(
+    version: str, records: dict[str, dict[str, str]] | None = None
+) -> dict[str, Any]:
+    """Validate deposit records and split current from historical facts.
+
+    ``records`` defaults to the module's versioned facts; tests pass an
+    explicit mapping so negative contracts exercise real validation without
+    replacing module state.
+    """
+    source = SOFTWARE_DEPOSIT_RECORDS if records is None else records
+    for record_version, record in source.items():
         for key in ("version_doi", "concept_doi"):
             value = str(record.get(key) or "")
             if not re.fullmatch(ZENODO_DOI_PATTERN, value):
@@ -100,10 +108,10 @@ def _software_deposit_facts(version: str) -> dict[str, Any]:
                 )
         if record["version_doi"] == record["concept_doi"]:
             raise ValueError(f"Software deposit record {record_version} is self-colliding")
-    current = SOFTWARE_DEPOSIT_RECORDS.get(version)
+    current = source.get(version)
     historical = {
         record_version: dict(record)
-        for record_version, record in SOFTWARE_DEPOSIT_RECORDS.items()
+        for record_version, record in source.items()
         if record_version != version
     }
     return {"current": dict(current) if current else None, "historical": historical}

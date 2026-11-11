@@ -108,6 +108,30 @@ def test_mean_ci_matches_manual_formula():
     assert hi == pytest.approx(2.5 + half)
 
 
+def test_normal_z_rejects_unresolvable_level_near_one():
+    """A level one ulp below 1 rounds the tail probability to 1.0."""
+    with pytest.raises(ValueError, match="too close"):
+        normal_z(1.0 - 2**-53)
+
+
+def test_mean_ci_is_stable_at_large_equal_values():
+    """The mean of [1e308, 1e308] is representable; a zero-width CI is correct."""
+    mean, lo, hi = mean_ci([1e308, 1e308])
+    assert mean == 1e308
+    assert lo == 1e308 and hi == 1e308
+
+
+def test_mean_ci_rejects_unrepresentable_bounds():
+    """Opposite huge values have a finite mean but an unrepresentable half-width."""
+    with pytest.raises(ValueError, match="not representable"):
+        mean_ci([1e308, -1e308])
+
+
+def test_wilson_huge_z_returns_unit_interval():
+    """z*z overflows for z=1e308; the limiting Wilson interval is [0, 1]."""
+    assert wilson_score_interval(0, 10, z=1e308) == (0.0, 1.0)
+
+
 def test_mean_ci_requires_two_replicates():
     # A single replicate has undefined sample variance; presenting it with a
     # zero-width interval would report no-variance data as exact precision.

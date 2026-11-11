@@ -376,10 +376,10 @@
           "level": 0.05,
           "observed_mean": 0.22187499999999993,
           "paired_error_ci": [
-            0.019637159443350472,
-            0.023742055561542973
+            0.019637159443350476,
+            0.023742055561542977
           ],
-          "paired_error_mean": 0.021689607502446723
+          "paired_error_mean": 0.021689607502446726
         },
         {
           "confidence_level": 0.95,
@@ -398,10 +398,10 @@
           "level": 0.15,
           "observed_mean": 0.29392578124999996,
           "paired_error_ci": [
-            0.021366052555612507,
-            0.02617403884116153
+            0.02136605255561251,
+            0.026174038841161533
           ],
-          "paired_error_mean": 0.02377004569838702
+          "paired_error_mean": 0.023770045698387022
         },
         {
           "confidence_level": 0.95,
@@ -420,10 +420,10 @@
           "level": 0.25,
           "observed_mean": 0.4094531250000002,
           "paired_error_ci": [
-            0.023575519265081554,
-            0.028722669925480133
+            0.023575519265081557,
+            0.028722669925480136
           ],
-          "paired_error_mean": 0.026149094595280843
+          "paired_error_mean": 0.026149094595280847
         },
         {
           "confidence_level": 0.95,
@@ -475,10 +475,10 @@
           "level": 0.49999999999999994,
           "observed_mean": 0.65283203125,
           "paired_error_ci": [
-            0.024500211183171174,
-            0.02956757882177899
+            0.024500211183171167,
+            0.029567578821778982
           ],
-          "paired_error_mean": 0.02703389500247508
+          "paired_error_mean": 0.027033895002475074
         },
         {
           "confidence_level": 0.95,
@@ -486,10 +486,10 @@
           "level": 0.5499999999999999,
           "observed_mean": 0.7017773437500006,
           "paired_error_ci": [
-            0.022843543778742342,
-            0.027801347036856286
+            0.02284354377874234,
+            0.027801347036856282
           ],
-          "paired_error_mean": 0.025322445407799314
+          "paired_error_mean": 0.02532244540779931
         },
         {
           "confidence_level": 0.95,
@@ -519,10 +519,10 @@
           "level": 0.7,
           "observed_mean": 0.8373437500000003,
           "paired_error_ci": [
-            0.01728082460848211,
-            0.021819497714060835
+            0.017280824608482112,
+            0.02181949771406084
           ],
-          "paired_error_mean": 0.019550161161271472
+          "paired_error_mean": 0.019550161161271475
         },
         {
           "confidence_level": 0.95,
@@ -530,7 +530,7 @@
           "level": 0.75,
           "observed_mean": 0.8772265624999999,
           "paired_error_ci": [
-            0.013998612958652743,
+            0.013998612958652745,
             0.01824756030825388
           ],
           "paired_error_mean": 0.016123086633453312
@@ -542,9 +542,9 @@
           "observed_mean": 0.9283789062499995,
           "paired_error_ci": [
             0.008900090875583702,
-            0.012574388392528824
+            0.012574388392528828
           ],
-          "paired_error_mean": 0.010737239634056263
+          "paired_error_mean": 0.010737239634056265
         },
         {
           "confidence_level": 0.95,
@@ -552,10 +552,10 @@
           "level": 0.85,
           "observed_mean": 0.9618945312499996,
           "paired_error_ci": [
-            0.004875038487971997,
-            0.00744642379716538
+            0.004875038487971998,
+            0.007446423797165381
           ],
-          "paired_error_mean": 0.006160731142568689
+          "paired_error_mean": 0.0061607311425686895
         },
         {
           "confidence_level": 0.95,
@@ -574,10 +574,10 @@
           "level": 0.95,
           "observed_mean": 0.9966796875000002,
           "paired_error_ci": [
-            0.0003961911635850012,
+            0.00039619116358500145,
             0.0013345745886989271
           ],
-          "paired_error_mean": 0.0008653828761419641
+          "paired_error_mean": 0.0008653828761419643
         }
       ],
       "metrics": {
@@ -852,8 +852,8 @@
         "coverage_error": {
           "confidence_level": 0.95,
           "estimator": "mean +/- two-sided normal SE across replicates",
-          "high": 0.021737145708122296,
-          "low": 0.018792438948664128,
+          "high": 0.021737145708122293,
+          "low": 0.01879243894866413,
           "mean": 0.020264792328393212,
           "sample_unit": "replicate"
         }
@@ -862,9 +862,9 @@
     "filtering": {
       "metrics": {
         "closed_form_residual_max": 3.3306690738754696e-16,
-        "free_energy_final_mean": 0.1579855855299111,
+        "free_energy_final_mean": 0.15798558552991107,
         "paired_loglik_diff_mean": -0.021421068960426642,
-        "posterior_accuracy_mean": 0.9973089149839123,
+        "posterior_accuracy_mean": 0.9973089149839124,
         "posterior_mode_match_rate": 1.0
       },
       "sample_unit": "replicate",
@@ -1648,9 +1648,9 @@
         "free_energy_final": {
           "confidence_level": 0.95,
           "estimator": "mean +/- two-sided normal SE across replicates",
-          "high": 0.16593302091514098,
-          "low": 0.15003815014468122,
-          "mean": 0.1579855855299111,
+          "high": 0.16593302091514095,
+          "low": 0.1500381501446812,
+          "mean": 0.15798558552991107,
           "sample_unit": "replicate"
         },
         "paired_loglik_diff": {
@@ -1664,9 +1664,9 @@
         "posterior_accuracy": {
           "confidence_level": 0.95,
           "estimator": "mean +/- two-sided normal SE across replicates",
-          "high": 0.9976441862450065,
-          "low": 0.996973643722818,
-          "mean": 0.9973089149839123,
+          "high": 0.9976441862450066,
+          "low": 0.9969736437228182,
+          "mean": 0.9973089149839124,
           "sample_unit": "replicate"
         }
       }
@@ -3889,17 +3889,17 @@
             {
               "confidence_level": 0.95,
               "paired_ci": [
-                0.08629078107223645,
-                0.12837176045710827
+                0.08629078107223646,
+                0.1283717604571083
               ],
-              "paired_mean": 0.10733127076467236,
+              "paired_mean": 0.10733127076467237,
               "value": 50.0
             },
             {
               "confidence_level": 0.95,
               "paired_ci": [
                 0.09824049827296084,
-                0.14245322349638734
+                0.1424532234963873
               ],
               "paired_mean": 0.12034686088467408,
               "value": 200.0
@@ -3923,37 +3923,37 @@
             {
               "confidence_level": 0.95,
               "paired_ci": [
-                0.061254289202128664,
-                0.06502819051560499
+                0.06125428920212868,
+                0.065028190515605
               ],
-              "paired_mean": 0.06314123985886683,
+              "paired_mean": 0.06314123985886684,
               "value": 0.25
             },
             {
               "confidence_level": 0.95,
               "paired_ci": [
-                0.12250857840425733,
-                0.13005638103120998
+                0.12250857840425736,
+                0.13005638103121
               ],
-              "paired_mean": 0.12628247971773365,
+              "paired_mean": 0.12628247971773368,
               "value": 0.5
             },
             {
               "confidence_level": 0.95,
               "paired_ci": [
-                0.183762867606386,
-                0.19508457154681497
+                0.18376286760638602,
+                0.195084571546815
               ],
-              "paired_mean": 0.18942371957660048,
+              "paired_mean": 0.1894237195766005,
               "value": 0.75
             },
             {
               "confidence_level": 0.95,
               "paired_ci": [
-                0.24501715680851466,
-                0.26011276206241996
+                0.2450171568085147,
+                0.26011276206242
               ],
-              "paired_mean": 0.2525649594354673,
+              "paired_mean": 0.25256495943546736,
               "value": 1.0
             }
           ],
@@ -3975,28 +3975,28 @@
             {
               "confidence_level": 0.95,
               "paired_ci": [
-                0.37682020497120405,
-                0.418512204258486
+                0.376820204971204,
+                0.41851220425848595
               ],
-              "paired_mean": 0.39766620461484503,
+              "paired_mean": 0.397666204614845,
               "value": 0.5
             },
             {
               "confidence_level": 0.95,
               "paired_ci": [
-                0.610544232148849,
-                0.6776716389807533
+                0.6105442321488489,
+                0.6776716389807532
               ],
-              "paired_mean": 0.6441079355648012,
+              "paired_mean": 0.6441079355648011,
               "value": 1.0
             },
             {
               "confidence_level": 0.95,
               "paired_ci": [
-                0.6947213190406517,
-                0.7701156385408957
+                0.6947213190406518,
+                0.7701156385408958
               ],
-              "paired_mean": 0.7324184787907737,
+              "paired_mean": 0.7324184787907738,
               "value": 2.0
             },
             {
@@ -4119,49 +4119,49 @@
       }
     },
     "generator": "src.experiments.run_experiments",
-    "numpy_version": "2.4.4",
+    "numpy_version": "2.5.4",
     "seed": 20260907,
     "source_files": {
       "src/aggregation/__init__.py": "8c5f1d25a3bc1c31ae2e93c401f71a17f5974a657427acdbb4e8636eb9ce686f",
-      "src/aggregation/adapter.py": "009364a8f6bcb46c982cc0633ae325309a4c04ddd2d8b4dc1e27807feddeec7b",
+      "src/aggregation/adapter.py": "156de844422a9033ef1fdf289e1a52eeed396319b979fb061a70c3d563106155",
       "src/aggregation/diagnostics.py": "171997346a8b92ed9c8758a4b52cb8e3aacb9cfef62df1798729e1e92edb8546",
-      "src/aggregation/localize.py": "1b9642356d07c21ec54b6a5d1aa957c3c8599c9663042978d7156e89fa04e5c8",
+      "src/aggregation/localize.py": "b4dca9fe578525e410155298546f1c201d6493d35904c8529fbc7613bc36f77c",
       "src/aggregation/synthetic.py": "5b5d3168c199c2112459c939b5fdc3ad6a403661b8a616a6724867bb8b2a3117",
       "src/case_systems/__init__.py": "74e268f385f329bb78cdb248419a83155dc63d1696a62abd262b604d21f200fe",
       "src/case_systems/case_category.py": "5d960fb238147b06ecbcac89c20fa6d492309b4bd586a02c943640e7fa477194",
       "src/case_systems/fluid_s.py": "a8d936ae7fdb7b0d700b9471fe3e0448c57a7a10221944cd9de06636da262dd2",
       "src/case_systems/functor.py": "fa0e1e6dfd92722a36e25d3cf11d553a67c2cfc80aaf1e6a086899bcb0f91bc4",
-      "src/case_systems/natural_transformation.py": "169781544c2542a0a32cc04d8b24d66e44e6d94ea5a3fcf0c51a40cdeac9acdd",
+      "src/case_systems/natural_transformation.py": "b80887ca0f13969fd6f310667bff774a4af634d34c304e5719d4893dbd5dfa2c",
       "src/cognitive/__init__.py": "3c6f940978412f3553fc6e7a91f7fd7a1e25934a80d47033de73255766b0ff6c",
       "src/cognitive/action_selection.py": "e25365410d6e8975c99d93e8f3f21ce2d865cd228bc43596909a09d74ef039f4",
       "src/cognitive/belief.py": "026ab79a1b3ef05de5f4e6e62d96c94c4e72d1ae9523e5aee93e26cc8ba1691f",
-      "src/cognitive/belief_updating.py": "a741756bf8ca7fa623de7d4cea56931081d4af2f1d886df981e3b5b36f57f963",
+      "src/cognitive/belief_updating.py": "7b7a8d17b509dc1b961a7d8dbd357bf2a315948910b94f1e12275f5f82de714f",
       "src/cognitive/figure_data.py": "74feb591c445ce86ceb4f59d021d4bc023e83ecc6736ab4202ed9f8f49f404c7",
-      "src/cognitive/free_energy.py": "1b8183d576fa7f172a91f67283041933a00520d0f321ac4888a3610f508489d8",
+      "src/cognitive/free_energy.py": "2cd6ba982807b2a41194e907ec8d7206856cc1d0b213905f884b8b61cf1f9c89",
       "src/cognitive/prediction_error.py": "c4bbfe9c2af040cddc98dba53e25658264ab363d98333c582003e4f3fc63559d",
       "src/cognitive/reanalysis.py": "4f5b5559afd50a14e3b821822c91fe2cd98c7fe6cbe032b04449099a2e5526eb",
       "src/daif/__init__.py": "aefc04e393ed3462dacd22541d645bf9b17b38b7fe61efcee1343637bb7ed3e7",
-      "src/daif/core.py": "11040b1d14c2548566134cbadd3fb49b0be6db6ced9f236d8b4427f2b85f6166",
+      "src/daif/core.py": "dd51f5bc65da6a7159a433f07d3cc35d937585de815a76d680a689a7258e6fa5",
       "src/daif/inference.py": "027d3825b99784c66534c55bee1130d051a473f064ec4ecab003c55dc21bb2a2",
       "src/daif/metrics.py": "e5d016be3460de416b4b7c3cd6515e720dfac775c48ab144a5e5f9933488f6b6",
-      "src/daif/policy.py": "5dd519972070162e82fc0aa5c70b23fbe247acac6dc27b3ec0db18937a60f75a",
+      "src/daif/policy.py": "c58327e80ab4fafc44a8f8dd9a6af4d4d1a46ca7ca95ead8e1bd213fa247ceaf",
       "src/daif/prediction.py": "084f702680684226284caabd66bd3de7d65ebecc29665d016a74f41664730dda",
-      "src/daif/quantile.py": "6cdc0722d96b0ecf7589f27f576a190dd70cd2d6c1c58cb966e41a62aefcd26e",
+      "src/daif/quantile.py": "b7b4e1ed2aae27083956f0a9b055f78b82eacdbef79fe553789c669b7fd3b84d",
       "src/daif/types.py": "945d46933c689891f9e367649231c69f35130cfe5ed13dc14f3df72a9d9da01c",
       "src/diagrams/__init__.py": "8c9a72e4f079f5a2fdf5e08a6c35f2cee28f92b4f62466eb10f07714addae8a8",
-      "src/diagrams/complexity_examples.py": "bf23af99b6437abe2891bf622c4f527dec2f6aea9358aabda39c28f1b26daf69",
-      "src/diagrams/complexity_metrics.py": "0ae25545e6706f923ce4f7b36e5741469a1be8b1548a9f2e31c8a8bffb6b5f1e",
-      "src/diagrams/ditransitive.py": "5db154573e8d3e7a6532b878cab961c27c2d905d93c67afc6237ce95c5ad00e9",
-      "src/diagrams/string_diagram.py": "1d9b5ea7ee66240ba2a4bc83059554c9688b266788e9067eb9cde8f68ec6a2cb",
+      "src/diagrams/complexity_examples.py": "805d4982e4f1570cec399a905319fa364c7c7b3fcd1e74f1a00c4fde2d1b97c4",
+      "src/diagrams/complexity_metrics.py": "1bc7a353562b27f6e3c450629ed96432ce4b1f15e25e3b20ed5bc6fe68d13b0b",
+      "src/diagrams/ditransitive.py": "4b02cd6909aef48c98e9e86c66a4e0fc3ba8cc5dc169565edd9db69e760e5fa7",
+      "src/diagrams/string_diagram.py": "44719e5b783496ed8ab7f8392a942c3ea3c55014e9bf7b7791d9b9a8b4ed2f34",
       "src/enriched_cat/__init__.py": "15b0c317d00e4a22bfbef08ec7d343ac8cccc4552abc6d9d78d7bfbd49f19a05",
-      "src/enriched_cat/enriched.py": "05d20961ef9f32c9820d54703e815c2bd7616b664c1015517f930a6887cbe7f3",
+      "src/enriched_cat/enriched.py": "cbe7f8279014809dd040ac7d63d91561f99a8ae30d37ed6219a6053a7d464b18",
       "src/experiments/__init__.py": "a0af84f9fe1bf0558a5351b2bbeeb39e9b3c99d5451542d306a41fbef0271d73",
       "src/experiments/config.py": "cba1fdc78b44c6407590cfa90b8ce2948bda166c4eb6686e91daba6c50ae2c97",
       "src/experiments/rng.py": "58950d72c68d7afc079691cdb5340fa3ea9c1c34ad0dbaa841ef4236886a9673",
-      "src/experiments/runner.py": "6e2d4365aa6b9434e7325a9ad06a8a3fc6d8d42f860d949c14aaf9fcd71681e0",
+      "src/experiments/runner.py": "748c3f47fbb83ae2f8504823bdd694575935bceba694ed8785db4171fa21c926",
       "src/experiments/serialization.py": "cf33114676d927deec8a043a2f27cdf719fc5dd0ea2249d6720fda76caabf069",
-      "src/experiments/stats.py": "c86d11bd7a4da5696f228515e4226434480c3df1497b53a9dedcfcc84fab39ec",
-      "src/experiments/studies.py": "e11a0539ab9ef9d8946a802b56a7eb42e1c8810c614efeceb4f156cdfbd655e9",
+      "src/experiments/stats.py": "e376bddd314639c0f5f8be5a12dfe2bac8a811bac61759a5f9d2e7867cf127a7",
+      "src/experiments/studies.py": "96362b9b2287bb511fd01b3a8fcfb1ce7a42a84db43559bc2607ddb0fc2e39e3",
       "src/experiments/synthetic.py": "bc80fd6cec2d56ab22cf46d1fe87aa24e63c933b39807e77f7193d6b7db4dd9f",
       "src/numerics.py": "e67e8c7e9770b7174c08c1f605925c397465a3453b45e3a69ff537a870c8e4ef",
       "src/quantum/__init__.py": "d6aafbb8ce403553cd115b25f63648e4a4ee1fe781f6cbe666ce191a0d63ccfc",
@@ -4172,7 +4172,7 @@
       "src/topos_theory/__init__.py": "b18f95ba4da17edfc13142479e2496421ee2aaa806297025602387a33f932abb",
       "src/topos_theory/topos.py": "3c6715948201bf5984dc3e21b66475a6b5f0d1bfff62d0f59ed9cb96efbc5fda"
     },
-    "source_sha256": "e1b9d18b92ee06111e8949faa7b393aa67b81ea545a7de9c8994e06361e80589"
+    "source_sha256": "de3bd6ecdf4d288b492f6ba947171b9ee02a67b5f0d888f15a23742192ddbc61"
   },
   "schema_version": "1.0",
   "variables": {
@@ -4225,7 +4225,7 @@
       "ci_high": 2.429000078976455,
       "ci_low": 1.820999921023545,
       "confidence_level": 0.95,
-      "interpretation": "Paired mean difference between the regime-resolved polarity-conflict count and the count after projecting the regime away, on identical synthetic corpora at common random numbers; negative values indicate conflicts collapsed by the regime projection.",
+      "interpretation": "Paired mean difference between the regime-resolved polarity-conflict count and the count after projecting the regime away, on identical synthetic corpora at common random numbers; positive values indicate conflicts collapsed by the regime projection.",
       "sample_unit": "replicate",
       "unit": "count",
       "value": 2.125
@@ -4303,8 +4303,8 @@
       "value": 0.0698747372605883
     },
     "exp_calibration_coverage_error_mean": {
-      "ci_high": 0.021737145708122296,
-      "ci_low": 0.018792438948664128,
+      "ci_high": 0.021737145708122293,
+      "ci_low": 0.01879243894866413,
       "confidence_level": 0.95,
       "interpretation": "Mean |empirical coverage - exact discrete-law target F(Q(tau))| per level, averaged over replicates; validates the coverage diagnostic against the exact null, not the nominal level.",
       "sample_unit": "replicate",
@@ -4318,7 +4318,7 @@
       "interpretation": "Upper bound of the 0.95 interval for exp_calibration_coverage_error_mean.",
       "sample_unit": "replicate",
       "unit": "probability",
-      "value": 0.021737145708122296
+      "value": 0.021737145708122293
     },
     "exp_calibration_coverage_error_mean_ci95_low": {
       "ci_high": null,
@@ -4327,7 +4327,7 @@
       "interpretation": "Lower bound of the 0.95 interval for exp_calibration_coverage_error_mean.",
       "sample_unit": "replicate",
       "unit": "probability",
-      "value": 0.018792438948664128
+      "value": 0.01879243894866413
     },
     "exp_calibration_level_target_gap_max": {
       "ci_high": null,
@@ -4348,13 +4348,13 @@
       "value": 3.3306690738754696e-16
     },
     "exp_filter_free_energy_final_mean": {
-      "ci_high": 0.16593302091514098,
-      "ci_low": 0.15003815014468122,
+      "ci_high": 0.16593302091514095,
+      "ci_low": 0.1500381501446812,
       "confidence_level": 0.95,
       "interpretation": "Mean final variational free energy after the configured filter updates.",
       "sample_unit": "replicate",
       "unit": "nats",
-      "value": 0.1579855855299111
+      "value": 0.15798558552991107
     },
     "exp_filter_free_energy_final_mean_ci95_high": {
       "ci_high": null,
@@ -4363,7 +4363,7 @@
       "interpretation": "Upper bound of the 0.95 interval for exp_filter_free_energy_final_mean.",
       "sample_unit": "replicate",
       "unit": "nats",
-      "value": 0.16593302091514098
+      "value": 0.16593302091514095
     },
     "exp_filter_free_energy_final_mean_ci95_low": {
       "ci_high": null,
@@ -4372,7 +4372,7 @@
       "interpretation": "Lower bound of the 0.95 interval for exp_filter_free_energy_final_mean.",
       "sample_unit": "replicate",
       "unit": "nats",
-      "value": 0.15003815014468122
+      "value": 0.1500381501446812
     },
     "exp_filter_paired_loglik_diff_mean": {
       "ci_high": -0.02029506795328638,
@@ -4402,13 +4402,13 @@
       "value": -0.022547069967566905
     },
     "exp_filter_posterior_accuracy_mean": {
-      "ci_high": 0.9976441862450065,
-      "ci_low": 0.996973643722818,
+      "ci_high": 0.9976441862450066,
+      "ci_low": 0.9969736437228182,
       "confidence_level": 0.95,
       "interpretation": "Mean P(true role) after the configured assimilations with the identity transition.",
       "sample_unit": "replicate",
       "unit": "probability",
-      "value": 0.9973089149839123
+      "value": 0.9973089149839124
     },
     "exp_filter_posterior_accuracy_mean_ci95_high": {
       "ci_high": null,
@@ -4417,7 +4417,7 @@
       "interpretation": "Upper bound of the 0.95 interval for exp_filter_posterior_accuracy_mean.",
       "sample_unit": "replicate",
       "unit": "probability",
-      "value": 0.9976441862450065
+      "value": 0.9976441862450066
     },
     "exp_filter_posterior_accuracy_mean_ci95_low": {
       "ci_high": null,
@@ -4426,7 +4426,7 @@
       "interpretation": "Lower bound of the 0.95 interval for exp_filter_posterior_accuracy_mean.",
       "sample_unit": "replicate",
       "unit": "probability",
-      "value": 0.996973643722818
+      "value": 0.9969736437228182
     },
     "exp_filter_posterior_mode_match_rate": {
       "ci_high": null,

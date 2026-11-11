@@ -323,9 +323,26 @@ def syntactic_complexity_score(
 
     Returns:
         Floating-point complexity score (non-negative).
+
+    Raises:
+        ValueError: If any weight is not a finite, non-negative number.
     """
     if not DISCOPY_AVAILABLE:  # pragma: no cover
         raise RuntimeError("discopy required")
+    for weight_name, weight in (
+        ("w_words", w_words),
+        ("w_cups", w_cups),
+        ("w_caps", w_caps),
+        ("w_depth", w_depth),
+    ):
+        if isinstance(weight, bool) or not isinstance(weight, (int, float)):
+            raise ValueError(
+                f"{weight_name} must be a finite non-negative weight, got {weight!r}"
+            )
+        if not math.isfinite(weight) or weight < 0:
+            raise ValueError(
+                f"{weight_name} must be a finite non-negative weight, got {weight!r}"
+            )
     words = count_words(diagram)
     cups = count_cups(diagram)
     caps = count_caps(diagram)

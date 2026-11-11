@@ -27,6 +27,12 @@ from .styles import (
 logger = logging.getLogger(__name__)
 
 
+def _entropy_change_label(change: float) -> str:
+    """Signed nats label: decreases use a minus sign, increases a plus."""
+    sign = "−" if change >= 0 else "+"
+    return f"{sign}{abs(change):.2f} nats"
+
+
 def plot_alignment_frame_belief_dynamics(
     prior: CaseDiagramBelief,
     trajectory: Sequence[CaseDiagramBelief],
@@ -140,10 +146,11 @@ def plot_alignment_frame_belief_dynamics(
     ax2.set_xticklabels(list(evidence_labels), fontsize=FONT_SIZE_FLOOR, fontstyle="italic")
     if len(entropies) > 1:
         drops = [entropies[i] - entropies[i + 1] for i in range(len(entropies) - 1)]
-        steepest = int(np.argmax(drops))
+        steepest = int(np.argmax(np.abs(drops)))
+        change = drops[steepest]
         y_annot = max(entropies[0] * 0.82, float(np.min(entropies)) + 0.02)
         ax2.annotate(
-            f"−{drops[steepest]:.2f} nats\n({evidence_labels[steepest + 1]})",
+            f"{_entropy_change_label(change)}\n({evidence_labels[steepest + 1]})",
             xy=(x_steps[steepest + 1], entropies[steepest + 1]),
             xytext=(x_steps[steepest + 1] + 0.35, y_annot),
             fontsize=FONT_SIZE_ANNOTATION,

@@ -140,8 +140,11 @@ class NaturalTransformation:
         Returns:
             True if every object in the shared source category has a component.
         """
-        source_objects = set(self.source_functor.object_map.keys())
-        defined = set(self.components.keys())
+        # The declared domain is the source category's object set, not the
+        # functor's (possibly partial) object map: a functor that omits a
+        # source role must not certify completeness by omitting it here too.
+        source_objects = set(self.source_functor.source.objects)
+        defined = set(self.components)
         complete = source_objects <= defined
         if not complete:
             missing = {r.name for r in source_objects - defined}

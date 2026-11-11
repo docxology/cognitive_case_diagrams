@@ -132,3 +132,13 @@ class TestDistributionalEpistemicValue:
     def test_invalid_reference_variance_raises(self):
         with pytest.raises(ValueError, match="reference_variance"):
             distributional_epistemic_value(_make_dist(), reference_variance=-1.0)
+
+    def test_extreme_variance_ratio_stays_finite(self):
+        """The log-ratio is finite even when var/reference underflows to zero."""
+        import math
+
+        ev = distributional_epistemic_value(
+            _make_dist(var=1e-300), reference_variance=1e300
+        )
+        assert np.isfinite(ev)
+        assert ev == pytest.approx(0.5 * (math.log(1e-300) - math.log(1e300)))

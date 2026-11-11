@@ -42,11 +42,9 @@ class TestDitransitiveSentence:
         assert sent.num_arguments == 3
 
     def test_codomain_type(self) -> None:
-        """Sentence codomain type is 'I' (identity — monoidal unit)."""
+        """The ditransitive sentence's verb produces the sentence wire 's'."""
         sent = create_ditransitive("Alice", "gave", "Bob", "book")
-        # The native representation uses manual box/wire construction,
-        # so codomain_type returns the monoidal unit 'I'
-        assert sent.codomain_type == "I"
+        assert sent.codomain_type == "s"
 
     def test_factory_function(self) -> None:
         """Factory function creates valid sentence."""

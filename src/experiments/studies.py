@@ -776,7 +776,7 @@ def run_aggregation(
       regime-resolved polarity-conflict count and the count after
       projecting the regime away. On these corpora each conflict family
       straddles two regimes with a polarity-flipped duplicate on each
-      side, so the difference is negative exactly when projection
+      side, so the difference is positive exactly when projection
       collapses regime-resolved conflicts into merged ones; it is the
       regime-projection effect of the ablation, not a detection recall.
     - closure diagnostic: the mean finite pairwise-closure ratio of the

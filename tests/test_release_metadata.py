@@ -236,7 +236,7 @@ def test_software_description_is_distinct_identity(metadata_tree: Path) -> None:
     assert software_description.startswith("Software accompanying the article 'Example'")
     assert data["software"]["upload_type"] == "software"
     assert data["publication"]["upload_type"] == "publication"
-    assert data["software"]["license"] != data["publication"]["license"] or True
+    assert data["software"]["license"] != data["publication"]["license"]
 
 
 def test_software_deposit_facts_current_version(metadata_tree: Path) -> None:
@@ -286,46 +286,47 @@ def test_software_deposit_record_not_in_zenodo_related(
     ]
 
 
-def test_self_colliding_deposit_record_rejected(
-    metadata_tree: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    import src.release_metadata as module
+def test_self_colliding_deposit_record_rejected() -> None:
+    from src.release_metadata import _software_deposit_facts
 
-    monkeypatch.setattr(
-        module,
-        "SOFTWARE_DEPOSIT_RECORDS",
-        {"2.4.0": {"version_doi": "10.5281/zenodo.42", "concept_doi": "10.5281/zenodo.42"}},
-    )
+    records = {
+        "2.4.0": {
+            "version_doi": "10.5281/zenodo.42",
+            "concept_doi": "10.5281/zenodo.42",
+        }
+    }
     with pytest.raises(ValueError, match="self-colliding"):
-        module._software_deposit_facts("2.4.0")
+        _software_deposit_facts("2.4.0", records=records)
 
 
-def test_malformed_deposit_record_rejected(
-    metadata_tree: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    import src.release_metadata as module
+def test_malformed_deposit_record_rejected() -> None:
+    from src.release_metadata import _software_deposit_facts
 
-    monkeypatch.setattr(
-        module,
-        "SOFTWARE_DEPOSIT_RECORDS",
-        {"2.4.0": {"version_doi": "bad", "concept_doi": "10.5281/zenodo.22655341"}},
-    )
+    records = {
+        "2.4.0": {
+            "version_doi": "bad",
+            "concept_doi": "10.5281/zenodo.22655341",
+        }
+    }
     with pytest.raises(ValueError, match="must be"):
-        build_release_metadata(metadata_tree)
+        _software_deposit_facts("2.4.0", records=records)
 
 
-def test_metadata_build_performs_no_network_io(
-    metadata_tree: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_metadata_build_performs_no_network_io(metadata_tree: Path) -> None:
     """AC5: metadata construction and validation never touch the network."""
-    import socket
+    import sys
 
-    def _forbidden(*args: object, **kwargs: object) -> None:
-        raise AssertionError("metadata build must not open network sockets")
+    events: list[str] = []
 
-    monkeypatch.setattr(socket, "socket", _forbidden)
-    monkeypatch.setattr(socket, "create_connection", _forbidden)
+    def record_socket_event(event: str, args: tuple[object, ...]) -> None:
+        if event.startswith("socket."):
+            events.append(event)
+
+    # A recording audit hook observes real interpreter socket activity
+    # without replacing socket module functions.
+    sys.addaudithook(record_socket_event)
     build_release_metadata(metadata_tree)
     written = write_release_metadata(metadata_tree)
     assert validate_release_metadata(metadata_tree) == written
+    assert events == [], events
     assert written["software_deposits"]["current"] is not None

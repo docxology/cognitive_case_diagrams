@@ -40,14 +40,16 @@ def plot_povm_probabilities(
     Returns:
         The output path where the figure was saved.
     """
-    fig, ax = plt.subplots(figsize=(10, 5), dpi=FIGURE_DPI)
-
+    if not povm.is_complete():
+        raise ValueError("Cannot plot an incomplete POVM")
     roles = [r.name for r in povm.roles]
+    # Compute probabilities before allocating a figure: case_probability
+    # validates the density matrix, so a rejected input must not leak a
+    # pyplot figure.
     probs = [case_probability(povm.elements[r], density_matrix) for r in povm.roles]
     colors = [CASE_COLORS.get(r, COLOR_UNKNOWN) for r in roles]
 
-    if not povm.is_complete():
-        raise ValueError("Cannot plot an incomplete POVM")
+    fig, ax = plt.subplots(figsize=(10, 5), dpi=FIGURE_DPI)
     ax.bar(roles, probs, color=colors, edgecolor="white")
     for i, prob in enumerate(probs):
         ax.text(i, prob + 0.025, f"{prob:.3f}", ha="center", fontsize=FONT_SIZE_FLOOR)

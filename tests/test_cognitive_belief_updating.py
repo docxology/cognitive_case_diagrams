@@ -86,6 +86,20 @@ class TestUpdateBelief:
         with pytest.raises(ValueError, match="incompatible"):
             update_belief(prior, np.array([0.0, 1.0]))
 
+    def test_unreachable_role_dynamic_range_keeps_supported_mass(self) -> None:
+        """A huge likelihood on a zero-prior role must not erase possible evidence.
+
+        Scaling by the global maximum underflows 1e-300 to zero when the
+        zero-prior ACC likelihood is 1e300; scaling over the support keeps the
+        posterior at NOM.
+        """
+        prior = CaseDiagramBelief(
+            roles=[CaseRole.NOM, CaseRole.ACC],
+            probabilities=np.array([1.0, 0.0]),
+        )
+        posterior = update_belief(prior, np.array([1e-300, 1e300]))
+        np.testing.assert_allclose(posterior.probabilities, [1.0, 0.0])
+
     def test_name_propagation(self) -> None:
         """Updated belief has '_updated' name suffix."""
         prior = CaseDiagramBelief(
@@ -137,6 +151,20 @@ class TestSequentialBeliefUpdate:
         )
         trajectory = sequential_belief_update(prior, [np.array([0.6, 0.4])] * 5)
         assert len(trajectory) == 5
+
+    @pytest.mark.parametrize(
+        "bad",
+        [np.array([True, False]), np.array([1 + 2j, 0 + 0j])],
+        ids=["boolean", "complex"],
+    )
+    def test_sequential_rejects_invalid_likelihoods(self, bad) -> None:
+        """Sequential updates must apply the same validation as update_belief."""
+        prior = CaseDiagramBelief(
+            roles=[CaseRole.NOM, CaseRole.ACC],
+            probabilities=np.array([0.5, 0.5]),
+        )
+        with pytest.raises(ValueError):
+            sequential_belief_update(prior, [bad])
 
     def test_empty_sequence(self) -> None:
         """Empty observation sequence returns empty trajectory."""

@@ -271,6 +271,24 @@ class TestWassersteinReturnDistance:
         w = wasserstein_return_distance(da, db, p=1)
         assert w >= 0.0
 
+    def test_w2_survives_square_overflow(self):
+        """A representable 1e200 separation must not return inf."""
+        a = DistributionalReturn(1e200, 0.0, np.array([1e200]), np.array([0.5]))
+        b = DistributionalReturn(0.0, 0.0, np.array([0.0]), np.array([0.5]))
+        assert wasserstein_return_distance(a, b, p=2) == pytest.approx(1e200, rel=1e-12)
+
+    def test_w1_crossing_survives_square_overflow(self):
+        """The crossing-area formula squares differences; scale it when needed."""
+        a = DistributionalReturn(
+            0.0, 0.0, np.array([0.0, 2e200]), np.array([0.25, 0.75])
+        )
+        b = DistributionalReturn(
+            0.0, 0.0, np.array([1e200, 1e200]), np.array([0.25, 0.75])
+        )
+        assert wasserstein_return_distance(a, b, p=1) == pytest.approx(
+            7.5e199, rel=1e-12
+        )
+
 
 class TestWassersteinMetricProperties:
     """Metric axioms: identity, symmetry, triangle inequality (Phase D1)."""

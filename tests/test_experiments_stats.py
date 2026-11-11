@@ -127,6 +127,19 @@ def test_mean_ci_rejects_unrepresentable_bounds():
         mean_ci([1e308, -1e308])
 
 
+def test_mean_ci_rejects_overflowing_endpoint():
+    """A mean at the float ceiling with a positive half-width must not return inf.
+
+    mean and half are each finite, but mean + half overflows to inf; the
+    computed endpoints must be validated, not returned unchecked.
+    """
+    import numpy as np
+
+    ceiling = np.finfo(float).max
+    with pytest.raises(ValueError, match="not representable"):
+        mean_ci([ceiling, np.nextafter(ceiling, 0.0)])
+
+
 def test_wilson_huge_z_returns_unit_interval():
     """z*z overflows for z=1e308; the limiting Wilson interval is [0, 1]."""
     assert wilson_score_interval(0, 10, z=1e308) == (0.0, 1.0)

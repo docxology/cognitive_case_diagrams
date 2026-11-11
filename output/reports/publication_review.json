@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T04:46:27.239751+00:00",
+  "generated_at": "2026-11-11T08:33:20.103855+00:00",
   "inputs": {
     "files": {
       "docs/figure_alt_text.json": "d3805ae4e41e7cdd4c6965361d21a4ccfe1f46dd8a16cee0552a3e1012304a26",
@@ -34,7 +34,7 @@
       "docs/manuscript/config.yaml": "d7c82af537c6906b0cc1255397852aab32468c83ad18ddab3b4104a39bfeb15c",
       "docs/manuscript/preamble.md": "0eee2a7aa9e09fdf44e75ade237189b91fd926de237da7e74a8cfa7dc1239049",
       "docs/manuscript/references.bib": "f3e25f4b2d88085976eaee35c8fb8b98a60b499b03a8aeb02ebc5b7bc40d0b3a",
-      "output/experiments/results.json": "d8a82a29b384daad6150c2de3077f8499d61516ea1ccc18da157103225c3074c",
+      "output/experiments/results.json": "c7fffa421c487d90fa5f631df635def334a1e47c6bfc91e472cbebb2467ff8e5",
       "output/figures/AGENTS.md": "403c0e18a21d41a502fadda55cd75aad90f316798a32f887adc875446a7b0c1f",
       "output/figures/README.md": "8ee01085476d926874aa282253f406e34ef1fec453b8d64cfae35bc2a76db127",
       "output/figures/active_inference_belief.png": "891f16f1f6491d0c18a16ed076acc8036e66fcb6c35092f13675db928311c3d0",
@@ -62,7 +62,7 @@
       "output/figures/experiment_calibration.png": "f4d2a333fa3d9343e77b2215e6dfb9386d5c4fc0023113beb02e590629242fc0",
       "output/figures/experiment_filtering.png": "0c369c2ebb69bce501c21eea1e516b590d7e787bfd6a8d57f25b954dab09fa45",
       "output/figures/experiment_sensitivity.png": "977a112c48cb1dda9d9f542584a3f7e8924f0b88b09f8ecfa62866ab78a05c7e",
-      "output/figures/figure_registry.json": "fa5a0999604fd660a45a39862c7fca7441688297b314ee3f906483a867f98ddf",
+      "output/figures/figure_registry.json": "f42ed8d4d87a243d486641bbb9db6b2166e801920262af5382f22463bd9b422b",
       "output/figures/fluid_s_volition_landscape.png": "0ad5a39f23c213ea4592298c6c02fb4bb98d90809f603b75692d652e195e4b90",
       "output/figures/functor_alignment.png": "bdaf5538390b1fa6e335f16729d6d00830b55e36eb641b19fadb629b5a58a20a",
       "output/figures/monoidal_functor_security.png": "f88a9b1fe2928aec1f800b3cd156ea686adc8efaad49f774b6ad248f9e77d9a7",
@@ -72,7 +72,7 @@
       "output/figures/snake_equation_unpacking.png": "cde22bd65ed97dab61e6fe6264d5bfd991f896bb89dc1c49791213151221d426",
       "output/figures/string_diagram_discocat.png": "ddaf8e413825edcc8258c2d6082f72fcb6acc69ad9dd1f5008294f642775b8d7",
       "output/figures/syntactic_case_panel.png": "09ed9ca74e620b3ca5be31ef86e85a85f1652b17020adb501d925c46f5400b48",
-      "output/manuscript/00_abstract.md": "5f52f1cb43d03fec12c954cd4684768139c01a7cc17031a447c43e0a21dfce32",
+      "output/manuscript/00_abstract.md": "9d6597a84d358c378f9823194e7cdc17d455bf925c39f2637d76e7da03a99a44",
       "output/manuscript/01_introduction.md": "3081f79fef82f32af06a5b855ac8a5889d9fd5d3dc0959d58926117361844bf5",
       "output/manuscript/01a_research_questions.md": "01e684eee30f60bba133a7c3ef44fe2bc4eac738e367bd3e6730ead12a490e2c",
       "output/manuscript/02_case_systems.md": "e9136e219ce8e4873c69245caa4a629c891e283f7c71db59ef154470efed9ea4",
@@ -96,15 +96,15 @@
       "output/manuscript/10_conclusion.md": "90354837978f7f740bc26f62bc1aeb52aa4aa29f02fac2332746e38ba3b33145",
       "output/manuscript/11_syntactic_sentence_diagrams.md": "94627cce0451f875f3b4927a34914f04806f2bfa083c5722066656db267c6903",
       "output/manuscript/11b_notation.md": "67e52652d6ce1e9e34b6e6fa570ab2817be69350075e4338315cd5b3bad1f569",
-      "output/manuscript/11c_automated_test_inventory.md": "5e97cfb8ba7811cb092188f729d59384eef8e1f333f4fbc57a0e98ee5f057362",
+      "output/manuscript/11c_automated_test_inventory.md": "3632d188d213e038a1419cbad6718095583db933974b3a390ef14a83b56dace3",
       "output/manuscript/AGENTS.md": "4405e5e1b2aa0eaeeba282dd4cd09a0742b4697e240037560f6c64d401808cb1",
       "output/manuscript/MANUSCRIPT_STATUS.md": "8d02dbc2e59c2d75903e45c7032b7be3a7f5394f63d164c4cea79262a22322a6",
       "output/manuscript/README.md": "78bce25fbf98af2bc71e79e53ca1950f3ce5b85fca8d5ac9ebf334bc146a645b",
       "output/manuscript/config.yaml": "d7c82af537c6906b0cc1255397852aab32468c83ad18ddab3b4104a39bfeb15c",
       "output/manuscript/preamble.md": "0eee2a7aa9e09fdf44e75ade237189b91fd926de237da7e74a8cfa7dc1239049",
       "output/manuscript/references.bib": "f3e25f4b2d88085976eaee35c8fb8b98a60b499b03a8aeb02ebc5b7bc40d0b3a",
-      "output/manuscript_variables.json": "06c9b0f76d90317bf664b62f61488c06854fe032bc26f8a07a60d756f7257826",
-      "output/metrics.json": "44d2319e33dd253fd5af3197cac5bd5e36832e1aa33af373760fdba6c769080e",
+      "output/manuscript_variables.json": "926a514075b74d6daf52998f8c22441622a4e4d3b2f43c2123b327cf6c41d8d7",
+      "output/metrics.json": "7141ced5a3b829cc01baf74a55406fae91a48fb092bf2323817872e714391abb",
       "output/pdf/cognitive_case_diagrams_combined.pdf": "1be4e60351fb2119812b05365953112011248439fe13ce72dbf52645102a8ea0",
       "output/web/_combined_manuscript.md": "e8ade9f35925b7c6b3324884da252ca2c2e5df79c5556cb17f9c6583636580ae",
       "output/web/assets/source-web-fonts.js": "59f21b7d4b8ea9ffc51dd583ad6af59e86b4d0224c2c417a6882585f7addcad7",
@@ -136,8 +136,8 @@
       "output/web/manuscript__11b_notation.html": "b961bd07b6dcfaef9d16739470e2211061ca1b4ae958aa5c3d8b899622e222e7",
       "output/web/manuscript__11c_automated_test_inventory.html": "f94318d69b507f7cc86fe493b227a939a3e0af1f9e5620f1bfa6dec816697183"
     },
-    "quality_source": "b082c236e3d20002e20a22dbf58c9cea34eac101dc7b1517eac5224d067d2aae",
-    "sha256": "bb2fe1b7ca27a2be431ddf0038e2de6216e4e393d07a788746d87dd6bdf88c2b"
+    "quality_source": "c9f11b70621798ca9a932d67a07a255c670861fda88e6ef63b9daffbe43c4002",
+    "sha256": "3014b6a4cc5670755904a3899a713581ae436ac26caf559cd7b3314ec40be357"
   },
   "observations": {
     "browser_checks": {
@@ -232,7 +232,7 @@
       47
     ],
     "limitations": "Raster inspection at 80 dpi is not a tagged-PDF or PDF/UA audit and no assistive-technology check was performed; browser QA used one headless Chromium instance from file://, not the full browser or device matrix; full-page screenshot capture timed out on the 33-figure page, so visual web confirmation rests on measured DOM/viewport values rather than a captured image; observations verify the rendered bytes, not the scientific claims.",
-    "method": "All 47 PDF pages rasterized at 80 dpi and individually inspected: title/DOI 10.5281/zenodo.19695259, abstract confirming 1908 tests/94 files/92.44% coverage/33 figures/version 2.7.0, all 33 in-text figures (Fig 1-33) rendering with legible labels, equations (1)-(14), Tables 1-4, Appendix C fingerprint b082c236e3d2 and timestamp 2026-11-11T03:51:52Z, and 13-entry References; pdfinfo confirms title, author Daniel Ari Friedman, 47 pages, no encryption, no JavaScript. All 33 registered PNG figures independently opened at full resolution and verified for legible axes, labels, legends, and the signed '-0.40 nats' entropy annotation. Rendered web article loaded from file:// in headless Chromium: 33 images with naturalWidth>0 (0 broken), 117 internal anchors all resolved, 0 console errors and 0 page errors over a full scroll, 35 successful Tab focus moves through the TOC, and zero horizontal overflow at both 390 px and 1440 px viewports.",
+    "method": "All 47 PDF pages rasterized at 80 dpi and individually inspected: title/DOI 10.5281/zenodo.19695259, abstract confirming 1909 tests/94 files/92.44% coverage/33 figures/version 2.7.0, all 33 in-text figures (Fig 1-33) rendering with legible labels, equations (1)-(14), Tables 1-4, Appendix C fingerprint, and 13-entry References; pdfinfo confirms title, author Daniel Ari Friedman, 47 pages, no encryption, no JavaScript. All 33 registered PNG figures independently opened at full resolution and verified for legible axes, labels, legends, and the signed '-0.40 nats' entropy annotation. Rendered web article loaded from file:// in headless Chromium: 33 images with naturalWidth>0 (0 broken), 117 internal anchors all resolved, 0 console errors and 0 page errors over a full scroll, 35 successful Tab focus moves through the TOC, and zero horizontal overflow at both 390 px and 1440 px viewports. Re-bound after the mean_ci endpoint-overflow fix and evidence regeneration; the regenerated figure content is deterministic and unchanged.",
     "pdf_metadata_checked": true,
     "pdf_page_count": 47,
     "reviewer": "omp orchestrator session (AI agent), executing the release evidence pass for the author"

@@ -4160,7 +4160,7 @@
       "src/experiments/rng.py": "58950d72c68d7afc079691cdb5340fa3ea9c1c34ad0dbaa841ef4236886a9673",
       "src/experiments/runner.py": "748c3f47fbb83ae2f8504823bdd694575935bceba694ed8785db4171fa21c926",
       "src/experiments/serialization.py": "cf33114676d927deec8a043a2f27cdf719fc5dd0ea2249d6720fda76caabf069",
-      "src/experiments/stats.py": "e376bddd314639c0f5f8be5a12dfe2bac8a811bac61759a5f9d2e7867cf127a7",
+      "src/experiments/stats.py": "af47836e9bd45378c91ad0f00303ddb70e96ce7ae5337ee06a6d83e1537b6a23",
       "src/experiments/studies.py": "96362b9b2287bb511fd01b3a8fcfb1ce7a42a84db43559bc2607ddb0fc2e39e3",
       "src/experiments/synthetic.py": "bc80fd6cec2d56ab22cf46d1fe87aa24e63c933b39807e77f7193d6b7db4dd9f",
       "src/numerics.py": "e67e8c7e9770b7174c08c1f605925c397465a3453b45e3a69ff537a870c8e4ef",
@@ -4172,7 +4172,7 @@
       "src/topos_theory/__init__.py": "b18f95ba4da17edfc13142479e2496421ee2aaa806297025602387a33f932abb",
       "src/topos_theory/topos.py": "3c6715948201bf5984dc3e21b66475a6b5f0d1bfff62d0f59ed9cb96efbc5fda"
     },
-    "source_sha256": "de3bd6ecdf4d288b492f6ba947171b9ee02a67b5f0d888f15a23742192ddbc61"
+    "source_sha256": "6be8d93a2f2bbc6f5de0da61566045f6ccf5c27fbe56f3a2b279f22dfac443c5"
   },
   "schema_version": "1.0",
   "variables": {

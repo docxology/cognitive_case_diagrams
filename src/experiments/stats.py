@@ -144,7 +144,12 @@ def mean_ci(
     half = z * sd / math.sqrt(arr.size)
     if not (math.isfinite(mean) and math.isfinite(half)):
         raise ValueError("interval bounds are not representable in floating point")
-    return (mean, mean - half, mean + half)
+    lo, hi = mean - half, mean + half
+    if not (math.isfinite(lo) and math.isfinite(hi)):
+        # A finite mean at the float ceiling/floor plus a positive half-width
+        # overflows one endpoint even though mean and half are each finite.
+        raise ValueError("interval bounds are not representable in floating point")
+    return (mean, lo, hi)
 
 def paired_mean_ci(
     differences: np.ndarray | list[float],

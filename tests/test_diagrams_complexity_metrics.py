@@ -187,6 +187,12 @@ class TestAnalyzeDiagram:
         i = syntactic_complexity_score(_make_intransitive())
         assert t > i
 
+    @pytest.mark.parametrize("bad", [-0.5, float("nan"), float("inf"), True])
+    def test_syntactic_complexity_rejects_invalid_weights(self, bad) -> None:
+        """Weights must be finite, non-negative, and not booleans."""
+        with pytest.raises(ValueError, match="finite non-negative"):
+            syntactic_complexity_score(_make_transitive(), w_words=bad)
+
 
 @pytest.mark.skipif(not DISCOPY_AVAILABLE, reason="discopy not installed")
 class TestCompareDiagrams:

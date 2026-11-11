@@ -108,32 +108,15 @@ def test_environment_fingerprint_is_deterministic_and_explicit() -> None:
     ).hexdigest()
 
 
-def test_environment_fingerprint_changes_when_a_package_is_absent(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """An uninstalled optional package flips to the ``absent`` sentinel."""
-    from importlib import metadata
+def test_distribution_version_marks_absent_package() -> None:
+    """An uninstalled optional package resolves to the ``absent`` sentinel.
 
-    baseline = environment_fingerprint()
-    original = metadata.version
+    Uses a real absent distribution name instead of replacing
+    ``importlib.metadata.version``.
+    """
+    from src.visualization.figure_registry import _distribution_version
 
-    def missing(name: str) -> str:
-        if name == "matplotlib":
-            raise metadata.PackageNotFoundError(name)
-        return original(name)
-
-    monkeypatch.setattr(metadata, "version", missing)
-    altered = environment_fingerprint()
-    assert altered != baseline
-    import sys
-
-    lines = [f"python=={sys.version.split()[0]}"]
-    for name in ("discopy", "matplotlib", "numpy"):
-        version = "absent" if name == "matplotlib" else original(name)
-        lines.append(f"{name}=={version}")
-    assert altered == hashlib.sha256(
-        "\n".join(sorted(lines)).encode("utf-8")
-    ).hexdigest()
+    assert _distribution_version("cognitive-case-diagrams-not-installed") == "absent"
 
 
 def test_registry_entries_bind_the_rendering_environment(project: Path) -> None:

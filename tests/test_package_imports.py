@@ -27,6 +27,22 @@ def test_subpackage_module_access():
     assert src.visualization is viz
 
 
+def test_subpackage_attribute_access_without_prior_import():
+    """`src.visualization` resolves on first attribute access, not only after import.
+
+    The lazy __getattr__ mapping includes subpackage names; a fresh
+    interpreter must return the module itself rather than looking for a
+    same-named attribute inside it.
+    """
+    code = (
+        "import src; "
+        "assert src.visualization.__name__ == 'src.visualization'; "
+        "assert src.diagrams.__name__ == 'src.diagrams'"
+    )
+    proc = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+    assert proc.returncode == 0, proc.stderr
+
+
 def test_dir_covers_all_exports():
     import src
     names = dir(src)

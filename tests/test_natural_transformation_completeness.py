@@ -134,3 +134,28 @@ class TestNaturalTransformationValidation:
         nat = NaturalTransformation(name="incomplete", source_functor=f, target_functor=f)
         # Don't add any components
         assert nat.naturality_holds() is False
+
+    def test_partial_object_map_cannot_certify_completeness(self):
+        """A functor that omits a source role cannot be complete for it.
+
+        The declared domain is source.objects (NOM, ACC here); mapping only
+        NOM and supplying its component must not make the transformation look
+        complete or natural.
+        """
+        src = _two_object_category("src")
+        tgt = _two_object_category("tgt")
+        partial = AlignmentFunctor(
+            name="partial",
+            object_map={CaseRole.NOM: CaseRole.NOM},
+            source=src,
+            target=tgt,
+        )
+        nat = NaturalTransformation(
+            name="partial", source_functor=partial, target_functor=partial
+        )
+        nat.set_component(
+            CaseRole.NOM,
+            ComponentMorphism(CaseRole.NOM, CaseRole.NOM, CaseRole.NOM),
+        )
+        assert not nat.is_complete()
+        assert nat.naturality_holds() is False

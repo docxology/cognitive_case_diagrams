@@ -193,10 +193,44 @@ def wasserstein_return_distance(
     a, b = delta[:-1], delta[1:]
     widths = np.diff(knots)
     if p == 2:
-        integral = np.sum(widths * (a*a + a*b + b*b) / 3.)
-        return float(np.sqrt(max(0., integral)))
-    areas = (np.abs(a) + np.abs(b)) / 2.
-    crosses = a * b < 0
-    areas[crosses] = ((a[crosses]**2 + b[crosses]**2)
-                      / (2. * (np.abs(a[crosses]) + np.abs(b[crosses]))))
-    return float(np.sum(widths * areas))
+        with np.errstate(over="ignore", invalid="ignore"):
+            integral = np.sum(widths * (a*a + a*b + b*b) / 3.)
+        if np.isfinite(integral):
+            return float(np.sqrt(max(0., integral)))
+        return _scaled_quantile_distance(a, b, widths, 2)
+    with np.errstate(over="ignore", invalid="ignore"):
+        areas = (np.abs(a) + np.abs(b)) / 2.
+        crosses = a * b < 0
+        areas[crosses] = ((a[crosses]**2 + b[crosses]**2)
+                          / (2. * (np.abs(a[crosses]) + np.abs(b[crosses]))))
+        total = float(np.sum(widths * areas))
+    if np.isfinite(total):
+        return total
+    return _scaled_quantile_distance(a, b, widths, 1)
+
+
+def _scaled_quantile_distance(
+    a: np.ndarray, b: np.ndarray, widths: np.ndarray, p: int,
+) -> float:
+    """Distance with the difference scaled to unit magnitude before squaring.
+
+    The direct formulas square finite differences and overflow whenever the
+    true distance is representable but its square is not (e.g. 1e200). Scaling
+    by the largest difference keeps the integrand O(1); the scale factor is
+    reapplied after the square root, so ``p=2`` returns ``scale * sqrt(...)``
+    and never materializes ``scale**2``.
+    """
+    scale = float(max(np.abs(a).max(), np.abs(b).max()))
+    if not np.isfinite(scale):
+        return float("inf")
+    if scale == 0.0:
+        return 0.0
+    ua, ub = a / scale, b / scale
+    if p == 2:
+        integral = np.sum(widths * (ua*ua + ua*ub + ub*ub) / 3.)
+        return float(scale * np.sqrt(max(0., integral)))
+    areas = (np.abs(ua) + np.abs(ub)) / 2.
+    crosses = ua * ub < 0
+    areas[crosses] = ((ua[crosses]**2 + ub[crosses]**2)
+                      / (2. * (np.abs(ua[crosses]) + np.abs(ub[crosses]))))
+    return float(scale * np.sum(widths * areas))

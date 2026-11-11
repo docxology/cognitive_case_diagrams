@@ -111,6 +111,19 @@ class TestPushForwardReturn:
         assert result.mean == pytest.approx(1e160, rel=1e-12)
         assert result.variance == 0.0
 
+    def test_zero_mass_extreme_score_does_not_break_moments(self):
+        """A zero-mass atom with a huge score cannot make the variance NaN."""
+        belief = CaseDiagramBelief(
+            roles=[CaseRole.NOM, CaseRole.ACC],
+            probabilities=np.array([1.0, 0.0]),
+        )
+        result = push_forward_return(
+            belief, np.eye(2), np.array([0.0, 1e200]), gamma=0.0, n_quantiles=2
+        )
+        assert result.mean == 0.0
+        assert result.variance == 0.0
+        np.testing.assert_array_equal(result.quantiles, [0.0, 0.0])
+
     def test_spread_overflow_raises_value_error(self, three_role_belief, identity_T):
         with pytest.raises(ValueError, match="not representable"):
             push_forward_return(
@@ -216,6 +229,19 @@ class TestCategoricalReturnDistribution:
         ret = push_forward_return(three_role_belief, identity_T, R)
         with pytest.raises(ValueError, match="n_atoms"):
             categorical_return_distribution(ret, v_min=0.0, v_max=1.0, n_atoms=1)
+
+    def test_unrepresentable_support_spacing_raises(self):
+        """Subnormal spacing underflows delta_z; fail closed with a clear error."""
+        dist = DistributionalReturn(
+            mean=0.0,
+            variance=0.0,
+            quantiles=np.array([0.0]),
+            quantile_levels=np.array([0.5]),
+        )
+        with pytest.raises(ValueError, match="spacing"):
+            categorical_return_distribution(
+                dist, v_min=0.0, v_max=np.nextafter(0.0, 1.0), n_atoms=3
+            )
 
     def test_to_categorical_helper(self, three_role_belief, identity_T):
         R = np.array([0.5, 1.0, 1.5])

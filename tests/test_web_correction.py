@@ -59,6 +59,17 @@ def test_class_a_injects_canonical_block_before_head_close(tmp_path: Path) -> No
     assert "pre.sourceCode" in PAYLOAD.splitlines()[3]
 
 
+def test_batch_recurses_into_nested_pages(tmp_path: Path) -> None:
+    """Nested rendered pages are corrected with a relative-path action key."""
+    nested_dir = tmp_path / "chapters"
+    nested_dir.mkdir()
+    page = nested_dir / "intro.html"
+    page.write_text(realistic_page("intro"))
+    actions = correct_web_directory(tmp_path)
+    assert actions == {"chapters/intro.html": "injected override block"}
+    assert PAYLOAD in page.read_text(encoding="utf-8")
+
+
 def test_class_b_conforming_file_is_a_recorded_noop(tmp_path: Path) -> None:
     page = tmp_path / "index.html"
     page.write_text(_marked(realistic_page("index")))

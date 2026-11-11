@@ -40,11 +40,20 @@ def normal_z(confidence_level: float) -> float:
     """Two-sided normal quantile for a confidence level in (0, 1).
 
     Raises:
-        ValueError: If the level is not strictly inside (0, 1).
+        ValueError: If the level is not strictly inside (0, 1), or if it is
+            so close to 1 that the tail probability rounds to exactly 1.
     """
     if not math.isfinite(confidence_level) or not 0.0 < confidence_level < 1.0:
         raise ValueError(f"confidence_level must be strictly inside (0, 1), got {confidence_level}")
-    return float(NormalDist().inv_cdf((1.0 + confidence_level) / 2.0))
+    p = (1.0 + confidence_level) / 2.0
+    if not 0.0 < p < 1.0:
+        # A level within one ulp of 1 rounds the tail probability to exactly
+        # 1.0; NormalDist raises StatisticsError, which is not this API's
+        # documented failure type.
+        raise ValueError(
+            f"confidence_level {confidence_level!r} is too close to 1 to resolve"
+        )
+    return float(NormalDist().inv_cdf(p))
 
 
 def wilson_score_interval(
@@ -60,7 +69,8 @@ def wilson_score_interval(
         z: Two-sided normal quantile (see :func:`normal_z`).
 
     Returns:
-        ``(lo, hi)`` with 0 <= lo <= hi <= 1.
+        ``(lo, hi)`` with 0 <= lo <= hi <= 1. A ``z`` whose square overflows
+        returns the limiting unit interval rather than ``nan``.
 
     Raises:
         TypeError: If counts are not integers (bools and fractional values
@@ -81,6 +91,10 @@ def wilson_score_interval(
         raise ValueError(f"successes must be in [0, trials], got {successes}/{trials}")
     if not math.isfinite(z) or z <= 0:
         raise ValueError(f"z must be finite and positive, got {z}")
+    if not math.isfinite(z * z):
+        # For z this large the interval is within one ulp of [0, 1]; the
+        # direct z*z/(n + z*z) form computes inf/inf = nan.
+        return (0.0, 1.0)
     # The binomial boundary roots are exact; subtracting centre and half
     # can leave a platform-dependent rounding residual at zero or one.
     if k == 0:
@@ -104,8 +118,9 @@ def mean_ci(
     zero-width interval would report no-variance data as exact precision.
 
     Raises:
-        ValueError: If fewer than two values are supplied or any entry is
-            non-finite.
+        ValueError: If fewer than two values are supplied, any entry is
+            non-finite, or the interval bounds are not representable in
+            floating point.
     """
     arr = np.asarray(values, dtype=np.float64)
     if arr.ndim != 1 or arr.size < 2:
@@ -117,10 +132,40 @@ def mean_ci(
         raise ValueError("values must be finite")
     if not math.isfinite(z) or z <= 0:
         raise ValueError(f"z must be finite and positive, got {z}")
-    mean = float(arr.mean())
-    sd = float(arr.std(ddof=1))
+    # Mean: Neumaier-compensated sum of x_i/n. Summing each term divided by n
+    # keeps every addend <= max|x|/n, so same-sign huge inputs (e.g. two 1e308)
+    # do not overflow the accumulator, and the compensation preserves small
+    # residuals that a scale-by-max approach would underflow to zero after
+    # cancellation (e.g. [1e150, -1e150, 1e-300, 1e-300] -> 5e-301, not 0).
+    n = arr.size
+    acc, comp = 0.0, 0.0
+    for x in arr:
+        term = x / n
+        new_acc = acc + term
+        if abs(acc) >= abs(term):
+            comp += (acc - new_acc) + term
+        else:
+            comp += (term - new_acc) + acc
+        acc = new_acc
+    mean = acc + comp
+    # Variance: scale deviations by max|x-mean| so d*d cannot overflow; the
+    # scale is reapplied after the root-sum-square, preserving exact zeros.
+    dev = arr - mean
+    dmax = float(np.max(np.abs(dev)))
+    if dmax == 0.0:
+        sd = 0.0
+    else:
+        u = dev / dmax
+        sd = dmax * math.sqrt(float(np.sum(u * u)) / (n - 1))
     half = z * sd / math.sqrt(arr.size)
-    return (mean, mean - half, mean + half)
+    if not (math.isfinite(mean) and math.isfinite(half)):
+        raise ValueError("interval bounds are not representable in floating point")
+    lo, hi = mean - half, mean + half
+    if not (math.isfinite(lo) and math.isfinite(hi)):
+        # A finite mean at the float ceiling/floor plus a positive half-width
+        # overflows one endpoint even though mean and half are each finite.
+        raise ValueError("interval bounds are not representable in floating point")
+    return (mean, lo, hi)
 
 def paired_mean_ci(
     differences: np.ndarray | list[float],

@@ -33,6 +33,10 @@ def update_belief(
 
     Returns:
         Updated CaseDiagramBelief (posterior).
+
+    Raises:
+        ValueError: If likelihoods are non-finite, negative, of the wrong
+            length, or place zero mass on every role the prior can reach.
     """
     likelihoods = finite_vector(observation_likelihoods, "likelihoods")
     if np.any(likelihoods < 0):
@@ -44,8 +48,18 @@ def update_belief(
         )
 
     # Unnormalized posterior: p(o|s) * q(s)
-    scale = likelihoods.max()
-    unnormalized = (likelihoods / scale if scale > 0 else likelihoods) * prior.probabilities
+    # Scale over roles the prior can reach. A huge likelihood on a zero-prior
+    # role would otherwise drive the scale far above the supported evidence
+    # and underflow a possible observation to zero mass.
+    supported = prior.probabilities > 0
+    scale = float(likelihoods[supported].max()) if np.any(supported) else 0.0
+    unnormalized = np.zeros_like(likelihoods)
+    if scale > 0:
+        # Divide only supported entries: dividing an unreachable 1e300 by a
+        # supported 1e-300 overflows before the zero prior can cancel it.
+        unnormalized[supported] = (
+            likelihoods[supported] / scale
+        ) * prior.probabilities[supported]
     total = unnormalized.sum()
 
     if total <= 0:
@@ -97,7 +111,9 @@ def sequential_belief_update(
     current = prior
 
     for t, obs_likelihoods in enumerate(observation_sequence):
-        current = update_belief(current, np.asarray(obs_likelihoods, dtype=np.float64))
+        # No dtype coercion here: update_belief's validators must see the
+        # caller's booleans/complex values and reject them fail-closed.
+        current = update_belief(current, obs_likelihoods)
         current = CaseDiagramBelief(
             roles=current.roles,
             probabilities=current.probabilities,

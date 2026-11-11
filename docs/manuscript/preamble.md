@@ -18,15 +18,8 @@
 % Path. Fallback chain: JuliaMono → DejaVu Sans Mono → LaTeX default mono
 % (DejaVu lacks \\ll; the default also lacks \\blacksquare).
 \usepackage{fontspec}
-\IfFontExistsTF{JuliaMono-Regular}{%
-  \setmonofont{JuliaMono-Regular}[
-    Extension      = .ttf,
-    UprightFont    = *,
-    BoldFont       = JuliaMono-Bold,
-    ItalicFont     = JuliaMono-RegularItalic,
-    BoldItalicFont = JuliaMono-BoldItalic,
-    Scale          = MatchLowercase,
-  ]
+\IfFontExistsTF{JuliaMono}{%
+  \setmonofont{JuliaMono}[Scale=MatchLowercase]
 }{%
   \IfFontExistsTF{DejaVu Sans Mono}{%
     \setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]%

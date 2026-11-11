@@ -65,6 +65,10 @@ class DitransitiveSentence:
             cod=[sent_wire],
         )
         self.sentence.boxes.append(verb_box)
+        # The Sentence model derives codomain_type from its wire list; the
+        # verb's codomain wire must be registered or the sentence reports the
+        # monoidal unit 'I' while its verb box produces 's'.
+        self.sentence.wires.append(sent_wire)
 
         logger.info(
             "DitransitiveSentence: '%s' (NOM=%s, DAT=%s, ACC=%s)",

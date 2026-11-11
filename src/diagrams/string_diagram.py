@@ -587,14 +587,14 @@ def create_word_diagram_intransitive(subject: str, verb: str):
 
 
 def create_swap_passive(subject: str, verb: str, agent: str):
-    """Create a passive sentence using DisCoPy's Swap morphism.
+    """Create the Word-based passive template (historical name retained).
 
-    Passivization is modeled as a type permutation (Swap) that
-    exchanges the argument order of the verb, making the patient
-    the grammatical subject (cf. §3b).
-
-    Uses discopy.grammar.pregroup.Swap — the proper categorical
-    operation for argument reordering.
+    Places the patient first, the passive verb ``is_<verb>_by`` second, and
+    the agent last, then contracts both noun types with ``eager_parse``.
+    This word order needs no type permutation, so the function constructs
+    NO Swap morphism despite its historical name. A Swap belongs to a
+    symmetric extension and is not itself a general linguistic derivation
+    of passive voice.
 
     Args:
         subject: Grammatical subject (patient).
@@ -602,7 +602,7 @@ def create_swap_passive(subject: str, verb: str, agent: str):
         agent: By-phrase agent.
 
     Returns:
-        A discopy.grammar.pregroup.Diagram with explicit Swap.
+        A discopy.grammar.pregroup.Diagram reducing to ``s``.
     """
     from discopy.grammar.pregroup import Word, Ty, eager_parse
 
@@ -615,7 +615,7 @@ def create_swap_passive(subject: str, verb: str, agent: str):
 
     diagram = eager_parse(patient_word, passive_verb, agent_word)
 
-    logger.info("Created Swap-passive diagram: %s is %s by %s",
+    logger.info("Created Word-based passive diagram: %s is %s by %s",
                 subject, verb, agent)
     return diagram
 

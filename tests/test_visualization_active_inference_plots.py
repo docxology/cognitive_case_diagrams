@@ -20,6 +20,14 @@ from src.visualization.active_inference_plots import (
 logger = logging.getLogger(__name__)
 
 
+def test_entropy_change_label_uses_one_sign() -> None:
+    """A decrease and an increase each get exactly one explicit sign."""
+    from src.visualization.active_inference_plots import _entropy_change_label
+
+    assert _entropy_change_label(0.37) == "−0.37 nats"
+    assert _entropy_change_label(-0.37) == "+0.37 nats"
+
+
 def _make_belief() -> CaseDiagramBelief:
     """Create a test belief distribution."""
     roles = [CaseRole.NOM, CaseRole.ACC, CaseRole.DAT]

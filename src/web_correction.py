@@ -122,13 +122,17 @@ def correct_text(text: str) -> tuple[str, str]:
 def correct_web_directory(web_dir: Path) -> dict[str, str]:
     """Correct every ``*.html`` file under ``web_dir`` (fail-closed batch).
 
-    Returns ``{file name: recorded action}``. Raises :class:`WebCorrectionError`
-    for an absent/empty directory or any malformed document, before any write.
+    Returns ``{relative POSIX path: recorded action}`` for every HTML file
+    under ``web_dir`` (recursively), matching the publication validator's
+    binding. Raises :class:`WebCorrectionError` for an absent/empty directory
+    or any malformed document, before any write.
     """
     directory = Path(web_dir)
     if not directory.is_dir():
         raise WebCorrectionError(f"web directory is absent: {directory}")
-    files = sorted(directory.glob("*.html"))
+    # Match publication_review's recursive binding: a nested page left
+    # uncorrected would be rejected after the next render.
+    files = sorted(directory.rglob("*.html"))
     if not files:
         raise WebCorrectionError(
             f"web directory contains zero HTML files: {directory}"
@@ -145,5 +149,5 @@ def correct_web_directory(web_dir: Path) -> dict[str, str]:
     for path, action, corrected in plan:
         if action != ACTION_CONFORMING:
             path.write_text(corrected, encoding="utf-8")
-        actions[path.name] = action
+        actions[path.relative_to(directory).as_posix()] = action
     return actions

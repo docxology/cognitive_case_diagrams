@@ -25,6 +25,7 @@ from pathlib import Path
 import matplotlib
 if not matplotlib.is_interactive():
     matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 logging.basicConfig(
     level=logging.INFO,
@@ -90,7 +91,8 @@ def run(out: Path) -> list[Path]:
     try:
         cat = standard_enriched_category()
         path = out / "enriched_hom_matrix.png"
-        render_enriched_heatmap(cat, output_path=path)
+        fig = render_enriched_heatmap(cat, output_path=path)
+        plt.close(fig)
         outputs.append(path)
         # Companion magnitude report (written by src/visualization)
         txt_path = write_magnitude_report(cat, out / "enriched_magnitude.txt")

@@ -228,7 +228,7 @@ _VARIABLE_TABLE: tuple[tuple[str, str, str | None, str, str], ...] = (
      "count",
      "Paired mean difference between the regime-resolved polarity-conflict "
      "count and the count after projecting the regime away, on identical "
-     "synthetic corpora at common random numbers; negative values indicate "
+     "synthetic corpora at common random numbers; positive values indicate "
      "conflicts collapsed by the regime projection."),
     ("aggregation", "triangle_closure_ratio_mean", "triangle_closure_ratio",
      "dimensionless",

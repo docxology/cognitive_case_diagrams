@@ -139,9 +139,12 @@ The artifact allowlist is explicit: `figures/`, `experiments/`,
 `manuscript_variables.json`, `reports/quality_receipt.json`,
 `reports/publication_review.json`, and
 `pdf/cognitive_case_diagrams_combined.pdf`. Hidden components, caches,
-`review/`, `release/`, `logs/`, symlinks, and oversized reads (`> 2 MiB`) are
-rejected for both listing and direct reads. Path traversal (`..`), absolute
-paths, and NUL bytes are rejected before any filesystem access.
+`review/`, `release/`, `logs/`, and symlinks are rejected. Direct reads are
+bounded per class: the canonical combined PDF at 24,000,000 bytes and every
+other artifact at 2,000,000 bytes. Oversized entries remain listed with
+`readable: false`, while a direct read of one is rejected. Path traversal
+(`..`), absolute paths, and NUL bytes are rejected before any filesystem
+access.
 
 ## Security model
 

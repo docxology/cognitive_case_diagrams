@@ -54,8 +54,12 @@ Moments are exact finite sums. Quantiles use the generalized inverse CDF
     mean_offset = float(current_q @ offsets)
     mean_z = float(reference + mean_offset)
     centered = offsets - mean_offset
+    # Only positive-mass atoms contribute; multiplying a zero mass by an
+    # overflowed square (0 * inf) would turn a representable point mass into
+    # a spurious "moments not representable" rejection.
+    supported = current_q > 0
     with np.errstate(over="ignore"):
-        spread = float(current_q @ (centered ** 2))
+        spread = float(current_q[supported] @ (centered[supported] ** 2))
     if not (np.isfinite(mean_z) and np.isfinite(spread)):
         raise ValueError(
             f"Score moments are not representable in floating point for z_vec={z_vec!r}."
@@ -220,7 +224,8 @@ def categorical_return_distribution(
         are the projected probability masses (sums to 1).
 
     Raises:
-        ValueError: If v_min >= v_max or n_atoms < 2.
+        ValueError: If v_min >= v_max, n_atoms < 2, or the support spacing
+            underflows to zero or is not representable.
     """
     quantiles, _ = quantile_grid(return_dist.quantiles, return_dist.quantile_levels)
     positive_integer(n_atoms, "n_atoms", 2)
@@ -229,6 +234,11 @@ def categorical_return_distribution(
 
     atoms = np.linspace(v_min, v_max, n_atoms)
     delta_z = (v_max - v_min) / (n_atoms - 1)
+    if not np.isfinite(delta_z) or delta_z <= 0:
+        raise ValueError(
+            "v_min/v_max spacing is not representable for n_atoms; "
+            f"got v_min={v_min!r}, v_max={v_max!r}, n_atoms={n_atoms}"
+        )
     probs = np.zeros(n_atoms)
 
     # Distributional projection: each quantile contributes linearly to two atoms

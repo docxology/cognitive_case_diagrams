@@ -67,6 +67,13 @@ def test_bad_polarity_names_line_and_field(tmp_path):
         load_claim_records(path)
 
 
+@pytest.mark.parametrize("polarity", [[], {}, ["positive"], {"value": "positive"}])
+def test_unhashable_polarity_raises_value_error(polarity):
+    """Valid JSON containers reach the field check and fail as ValueError."""
+    with pytest.raises(ValueError, match="'polarity'"):
+        to_canonical_dict({**VALID, "polarity": polarity})
+
+
 def test_unknown_field_is_rejected(tmp_path):
     path = _write(tmp_path, [json.dumps({**VALID, "confidence": 0.9})])
     with pytest.raises(ValueError, match="line 1.*confidence"):

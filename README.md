@@ -2,6 +2,8 @@
 
 An executable review of case-role graphs, compositional grammar, synthetic uncertainty, and measurement models. Release identity comes from [package configuration](pyproject.toml), [manuscript configuration](docs/manuscript/config.yaml), and generated [citation metadata](CITATION.cff). The code provides explicit examples; it does not implement a complete linguistic parser, general topos bridge, full distributional active-inference learner, EEG model, or operational security system.
 
+![Alignment functor from accusative to ergative case-role groupings](output/figures/functor_alignment.png)
+
 Start with the [method contracts](docs/method_contracts.md), [claim ledger](docs/claim_ledger.md), and [manuscript](docs/manuscript/README.md). The [review report](docs/comprehensive_review.md) records changes and verification receipts.
 
 ## Run locally

@@ -1,5 +1,12 @@
 # Cognitive case diagrams
 
+<p align="center">
+  <a href="https://github.com/docxology/cognitive_case_diagrams/actions/workflows/ci.yml"><img alt="ci.yml workflow status on main" src="https://github.com/docxology/cognitive_case_diagrams/actions/workflows/ci.yml/badge.svg?branch=main"></a>
+  <a href="https://doi.org/10.5281/zenodo.19695259"><img alt="Digital Object Identifier (DOI), manuscript series record: 10.5281/zenodo.19695259" src="https://zenodo.org/badge/DOI/10.5281/zenodo.19695259.svg"></a>
+  <a href="LICENSE"><img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-blue"></a>
+  <img alt="Requires Python 3.11 or newer" src="https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white">
+</p>
+
 An executable review of case-role graphs, compositional grammar, synthetic uncertainty, and measurement models. Release identity comes from [package configuration](pyproject.toml), [manuscript configuration](docs/manuscript/config.yaml), and generated [citation metadata](CITATION.cff). The code provides explicit examples; it does not implement a complete linguistic parser, general topos bridge, full distributional active-inference learner, EEG model, or operational security system.
 
 Start with the [method contracts](docs/method_contracts.md), [claim ledger](docs/claim_ledger.md), and [manuscript](docs/manuscript/README.md). The [review report](docs/comprehensive_review.md) records changes and verification receipts.
@@ -59,3 +66,45 @@ The likelihood is supplied synthetic evidence; this example does not parse a sen
 - `output/`: derived figures, metrics, hydrated chapters, and render products.
 
 This is a self-versioned project. Publish from its own repository, never by force-adding its symlinked contents to the parent workspace or template engine. Software uses [Apache-2.0](LICENSE); the existing Zenodo manuscript series retains its publication license, recorded separately in the deposit metadata.
+
+### Package map
+
+Generated on 2026-11-12 from the `import` statements under `src/`. An arrow from A to B means code in A imports B; arrows already implied by a longer path are left out, so the picture shows layering rather than every edge. It shows 14 of the package's 24 top-level parts: the largest ones that import or are imported by others.
+
+```mermaid
+flowchart TB
+    accTitle: Internal dependency map of the src package in cognitive_case_diagrams
+    accDescr: Generated from import statements in src. Each box is a subpackage or module of the package; an arrow from A to B means code in A imports B; arrows already implied by a longer path are omitted. Most-imported: case_systems, enriched_cat, cognitive.
+    n_visualization["visualization/"]
+    n_experiments["experiments/"]
+    n_integrations["integrations/"]
+    n_daif["daif/"]
+    n_diagrams["diagrams/"]
+    n_case_systems["case_systems/"]
+    n_manuscript_variables["manuscript_variables.py"]
+    n_generate_manuscript_metrics["generate_manuscript_metrics.py"]
+    n_cognitive["cognitive/"]
+    n_aggregation["aggregation/"]
+    n_quantum["quantum/"]
+    n_enriched_cat["enriched_cat/"]
+    n_evidence_status["evidence_status.py"]
+    n_release_bundle["release_bundle.py"]
+    n_daif --> n_cognitive
+    n_experiments --> n_cognitive
+    n_experiments --> n_aggregation
+    n_quantum --> n_case_systems
+    n_visualization --> n_cognitive
+    n_diagrams --> n_case_systems
+    n_experiments --> n_quantum
+    n_manuscript_variables --> n_experiments
+    n_visualization --> n_diagrams
+    n_cognitive --> n_enriched_cat
+    n_cognitive --> n_daif
+    n_enriched_cat --> n_case_systems
+    n_evidence_status --> n_experiments
+    n_evidence_status --> n_release_bundle
+    n_generate_manuscript_metrics --> n_manuscript_variables
+    n_generate_manuscript_metrics --> n_visualization
+    n_integrations --> n_evidence_status
+    n_visualization --> n_quantum
+```

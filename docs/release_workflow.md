@@ -34,7 +34,7 @@ uv build --no-sources
 uv run python scripts/evidence_status.py
 ```
 
-Render through the sibling template engine using the commands in the project README. Inspect every final PDF page and every figure; check PDF identity/metadata, web images, internal links, browser console, keyboard navigation, and narrow viewport behavior. Record only observations actually completed through `record_publication_review`. The record binds the current publication bytes and tested source. A late change invalidates it.
+Render through the pinned Template using the [reproduction guide](reproduction.md). Inspect every final PDF page and every figure; check PDF identity/metadata, web images, internal links, browser console, keyboard navigation, and narrow viewport behavior. Record only observations actually completed through `record_publication_review`. The record binds the current publication bytes and tested source. A late change invalidates it.
 
 Then run `uv run python scripts/build_release.py`. The builder requires current quality, artifact, metadata, and visual evidence. It rejects skipped tests so the optional MCP integration must execute in the release environment. Install the built wheel in a clean environment outside the checkout and exercise the installed MCP stdio server with a real SDK client before publication.
 
@@ -50,4 +50,8 @@ The root `.zenodo.json` describes the software for GitHub/Zenodo integration. Th
 
 ## Shared engine boundary
 
-This checkout resolves through a category symlink in the template workspace. The shared engine's provenance checker currently expects a different external-project boundary, while its stable inventory omits these explicitly ignored PDF/HTML outputs. Those checks must not be reported as passing without a successful run. The standalone project gate uses the resolved project root and explicit artifact hashes; it does not rewrite workspace symlinks or weaken the shared engine's policy.
+The pinned reproduction uses a separate Template checkout and a project
+registered under `projects/working/`. The renderer reads hydrated chapters
+and the project validator binds the source, experiment, and figure evidence.
+[Historical review receipts](comprehensive_review.md#6-verification-receipts)
+describe an earlier workspace and renderer run.

@@ -1,6 +1,6 @@
 # TODO — cognitive_case_diagrams
 
-The entries below are historical receipts from earlier revisions. For the 2026-09-07 working revision, use the [comprehensive review](docs/comprehensive_review.md) and [claim ledger](docs/claim_ledger.md). Prior release/tag notes do not establish archival status for the current tree.
+The entries below are historical receipts from earlier revisions. For the 2026-09-07 working revision, use the [comprehensive review](comprehensive_review.md) and [claim ledger](claim_ledger.md). Prior release/tag notes do not establish archival status for the current tree.
 
 Backlog for agent-ergonomics and doc-accuracy work. One line per entry + file path(s).
 Created 2026-08-31 by the agent-ergonomics fleet pass (commit `bda0e01`; the dated

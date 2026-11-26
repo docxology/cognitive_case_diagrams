@@ -1,6 +1,16 @@
 # Quickstart
 
-From the project root, follow the install, gate, figure, injection, and validation commands in [README](../README.md). The project environment is separate from the sibling template renderer environment. If using external storage, an explicit `UV_CACHE_DIR` and `UV_PROJECT_ENVIRONMENT` in a writable temporary directory can isolate environment issues without changing code.
+Install the locked environment from the repository root:
+
+```bash
+uv sync --locked --extra mcp
+uv run --locked python
+```
+
+The package supports Python 3.11 or later. The examples below use synthetic
+values and can be pasted into the Python session. Use the
+[reproduction guide](reproduction.md) to regenerate study outputs and
+render the manuscript.
 
 ## A discrete belief update
 

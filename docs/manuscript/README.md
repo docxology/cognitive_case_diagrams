@@ -32,6 +32,6 @@ These numbered Markdown files are the authored manuscript. `preamble.md`, `refer
 | [Appendix B: Notation and Conventions](11b_notation.md) | `11b_notation.md` |
 | [Appendix C: Reproduction and Verification Scope](11c_automated_test_inventory.md) | `11c_automated_test_inventory.md` |
 
-From the project root, run the quality gate with coverage, the synthetic experiment runner, figure generation, `uv run python scripts/inject_variables.py`, and `uv run python scripts/validate_project.py`. Then use the template-root render command in [project README](../../README.md). PDF and HTML are the current manuscript formats; a presentation requires a separate slide design.
+From the project root, run the quality gate with coverage, the synthetic experiment runner, figure generation, `uv run python scripts/inject_variables.py`, and `uv run python scripts/validate_project.py`. Follow the [reproduction guide](../reproduction.md) for pinned Template rendering and validation. PDF and HTML are the current manuscript formats; a presentation requires a separate slide design.
 
 Read [method contracts](../method_contracts.md), [claim ledger](../claim_ledger.md), and [review report](../comprehensive_review.md) before restoring or extending claims. A cited construction is not automatically implemented here. Every final PDF must be visually reviewed after rendering.
